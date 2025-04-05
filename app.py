@@ -47,12 +47,6 @@ def delete_later(filepath, delay=600):  # <- this sets default delay to 10 minut
         os.remove(filepath)
         print(f"[CLEANUP] Deleted: {filepath}")
 
-for path in output_paths:
-    threading.Thread(target=delete_later, args=(path,)).start()
-
-for path in output_paths:
-    threading.Thread(target=delete_later, args=(path,)).start()
-
 if __name__ == '__main__':
     import os
     port = int(os.environ.get('PORT', 10000))
