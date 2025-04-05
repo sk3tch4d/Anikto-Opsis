@@ -1,14 +1,3 @@
-# === Auto-install missing packages ===
-try:
-    import fitz, pdfplumber, pandas, matplotlib, seaborn, openpyxl
-except ImportError:
-    import subprocess
-    import sys
-    print("Installing missing dependencies...")
-    subprocess.check_call([sys.executable, "-m", "pip", "install",
-        "PyMuPDF", "pdfplumber", "pandas", "matplotlib", "seaborn", "openpyxl"])
-    print("All dependencies installed. Continuing...")
-
 import sys
 import os
 import re
@@ -22,13 +11,12 @@ from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
 
 TEMPLATE_FILE = os.path.join(os.path.dirname(__file__), "ARGX_Example.xlsx")
-
+BASE_DATE = datetime(2025, 1, 13)
 VALID_NAMES = {
     "Adeniyi, Oluwaseyi", "Bhardwaj, Liam", "Donovan, Patrick", "Gallivan, David",
     "Janaway, Alexander", "Robichaud, Richard", "Santo, Jaime", "Tobin, James",
     "Ukwesa, Jennifer", "Vanderputten, Richard", "Woodland, Nathaniel"
 }
-BASE_DATE = datetime(2025, 1, 13)
 
 def classify_shift(start, end, shift_ids):
     if "313" in shift_ids:
@@ -41,7 +29,7 @@ def classify_shift(start, end, shift_ids):
         return "Evening"
     if s >= datetime.strptime("23:00", "%H:%M").time() or e <= datetime.strptime("07:00", "%H:%M").time():
         return "Night"
-    if (s >= datetime.strptime("08:00", "%H:%M").time() and e <= datetime.strptime("12:00", "%H:%M").time()):
+    if s >= datetime.strptime("08:00", "%H:%M").time() and e <= datetime.strptime("12:00", "%H:%M").time():
         return "Day"
     return "Other"
 
@@ -97,28 +85,14 @@ def parse_pdf(pdf_path):
                         continue
     return pd.DataFrame(records)
 
-def latest_pdf(files):
-    by_date = {}
-    for f in files:
-        name = os.path.basename(f)
-        match = re.search(r"(\d{4}-\d{2}-\d{2})_(\d{2}-\d{2}-\d{2})", name)
-        if match:
-            date = match.group(1)
-            timestamp = match.group(2)
-            key = date
-            if key not in by_date or timestamp > by_date[key][1]:
-                by_date[key] = (f, timestamp)
-    return [v[0] for v in by_date.values()]
-
 def write_argx(df, template_path):
     wb = load_workbook(template_path)
     grouped = df.groupby("Name")
     border_box = Border(left=Side(style="thin"), right=Side(style="thin"),
                         top=Side(style="thin"), bottom=Side(style="thin"))
     medium_bottom_border = Border(bottom=Side(style="medium"))
+    fill_gray = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
     bold_font = Font(bold=True)
-    shade = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
-    prev_period = None
 
     for name, group in grouped:
         sheetname = " ".join(name.replace(",", "").split()[::-1])
@@ -129,39 +103,42 @@ def write_argx(df, template_path):
             for cell in row:
                 cell.value = None
                 cell.border = None
-                cell.fill = PatternFill()  # reset fill
+                cell.fill = PatternFill(fill_type=None)
 
         group = group.sort_values("DateObj").reset_index(drop=True)
         row_idx = 2
+        last_period = get_pay_period(group.loc[0, "DateObj"])
+
         for i, row in group.iterrows():
             date_obj = row["DateObj"]
             current_period = get_pay_period(date_obj)
-            apply_shade = current_period % 2 == 1
-            fill_style = shade if apply_shade else None
+            shade = current_period % 2 == 1
+            fill = fill_gray if shade else PatternFill(fill_type=None)
 
-            for col_idx, value in enumerate([row["Date"], row["Shift"], row["Type"], row["Hours"], row["Start"], row["End"]], start=1):
-                cell = ws.cell(row=row_idx, column=col_idx, value=value)
-                cell.border = border_box
-                if fill_style:
-                    cell.fill = fill_style
-                if col_idx == 1:
-                    cell.alignment = Alignment(horizontal="left")
-                elif col_idx == 3:
-                    cell.alignment = Alignment(horizontal="left")
-                else:
-                    cell.alignment = Alignment(horizontal="center")
+            ws.cell(row=row_idx, column=1, value=row["Date"]).alignment = Alignment(horizontal="left")
+            ws.cell(row=row_idx, column=2, value=row["Shift"]).alignment = Alignment(horizontal="center")
+            ws.cell(row=row_idx, column=3, value=row["Type"]).alignment = Alignment(horizontal="left")
+            ws.cell(row=row_idx, column=4, value=row["Hours"]).alignment = Alignment(horizontal="center")
+            ws.cell(row=row_idx, column=5, value=row["Start"]).alignment = Alignment(horizontal="center")
+            ws.cell(row=row_idx, column=6, value=row["End"]).alignment = Alignment(horizontal="center")
 
             for col in range(1, 7):
-                ws.cell(row=1, column=col).font = bold_font
-                ws.cell(row=1, column=col).border = border_box
-                ws.cell(row=1, column=col).alignment = Alignment(horizontal="center")
+                cell = ws.cell(row=row_idx, column=col)
+                cell.border = border_box
+                cell.fill = fill
 
             if i + 1 < len(group):
                 next_period = get_pay_period(group.loc[i + 1, "DateObj"])
                 if next_period != current_period:
                     for col in range(1, 7):
                         ws.cell(row=row_idx, column=col).border = medium_bottom_border
+
             row_idx += 1
+
+        for col in range(1, 7):
+            ws.cell(row=1, column=col).font = bold_font
+            ws.cell(row=1, column=col).border = border_box
+            ws.cell(row=1, column=col).alignment = Alignment(horizontal="center")
 
     out_file = f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx"
     wb.save(out_file)
