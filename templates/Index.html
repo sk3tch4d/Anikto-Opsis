@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ARGX Generator</title>
+</head>
+<body>
+    <h1>ARGX Web Generator</h1>
+    <form method="post" enctype="multipart/form-data">
+        <p><input type="file" name="pdfs" multiple required></p>
+        <p><label><input type="checkbox" name="generate_argx" checked> Generate ARGX Excel Summary</label></p>
+        <p><label><input type="checkbox" name="generate_argm" checked> Generate ARGM Heatmap (PNG)</label></p>
+        <p><input type="submit" value="Generate"></p>
+    </form>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+</body>
+</html>
