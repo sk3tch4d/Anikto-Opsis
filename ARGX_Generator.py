@@ -123,6 +123,7 @@ def write_argx(df, template_path):
                         ws.cell(row=row_idx, column=col).border = medium_bottom_border
             row_idx += 1
 
+    # Weekly Totals Sheet Updates: Ensure correct borders and shading on all data cells
     if "Weekly Totals" in wb.sheetnames:
         ws = wb["Weekly Totals"]
         all_weeks = sorted({d - timedelta(days=d.weekday()) for d in df["DateObj"]})
@@ -146,6 +147,7 @@ def write_argx(df, template_path):
                 if get_pay_period(all_weeks[w]) != get_pay_period(all_weeks[w - 1]):
                     ws.cell(row=r, column=w + 1).border = medium_bottom_border
 
+    # Save final output file
     out_file = f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx"
     wb.save(out_file)
     print(f"Saved: {out_file}")
