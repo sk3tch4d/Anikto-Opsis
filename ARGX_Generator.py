@@ -1,4 +1,3 @@
-
 import sys
 import os
 import re
@@ -109,6 +108,10 @@ def write_argx(df, template_path):
                         top=Side(style="thin"), bottom=Side(style="thin"))
     medium_bottom_border = Border(bottom=Side(style="medium"))
     bold_font = Font(bold=True)
+
+    # Define the light grey shading for pay period separation
+    pay_period_shading = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
+
     for name, group in grouped:
         sheetname = " ".join(name.replace(",", "").split()[::-1])
         if sheetname not in wb.sheetnames:
@@ -137,7 +140,9 @@ def write_argx(df, template_path):
                 next_period = get_pay_period(group.loc[i + 1, "DateObj"])
                 if next_period != current_period:
                     for col in range(1, 7):
-                        ws.cell(row=row_idx, column=col).border = medium_bottom_border
+                        cell = ws.cell(row=row_idx, column=col)
+                        cell.border = medium_bottom_border
+                        cell.fill = pay_period_shading  # Apply the light grey shading here
             row_idx += 1
     out_file = f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx"
     wb.save(out_file)
