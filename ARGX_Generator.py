@@ -117,9 +117,8 @@ def write_argx(df, template_path):
             for week, wgroup in group.groupby(group["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))):
                 col_idx = 2 + week_map[week]
 
-                # Track if Column 5 (E4) is reached
-                if col_idx == 5:  # Checking if we're in Column 5 (E4)
-                    print(f"DEBUG: Reached Column 5 (E4) at Row: {row_idx}, Week: {week}, Total Hours: {round(wgroup['Hours'].sum(), 1)}")
+                # Track the week and pay period
+                print(f"DEBUG: Row {row_idx}, Week: {week}, Pay Period: {get_pay_period(week)}")
                 
                 total_hours = round(wgroup["Hours"].sum(), 1)
                 cell = ws.cell(row=row_idx, column=col_idx, value=total_hours)
