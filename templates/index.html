@@ -88,8 +88,8 @@
   <h1>ARGX Generator</h1>
   <form method="POST" enctype="multipart/form-data">
     <input type="file" name="pdf_file" required>
-    <label><input type="checkbox" name="generate_argx" checked> Generate ARGX</label>
-    <label><input type="checkbox" name="generate_heatmap" checked> Generate ARGM</label>
+    <label><input type="checkbox" name="generate_argx" checked> Generate ARGX: Full Sheet</label>
+    <label><input type="checkbox" name="generate_heatmap" checked> Generate ARGM: Weekly Heatmap</label>
     <button type="submit">Generate</button>
 
     {% if error %}
