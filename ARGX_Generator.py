@@ -1,4 +1,3 @@
-
 # === Auto-install missing packages ===
 try:
     import fitz, pdfplumber, pandas, matplotlib, seaborn, openpyxl
@@ -20,9 +19,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
-from openpyxl.styles import Alignment, Border, Side, Font
+from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
 
-TEMPLATE_FILE = "ARGX_Example.xlsx"
+TEMPLATE_FILE = os.path.join(os.path.dirname(__file__), "ARGX_Example.xlsx")
+
 VALID_NAMES = {
     "Adeniyi, Oluwaseyi", "Bhardwaj, Liam", "Donovan, Patrick", "Gallivan, David",
     "Janaway, Alexander", "Robichaud, Richard", "Santo, Jaime", "Tobin, James",
@@ -118,6 +118,8 @@ def write_argx(df, template_path):
                         top=Side(style="thin"), bottom=Side(style="thin"))
     medium_bottom_border = Border(bottom=Side(style="medium"))
     bold_font = Font(bold=True)
+    gray_fill = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
+
     for name, group in grouped:
         sheetname = " ".join(name.replace(",", "").split()[::-1])
         if sheetname not in wb.sheetnames:
@@ -127,27 +129,34 @@ def write_argx(df, template_path):
             for cell in row:
                 cell.value = None
                 cell.border = None
+                cell.fill = None
+
         group = group.sort_values("DateObj").reset_index(drop=True)
         row_idx = 2
+        prev_period = None
         for i, row in group.iterrows():
             date_str = row["Date"]
             date_obj = row["DateObj"]
             current_period = get_pay_period(date_obj)
-            ws.cell(row=row_idx, column=1, value=date_str).alignment = Alignment(horizontal="left")
-            ws.cell(row=row_idx, column=2, value=row["Shift"]).alignment = Alignment(horizontal="center")
-            ws.cell(row=row_idx, column=3, value=row["Type"]).alignment = Alignment(horizontal="left")
-            ws.cell(row=row_idx, column=4, value=row["Hours"]).alignment = Alignment(horizontal="center")
-            ws.cell(row=row_idx, column=5, value=row["Start"]).alignment = Alignment(horizontal="center")
-            ws.cell(row=row_idx, column=6, value=row["End"]).alignment = Alignment(horizontal="center")
+
+            for col_idx, key in enumerate(["Date", "Shift", "Type", "Hours", "Start", "End"], start=1):
+                cell = ws.cell(row=row_idx, column=col_idx, value=row[key])
+                cell.alignment = Alignment(horizontal="center" if col_idx != 1 and col_idx != 3 else "left")
+                cell.border = border_box
+                if current_period % 2 == 1:
+                    cell.fill = gray_fill
+
             for col in range(1, 7):
                 ws.cell(row=1, column=col).font = bold_font
                 ws.cell(row=1, column=col).border = border_box
+
             if i + 1 < len(group):
                 next_period = get_pay_period(group.loc[i + 1, "DateObj"])
                 if next_period != current_period:
                     for col in range(1, 7):
                         ws.cell(row=row_idx, column=col).border = medium_bottom_border
             row_idx += 1
+
     out_file = f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx"
     wb.save(out_file)
     print(f"Saved: {out_file}")
@@ -169,15 +178,21 @@ def make_heatmap(df):
     plt.close()
     print("Saved: ARGM_Weekly.png")
 
-if __name__ == "__main__":
-    input_files = sys.argv[1:]
-    if not input_files:
-        input("No files provided. Drag PDFs onto this script. Press Enter to exit.")
-        sys.exit()
-    latest_files = latest_pdf(input_files)
+def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=True):
+    latest_files = [pdf_path]
     all_data = pd.concat([parse_pdf(pdf) for pdf in latest_files], ignore_index=True)
     if all_data.empty:
         print("No valid shifts found.")
-        sys.exit()
-    write_argx(all_data, TEMPLATE_FILE)
-    make_heatmap(all_data)
+        return []
+
+    outputs = []
+
+    if generate_argx:
+        write_argx(all_data, TEMPLATE_FILE)
+        outputs.append(f"ARGX_{all_data['DateObj'].min().strftime('%Y-%m-%d')}.xlsx")
+
+    if generate_heatmap:
+        make_heatmap(all_data)
+        outputs.append("ARGM_Weekly.png")
+
+    return outputs
