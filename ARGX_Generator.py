@@ -119,7 +119,7 @@ def write_argx(df, template_path):
 
                 # Track if Column 5 (E4) is reached
                 if col_idx == 5:  # Checking if we're in Column 5 (E4)
-                print(f"DEBUG: Reached Column 5 (E4) at Row: {row_idx}, Week: {week}, Total Hours: {round(wgroup['Hours'].sum(), 1)}")
+                    print(f"DEBUG: Reached Column 5 (E4) at Row: {row_idx}, Week: {week}, Total Hours: {round(wgroup['Hours'].sum(), 1)}")
                 
                 total_hours = round(wgroup["Hours"].sum(), 1)
                 cell = ws.cell(row=row_idx, column=col_idx, value=total_hours)
