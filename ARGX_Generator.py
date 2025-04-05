@@ -112,6 +112,22 @@ def write_argx(df, template_path):
     # Define the light grey shading for pay period separation
     pay_period_shading = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
 
+    # Apply shading to Weekly Totals sheet
+    if "Weekly Totals" in wb.sheetnames:
+        weekly_totals_ws = wb["Weekly Totals"]
+        row_idx = 2
+        for row in weekly_totals_ws.iter_rows(min_row=2, max_row=weekly_totals_ws.max_row, min_col=1, max_col=6):
+            date_obj = row[0].value
+            if date_obj:  # If there's a date value
+                current_period = get_pay_period(date_obj)
+                # Apply shading at pay period boundary
+                if row_idx + 1 < len(df):
+                    next_period = get_pay_period(df.loc[row_idx, "DateObj"])
+                    if next_period != current_period:
+                        for col in range(1, 7):
+                            weekly_totals_ws.cell(row=row_idx, column=col).fill = pay_period_shading
+            row_idx += 1
+
     for name, group in grouped:
         sheetname = " ".join(name.replace(",", "").split()[::-1])
         if sheetname not in wb.sheetnames:
@@ -144,6 +160,7 @@ def write_argx(df, template_path):
                         cell.border = medium_bottom_border
                         cell.fill = pay_period_shading  # Apply the light grey shading here
             row_idx += 1
+
     out_file = f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx"
     wb.save(out_file)
     print(f"Saved: {out_file}")
