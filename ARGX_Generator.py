@@ -91,6 +91,31 @@ def write_argx(df, template_path):
     bold_font = Font(bold=True)
     gray_fill = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
 
+    # Apply shading and borders to Weekly Totals sheet
+    if "Weekly Totals" in wb.sheetnames:
+        ws = wb["Weekly Totals"]
+        all_weeks = sorted({d - timedelta(days=d.weekday()) for d in df["DateObj"]})
+        week_map = {w: i for i, w in enumerate(all_weeks)}
+        name_groups = df.groupby("Name")
+        for row_idx, (name, group) in enumerate(name_groups, start=2):
+            ws.cell(row=row_idx, column=1, value=name).alignment = Alignment(horizontal="left")
+            for week, wgroup in group.groupby(group["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))):
+                col_idx = 2 + week_map[week]
+                total_hours = round(wgroup["Hours"].sum(), 1)
+                cell = ws.cell(row=row_idx, column=col_idx, value=total_hours)
+                cell.alignment = Alignment(horizontal="center")
+                cell.border = border_box
+                if (get_pay_period(week) % 2) == 1:
+                    cell.fill = gray_fill
+        for col in range(1, len(all_weeks) + 2):
+            ws.cell(row=1, column=col).border = border_box
+            ws.cell(row=1, column=col).font = bold_font
+        for r in range(2, 2 + len(name_groups)):
+            for w in range(len(all_weeks)):
+                if get_pay_period(all_weeks[w]) != get_pay_period(all_weeks[w - 1]):
+                    ws.cell(row=r, column=w + 1).border = medium_bottom_border
+
+    # Apply shading and borders to each employee sheet
     for name, group in grouped:
         sheetname = " ".join(name.replace(",", "").split()[::-1])
         if sheetname not in wb.sheetnames:
@@ -123,31 +148,7 @@ def write_argx(df, template_path):
                         ws.cell(row=row_idx, column=col).border = medium_bottom_border
             row_idx += 1
 
-    # Weekly Totals Sheet Updates: Ensure correct borders and shading on all data cells
-    if "Weekly Totals" in wb.sheetnames:
-        ws = wb["Weekly Totals"]
-        all_weeks = sorted({d - timedelta(days=d.weekday()) for d in df["DateObj"]})
-        week_map = {w: i for i, w in enumerate(all_weeks)}
-        name_groups = df.groupby("Name")
-        for row_idx, (name, group) in enumerate(name_groups, start=2):
-            ws.cell(row=row_idx, column=1, value=name).alignment = Alignment(horizontal="left")
-            for week, wgroup in group.groupby(group["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))):
-                col_idx = 2 + week_map[week]
-                total_hours = round(wgroup["Hours"].sum(), 1)
-                cell = ws.cell(row=row_idx, column=col_idx, value=total_hours)
-                cell.alignment = Alignment(horizontal="center")
-                cell.border = border_box
-                if (get_pay_period(week) % 2) == 1:
-                    cell.fill = gray_fill
-        for col in range(1, len(all_weeks) + 2):
-            ws.cell(row=1, column=col).border = border_box
-            ws.cell(row=1, column=col).font = bold_font
-        for r in range(2, 2 + len(name_groups)):
-            for w in range(len(all_weeks)):
-                if get_pay_period(all_weeks[w]) != get_pay_period(all_weeks[w - 1]):
-                    ws.cell(row=r, column=w + 1).border = medium_bottom_border
-
-    # Save final output file
+    # Save the final output file
     out_file = f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx"
     wb.save(out_file)
     print(f"Saved: {out_file}")
