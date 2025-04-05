@@ -1,3 +1,15 @@
+
+# === Auto-install missing packages ===
+try:
+    import fitz, pdfplumber, pandas, matplotlib, seaborn, openpyxl
+except ImportError:
+    import subprocess
+    import sys
+    print("Installing missing dependencies...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install",
+        "PyMuPDF", "pdfplumber", "pandas", "matplotlib", "seaborn", "openpyxl"])
+    print("All dependencies installed. Continuing...")
+
 import sys
 import os
 import re
@@ -8,9 +20,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
-from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
+from openpyxl.styles import Alignment, Border, Side, Font
 
-TEMPLATE_FILE = os.path.join(os.path.dirname(__file__), "ARGX_Example.xlsx")
+TEMPLATE_FILE = "ARGX_Example.xlsx"
 VALID_NAMES = {
     "Adeniyi, Oluwaseyi", "Bhardwaj, Liam", "Donovan, Patrick", "Gallivan, David",
     "Janaway, Alexander", "Robichaud, Richard", "Santo, Jaime", "Tobin, James",
@@ -45,6 +57,7 @@ def parse_pdf(pdf_path):
         for page in pdf.pages:
             text = page.extract_text()
             lines = text.splitlines() if text else []
+
             current_date = None
             for line in lines:
                 if "Inventory Services" in line:
@@ -85,6 +98,19 @@ def parse_pdf(pdf_path):
                         continue
     return pd.DataFrame(records)
 
+def latest_pdf(files):
+    by_date = {}
+    for f in files:
+        name = os.path.basename(f)
+        match = re.search(r"(\d{4}-\d{2}-\d{2})_(\d{2}-\d{2}-\d{2})", name)
+        if match:
+            date = match.group(1)
+            timestamp = match.group(2)
+            key = date
+            if key not in by_date or timestamp > by_date[key][1]:
+                by_date[key] = (f, timestamp)
+    return [v[0] for v in by_date.values()]
+
 def write_argx(df, template_path):
     wb = load_workbook(template_path)
     grouped = df.groupby("Name")
@@ -92,8 +118,6 @@ def write_argx(df, template_path):
                         top=Side(style="thin"), bottom=Side(style="thin"))
     medium_bottom_border = Border(bottom=Side(style="medium"))
     bold_font = Font(bold=True)
-    gray_fill = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
-
     for name, group in grouped:
         sheetname = " ".join(name.replace(",", "").split()[::-1])
         if sheetname not in wb.sheetnames:
@@ -103,7 +127,6 @@ def write_argx(df, template_path):
             for cell in row:
                 cell.value = None
                 cell.border = None
-                cell.fill = PatternFill(fill_type=None)
         group = group.sort_values("DateObj").reset_index(drop=True)
         row_idx = 2
         for i, row in group.iterrows():
@@ -116,39 +139,15 @@ def write_argx(df, template_path):
             ws.cell(row=row_idx, column=4, value=row["Hours"]).alignment = Alignment(horizontal="center")
             ws.cell(row=row_idx, column=5, value=row["Start"]).alignment = Alignment(horizontal="center")
             ws.cell(row=row_idx, column=6, value=row["End"]).alignment = Alignment(horizontal="center")
-            if current_period % 2 == 1:
-                for col in range(1, 7):
-                    ws.cell(row=row_idx, column=col).fill = gray_fill
+            for col in range(1, 7):
+                ws.cell(row=1, column=col).font = bold_font
+                ws.cell(row=1, column=col).border = border_box
             if i + 1 < len(group):
                 next_period = get_pay_period(group.loc[i + 1, "DateObj"])
                 if next_period != current_period:
                     for col in range(1, 7):
                         ws.cell(row=row_idx, column=col).border = medium_bottom_border
             row_idx += 1
-
-    if "Weekly Totals" in wb.sheetnames:
-        ws = wb["Weekly Totals"]
-        all_weeks = sorted({d - timedelta(days=d.weekday()) for d in df["DateObj"]})
-        week_map = {w: i for i, w in enumerate(all_weeks)}
-        name_groups = df.groupby("Name")
-        for row_idx, (name, group) in enumerate(name_groups, start=2):
-            ws.cell(row=row_idx, column=1, value=name).alignment = Alignment(horizontal="left")
-            for week, wgroup in group.groupby(group["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))):
-                col_idx = 2 + week_map[week]
-                total_hours = round(wgroup["Hours"].sum(), 1)
-                cell = ws.cell(row=row_idx, column=col_idx, value=total_hours)
-                cell.alignment = Alignment(horizontal="center")
-                cell.border = border_box
-                if (get_pay_period(week) % 2) == 1:
-                    cell.fill = gray_fill
-        for col in range(1, len(all_weeks) + 2):
-            ws.cell(row=1, column=col).border = border_box
-            ws.cell(row=1, column=col).font = bold_font
-        for r in range(2, 2 + len(name_groups)):
-            for w in range(len(all_weeks)):
-                if get_pay_period(all_weeks[w]) != get_pay_period(all_weeks[w - 1]):
-                    ws.cell(row=r, column=w + 1).border = medium_bottom_border
-
     out_file = f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx"
     wb.save(out_file)
     print(f"Saved: {out_file}")
@@ -170,17 +169,15 @@ def make_heatmap(df):
     plt.close()
     print("Saved: ARGM_Weekly.png")
 
-def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=True):
-    latest_files = [pdf_path]
+if __name__ == "__main__":
+    input_files = sys.argv[1:]
+    if not input_files:
+        input("No files provided. Drag PDFs onto this script. Press Enter to exit.")
+        sys.exit()
+    latest_files = latest_pdf(input_files)
     all_data = pd.concat([parse_pdf(pdf) for pdf in latest_files], ignore_index=True)
     if all_data.empty:
         print("No valid shifts found.")
-        return []
-    outputs = []
-    if generate_argx:
-        write_argx(all_data, TEMPLATE_FILE)
-        outputs.append(f"ARGX_{all_data['DateObj'].min().strftime('%Y-%m-%d')}.xlsx")
-    if generate_heatmap:
-        make_heatmap(all_data)
-        outputs.append("ARGM_Weekly.png")
-    return outputs
+        sys.exit()
+    write_argx(all_data, TEMPLATE_FILE)
+    make_heatmap(all_data)
