@@ -1,9 +1,11 @@
 import sys
 import os
 import re
+import fitz
 import pdfplumber
 import pandas as pd
 import seaborn as sns
+import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
