@@ -1,3 +1,4 @@
+import sys
 import os
 import re
 import fitz
@@ -8,7 +9,7 @@ import seaborn as sns
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
-from flask import Flask, request, render_template, send_file
+from flask import Flask, send_file, request
 
 # Flask app setup
 app = Flask(__name__)
