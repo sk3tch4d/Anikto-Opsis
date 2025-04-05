@@ -1,15 +1,4 @@
 
-# === Auto-install missing packages ===
-try:
-    import fitz, pdfplumber, pandas, matplotlib, seaborn, openpyxl
-except ImportError:
-    import subprocess
-    import sys
-    print("Installing missing dependencies...")
-    subprocess.check_call([sys.executable, "-m", "pip", "install",
-        "PyMuPDF", "pdfplumber", "pandas", "matplotlib", "seaborn", "openpyxl"])
-    print("All dependencies installed. Continuing...")
-
 import sys
 import os
 import re
@@ -20,14 +9,16 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
-from openpyxl.styles import Alignment, Border, Side, Font
+from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
 
-TEMPLATE_FILE = "ARGX_Example.xlsx"
+TEMPLATE_FILE = os.path.join(os.path.dirname(__file__), "ARGX_Example.xlsx")
+
 VALID_NAMES = {
     "Adeniyi, Oluwaseyi", "Bhardwaj, Liam", "Donovan, Patrick", "Gallivan, David",
     "Janaway, Alexander", "Robichaud, Richard", "Santo, Jaime", "Tobin, James",
     "Ukwesa, Jennifer", "Vanderputten, Richard", "Woodland, Nathaniel"
 }
+
 BASE_DATE = datetime(2025, 1, 13)
 
 def classify_shift(start, end, shift_ids):
@@ -169,15 +160,21 @@ def make_heatmap(df):
     plt.close()
     print("Saved: ARGM_Weekly.png")
 
-if __name__ == "__main__":
-    input_files = sys.argv[1:]
-    if not input_files:
-        input("No files provided. Drag PDFs onto this script. Press Enter to exit.")
-        sys.exit()
-    latest_files = latest_pdf(input_files)
+def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=True):
+    latest_files = [pdf_path]
     all_data = pd.concat([parse_pdf(pdf) for pdf in latest_files], ignore_index=True)
     if all_data.empty:
         print("No valid shifts found.")
-        sys.exit()
-    write_argx(all_data, TEMPLATE_FILE)
-    make_heatmap(all_data)
+        return []
+
+    outputs = []
+
+    if generate_argx:
+        write_argx(all_data, TEMPLATE_FILE)
+        outputs.append(f"ARGX_{all_data['DateObj'].min().strftime('%Y-%m-%d')}.xlsx")
+    
+    if generate_heatmap:
+        make_heatmap(all_data)
+        outputs.append("ARGM_Weekly.png")
+
+    return outputs
