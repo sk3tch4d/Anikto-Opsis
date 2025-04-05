@@ -33,6 +33,7 @@ def index():
 
 @app.route('/download/<filename>')
 def download(filename):
+    print(f"[DOWNLOAD] {filename} requested")
     return send_file(filename, as_attachment=True)
 
 if __name__ == '__main__':
