@@ -10,16 +10,20 @@ from datetime import datetime, timedelta
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
 
+# Template file path
 TEMPLATE_FILE = os.path.join(os.path.dirname(__file__), "ARGX_Example.xlsx")
 
+# Valid names of employees
 VALID_NAMES = {
     "Adeniyi, Oluwaseyi", "Bhardwaj, Liam", "Donovan, Patrick", "Gallivan, David",
     "Janaway, Alexander", "Robichaud, Richard", "Santo, Jaime", "Tobin, James",
     "Ukwesa, Jennifer", "Vanderputten, Richard", "Woodland, Nathaniel"
 }
 
+# Base date for pay period calculations (Jan 13, 2025)
 BASE_DATE = datetime(2025, 1, 13)
 
+# Function to classify shifts based on start and end times
 def classify_shift(start, end, shift_ids):
     if "313" in shift_ids:
         return "Day"
@@ -35,12 +39,15 @@ def classify_shift(start, end, shift_ids):
         return "Day"
     return "Other"
 
+# Helper function to get pay period from date object
 def get_pay_period(date_obj):
     return (date_obj - BASE_DATE.date()).days // 14
 
+# Function to extract shift IDs from a line
 def extract_shift_ids(line):
     return [t for t in line.split() if re.match(r'(SA[1-4]|[A-Z]*\d{3,4})$', t, re.IGNORECASE)]
 
+# Function to parse the PDF file and extract shift data
 def parse_pdf(pdf_path):
     records = []
     with pdfplumber.open(pdf_path) as pdf:
@@ -88,6 +95,7 @@ def parse_pdf(pdf_path):
                         continue
     return pd.DataFrame(records)
 
+# Function to get the latest PDF file based on date
 def latest_pdf(files):
     by_date = {}
     for f in files:
@@ -101,6 +109,51 @@ def latest_pdf(files):
                 by_date[key] = (f, timestamp)
     return [v[0] for v in by_date.values()]
 
+# Function to apply shading to the Weekly Totals sheet
+def apply_shading_to_weekly_totals(weekly_totals_ws):
+    row_idx = 2
+    rows = list(weekly_totals_ws.iter_rows(min_row=2, max_row=weekly_totals_ws.max_row, min_col=1, max_col=6))
+    for i in range(len(rows)):  # Compare all rows, applying shading for the entire pay period
+        date_obj = rows[i][0].value
+
+        # Skip if the value is not a valid date
+        if not isinstance(date_obj, datetime):
+            continue
+
+        current_period = get_pay_period(date_obj)
+
+        # Apply shading for the entire pay period (14 days), alternating every pay period
+        if current_period % 2 == 0:  # Apply shading to even periods
+            for col in range(1, 7):
+                weekly_totals_ws.cell(row=row_idx, column=col).fill = pay_period_shading
+        row_idx += 1
+
+# Function to apply shading to employee sheets
+def apply_shading_to_employee_sheets(wb):
+    for sheetname in wb.sheetnames:
+        if sheetname == "Weekly Totals":
+            continue  # Skip the Weekly Totals sheet
+
+        ws = wb[sheetname]
+        row_idx = 2
+        rows = list(ws.iter_rows(min_row=2, max_row=ws.max_row))
+        for i in range(len(rows)):  # Compare all rows, applying shading for the entire pay period
+            date_obj = rows[i][0].value
+
+            # Skip if the value is not a valid date
+            if not isinstance(date_obj, datetime):
+                continue
+
+            current_period = get_pay_period(date_obj)
+
+            # Apply shading for the entire pay period (14 days), alternating every pay period
+            if current_period % 2 == 0:  # Apply shading to even periods
+                for col in range(1, 7):
+                    cell = ws.cell(row=row_idx, column=col)
+                    cell.fill = pay_period_shading  # Apply the light grey shading here
+            row_idx += 1
+
+# Function to write the ARGX output file
 def write_argx(df, template_path):
     wb = load_workbook(template_path)
     grouped = df.groupby("Name")
@@ -109,25 +162,12 @@ def write_argx(df, template_path):
     medium_bottom_border = Border(bottom=Side(style="medium"))
     bold_font = Font(bold=True)
 
-    # Define the light grey shading for pay period separation
-    pay_period_shading = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
-
     # Apply shading to Weekly Totals sheet
     if "Weekly Totals" in wb.sheetnames:
         weekly_totals_ws = wb["Weekly Totals"]
-        row_idx = 2
-        for row in weekly_totals_ws.iter_rows(min_row=2, max_row=weekly_totals_ws.max_row, min_col=1, max_col=6):
-            date_obj = row[0].value
-            if date_obj:  # If there's a date value
-                current_period = get_pay_period(date_obj)
-                # Apply shading at pay period boundary
-                if row_idx + 1 < len(df):
-                    next_period = get_pay_period(df.loc[row_idx, "DateObj"])
-                    if next_period != current_period:
-                        for col in range(1, 7):
-                            weekly_totals_ws.cell(row=row_idx, column=col).fill = pay_period_shading
-            row_idx += 1
+        apply_shading_to_weekly_totals(weekly_totals_ws)
 
+    # Apply shading to Employee Sheets
     for name, group in grouped:
         sheetname = " ".join(name.replace(",", "").split()[::-1])
         if sheetname not in wb.sheetnames:
@@ -165,38 +205,7 @@ def write_argx(df, template_path):
     wb.save(out_file)
     print(f"Saved: {out_file}")
 
-def make_heatmap(df):
-    summary = df.copy()
-    summary["Week Start"] = summary["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))
-    pivot = summary.groupby(["Name", "Week Start"]).agg(Total_Hours=("Hours", "sum")).reset_index()
-    table = pivot.pivot(index="Name", columns="Week Start", values="Total_Hours").fillna(0)
-    table = table.reindex(sorted(table.columns), axis=1)
-    plt.figure(figsize=(len(table.columns) * 1.2, len(table) * 0.5))
-    sns.set(font_scale=1)
-    ax = sns.heatmap(table, annot=True, fmt=".1f", cmap="Blues", cbar=False, linewidths=0.5, linecolor='gray')
-    plt.xticks(rotation=45, ha='right')
-    plt.yticks(rotation=0)
-    plt.title("Weekly Hours per Person", fontsize=14, pad=20)
-    plt.tight_layout()
-    plt.savefig("ARGM_Weekly.png", dpi=300)
-    plt.close()
-    print("Saved: ARGM_Weekly.png")
-
+# Example function to call this process
 def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=True):
     latest_files = [pdf_path]
-    all_data = pd.concat([parse_pdf(pdf) for pdf in latest_files], ignore_index=True)
-    if all_data.empty:
-        print("No valid shifts found.")
-        return []
-
-    outputs = []
-
-    if generate_argx:
-        write_argx(all_data, TEMPLATE_FILE)
-        outputs.append(f"ARGX_{all_data['DateObj'].min().strftime('%Y-%m-%d')}.xlsx")
-    
-    if generate_heatmap:
-        make_heatmap(all_data)
-        outputs.append("ARGM_Weekly.png")
-
-    return outputs
+    all_data = pd.concat([parse_pdf
