@@ -2,23 +2,48 @@
 <html>
 <head>
     <title>ARGX Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            max-width: 500px;
+            margin: auto;
+        }
+        h2 {
+            color: #333;
+        }
+        input[type="file"], label {
+            display: block;
+            margin: 15px 0;
+        }
+        .error {
+            color: red;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
-    <h1>ARGX Web Generator</h1>
-    <form method="post" enctype="multipart/form-data">
-        <p><input type="file" name="pdfs" multiple required></p>
-        <p><label><input type="checkbox" name="generate_argx" checked> Generate ARGX Excel Summary</label></p>
-        <p><label><input type="checkbox" name="generate_argm" checked> Generate ARGM Heatmap (PNG)</label></p>
-        <p><input type="submit" value="Generate"></p>
+    <h2>ARGX / ARGM Generator</h2>
+    
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        <label>Select FlowSheet PDF:</label>
+        <input type="file" name="pdf_file" accept="application/pdf" required>
+
+        <label><input type="checkbox" name="generate_argx" checked> Generate ARGX (Excel)</label>
+        <label><input type="checkbox" name="generate_heatmap" checked> Generate ARGM (Heatmap PNG)</label>
+
+        <button type="submit">Generate</button>
     </form>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
 </body>
 </html>
