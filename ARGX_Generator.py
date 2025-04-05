@@ -9,6 +9,10 @@ import seaborn as sns
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
+from flask import Flask, send_file
+
+# Flask app setup
+app = Flask(__name__)
 
 # Template file path
 TEMPLATE_FILE = os.path.join(os.path.dirname(__file__), "ARGX_Example.xlsx")
@@ -150,6 +154,11 @@ def write_argx(df, template_path):
     bold_font = Font(bold=True)
     pay_period_shading = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
 
+    # Define the directory where files will be saved
+    output_dir = os.path.join(os.path.dirname(__file__), "downloads")
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)  # Create the directory if it doesn't exist
+
     if "Weekly Totals" in wb.sheetnames:
         weekly_totals_ws = wb["Weekly Totals"]
         apply_shading_to_weekly_totals(weekly_totals_ws)
@@ -183,10 +192,23 @@ def write_argx(df, template_path):
                         cell.fill = pay_period_shading
             row_idx += 1
 
-    out_file = f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx"
+    # Define the output file path
+    out_file = os.path.join(output_dir, f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx")
     wb.save(out_file)
     print(f"Saved: {out_file}")
+    return out_file  # Return the path for the Flask route to send the file
 
+# Flask route to download the file
+@app.route('/download/<filename>', methods=['GET'])
+def download(filename):
+    output_dir = os.path.join(os.path.dirname(__file__), 'downloads')
+    filepath = os.path.join(output_dir, filename)
+    if os.path.exists(filepath):
+        return send_file(filepath, as_attachment=True)
+    else:
+        return "File not found", 404
+
+# Function to generate the ARGX and heatmap files
 def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=True):
     latest_files = [pdf_path]
     all_data = pd.concat([parse_pdf(pdf) for pdf in latest_files], ignore_index=True)
@@ -197,8 +219,8 @@ def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=Tru
     outputs = []
 
     if generate_argx:
-        write_argx(all_data, TEMPLATE_FILE)
-        outputs.append(f"ARGX_{all_data['DateObj'].min().strftime('%Y-%m-%d')}.xlsx")
+        out_file = write_argx(all_data, TEMPLATE_FILE)
+        outputs.append(out_file)
     
     if generate_heatmap:
         make_heatmap(all_data)
