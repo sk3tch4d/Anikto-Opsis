@@ -1,82 +1,16 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARGX Results</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #121212;
-      color: #f0f0f0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
-
-    h1 {
-      color: #00c6ff;
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
-
-    .download-list {
-      background: #1e1e1e;
-      padding: 2rem;
-      border-radius: 10px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
-    }
-
-    .download-list ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .download-list li {
-      margin: 1rem 0;
-      text-align: center;
-    }
-
-    a {
-      text-decoration: none;
-      color: #00c6ff;
-      font-weight: bold;
-      background: #222;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      display: inline-block;
-      transition: background 0.2s;
-    }
-
-    a:hover {
-      background: #00a6dd;
-      color: #000;
-    }
-
-    @media (max-width: 500px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      .download-list {
-        padding: 1rem;
-      }
-    }
-  </style>
+    <title>ARGX Result</title>
 </head>
 <body>
-  <h1>Your Files Are Ready</h1>
-  <div class="download-list">
-    <ul>
-      {% for output in outputs %}
-        <li><a href="{{ url_for('download', filename=output) }}">Download {{ output }}</a></li>
-      {% endfor %}
-    </ul>
-  </div>
+    <h1>Your file is ready!</h1>
+    <p>
+        <a href="{{ url_for('download', filename=filename) }}">Download ARGX Report</a>
+    </p>
+    <form action="{{ url_for('index') }}" method="get">
+        <button type="submit">Back to Upload</button>
+    </form>
 </body>
 </html>
