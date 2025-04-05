@@ -1,3 +1,4 @@
+
 # === Auto-install missing packages ===
 try:
     import fitz, pdfplumber, pandas, matplotlib, seaborn, openpyxl
@@ -21,9 +22,7 @@ from datetime import datetime, timedelta
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Border, Side, Font
 
-import os
-TEMPLATE_FILE = os.path.join(os.path.dirname(__file__), "ARGX_Example.xlsx")
-
+TEMPLATE_FILE = "ARGX_Example.xlsx"
 VALID_NAMES = {
     "Adeniyi, Oluwaseyi", "Bhardwaj, Liam", "Donovan, Patrick", "Gallivan, David",
     "Janaway, Alexander", "Robichaud, Richard", "Santo, Jaime", "Tobin, James",
@@ -182,22 +181,3 @@ if __name__ == "__main__":
         sys.exit()
     write_argx(all_data, TEMPLATE_FILE)
     make_heatmap(all_data)
-
-def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=True):
-    latest_files = [pdf_path]
-    all_data = pd.concat([parse_pdf(pdf) for pdf in latest_files], ignore_index=True)
-    if all_data.empty:
-        print("No valid shifts found.")
-        return []
-
-    outputs = []
-
-    if generate_argx:
-        write_argx(all_data, TEMPLATE_FILE)
-        outputs.append(f"ARGX_{all_data['DateObj'].min().strftime('%Y-%m-%d')}.xlsx")
-    
-    if generate_heatmap:
-        make_heatmap(all_data)
-        outputs.append("ARGM_Weekly.png")
-
-    return outputs
