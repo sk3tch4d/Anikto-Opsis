@@ -93,8 +93,12 @@ def apply_borders_and_shading(ws, row, col, current_period):
     cell.border = Border(left=Side(style="thin"), right=Side(style="thin"),
                          top=Side(style="thin"), bottom=Side(style="thin"))
 
+    # Debug log to track current_period and cell
+    print(f"DEBUG: Applying shading at Row: {row}, Column: {col}, Current Period: {current_period}")
+
     # Apply shading based on current pay period
     if current_period % 2 == 1:
+        print(f"DEBUG: Shading applied at Row: {row}, Column: {col}")
         cell.fill = PatternFill(start_color='D9D9D9', end_color='D9D9D9', fill_type='solid')
 
 def write_argx(df, template_path):
@@ -115,6 +119,10 @@ def write_argx(df, template_path):
                 total_hours = round(wgroup["Hours"].sum(), 1)
                 cell = ws.cell(row=row_idx, column=col_idx, value=total_hours)
                 cell.alignment = Alignment(horizontal="center")
+                
+                # Debug log to track each iteration for pay period and cell
+                print(f"DEBUG: Week: {week}, Pay Period: {get_pay_period(week)}, Row: {row_idx}, Col: {col_idx}")
+                
                 apply_borders_and_shading(ws, row_idx, col_idx, get_pay_period(week))
         for col in range(1, len(all_weeks) + 2):
             ws.cell(row=1, column=col).border = Border(left=Side(style='thin'), right=Side(style='thin'),
