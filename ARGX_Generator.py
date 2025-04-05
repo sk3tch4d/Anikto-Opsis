@@ -1,20 +1,22 @@
 import os
 import re
+import fitz
 import pdfplumber
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-TEMPLATE_FILE = "ARGX_Example.xlsx"
-BASE_DATE = datetime(2025, 1, 13)
+TEMPLATE_FILE = os.path.join(os.path.dirname(__file__), "ARGX_Example.xlsx")
+
 VALID_NAMES = {
     "Adeniyi, Oluwaseyi", "Bhardwaj, Liam", "Donovan, Patrick", "Gallivan, David",
     "Janaway, Alexander", "Robichaud, Richard", "Santo, Jaime", "Tobin, James",
     "Ukwesa, Jennifer", "Vanderputten, Richard", "Woodland, Nathaniel"
 }
+BASE_DATE = datetime(2025, 1, 13)
 
 def classify_shift(start, end, shift_ids):
     if "313" in shift_ids:
@@ -88,9 +90,11 @@ def write_argx(df, template_path):
     grouped = df.groupby("Name")
     border_box = Border(left=Side(style="thin"), right=Side(style="thin"),
                         top=Side(style="thin"), bottom=Side(style="thin"))
-    medium_bottom = Border(bottom=Side(style="medium"))
+    medium_bottom_border = Border(bottom=Side(style="medium"))
+    fill_gray = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
     bold_font = Font(bold=True)
-    shade_fill = PatternFill("solid", fgColor="D9D9D9")
+
+    # Employee Sheets
     for name, group in grouped:
         sheetname = " ".join(name.replace(",", "").split()[::-1])
         if sheetname not in wb.sheetnames:
@@ -100,41 +104,51 @@ def write_argx(df, template_path):
             for cell in row:
                 cell.value = None
                 cell.border = None
-                cell.fill = PatternFill()
-
+                cell.fill = None
         group = group.sort_values("DateObj").reset_index(drop=True)
         row_idx = 2
-        prev_period = get_pay_period(group.loc[0, "DateObj"])
-        shade_on = prev_period % 2 == 1
         for i, row in group.iterrows():
             date_str = row["Date"]
             date_obj = row["DateObj"]
             current_period = get_pay_period(date_obj)
-            shade = shade_fill if shade_on else PatternFill()
-            cells = [
-                (1, date_str, Alignment(horizontal="left")),
-                (2, row["Shift"], Alignment(horizontal="center")),
-                (3, row["Type"], Alignment(horizontal="left")),
-                (4, row["Hours"], Alignment(horizontal="center")),
-                (5, row["Start"], Alignment(horizontal="center")),
-                (6, row["End"], Alignment(horizontal="center")),
-            ]
-            for col, val, align in cells:
-                cell = ws.cell(row=row_idx, column=col, value=val)
-                cell.alignment = align
-                cell.border = border_box
-                cell.fill = shade
-
+            if current_period % 2 == 1:
+                for col in range(1, 7):
+                    ws.cell(row=row_idx, column=col).fill = fill_gray
+            ws.cell(row=row_idx, column=1, value=date_str).alignment = Alignment(horizontal="left")
+            ws.cell(row=row_idx, column=2, value=row["Shift"]).alignment = Alignment(horizontal="center")
+            ws.cell(row=row_idx, column=3, value=row["Type"]).alignment = Alignment(horizontal="left")
+            ws.cell(row=row_idx, column=4, value=row["Hours"]).alignment = Alignment(horizontal="center")
+            ws.cell(row=row_idx, column=5, value=row["Start"]).alignment = Alignment(horizontal="center")
+            ws.cell(row=row_idx, column=6, value=row["End"]).alignment = Alignment(horizontal="center")
             if i + 1 < len(group):
                 next_period = get_pay_period(group.loc[i + 1, "DateObj"])
                 if next_period != current_period:
                     for col in range(1, 7):
-                        ws.cell(row=row_idx, column=col).border = medium_bottom
-
+                        ws.cell(row=row_idx, column=col).border = medium_bottom_border
             row_idx += 1
         for col in range(1, 7):
             ws.cell(row=1, column=col).font = bold_font
             ws.cell(row=1, column=col).border = border_box
+
+    # Weekly Totals
+    if "Weekly Totals" in wb.sheetnames:
+        totals = wb["Weekly Totals"]
+        data_start = 2
+        for row in totals.iter_rows(min_row=data_start, max_row=totals.max_row):
+            for cell in row:
+                cell.fill = None
+        for i in range(data_start, totals.max_row + 1):
+            name_cell = totals.cell(row=i, column=1)
+            date_cell = totals.cell(row=i, column=2)
+            if not name_cell.value:
+                continue
+            row_period = get_pay_period(BASE_DATE.date() + timedelta(days=(i - data_start) * 7))
+            if row_period % 2 == 1:
+                for col in range(1, totals.max_column + 1):
+                    totals.cell(row=i, column=col).fill = fill_gray
+            if (i - data_start) % 2 == 1:
+                for col in range(1, totals.max_column + 1):
+                    totals.cell(row=i, column=col).border = medium_bottom_border
 
     out_file = f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx"
     wb.save(out_file)
@@ -158,7 +172,8 @@ def make_heatmap(df):
     print("Saved: ARGM_Weekly.png")
 
 def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=True):
-    all_data = parse_pdf(pdf_path)
+    latest_files = [pdf_path]
+    all_data = pd.concat([parse_pdf(pdf) for pdf in latest_files], ignore_index=True)
     if all_data.empty:
         print("No valid shifts found.")
         return []
