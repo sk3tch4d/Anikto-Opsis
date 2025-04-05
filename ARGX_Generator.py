@@ -115,15 +115,10 @@ def apply_shading_to_weekly_totals(weekly_totals_ws):
     rows = list(weekly_totals_ws.iter_rows(min_row=2, max_row=weekly_totals_ws.max_row, min_col=1, max_col=6))
     for i in range(len(rows)):  # Compare all rows, applying shading for the entire pay period
         date_obj = rows[i][0].value
-
-        # Skip if the value is not a valid date
         if not isinstance(date_obj, datetime):
             continue
-
         current_period = get_pay_period(date_obj)
-
-        # Apply shading for the entire pay period (14 days), alternating every pay period
-        if current_period % 2 == 0:  # Apply shading to even periods
+        if current_period % 2 == 0:
             for col in range(1, 7):
                 weekly_totals_ws.cell(row=row_idx, column=col).fill = pay_period_shading
         row_idx += 1
@@ -132,25 +127,19 @@ def apply_shading_to_weekly_totals(weekly_totals_ws):
 def apply_shading_to_employee_sheets(wb):
     for sheetname in wb.sheetnames:
         if sheetname == "Weekly Totals":
-            continue  # Skip the Weekly Totals sheet
-
+            continue
         ws = wb[sheetname]
         row_idx = 2
         rows = list(ws.iter_rows(min_row=2, max_row=ws.max_row))
         for i in range(len(rows)):  # Compare all rows, applying shading for the entire pay period
             date_obj = rows[i][0].value
-
-            # Skip if the value is not a valid date
             if not isinstance(date_obj, datetime):
                 continue
-
             current_period = get_pay_period(date_obj)
-
-            # Apply shading for the entire pay period (14 days), alternating every pay period
-            if current_period % 2 == 0:  # Apply shading to even periods
+            if current_period % 2 == 0:
                 for col in range(1, 7):
                     cell = ws.cell(row=row_idx, column=col)
-                    cell.fill = pay_period_shading  # Apply the light grey shading here
+                    cell.fill = pay_period_shading
             row_idx += 1
 
 # Function to write the ARGX output file
@@ -161,22 +150,17 @@ def write_argx(df, template_path):
                         top=Side(style="thin"), bottom=Side(style="thin"))
     medium_bottom_border = Border(bottom=Side(style="medium"))
     bold_font = Font(bold=True)
+    pay_period_shading = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
 
-    # Apply shading to Weekly Totals sheet
     if "Weekly Totals" in wb.sheetnames:
         weekly_totals_ws = wb["Weekly Totals"]
         apply_shading_to_weekly_totals(weekly_totals_ws)
 
-    # Apply shading to Employee Sheets
     for name, group in grouped:
         sheetname = " ".join(name.replace(",", "").split()[::-1])
         if sheetname not in wb.sheetnames:
             continue
         ws = wb[sheetname]
-        for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
-            for cell in row:
-                cell.value = None
-                cell.border = None
         group = group.sort_values("DateObj").reset_index(drop=True)
         row_idx = 2
         for i, row in group.iterrows():
@@ -198,14 +182,28 @@ def write_argx(df, template_path):
                     for col in range(1, 7):
                         cell = ws.cell(row=row_idx, column=col)
                         cell.border = medium_bottom_border
-                        cell.fill = pay_period_shading  # Apply the light grey shading here
+                        cell.fill = pay_period_shading
             row_idx += 1
 
     out_file = f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx"
     wb.save(out_file)
     print(f"Saved: {out_file}")
 
-# Example function to call this process
 def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=True):
     latest_files = [pdf_path]
-    all_data = pd.concat([parse_pdf
+    all_data = pd.concat([parse_pdf(pdf) for pdf in latest_files], ignore_index=True)
+    if all_data.empty:
+        print("No valid shifts found.")
+        return []
+
+    outputs = []
+
+    if generate_argx:
+        write_argx(all_data, TEMPLATE_FILE)
+        outputs.append(f"ARGX_{all_data['DateObj'].min().strftime('%Y-%m-%d')}.xlsx")
+    
+    if generate_heatmap:
+        make_heatmap(all_data)
+        outputs.append("ARGM_Weekly.png")
+
+    return outputs
