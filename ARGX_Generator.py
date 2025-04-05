@@ -244,9 +244,4 @@ def index():
     if not output_paths:  # Check if output_paths is None or empty
         return "No valid shifts found or error generating files", 500
 
-    # Ensure the files are accessible for downloading
-    return render_template('index.html', output_files=output_paths)
-
-# Main entry point to start Flask server
-if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=10000)
+    # Ensure the files
