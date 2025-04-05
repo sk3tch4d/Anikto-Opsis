@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head><title>ARGX Results</title></head>
+<body>
+<h1>Download Results</h1>
+<ul>
+{% for file in files %}
+    <li><a href="{{ url_for('download', job_id=job_id, filename=file) }}">{{ file }}</a></li>
+{% endfor %}
+</ul>
+</body>
+</html>
