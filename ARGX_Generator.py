@@ -1,14 +1,16 @@
+import sys
 import os
 import re
 import fitz
 import pdfplumber
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
 
 TEMPLATE_FILE = os.path.join(os.path.dirname(__file__), "ARGX_Example.xlsx")
-
 VALID_NAMES = {
     "Adeniyi, Oluwaseyi", "Bhardwaj, Liam", "Donovan, Patrick", "Gallivan, David",
     "Janaway, Alexander", "Robichaud, Richard", "Santo, Jaime", "Tobin, James",
@@ -43,7 +45,6 @@ def parse_pdf(pdf_path):
         for page in pdf.pages:
             text = page.extract_text()
             lines = text.splitlines() if text else []
-
             current_date = None
             for line in lines:
                 if "Inventory Services" in line:
@@ -90,7 +91,9 @@ def write_argx(df, template_path):
     border_box = Border(left=Side(style="thin"), right=Side(style="thin"),
                         top=Side(style="thin"), bottom=Side(style="thin"))
     medium_bottom_border = Border(bottom=Side(style="medium"))
-    gray_fill = PatternFill(fill_type="solid", fgColor="D9D9D9")
+    bold_font = Font(bold=True)
+    gray_fill = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
+
     for name, group in grouped:
         sheetname = " ".join(name.replace(",", "").split()[::-1])
         if sheetname not in wb.sheetnames:
@@ -103,45 +106,81 @@ def write_argx(df, template_path):
                 cell.fill = PatternFill(fill_type=None)
         group = group.sort_values("DateObj").reset_index(drop=True)
         row_idx = 2
-        last_period = get_pay_period(group.loc[0, "DateObj"])
         for i, row in group.iterrows():
             date_str = row["Date"]
             date_obj = row["DateObj"]
             current_period = get_pay_period(date_obj)
-            if current_period % 2 == 1:
-                for col in range(1, 7):
-                    ws.cell(row=row_idx, column=col).fill = gray_fill
             ws.cell(row=row_idx, column=1, value=date_str).alignment = Alignment(horizontal="left")
             ws.cell(row=row_idx, column=2, value=row["Shift"]).alignment = Alignment(horizontal="center")
             ws.cell(row=row_idx, column=3, value=row["Type"]).alignment = Alignment(horizontal="left")
             ws.cell(row=row_idx, column=4, value=row["Hours"]).alignment = Alignment(horizontal="center")
             ws.cell(row=row_idx, column=5, value=row["Start"]).alignment = Alignment(horizontal="center")
             ws.cell(row=row_idx, column=6, value=row["End"]).alignment = Alignment(horizontal="center")
+            if current_period % 2 == 1:
+                for col in range(1, 7):
+                    ws.cell(row=row_idx, column=col).fill = gray_fill
             if i + 1 < len(group):
                 next_period = get_pay_period(group.loc[i + 1, "DateObj"])
                 if next_period != current_period:
                     for col in range(1, 7):
                         ws.cell(row=row_idx, column=col).border = medium_bottom_border
             row_idx += 1
-        for col in range(1, 7):
+
+    if "Weekly Totals" in wb.sheetnames:
+        ws = wb["Weekly Totals"]
+        all_weeks = sorted({d - timedelta(days=d.weekday()) for d in df["DateObj"]})
+        week_map = {w: i for i, w in enumerate(all_weeks)}
+        name_groups = df.groupby("Name")
+        for row_idx, (name, group) in enumerate(name_groups, start=2):
+            ws.cell(row=row_idx, column=1, value=name).alignment = Alignment(horizontal="left")
+            for week, wgroup in group.groupby(group["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))):
+                col_idx = 2 + week_map[week]
+                total_hours = round(wgroup["Hours"].sum(), 1)
+                cell = ws.cell(row=row_idx, column=col_idx, value=total_hours)
+                cell.alignment = Alignment(horizontal="center")
+                cell.border = border_box
+                if (get_pay_period(week) % 2) == 1:
+                    cell.fill = gray_fill
+        for col in range(1, len(all_weeks) + 2):
             ws.cell(row=1, column=col).border = border_box
-            ws.cell(row=1, column=col).font = Font(bold=True)
+            ws.cell(row=1, column=col).font = bold_font
+        for r in range(2, 2 + len(name_groups)):
+            for w in range(len(all_weeks)):
+                if get_pay_period(all_weeks[w]) != get_pay_period(all_weeks[w - 1]):
+                    ws.cell(row=r, column=w + 1).border = medium_bottom_border
 
     out_file = f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx"
     wb.save(out_file)
     print(f"Saved: {out_file}")
 
-def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=False):
+def make_heatmap(df):
+    summary = df.copy()
+    summary["Week Start"] = summary["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))
+    pivot = summary.groupby(["Name", "Week Start"]).agg(Total_Hours=("Hours", "sum")).reset_index()
+    table = pivot.pivot(index="Name", columns="Week Start", values="Total_Hours").fillna(0)
+    table = table.reindex(sorted(table.columns), axis=1)
+    plt.figure(figsize=(len(table.columns) * 1.2, len(table) * 0.5))
+    sns.set(font_scale=1)
+    ax = sns.heatmap(table, annot=True, fmt=".1f", cmap="Blues", cbar=False, linewidths=0.5, linecolor='gray')
+    plt.xticks(rotation=45, ha='right')
+    plt.yticks(rotation=0)
+    plt.title("Weekly Hours per Person", fontsize=14, pad=20)
+    plt.tight_layout()
+    plt.savefig("ARGM_Weekly.png", dpi=300)
+    plt.close()
+    print("Saved: ARGM_Weekly.png")
+
+def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=True):
     latest_files = [pdf_path]
     all_data = pd.concat([parse_pdf(pdf) for pdf in latest_files], ignore_index=True)
     if all_data.empty:
         print("No valid shifts found.")
         return []
-
     outputs = []
-
     if generate_argx:
         write_argx(all_data, TEMPLATE_FILE)
         outputs.append(f"ARGX_{all_data['DateObj'].min().strftime('%Y-%m-%d')}.xlsx")
-
+    if generate_heatmap:
+        make_heatmap(all_data)
+        outputs.append("ARGM_Weekly.png")
     return outputs
