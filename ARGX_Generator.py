@@ -1,6 +1,10 @@
+
 import os
 import re
+import sys
+import time
 import fitz
+import threading
 import pdfplumber
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -17,6 +21,10 @@ VALID_NAMES = {
     "Ukwesa, Jennifer", "Vanderputten, Richard", "Woodland, Nathaniel"
 }
 BASE_DATE = datetime(2025, 1, 13)
+PAYPERIOD_SHADE = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
+medium_bottom_border = Border(bottom=Side(style="medium"))
+header_border = Border(top=Side(style="thin"), bottom=Side(style="thin"),
+                       left=Side(style="thin"), right=Side(style="thin"))
 
 def classify_shift(start, end, shift_ids):
     if "313" in shift_ids:
@@ -88,13 +96,6 @@ def parse_pdf(pdf_path):
 def write_argx(df, template_path):
     wb = load_workbook(template_path)
     grouped = df.groupby("Name")
-    border_box = Border(left=Side(style="thin"), right=Side(style="thin"),
-                        top=Side(style="thin"), bottom=Side(style="thin"))
-    medium_bottom_border = Border(bottom=Side(style="medium"))
-    fill_gray = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
-    bold_font = Font(bold=True)
-
-    # Employee Sheets
     for name, group in grouped:
         sheetname = " ".join(name.replace(",", "").split()[::-1])
         if sheetname not in wb.sheetnames:
@@ -107,13 +108,16 @@ def write_argx(df, template_path):
                 cell.fill = None
         group = group.sort_values("DateObj").reset_index(drop=True)
         row_idx = 2
+        current_period = None
         for i, row in group.iterrows():
             date_str = row["Date"]
             date_obj = row["DateObj"]
-            current_period = get_pay_period(date_obj)
-            if current_period % 2 == 1:
+            new_period = get_pay_period(date_obj)
+            if current_period is None:
+                current_period = new_period
+            if new_period % 2 == 1:
                 for col in range(1, 7):
-                    ws.cell(row=row_idx, column=col).fill = fill_gray
+                    ws.cell(row=row_idx, column=col).fill = PAYPERIOD_SHADE
             ws.cell(row=row_idx, column=1, value=date_str).alignment = Alignment(horizontal="left")
             ws.cell(row=row_idx, column=2, value=row["Shift"]).alignment = Alignment(horizontal="center")
             ws.cell(row=row_idx, column=3, value=row["Type"]).alignment = Alignment(horizontal="left")
@@ -122,33 +126,12 @@ def write_argx(df, template_path):
             ws.cell(row=row_idx, column=6, value=row["End"]).alignment = Alignment(horizontal="center")
             if i + 1 < len(group):
                 next_period = get_pay_period(group.loc[i + 1, "DateObj"])
-                if next_period != current_period:
+                if next_period != new_period:
                     for col in range(1, 7):
                         ws.cell(row=row_idx, column=col).border = medium_bottom_border
             row_idx += 1
         for col in range(1, 7):
-            ws.cell(row=1, column=col).font = bold_font
-            ws.cell(row=1, column=col).border = border_box
-
-    # Weekly Totals
-    if "Weekly Totals" in wb.sheetnames:
-        totals = wb["Weekly Totals"]
-        data_start = 2
-        for row in totals.iter_rows(min_row=data_start, max_row=totals.max_row):
-            for cell in row:
-                cell.fill = None
-        for i in range(data_start, totals.max_row + 1):
-            name_cell = totals.cell(row=i, column=1)
-            date_cell = totals.cell(row=i, column=2)
-            if not name_cell.value:
-                continue
-            row_period = get_pay_period(BASE_DATE.date() + timedelta(days=(i - data_start) * 7))
-            if row_period % 2 == 1:
-                for col in range(1, totals.max_column + 1):
-                    totals.cell(row=i, column=col).fill = fill_gray
-            if (i - data_start) % 2 == 1:
-                for col in range(1, totals.max_column + 1):
-                    totals.cell(row=i, column=col).border = medium_bottom_border
+            ws.cell(row=1, column=col).border = header_border
 
     out_file = f"ARGX_{df['DateObj'].min().strftime('%Y-%m-%d')}.xlsx"
     wb.save(out_file)
