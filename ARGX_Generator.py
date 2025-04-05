@@ -1,4 +1,3 @@
-import sys
 import os
 import re
 import fitz
@@ -9,7 +8,7 @@ import seaborn as sns
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
-from flask import Flask, send_file
+from flask import Flask, request, render_template, send_file
 
 # Flask app setup
 app = Flask(__name__)
@@ -225,3 +224,28 @@ def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=Tru
     if generate_heatmap:
         make_heatmap(all_data)
         outputs.append("ARGM_Weekly.png")
+
+    return outputs  # Return the file paths as a list
+
+# Route to handle index page and file upload
+@app.route('/', methods=['POST'])
+def index():
+    # Extract the PDF file uploaded by the user
+    uploaded_file = request.files['file']
+    
+    # Save the uploaded PDF file temporarily
+    file_path = os.path.join(os.path.dirname(__file__), 'uploads', uploaded_file.filename)
+    uploaded_file.save(file_path)
+
+    # Generate ARGX and heatmap files
+    output_paths = generate_argx_and_heatmap(file_path)
+
+    if not output_paths:  # Check if output_paths is None or empty
+        return "No valid shifts found or error generating files", 500
+
+    # Ensure the files are accessible for downloading
+    return render_template('index.html', output_files=output_paths)
+
+# Main entry point to start Flask server
+if __name__ == '__main__':
+    app.run(debug=True, host="0.0.0.0", port=10000)
