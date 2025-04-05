@@ -2,15 +2,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ARGX Result</title>
+  <title>ARGX Results</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      color: #333;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    a {
+      text-decoration: none;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .button {
+      display: inline-block;
+      margin-top: 30px;
+      background-color: #333;
+      color: white;
+      padding: 10px 18px;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Your file is ready!</h1>
-    <p>
-        <a href="{{ url_for('download', filename=filename) }}">Download ARGX Report</a>
-    </p>
-    <form action="{{ url_for('index') }}" method="get">
-        <button type="submit">Back to Upload</button>
-    </form>
+  <h2>Files Generated:</h2>
+  {% if outputs %}
+    <ul>
+      {% for file in outputs %}
+        <li><a href="{{ url_for('download', filename=file) }}">{{ file }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No output files were generated.</p>
+  {% endif %}
+  <a href="{{ url_for('index') }}" class="button">Generate Another</a>
 </body>
 </html>
