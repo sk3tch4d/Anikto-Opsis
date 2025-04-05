@@ -117,6 +117,10 @@ def write_argx(df, template_path):
             ws.cell(row=1, column=col).border = Border(left=Side(style='thin'), right=Side(style='thin'),
                                                        top=Side(style='thin'), bottom=Side(style='thin'))
             ws.cell(row=1, column=col).font = bold_font
+        for r in range(2, 2 + len(name_groups)):
+            for w in range(len(all_weeks)):
+                if get_pay_period(all_weeks[w]) != get_pay_period(all_weeks[w - 1]):
+                    ws.cell(row=r, column=w + 1).border = Border(bottom=Side(style="medium"))
 
     # Apply shading and borders to each employee sheet
     for name, group in grouped:
@@ -141,9 +145,12 @@ def write_argx(df, template_path):
             ws.cell(row=row_idx, column=4, value=row["Hours"]).alignment = Alignment(horizontal="center")
             ws.cell(row=row_idx, column=5, value=row["Start"]).alignment = Alignment(horizontal="center")
             ws.cell(row=row_idx, column=6, value=row["End"]).alignment = Alignment(horizontal="center")
-            if current_period % 2 == 1:
-                for col in range(1, 7):
-                    ws.cell(row=row_idx, column=col).fill = PatternFill(start_color='D9D9D9', end_color='D9D9D9', fill_type='solid')
+            apply_borders_and_shading(ws, row_idx, 1, current_period)  # Apply to all cells in row
+            apply_borders_and_shading(ws, row_idx, 2, current_period)
+            apply_borders_and_shading(ws, row_idx, 3, current_period)
+            apply_borders_and_shading(ws, row_idx, 4, current_period)
+            apply_borders_and_shading(ws, row_idx, 5, current_period)
+            apply_borders_and_shading(ws, row_idx, 6, current_period)
             if i + 1 < len(group):
                 next_period = get_pay_period(group.loc[i + 1, "DateObj"])
                 if next_period != current_period:
