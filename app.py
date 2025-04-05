@@ -1,4 +1,6 @@
 import os
+import threading
+import time
 from flask import Flask, render_template, request, send_file
 from werkzeug.utils import secure_filename
 from ARGX_Generator import generate_argx_and_heatmap
@@ -35,6 +37,18 @@ def index():
 def download(filename):
     print(f"[DOWNLOAD] {filename} requested")
     return send_file(filename, as_attachment=True)
+
+def delete_later(filepath, delay=600):  # <- this sets default delay to 10 minutes
+    time.sleep(delay)
+    if os.path.exists(filepath):
+        os.remove(filepath)
+        print(f"[CLEANUP] Deleted: {filepath}")
+
+for path in output_paths:
+    threading.Thread(target=delete_later, args=(path,)).start()
+
+for path in output_paths:
+    threading.Thread(target=delete_later, args=(path,)).start()
 
 if __name__ == '__main__':
     import os
