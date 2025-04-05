@@ -122,7 +122,7 @@ def write_argx(df, template_path):
                 if get_pay_period(all_weeks[w]) != get_pay_period(all_weeks[w - 1]):
                     ws.cell(row=r, column=w + 1).border = Border(bottom=Side(style="medium"))
 
-    # Apply shading and borders to each employee sheet
+    # Apply shading and borders to each employee sheet, but only apply shading here
     for name, group in grouped:
         sheetname = " ".join(name.replace(",", "").split()[::-1])
         if sheetname not in wb.sheetnames:
