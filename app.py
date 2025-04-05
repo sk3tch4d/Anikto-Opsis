@@ -29,6 +29,9 @@ def index():
             generate_heatmap=output_heatmap
         )
 
+        for path in output_paths:
+            threading.Thread(target=delete_later, args=(path,)).start()
+
         return render_template("result.html", outputs=output_paths)
 
     return render_template("index.html")
