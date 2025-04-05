@@ -200,3 +200,28 @@ def write_argx(df, template_path):
 
 # Flask route to download the file
 @app.route('/download/<filename>', methods=['GET'])
+def download(filename):
+    output_dir = os.path.join(os.path.dirname(__file__), 'downloads')
+    filepath = os.path.join(output_dir, filename)
+    if os.path.exists(filepath):
+        return send_file(filepath, as_attachment=True)
+    else:
+        return "File not found", 404
+
+# Function to generate the ARGX and heatmap files
+def generate_argx_and_heatmap(pdf_path, generate_argx=True, generate_heatmap=True):
+    latest_files = [pdf_path]
+    all_data = pd.concat([parse_pdf(pdf) for pdf in latest_files], ignore_index=True)
+    if all_data.empty:
+        print("No valid shifts found.")
+        return []
+
+    outputs = []
+
+    if generate_argx:
+        out_file = write_argx(all_data, TEMPLATE_FILE)
+        outputs.append(out_file)
+    
+    if generate_heatmap:
+        make_heatmap(all_data)
+        outputs.append("ARGM_Weekly.png")
