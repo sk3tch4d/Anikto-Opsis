@@ -115,31 +115,29 @@ def apply_shading_to_weekly_totals(weekly_totals_ws):
     rows = list(weekly_totals_ws.iter_rows(min_row=2, max_row=weekly_totals_ws.max_row, min_col=1, max_col=6))
     for i in range(len(rows)):  # Compare all rows, applying shading for the entire pay period
         date_obj = rows[i][0].value
-        if not isinstance(date_obj, datetime):
-            continue
-        current_period = get_pay_period(date_obj)
-        if current_period % 2 == 0:
-            for col in range(1, 7):
-                weekly_totals_ws.cell(row=row_idx, column=col).fill = pay_period_shading
+        if isinstance(date_obj, datetime):
+            current_period = get_pay_period(date_obj)
+            if current_period % 2 == 0:  # Apply shading to even periods
+                for col in range(1, 7):
+                    weekly_totals_ws.cell(row=row_idx, column=col).fill = pay_period_shading
         row_idx += 1
 
 # Function to apply shading to employee sheets
 def apply_shading_to_employee_sheets(wb):
     for sheetname in wb.sheetnames:
         if sheetname == "Weekly Totals":
-            continue
+            continue  # Skip Weekly Totals sheet
         ws = wb[sheetname]
         row_idx = 2
         rows = list(ws.iter_rows(min_row=2, max_row=ws.max_row))
         for i in range(len(rows)):  # Compare all rows, applying shading for the entire pay period
             date_obj = rows[i][0].value
-            if not isinstance(date_obj, datetime):
-                continue
-            current_period = get_pay_period(date_obj)
-            if current_period % 2 == 0:
-                for col in range(1, 7):
-                    cell = ws.cell(row=row_idx, column=col)
-                    cell.fill = pay_period_shading
+            if isinstance(date_obj, datetime):
+                current_period = get_pay_period(date_obj)
+                if current_period % 2 == 0:  # Apply shading to even periods
+                    for col in range(1, 7):
+                        cell = ws.cell(row=row_idx, column=col)
+                        cell.fill = pay_period_shading
             row_idx += 1
 
 # Function to write the ARGX output file
