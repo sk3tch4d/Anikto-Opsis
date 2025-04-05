@@ -119,6 +119,11 @@ def write_argx(df, template_path):
 
                 # Track the week and pay period
                 print(f"DEBUG: Row {row_idx}, Week: {week}, Pay Period: {get_pay_period(week)}")
+
+                # Debugging Column 2 Assignment
+                if col_idx == 2 and row_idx == 7:
+                    print(f"DEBUG: Row {row_idx}, Week: {week}, Pay Period: {get_pay_period(week)}, Column 2 assigned with value: {total_hours}")
+
                 
                 total_hours = round(wgroup["Hours"].sum(), 1)
                 cell = ws.cell(row=row_idx, column=col_idx, value=total_hours)
