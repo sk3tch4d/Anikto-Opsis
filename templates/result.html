@@ -185,15 +185,6 @@
   </div>
 </div>
 
-<script>
-function togglePanel(header) {
-  header.classList.toggle('open');
-  const body = header.nextElementSibling;
-  body.style.display = (body.style.display === 'none') ? 'block' : 'none';
-}
-document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
-</script>
-
 <div class="panel">
   <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
   <div class="panel-body">
@@ -209,6 +200,14 @@ document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
   </div>
 </div>
 
+  <script>
+function togglePanel(header) {
+  header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  body.style.display = (body.style.display === 'none') ? 'block' : 'none';
+}
+document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
+  </script>
   
   <div class="panel">
   <form action="{{ url_for('index') }}" method="get">
