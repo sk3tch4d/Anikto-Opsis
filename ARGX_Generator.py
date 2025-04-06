@@ -85,6 +85,8 @@ def parse_pdf(pdf_path):
                         continue
     return pd.DataFrame(records)
 
+print(f"Total parsed rows: {len(df)}")
+print(f"PDF paths: {pdf_paths}")
 # === Excel Writer ===
 def write_argx_v2(df, output_path):
     wb = Workbook()
