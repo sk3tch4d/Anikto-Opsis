@@ -15,17 +15,37 @@
       padding: 2rem;
     }
 
-    h2 {
+    h1 {
       color: #00c6ff;
+      margin-bottom: 0.5rem;
+    }
+
+    h3 {
+      color: #aaa;
       margin-bottom: 1rem;
     }
 
+    .drop-zone {
+      border: 2px dashed #00c6ff;
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.2s;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .drop-zone:hover {
+      background-color: rgba(0, 198, 255, 0.05);
+    }
+
     input[type="file"] {
-      margin: 1rem 0;
-      color: #fff;
+      display: none;
     }
 
     .button {
+      margin-top: 1rem;
       padding: 0.6rem 1.2rem;
       background-color: #00c6ff;
       color: #000;
@@ -43,6 +63,23 @@
     .error {
       color: #ff6b6b;
       margin-top: 1rem;
+    }
+
+    #file-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 1rem;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    #file-list li {
+      background: #1e1e1e;
+      margin-bottom: 0.4rem;
+      padding: 0.5rem;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      text-align: center;
     }
 
     #loading {
@@ -70,14 +107,18 @@
 </head>
 <body>
   <h1>ARG Analyzer</h1>
-  <h3>Upload ARG PDFs to Generate Results</h2>
+  <h3>Upload ARG PDFs to Generate Results</h3>
 
   <div id="upload-form">
-    <form method="POST" enctype="multipart/form-data">
-      <input type="file" name="pdfs" multiple required />
-      <br/>
+    <form method="POST" enctype="multipart/form-data" id="upload-form-el">
+      <label for="file-input" class="drop-zone" id="drop-zone">
+        Drop PDFs here or click to upload
+        <input type="file" id="file-input" name="pdfs" multiple required />
+      </label>
+      <ul id="file-list"></ul>
       <button type="submit" class="button">Generate</button>
     </form>
+
     {% if error %}
       <div class="error">{{ error }}</div>
     {% endif %}
@@ -85,13 +126,53 @@
 
   <div id="loading">
     <div class="spinner"></div>
-    Generating your report...
+    <p>Generating your report...</p>
+    <p id="quote" style="font-style: italic;"></p>
   </div>
 
   <script>
+    const dropZone = document.getElementById("drop-zone");
+    const fileInput = document.getElementById("file-input");
+    const fileList = document.getElementById("file-list");
+
+    const quotes = [
+      "Crunching shifts like pros...",
+      "Summoning the ARG Gods...",
+      "Shifts are aligning...",
+      "Almost there — keep the faith!",
+      "ARGX is forging your files..."
+    ];
+
     document.querySelector("form").addEventListener("submit", function () {
       document.getElementById("upload-form").style.display = "none";
       document.getElementById("loading").style.display = "block";
+      document.getElementById("quote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
+    });
+
+    fileInput.addEventListener("change", () => {
+      fileList.innerHTML = "";
+      [...fileInput.files].forEach(file => {
+        const li = document.createElement("li");
+        li.textContent = file.name;
+        fileList.appendChild(li);
+      });
+    });
+
+    // Optional: drag & drop support
+    dropZone.addEventListener("dragover", e => {
+      e.preventDefault();
+      dropZone.style.backgroundColor = "rgba(0,198,255,0.1)";
+    });
+
+    dropZone.addEventListener("dragleave", e => {
+      e.preventDefault();
+      dropZone.style.backgroundColor = "";
+    });
+
+    dropZone.addEventListener("drop", e => {
+      e.preventDefault();
+      fileInput.files = e.dataTransfer.files;
+      fileInput.dispatchEvent(new Event("change")); // trigger file list display
     });
   </script>
 </body>
