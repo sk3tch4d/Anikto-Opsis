@@ -30,16 +30,14 @@ def classify_shift(start, end, shift_ids):
         return "Day"
 
     s = datetime.strptime(start, "%H:%M").time()
-    e = datetime.strptime(end, "%H:%M").time()
 
-    # Overnight shift check
-    if s >= datetime.strptime("22:00", "%H:%M").time() or e <= datetime.strptime("08:00", "%H:%M").time():
+    if datetime.strptime("07:00", "%H:%M").time() <= s < datetime.strptime("11:00", "%H:%M").time():
+        return "Day"
+    if datetime.strptime("14:00", "%H:%M").time() <= s <= datetime.strptime("16:00", "%H:%M").time():
+        return "Evening"
+    if datetime.strptime("22:00", "%H:%M").time() <= s <= datetime.strptime("23:59", "%H:%M").time():
         return "Night"
 
-    if s >= datetime.strptime("07:00", "%H:%M").time() and e <= datetime.strptime("15:00", "%H:%M").time():
-        return "Day"
-    if s >= datetime.strptime("15:00", "%H:%M").time() and e <= datetime.strptime("23:00", "%H:%M").time():
-        return "Evening"
     return "Other"
 
 # === PDF Parser ===
