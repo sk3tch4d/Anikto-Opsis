@@ -1,5 +1,5 @@
 
-from flask import Flask, request, render_template, send_file, redirect, url_for
+from flask import Flask, request, render_template, send_file
 import os
 import uuid
 from ARGX_Generator import generate_argx_and_heatmap
@@ -19,11 +19,17 @@ def index():
             file.save(filename)
             temp_paths.append(filename)
 
-        output_file = generate_argx_and_heatmap(temp_paths)
+        output_files = generate_argx_and_heatmap(temp_paths)
+        if output_files:
+            # Move files to /tmp/ for Flask download if not already
+            moved_outputs = []
+            for path in output_files:
+                dest = os.path.join("/tmp", os.path.basename(path))
+                if not os.path.samefile(path, dest):
+                    os.rename(path, dest)
+                moved_outputs.append(os.path.basename(dest))
 
-        if output_file:
-            filename = os.path.basename(output_file)
-            return render_template("result.html", filename=filename)
+            return render_template("result.html", outputs=moved_outputs)
         else:
             return render_template("index.html", error="Something went wrong generating the report.")
 
@@ -31,8 +37,7 @@ def index():
 
 @app.route("/download/<filename>")
 def download(filename):
-    path = os.path.join("/tmp", filename)
-    return send_file(path, as_attachment=True)
+    return send_file(os.path.join("/tmp", filename), as_attachment=True)
 
 if __name__ == "__main__":
     app.run(debug=True)
