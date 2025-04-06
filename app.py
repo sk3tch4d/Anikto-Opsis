@@ -14,13 +14,13 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-    uploaded_files = request.files.getlist("pdfs")
-    existing_files = request.form.getlist("existing_pdfs")
-    existing_paths = [
-        os.path.join(UPLOAD_FOLDER, f)
-        for f in existing_files
-        if f.endswith(".pdf") and os.path.exists(os.path.join(UPLOAD_FOLDER, f))
-    ]
+        uploaded_files = request.files.getlist("pdfs")
+        existing_files = request.form.getlist("existing_pdfs")
+        existing_paths = [
+            os.path.join(UPLOAD_FOLDER, f)
+            for f in existing_files
+            if f.endswith(".pdf") and os.path.exists(os.path.join(UPLOAD_FOLDER, f))
+        ]
 
     all_files = []
     for file in uploaded_files:
