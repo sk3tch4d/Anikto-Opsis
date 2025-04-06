@@ -214,16 +214,17 @@
   </script>
 
   {% if recent_pdfs %}
-  <div class="panel" style="margin-top: 2rem; max-width: 400px; width: 100%;">
+  <div style="margin-top: 1.5rem; max-width: 400px; width: 100%;">
     <div class="panel-header" onclick="togglePanel(this)" style="background: #1e1e1e; padding: 0.6rem 1rem; font-weight: bold; cursor: pointer; color: #00c6ff; border-radius: 6px; text-align: center;">
-      Recently Uploaded PDFs
+      Use a Previously Uploaded PDF
     </div>
     <div class="panel-body" style="background: #181818; padding: 1rem; display: none; border-radius: 0 0 6px 6px; border-top: 1px solid #333;">
-      <ul style="list-style: none; padding: 0;">
-        {% for file in recent_pdfs %}
-          <li style="margin-bottom: 0.4rem; text-align: center;">{{ file }}</li>
-        {% endfor %}
-      </ul>
+      {% for display_name, original_name in recent_pdfs %}
+        <label style="display: block; margin-bottom: 0.4rem; cursor: pointer;">
+          <input type="checkbox" name="existing_pdfs" value="{{ original_name }}" />
+          {{ display_name }}
+        </label>
+      {% endfor %}
     </div>
   </div>
 {% endif %}
