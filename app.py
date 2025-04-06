@@ -32,7 +32,7 @@ def index():
                         os.rename(path, dest)
                     moved_outputs.append(os.path.basename(dest))
 
-            return render_template("result.html", outputs=moved_outputs)
+            return render_template("result.html", outputs=[os.path.basename(output_files)])
         else:
             return render_template("index.html", error="Something went wrong generating the report.")
 
