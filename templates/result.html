@@ -145,16 +145,6 @@
     <p><strong>Top Day:</strong> {{ stats.top_day.strftime('%a, %b %d') }} ({{ stats.top_day_hours }} hrs)</p>
   </div>
 </div>
-
-<div class="panel">
-  <div class="panel-header" onclick="togglePanel(this)">Rankings</div>
-  <div class="panel-body">
-    <ul>
-      {% for name, hrs in stats.rankings %}
-        <li>{{ name }} – {{ hrs }} hrs</li>
-      {% endfor %}
-    </ul>
-  </div>
 </div>
 
 <script>
@@ -181,8 +171,7 @@ document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
   <form action="{{ url_for('index') }}" method="get">
     <button type="submit" class="button">Generate Another</button>
   </form>
-</body>
-</html>
+
 <div class="panel">
   <div class="panel-header" onclick="togglePanel(this)">Weekly Rankings</div>
   <div class="panel-body">
@@ -215,189 +204,6 @@ document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
     </ul>
   </div>
 </div>
-TYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARGX Results</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #121212;
-      color: #f0f0f0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
 
-    h2 {
-      font-size: 1.8rem;
-      color: #00c6ff;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      width: 100%;
-      max-width: 400px;
-    }
-
-    li {
-      background: #1e1e1e;
-      margin-bottom: 0.5rem;
-      padding: 0.75rem;
-      border-radius: 8px;
-      text-align: center;
-      box-shadow: 0 0 6px rgba(0, 255, 255, 0.1);
-      word-wrap: break-word;
-    }
-
-    a {
-      text-decoration: none;
-      color: #00c6ff;
-      font-weight: bold;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .button {
-      margin-top: 2rem;
-      padding: 0.6rem;
-      background-color: #00c6ff;
-      color: #000;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      width: 100%;
-      max-width: 400px;
-      transition: 0.2s;
-    }
-
-    .button:hover {
-      background-color: #00a6dd;
-    }
-
-    @media (max-width: 500px) {
-      h2 { font-size: 1.5rem; }
-      .button { padding: 0.5rem; }
-      li { padding: 0.6rem; }
-    }
-  
-.badge {
-  display: inline-block;
-  padding: 0.25em 0.6em;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  margin-left: 0.3rem;
-}
-.badge-day { background-color: #ffde59; color: #000; }
-.badge-evening { background-color: #ff914d; color: #000; }
-.badge-night { background-color: #4d9aff; color: #fff; }
-
-.panel {
-  margin-top: 1.5rem;
-  width: 100%;
-  max-width: 500px;
-}
-.panel-header {
-  background: #1e1e1e;
-  padding: 0.6rem 1rem;
-  cursor: pointer;
-  font-weight: bold;
-  color: #00c6ff;
-  border-radius: 6px 6px 0 0;
-  text-align: center;
-}
-.panel-header:hover {
-  background: #222;
-}
-.panel-body {
-  background: #181818;
-  padding: 1rem;
-  border-radius: 0 0 6px 6px;
-  border-top: 1px solid #333;
-}
-
-</style>
-</head>
-<body>
-  <h2>ARGX Summary</h2>
-
-  {% set shift_icons = {'Day': '☀️', 'Evening': '🌇', 'Night': '🌙'} %}
-{% macro render_shift_section(title, shift_groups) %}
-  <div class="panel">
-    <div class="panel-header" onclick="togglePanel(this)">
-      <span>{{ title }}</span>
-    </div>
-    <div class="panel-body">
-      {% for type in ['Day', 'Evening', 'Night'] if type in shift_groups %}
-        <h4>{{ shift_icons[type] }} <span class="badge badge-{{ type|lower }}">{{ type }}</span></h4>
-        <ul>
-          {% for name, shift in shift_groups[type] %}
-            <li>{{ name }} ({{ shift }})</li>
-          {% endfor %}
-        </ul>
-      {% endfor %}
-    </div>
-  </div>
-{% endmacro %}
-
-{{ render_shift_section("Working Today", stats.working_today) }}
-{{ render_shift_section("Working Tomorrow", stats.working_tomorrow) }}
-
-<div class="panel">
-  <div class="panel-header" onclick="togglePanel(this)">Stats</div>
-  <div class="panel-body">
-    <p><strong>Total Hours This Week:</strong> {{ stats.total_hours_week }}</p>
-    <p><strong>Top Day:</strong> {{ stats.top_day.strftime('%a, %b %d') }} ({{ stats.top_day_hours }} hrs)</p>
-  </div>
-</div>
-
-<div class="panel">
-  <div class="panel-header" onclick="togglePanel(this)">Rankings</div>
-  <div class="panel-body">
-    <ul>
-      {% for name, hrs in stats.rankings %}
-        <li>{{ name }} – {{ hrs }} hrs</li>
-      {% endfor %}
-    </ul>
-  </div>
-</div>
-
-<script>
-function togglePanel(header) {
-  header.classList.toggle('open');
-  const body = header.nextElementSibling;
-  body.style.display = (body.style.display === 'none') ? 'block' : 'none';
-}
-document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
-</script>
-
-<h3>Downloads</h3>
-{% if outputs %}
-    <ul>
-      {% for file in outputs %}
-        <li><a href="{{ url_for('download', filename=file) }}">{{ file }}</a></li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No output files were generated.</p>
-  {% endif %}
-
-  
-  <form action="{{ url_for('index') }}" method="get">
-    <button type="submit" class="button">Generate Another</button>
-  </form>
 </body>
-</html>
 </html>
