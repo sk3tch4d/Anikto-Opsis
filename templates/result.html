@@ -143,6 +143,25 @@
 {{ render_shift_section("Working Today", stats.working_today) }}
 {{ render_shift_section("Working Tomorrow", stats.working_tomorrow) }}
 
+
+  <div class="panel">
+  <div class="panel-header" onclick="togglePanel(this)">Shift Swaps</div>
+  <div class="panel-body">
+    {% if stats.shift_swaps %}
+      <ul>
+        {% for swap in stats.shift_swaps %}
+          <li>
+            <strong>{{ swap.date }} – Shift {{ swap.shift }}:</strong><br>
+            {{ swap.old }} → {{ swap.new }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No swaps detected.</p>
+    {% endif %}
+  </div>
+  </div>
+  
 <div class="panel">
   <div class="panel-header" onclick="togglePanel(this)">Stats</div>
   <div class="panel-body">
