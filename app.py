@@ -34,13 +34,14 @@ def index():
         else:
             return render_template("index.html", error="Something went wrong generating the report.")
 
-        # === GET method ===
-        recent_pdfs = sorted(
-            [f for f in os.listdir(UPLOAD_FOLDER) if f.endswith(".pdf")],
-            key=lambda f: os.path.getmtime(os.path.join(UPLOAD_FOLDER, f)),
-            reverse=True)[:MAX_PDFS]
+    # === GET method ===
+    recent_pdfs = sorted(
+        [f for f in os.listdir(UPLOAD_FOLDER) if f.endswith(".pdf")],
+        key=lambda f: os.path.getmtime(os.path.join(UPLOAD_FOLDER, f)),
+        reverse=True
+    )[:MAX_PDFS]
 
-        return render_template("index.html", recent_pdfs=recent_pdfs)
+    return render_template("index.html", recent_pdfs=recent_pdfs)
 
 
 @app.route("/download/<filename>")
