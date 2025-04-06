@@ -18,11 +18,7 @@ def index():
             file.save(filename)
             temp_paths.append(filename)
 
-        generate_argx = "generate_argx" in request.form
-        generate_heatmap = "generate_heatmap" in request.form
-
-        # Updated line to unpack both outputs and stats
-        output_files, stats = generate_argx_and_heatmap(temp_paths, generate_argx, generate_heatmap)
+        output_files, stats = generate_argx_and_heatmap(pdf_paths)
 
         if output_files:
             filenames = [os.path.basename(path) for path in output_files]
