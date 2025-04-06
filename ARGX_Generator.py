@@ -85,8 +85,7 @@ def parse_pdf(pdf_path):
                         continue
     return pd.DataFrame(records)
 
-print(f"Total parsed rows: {len(df)}")
-print(f"PDF paths: {pdf_paths}")
+
 # === Excel Writer ===
 def write_argx_v2(df, output_path):
     wb = Workbook()
@@ -167,6 +166,11 @@ def write_argx_v2(df, output_path):
 def generate_argx_from_pdfs(pdf_paths, output_xlsx, log_duplicates=True):
     frames = [parse_pdf(p) for p in pdf_paths]
     df = pd.concat(frames, ignore_index=True)
+
+    print(f"Total parsed rows: {len(df)}")
+    print(f"PDF paths: {pdf_paths}")
+
+    
     if df.empty:
         print("No data found.")
         return None
