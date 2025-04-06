@@ -247,5 +247,5 @@ def group_by_shift(df, target_date):
             "rankings": df.groupby("Name")["Hours"].sum().sort_values(ascending=False).astype(int).items()
         }
 
-        return output_files, stats
-    return output_files
+        #return output_files, stats
+    return output_files, stats
