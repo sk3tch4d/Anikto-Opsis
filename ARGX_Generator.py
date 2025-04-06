@@ -204,6 +204,7 @@ def generate_heatmap_png(df, date_label):
     return path
     
 # === Compatibility alias ===
+
 def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=False):
     frames = [parse_pdf(p) for p in pdf_paths]
     df = pd.concat(frames, ignore_index=True)
@@ -213,6 +214,7 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
         return [], {}
 
     df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
+    df["WeekStart"] = df["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))
     first_date = df["DateObj"].min().strftime("%Y-%m-%d")
     output_files = []
 
@@ -224,16 +226,8 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
         output_files.append(output_path)
 
     if generate_heatmap:
-        heatmap_path = generate_heatmap_png(df, first_date)  # Assuming this exists
+        heatmap_path = generate_heatmap_png(df, first_date)
         output_files.append(heatmap_path)
-    
-    return output_files, {}
-
-def group_by_shift(df, target_date):
-    shifts = defaultdict(list)
-    for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
-        shifts[row["Type"]].append((row["Name"], row["Shift"]))
-    return dict(shifts)
 
     today = datetime.now().date()
     tomorrow = today + timedelta(days=1)
@@ -248,3 +242,9 @@ def group_by_shift(df, target_date):
     }
 
     return output_files, stats
+
+def group_by_shift(df, target_date):
+    shifts = defaultdict(list)
+    for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
+        shifts[row["Type"]].append((row["Name"], row["Shift"]))
+    return dict(shifts)
