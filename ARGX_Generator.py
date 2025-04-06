@@ -231,21 +231,21 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
 
 def group_by_shift(df, target_date):
     shifts = defaultdict(list)
-        for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
-        shifts[row["Type"]].append((row["Name"], row["Shift"]))
+    for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
+    shifts[row["Type"]].append((row["Name"], row["Shift"]))
     return dict(shifts)
 
-        today = datetime.now().date()
-        tomorrow = today + timedelta(days=1)
+    today = datetime.now().date()
+    tomorrow = today + timedelta(days=1)
 
-        stats = {
-            "working_today": group_by_shift(df, today),
-            "working_tomorrow": group_by_shift(df, tomorrow),
-            "total_hours_week": round(df[df["WeekStart"] == today - timedelta(days=today.weekday())]["Hours"].sum()),
-            "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
-            "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
-            "rankings": df.groupby("Name")["Hours"].sum().sort_values(ascending=False).astype(int).items()
-        }
+    stats = {
+    "working_today": group_by_shift(df, today),
+    "working_tomorrow": group_by_shift(df, tomorrow),
+    "total_hours_week": round(df[df["WeekStart"] == today - timedelta(days=today.weekday())]["Hours"].sum()),
+    "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
+    "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
+    "rankings": df.groupby("Name")["Hours"].sum().sort_values(ascending=False).astype(int).items()
+    }
 
-        return output_files, stats
+    return output_files, stats
     return output_files
