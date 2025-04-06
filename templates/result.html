@@ -206,9 +206,11 @@ document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
   {% endif %}
 
   
+  <div class="panel">
   <form action="{{ url_for('index') }}" method="get">
     <button type="submit" class="button full-width">Generate Another</button>
   </form>
+  </div>
 
 </body>
 </html>
