@@ -26,7 +26,7 @@ def index():
         if not generate_argx and not generate_heatmap:
             return render_template("index.html", error="Please select at least one report type.")
 
-        output_files = generate_argx_and_heatmap(temp_paths, generate_argx, generate_heatmap)
+        output_files, stats = generate_argx_and_heatmap(temp_paths, generate_argx, generate_heatmap)
 
         if output_files:
             filenames = [os.path.basename(path) for path in output_files]
