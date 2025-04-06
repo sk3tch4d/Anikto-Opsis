@@ -234,10 +234,6 @@ def group_by_shift(df, target_date):
     for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
         shifts[row["Type"]].append((row["Name"], row["Shift"]))
     return dict(shifts)
-            shifts = defaultdict(list)
-            for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
-                shifts[row["Type"]].append((row["Name"], row["Shift"]))
-            return dict(shifts)
 
         today = datetime.now().date()
         tomorrow = today + timedelta(days=1)
