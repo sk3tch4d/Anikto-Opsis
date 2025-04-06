@@ -208,11 +208,32 @@ def generate_argx_and_heatmap(pdf_paths):
     frames = [parse_pdf(p) for p in pdf_paths]
     df = pd.concat(frames, ignore_index=True)
 
+    # === Deduplicate based on filename date (safe to append) ===
+    file_date_map = {}
+    for path in pdf_paths:
+        match = re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(path))
+        if match:
+            file_date_map[os.path.basename(path)] = pd.to_datetime(match.group(1))
+
+    # Add SourceFile and FileDate to each parsed frame
+    for frame, path in zip(frames, pdf_paths):
+        fname = os.path.basename(path)
+        frame["SourceFile"] = fname
+        frame["FileDate"] = file_date_map.get(fname)
+
+    df = pd.concat(frames, ignore_index=True)
+
+    # Deduplicate: keep only the latest FileDate per person/day
+    df = df.sort_values(by=["DateObj", "Name", "FileDate"], ascending=[True, True, False])
+    df = df.drop_duplicates(subset=["Name", "DateObj"], keep="first")
+    # === End Deduplication ===
+
     if df.empty:
         print("No data found.")
         return [], {}
 
-    df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
+    # Replaced with above logic
+    #df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
     df["WeekStart"] = df["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))
     first_date = df["DateObj"].min().strftime("%Y-%m-%d")
     output_files = []
