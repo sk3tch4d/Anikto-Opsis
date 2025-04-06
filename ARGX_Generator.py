@@ -162,7 +162,7 @@ def write_argx_v2(df, output_path):
 
     wb.save(output_path)
 
-# === Driver ===
+# === Generate ARGX ===
 def generate_argx_from_pdfs(pdf_paths, output_xlsx, log_duplicates=True):
     frames = [parse_pdf(p) for p in pdf_paths]
     df = pd.concat(frames, ignore_index=True)
@@ -185,7 +185,22 @@ def generate_argx_from_pdfs(pdf_paths, output_xlsx, log_duplicates=True):
     print(f"Saved: {output_xlsx}")
     return output_xlsx
 
+# === Generate ARGM ===
+def generate_heatmap_png(df, date_label):
+    import matplotlib.pyplot as plt
+    import seaborn as sns
 
+    pivot = df.pivot_table(index="Name", columns="WeekStart", values="Hours", aggfunc="sum", fill_value=0)
+    plt.figure(figsize=(10, 6))
+    sns.heatmap(pivot, annot=True, fmt=".1f", cmap="coolwarm")
+    path = f"/tmp/ARGM_Heatmap_{date_label}.png"
+    plt.title("Weekly Hours per Person")
+    plt.tight_layout()
+    plt.savefig(path)
+    plt.close()
+    print(f"Saved heatmap: {path}")
+    return path
+    
 # === Compatibility alias ===
 def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=False):
     frames = [parse_pdf(p) for p in pdf_paths]
@@ -195,10 +210,19 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
         print("No data found.")
         return None
 
+    df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
     first_date = df["DateObj"].min().strftime("%Y-%m-%d")
-    output_filename = f"ARGX_{first_date}.xlsx"
-    output_path = os.path.join("/tmp", output_filename)
+    output_files = []
 
-    write_argx_v2(df, output_path)
-    print(f"Saved: {output_path}")
-    return [output_path]
+    if generate_argx:
+        output_filename = f"ARGX_{first_date}.xlsx"
+        output_path = os.path.join("/tmp", output_filename)
+        write_argx_v2(df, output_path)
+        print(f"Saved: {output_path}")
+        output_files.append(output_path)
+
+    if generate_heatmap:
+        heatmap_path = generate_heatmap_png(df, first_date)  # Assuming this exists
+        output_files.append(heatmap_path)
+
+    return output_files
