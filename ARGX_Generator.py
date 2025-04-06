@@ -210,7 +210,7 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
 
     if df.empty:
         print("No data found.")
-        return None
+        return [], {}
 
     df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
     first_date = df["DateObj"].min().strftime("%Y-%m-%d")
