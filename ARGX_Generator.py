@@ -193,7 +193,7 @@ def generate_heatmap_png(df, date_label):
 
     pivot = df.pivot_table(index="Name", columns="WeekStart", values="Hours", aggfunc="sum", fill_value=0)
     plt.figure(figsize=(10, 6))
-    sns.heatmap(pivot, annot=True, fmt=".1f", cmap="Blues")
+    sns.heatmap(pivot, annot=True, fmt="d", cmap="Blues")
     path = f"/tmp/ARGM_{date_label}.png"
     plt.title("Weekly Hours per Person")
     plt.tight_layout()
