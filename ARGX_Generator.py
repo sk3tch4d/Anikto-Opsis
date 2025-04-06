@@ -228,16 +228,46 @@ def generate_argx_and_heatmap(pdf_paths):
     heatmap_path = generate_heatmap_png(df, first_date)
     output_files.append(heatmap_path)
 
+    
     today = datetime.now().date()
-    tomorrow = today + timedelta(days=1)
+    week_start = today - timedelta(days=today.weekday())
+    current_period = get_pay_period(today)
+
+    weekly_rankings = (
+        df[df["WeekStart"] == week_start]
+        .groupby("Name")["Hours"].sum()
+        .sort_values(ascending=False)
+        .astype(int)
+        .items()
+    )
+
+    period_rankings = (
+        df[df["DateObj"].apply(get_pay_period) == current_period]
+        .groupby("Name")["Hours"].sum()
+        .sort_values(ascending=False)
+        .astype(int)
+        .items()
+    )
+
+    total_rankings = (
+        df.groupby("Name")["Hours"]
+        .sum()
+        .sort_values(ascending=False)
+        .astype(int)
+        .items()
+    )
 
     stats = {
         "working_today": group_by_shift(df, today),
-        "working_tomorrow": group_by_shift(df, tomorrow),
-        "total_hours_week": round(df[df["WeekStart"] == today - timedelta(days=today.weekday())]["Hours"].sum()),
+        "working_tomorrow": group_by_shift(df, today + timedelta(days=1)),
+        "total_hours_week": round(df[df["WeekStart"] == week_start]["Hours"].sum()),
         "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
         "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
-        "rankings": df.groupby("Name")["Hours"].sum().sort_values(ascending=False).astype(int).items()
+        "rankings": {
+            "weekly": list(weekly_rankings),
+            "period": list(period_rankings),
+            "total": list(total_rankings)
+        }
     }
 
     return output_files, stats
