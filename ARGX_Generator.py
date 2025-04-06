@@ -245,6 +245,19 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
 
 def group_by_shift(df, target_date):
     shifts = defaultdict(list)
-    for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
-        shifts[row["Type"]].append((row["Name"], row["Shift"]))
+    start_of_day = datetime.combine(target_date, datetime.min.time())
+    end_of_day = datetime.combine(target_date, datetime.max.time())
+
+    for _, row in df.iterrows():
+        dt_start = datetime.combine(row["DateObj"], datetime.strptime(row["Start"], "%H:%M").time())
+        dt_end = datetime.combine(row["DateObj"], datetime.strptime(row["End"], "%H:%M").time())
+
+        # Handle overnight shift (end time earlier than start)
+        if dt_end <= dt_start:
+            dt_end += timedelta(days=1)
+
+        # Check if this shift overlaps with the day
+        if dt_start <= end_of_day and dt_end >= start_of_day:
+            shifts[row["Type"]].append((row["Name"], row["Shift"]))
+
     return dict(shifts)
