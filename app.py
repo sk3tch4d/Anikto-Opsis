@@ -14,23 +14,20 @@ def index():
 
         temp_paths = []
         for file in uploaded_files:
-            # Save each uploaded PDF to /tmp with a unique name
             filename = f"/tmp/{uuid.uuid4().hex}_{file.filename}"
             file.save(filename)
             temp_paths.append(filename)
 
-        # Generate the ARGX report and optional heatmap
-        generate_argx = request.form.get("generate_argx") == "on"
-        generate_heatmap = request.form.get("generate_heatmap") == "on"
+        generate_argx = "generate_argx" in request.form
+        generate_heatmap = "generate_heatmap" in request.form
 
-        if not generate_argx and not generate_heatmap:
-            return render_template("index.html", error="Please select at least one report type.")
-
+        # Updated line to unpack both outputs and stats
         output_files, stats = generate_argx_and_heatmap(temp_paths, generate_argx, generate_heatmap)
 
         if output_files:
             filenames = [os.path.basename(path) for path in output_files]
-            return render_template("result.html", outputs=filenames)
+            # Pass both filenames and stats to result.html
+            return render_template("result.html", outputs=filenames, stats=stats)
         else:
             return render_template("index.html", error="Something went wrong generating the report.")
 
