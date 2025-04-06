@@ -20,9 +20,11 @@ def index():
 
         temp_paths = []
         for file in uploaded_files:
-            filename = f"/tmp/{uuid.uuid4().hex}_{file.filename}"
-            file.save(filename)
-            temp_paths.append(filename)
+            if file.filename.endswith(".pdf"):
+            filename = f"{uuid.uuid4().hex}_{file.filename}"
+            save_path = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(save_path)
+            temp_paths.append(save_path)
 
         # FIX: use temp_paths
         output_files, stats = generate_argx_and_heatmap(temp_paths)
@@ -33,7 +35,13 @@ def index():
         else:
             return render_template("index.html", error="Something went wrong generating the report.")
 
-    return render_template("index.html")
+        recent_pdfs = sorted(
+            [f for f in os.listdir(UPLOAD_FOLDER) if f.endswith(".pdf")],
+            key=lambda f: os.path.getmtime(os.path.join(UPLOAD_FOLDER, f)),
+            reverse=True)[:MAX_PDFS]
+
+    return render_template("index.html", recent_pdfs=recent_pdfs)
+
 
 @app.route("/download/<filename>")
 def download(filename):
