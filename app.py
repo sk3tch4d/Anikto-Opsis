@@ -30,6 +30,9 @@ def index():
         uploaded_files = request.files.getlist("pdfs")
         existing_files = request.form.getlist("existing_pdfs")
 
+        print("DEBUG existing_files:", existing_files)
+        print("DEBUG resolved paths:", existing_paths)
+
         all_files = []
 
         for file in uploaded_files:
@@ -47,6 +50,8 @@ def index():
         ]
 
         all_files.extend(existing_paths)
+
+        print("DEBUG all_files before call:", all_files)
 
         if not all_files:
             return render_template("index.html", error="No valid PDFs selected or uploaded.", recent_pdfs=recent_pdfs)
