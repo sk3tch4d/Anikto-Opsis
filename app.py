@@ -20,9 +20,15 @@ def index():
             temp_paths.append(filename)
 
         # Generate the ARGX report and optional heatmap
-        output_files = generate_argx_and_heatmap(temp_paths)
+        generate_argx = request.form.get("generate_argx") == "on"
+        generate_heatmap = request.form.get("generate_heatmap") == "on"
+
+        if not generate_argx and not generate_heatmap:
+            return render_template("index.html", error="Please select at least one report type.")
+
+        output_files = generate_argx_and_heatmap(temp_paths, generate_argx, generate_heatmap)
+
         if output_files:
-            # Just return the filenames to the template for download links
             filenames = [os.path.basename(path) for path in output_files]
             return render_template("result.html", outputs=filenames)
         else:
