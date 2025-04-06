@@ -163,27 +163,19 @@ def write_argx_v2(df, output_path):
     wb.save(output_path)
 
 # === Driver ===
-def generate_argx_from_pdfs(pdf_paths, output_xlsx, log_duplicates=True):
+def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=False):
     frames = [parse_pdf(p) for p in pdf_paths]
     df = pd.concat(frames, ignore_index=True)
 
-    print(f"Total parsed rows: {len(df)}")
-    print(f"PDF paths: {pdf_paths}")
-
-    
     if df.empty:
         print("No data found.")
         return None
 
-    if log_duplicates:
-        dups = df[df.duplicated(subset=["Name", "DateObj", "Shift"], keep="first")]
-        if not dups.empty:
-            dups.to_excel("ARGX_DroppedDuplicates_Log.xlsx", index=False)
+    first_date = df["DateObj"].min().strftime("%Y-%m-%d")  # <== This was missing
+    output_filename = f"ARGX_{first_date}.xlsx"
+    output_path = os.path.join("/tmp", output_filename)
 
     df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
-    
-    first_date = df["DateObj"].min().strftime("%Y-%m-%d")
-    output_path = os.path.join("/tmp", f"ARGX_{first_date}.xlsx")
     write_argx_v2(df, output_path)
     print(f"Saved: {output_path}")
 
