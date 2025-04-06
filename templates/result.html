@@ -194,16 +194,20 @@ function togglePanel(header) {
 document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
 </script>
 
-<h3>Downloads</h3>
-{% if outputs %}
-    <ul>
-      {% for file in outputs %}
-        <li><a href="{{ url_for('download', filename=file) }}">{{ file }}</a></li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No output files were generated.</p>
-  {% endif %}
+<div class="panel">
+  <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
+  <div class="panel-body">
+    {% if outputs %}
+      <ul>
+        {% for file in outputs %}
+          <li><a href="{{ url_for('download', filename=file) }}">{{ file }}</a></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No output files were generated.</p>
+    {% endif %}
+  </div>
+</div>
 
   
   <div class="panel">
