@@ -31,7 +31,6 @@ def index():
         existing_files = request.form.getlist("existing_pdfs")
 
         print("DEBUG existing_files:", existing_files)
-        print("DEBUG resolved paths:", existing_paths)
 
         all_files = []
 
@@ -48,6 +47,8 @@ def index():
             for f in existing_files
             if f.endswith(".pdf") and os.path.exists(os.path.join(UPLOAD_FOLDER, f))
         ]
+
+        print("DEBUG resolved paths:", existing_paths)
 
         all_files.extend(existing_paths)
 
