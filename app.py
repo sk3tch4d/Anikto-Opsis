@@ -3,6 +3,12 @@ import os
 import uuid
 from ARGX_Generator import generate_argx_and_heatmap
 
+UPLOAD_FOLDER = "/tmp/uploads"
+MAX_PDFS = 30
+
+# Ensure folder exists at startup
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
