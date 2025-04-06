@@ -28,28 +28,6 @@ def extract_shift_ids(line):
 def classify_shift(start, end, shift_ids):
     if "313" in shift_ids:
         return "Day"
-
-    s = datetime.strptime(start, "%H:%M").time()
-    e = datetime.strptime(end, "%H:%M").time()
-
-    # Check for known short day shifts (e.g., 08:00–12:00)
-    if s >= datetime.strptime("08:00", "%H:%M").time() and e <= datetime.strptime("12:00", "%H:%M").time():
-        return "Day"
-
-    # Overnight shift: 23:00 to 07:00 (spans midnight)
-    if s >= datetime.strptime("23:00", "%H:%M").time() or e <= datetime.strptime("07:00", "%H:%M").time():
-        return "Night"
-
-    if s >= datetime.strptime("07:00", "%H:%M").time() and e <= datetime.strptime("15:00", "%H:%M").time():
-        return "Day"
-
-    if s >= datetime.strptime("15:00", "%H:%M").time() and e <= datetime.strptime("23:00", "%H:%M").time():
-        return "Evening"
-
-    return "Other"
-
-    if "313" in shift_ids:
-        return "Day"
     s = datetime.strptime(start, "%H:%M").time()
     e = datetime.strptime(end, "%H:%M").time()
     if s >= datetime.strptime("07:00", "%H:%M").time() and e <= datetime.strptime("15:00", "%H:%M").time():
@@ -225,6 +203,16 @@ def generate_heatmap_png(df, date_label):
     print(f"Saved heatmap: {path}")
     return path
     
+
+from collections import defaultdict
+
+def group_by_shift(df, target_date):
+    shifts = defaultdict(list)
+    for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
+        shifts[row["Type"]].append((row["Name"], row["Shift"]))
+    return dict(shifts)
+
+
 # === Compatibility alias ===
 def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=False):
     frames = [parse_pdf(p) for p in pdf_paths]
