@@ -252,13 +252,5 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
         output_files.append(heatmap_path)
 
         # --- Add this block here ---
-        stats = {
-            "working_today": group_by_shift(df, datetime.today().date()),
-            "working_tomorrow": group_by_shift(df, (datetime.today() + timedelta(days=1)).date()),
-            "total_hours_week": int(df["Hours"].sum()),
-            "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
-            "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
-            "rankings": df.groupby("Name")["Hours"].sum().sort_values(ascending=False).apply(int).items()
-        }
 
         return output_files, stats
