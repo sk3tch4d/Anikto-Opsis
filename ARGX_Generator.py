@@ -204,8 +204,7 @@ def generate_heatmap_png(df, date_label):
     return path
     
 # === Compatibility alias ===
-
-def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=False):
+def generate_argx_and_heatmap(pdf_paths):
     frames = [parse_pdf(p) for p in pdf_paths]
     df = pd.concat(frames, ignore_index=True)
 
@@ -218,16 +217,16 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
     first_date = df["DateObj"].min().strftime("%Y-%m-%d")
     output_files = []
 
-    if generate_argx:
-        output_filename = f"ARGX_{first_date}.xlsx"
-        output_path = os.path.join("/tmp", output_filename)
-        write_argx_v2(df, output_path)
-        print(f"Saved: {output_path}")
-        output_files.append(output_path)
+    # Always generate Excel
+    output_filename = f"ARGX_{first_date}.xlsx"
+    output_path = os.path.join("/tmp", output_filename)
+    write_argx_v2(df, output_path)
+    print(f"Saved: {output_path}")
+    output_files.append(output_path)
 
-    if generate_heatmap:
-        heatmap_path = generate_heatmap_png(df, first_date)
-        output_files.append(heatmap_path)
+    # Always generate heatmap
+    heatmap_path = generate_heatmap_png(df, first_date)
+    output_files.append(heatmap_path)
 
     today = datetime.now().date()
     tomorrow = today + timedelta(days=1)
