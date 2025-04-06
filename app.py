@@ -1,4 +1,3 @@
-
 from flask import Flask, request, render_template, send_file
 import os
 import uuid
@@ -15,36 +14,27 @@ def index():
 
         temp_paths = []
         for file in uploaded_files:
+            # Save each uploaded PDF to /tmp with a unique name
             filename = f"/tmp/{uuid.uuid4().hex}_{file.filename}"
             file.save(filename)
             temp_paths.append(filename)
 
+        # Generate the ARGX report and optional heatmap
         output_files = generate_argx_and_heatmap(temp_paths)
         if output_files:
-            moved_outputs = []
-            for path in output_files:
-                if not os.path.isabs(path):
-                    # Already relative, assume placed in /tmp
-                    moved_outputs.append(path)
-                else:
-                    dest = os.path.join("/tmp", os.path.basename(path))
-                    if path != dest:
-                        os.rename(path, dest)
-                    moved_outputs.append(os.path.basename(dest))
-
-            return render_template("result.html", outputs=[os.path.basename(output_files)])
+            # Just return the filenames to the template for download links
+            filenames = [os.path.basename(path) for path in output_files]
+            return render_template("result.html", outputs=filenames)
         else:
             return render_template("index.html", error="Something went wrong generating the report.")
 
     return render_template("index.html")
 
-@app.route('/download/<filename>')
+@app.route("/download/<filename>")
 def download(filename):
     print(f"[DOWNLOAD] {filename} requested")
-    # Ensure the correct file path by joining the directory and filename
     file_path = os.path.join("/tmp", filename)
-    
-    # Check if the file exists and then send it for download
+
     if os.path.exists(file_path):
         return send_file(file_path, as_attachment=True)
     else:
