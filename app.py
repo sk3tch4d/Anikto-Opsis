@@ -21,13 +21,16 @@ def index():
 
         output_files = generate_argx_and_heatmap(temp_paths)
         if output_files:
-            # Move files to /tmp/ for Flask download if not already
             moved_outputs = []
             for path in output_files:
-                dest = os.path.join("/tmp", os.path.basename(path))
-                if not os.path.samefile(path, dest):
-                    os.rename(path, dest)
-                moved_outputs.append(os.path.basename(dest))
+                if not os.path.isabs(path):
+                    # Already relative, assume placed in /tmp
+                    moved_outputs.append(path)
+                else:
+                    dest = os.path.join("/tmp", os.path.basename(path))
+                    if path != dest:
+                        os.rename(path, dest)
+                    moved_outputs.append(os.path.basename(dest))
 
             return render_template("result.html", outputs=moved_outputs)
         else:
