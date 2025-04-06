@@ -44,10 +44,10 @@ def index():
         return render_template("index.html", error="Something went wrong generating the report.")
 
         def format_pdf_display_name(filename):
-        # Extract date from filename
-        match = re.search(r'(\d{4}-\d{2}-\d{2})', filename)
-        date_str = match.group(1) if match else "Unknown"
-        return f"ARG_{date_str}.pdf", filename  # display_name, original_filename
+            # Extract date from filename
+            match = re.search(r'(\d{4}-\d{2}-\d{2})', filename)
+            date_str = match.group(1) if match else "Unknown"
+            return f"ARG_{date_str}.pdf", filename  # display_name, original_filename
 
         recent_pdfs_raw = sorted(
             [f for f in os.listdir(UPLOAD_FOLDER) if f.endswith(".pdf")],
