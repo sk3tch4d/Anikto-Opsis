@@ -38,9 +38,17 @@ def index():
 
     return render_template("index.html")
 
-@app.route("/download/<filename>")
+@app.route('/download/<filename>')
 def download(filename):
-    return send_file(os.path.join("/tmp", filename), as_attachment=True)
+    print(f"[DOWNLOAD] {filename} requested")
+    # Ensure the correct file path by joining the directory and filename
+    file_path = os.path.join("/tmp", filename)
+    
+    # Check if the file exists and then send it for download
+    if os.path.exists(file_path):
+        return send_file(file_path, as_attachment=True)
+    else:
+        return "File not found", 404
 
 if __name__ == "__main__":
     app.run(debug=True)
