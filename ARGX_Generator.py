@@ -222,10 +222,10 @@ def generate_argx_and_heatmap(pdf_paths):
         frame["FileDate"] = file_date_map.get(fname)
 
     df = pd.concat(frames, ignore_index=True)
-
-    # Deduplicate: keep only the latest FileDate per person/day
-    df = df.sort_values(by=["DateObj", "Name", "FileDate"], ascending=[True, True, False])
-    df = df.drop_duplicates(subset=["Name", "DateObj"], keep="first")
+    # Sort so newer files come first
+    df = df.sort_values(by=["DateObj", "Shift", "FileDate"], ascending=[True, True, False])
+    # Deduplicate per shift assignment per day
+    df = df.drop_duplicates(subset=["DateObj", "Shift"], keep="first")
     # === End Deduplication ===
 
     if df.empty:
