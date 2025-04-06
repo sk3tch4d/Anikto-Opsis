@@ -1,4 +1,3 @@
-
 import os
 import re
 import pdfplumber
@@ -175,12 +174,43 @@ def generate_argx_from_pdfs(pdf_paths, output_xlsx, log_duplicates=True):
             dups.to_excel("ARGX_DroppedDuplicates_Log.xlsx", index=False)
 
     df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
+    
+    # Dynamically generate the output filename using the first date from the data
+    first_date = df['DateObj'].min().strftime('%Y-%m-%d')  # Extract the first date from the data
+    output_xlsx = f"ARGX_{first_date}.xlsx"  # Generate the filename using the extracted date
+    
     write_argx_v2(df, output_xlsx)
     print(f"Saved: {output_xlsx}")
     return output_xlsx
 
 
 # === Compatibility alias ===
-def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=False):
-    output_path = "ARGX_Output_From_V1_Compatible.xlsx"
-    return generate_argx_from_pdfs(pdf_paths, output_path)
+def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=True):
+    # Parse PDF files
+    frames = [parse_pdf(p) for p in pdf_paths]
+    df = pd.concat(frames, ignore_index=True)
+    
+    if df.empty:
+        print("No data found.")
+        return []
+
+    # Dynamically generate the output filename using the first date from the data
+    first_date = df['DateObj'].min().strftime('%Y-%m-%d')  # Extract the first date from the data
+
+    # Generate ARGX filename dynamically
+    argx_output_path = f"ARGX_{first_date}.xlsx"
+    
+    # Generate ARGM (heatmap) filename dynamically
+    argm_output_path = f"ARGM_{first_date}.png"
+
+    outputs = []
+
+    if generate_argx:
+        output_file = generate_argx_from_pdfs(pdf_paths, argx_output_path)
+        outputs.append(output_file)  # Add ARGX file path to the output list
+
+    if generate_heatmap:
+        make_heatmap(df, output_path=argm_output_path)  # Pass the filename for the heatmap
+        outputs.append(argm_output_path)  # Add ARGM file path to the output list
+    
+    return outputs  # Return the list of generated files
