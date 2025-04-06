@@ -227,8 +227,8 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
         heatmap_path = generate_heatmap_png(df, first_date)  # Assuming this exists
         output_files.append(heatmap_path)
 
-    from collections import defaultdict
-        from collections import defaultdict
+from collections import defaultdict
+from collections import defaultdict
 
 def group_by_shift(df, target_date):
     shifts = defaultdict(list)
