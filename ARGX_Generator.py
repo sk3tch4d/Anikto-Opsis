@@ -251,6 +251,4 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
         heatmap_path = generate_heatmap_png(df, first_date)
         output_files.append(heatmap_path)
 
-        # --- Add this block here ---
-
         return output_files, stats
