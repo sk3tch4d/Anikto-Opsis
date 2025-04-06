@@ -14,25 +14,34 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        uploaded_files = request.files.getlist("pdfs")
-        if not uploaded_files:
-            return render_template("index.html", error="No files uploaded.")
+    uploaded_files = request.files.getlist("pdfs")
+    existing_files = request.form.getlist("existing_pdfs")
+    existing_paths = [
+        os.path.join(UPLOAD_FOLDER, f)
+        for f in existing_files
+        if f.endswith(".pdf") and os.path.exists(os.path.join(UPLOAD_FOLDER, f))
+    ]
 
-        temp_paths = []
-        for file in uploaded_files:
-            if file.filename.endswith(".pdf"):
-                filename = f"{uuid.uuid4().hex}_{file.filename}"
-                save_path = os.path.join(UPLOAD_FOLDER, filename)
-                file.save(save_path)
-                temp_paths.append(save_path)
+    all_files = []
+    for file in uploaded_files:
+        if file.filename.endswith(".pdf"):
+            filename = f"{uuid.uuid4().hex}_{file.filename}"
+            save_path = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(save_path)
+            all_files.append(save_path)
 
-        output_files, stats = generate_argx_and_heatmap(temp_paths)
+    all_files.extend(existing_paths)
 
-        if output_files:
-            filenames = [os.path.basename(path) for path in output_files]
-            return render_template("result.html", outputs=filenames, stats=stats)
-        else:
-            return render_template("index.html", error="Something went wrong generating the report.")
+    if not all_files:
+        return render_template("index.html", error="No valid PDFs selected or uploaded.")
+
+    output_files, stats = generate_argx_and_heatmap(all_files)
+
+    if output_files:
+        filenames = [os.path.basename(path) for path in output_files]
+        return render_template("result.html", outputs=filenames, stats=stats)
+    else:
+        return render_template("index.html", error="Something went wrong generating the report.")
 
         def format_pdf_display_name(filename):
         # Extract date from filename
