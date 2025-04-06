@@ -188,5 +188,5 @@ def generate_argx_from_pdfs(pdf_paths, output_xlsx, log_duplicates=True):
 
 # === Compatibility alias ===
 def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=False):
-    output_path = "ARGX_Output_From_V1_Compatible.xlsx"
+    output_path = os.path.join("/tmp", "ARGX_Output_From_V1_Compatible.xlsx")
     return generate_argx_from_pdfs(pdf_paths, output_path)
