@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
 from openpyxl.formatting.rule import FormulaRule
+from collections import defaultdict
 
 # === Constants ===
 VALID_NAMES = {
@@ -87,7 +88,6 @@ def parse_pdf(pdf_path):
                         continue
     return pd.DataFrame(records)
 
-
 # === Excel Writer ===
 def write_argx_v2(df, output_path):
     wb = Workbook()
@@ -98,7 +98,6 @@ def write_argx_v2(df, output_path):
     df["WeekStart"] = df["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))
     names = sorted(df["Name"].unique())
 
-    # === Weekly Totals Sheet ===
     ws_totals = wb.active
     ws_totals.title = "Weekly Totals"
     ws_totals.freeze_panes = "A2"
@@ -131,7 +130,6 @@ def write_argx_v2(df, output_path):
             ws_totals.conditional_formatting.add(f"{col_letter}2:{col_letter}{len(names)+1}",
                 FormulaRule(formula=["TRUE"], fill=PatternFill(fill_type="solid", fgColor="FFD9D9D9")))
 
-    # === Employee Sheets ===
     headers = ["Date", "Shift", "Type", "Hours", "Start", "End"]
     aligns = ["left", "center", "left", "center", "center", "center"]
     widths = [13.0, 7.0, 9.0, 8.0, 8.0, 8.0]
@@ -164,33 +162,9 @@ def write_argx_v2(df, output_path):
 
     wb.save(output_path)
 
-# === Generate ARGX ===
-def generate_argx_from_pdfs(pdf_paths, output_xlsx, log_duplicates=True):
-    frames = [parse_pdf(p) for p in pdf_paths]
-    df = pd.concat(frames, ignore_index=True)
-
-    print(f"Total parsed rows: {len(df)}")
-    print(f"PDF paths: {pdf_paths}")
-
-    
-    if df.empty:
-        print("No data found.")
-        return None
-
-    if log_duplicates:
-        dups = df[df.duplicated(subset=["Name", "DateObj", "Shift"], keep="first")]
-        if not dups.empty:
-            dups.to_excel("ARGX_DroppedDuplicates_Log.xlsx", index=False)
-
-    df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
-    write_argx_v2(df, output_xlsx)
-    print(f"Saved: {output_xlsx}")
-    return output_xlsx
-
 # === Generate ARGM ===
 def generate_heatmap_png(df, date_label):
     df["WeekStart"] = df["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))
-
     pivot = df.pivot_table(index="Name", columns="WeekStart", values="Hours", aggfunc="sum", fill_value=0)
     pivot = pivot.round(0).astype(int)
     plt.figure(figsize=(10, 6))
@@ -202,18 +176,19 @@ def generate_heatmap_png(df, date_label):
     plt.close()
     print(f"Saved heatmap: {path}")
     return path
-    
-# === Compatibility alias ===
+
+# === Final Callable ===
 def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=False):
     frames = [parse_pdf(p) for p in pdf_paths]
     df = pd.concat(frames, ignore_index=True)
 
     if df.empty:
         print("No data found.")
-        return None
+        return [], {}
 
     df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
     first_date = df["DateObj"].min().strftime("%Y-%m-%d")
+    df["WeekStart"] = df["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))
     output_files = []
 
     if generate_argx:
@@ -224,26 +199,25 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
         output_files.append(output_path)
 
     if generate_heatmap:
-        heatmap_path = generate_heatmap_png(df, first_date)  # Assuming this exists
+        heatmap_path = generate_heatmap_png(df, first_date)
         output_files.append(heatmap_path)
-from collections import defaultdict
 
-def group_by_shift(df, target_date):
-    shifts = defaultdict(list)
-    for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
-        shifts[row["Type"]].append((row["Name"], row["Shift"]))
-    return dict(shifts)
+    def group_by_shift(df, target_date):
+        shifts = defaultdict(list)
+        for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
+            shifts[row["Type"]].append((row["Name"], row["Shift"]))
+        return dict(shifts)
 
-today = datetime.now().date()
-tomorrow = today + timedelta(days=1)
+    today = datetime.today().date()
+    tomorrow = today + timedelta(days=1)
 
-stats = {
-    "working_today": group_by_shift(df, today),
-    "working_tomorrow": group_by_shift(df, tomorrow),
-    "total_hours_week": round(df[df["WeekStart"] == today - timedelta(days=today.weekday())]["Hours"].sum()),
-    "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
-    "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
-    "rankings": df.groupby("Name")["Hours"].sum().sort_values(ascending=False).astype(int).items()
-}
+    stats = {
+        "working_today": group_by_shift(df, today),
+        "working_tomorrow": group_by_shift(df, tomorrow),
+        "total_hours_week": round(df[df["WeekStart"] == today - timedelta(days=today.weekday())]["Hours"].sum()),
+        "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
+        "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
+        "rankings": df.groupby("Name")["Hours"].sum().sort_values(ascending=False).astype(int).items()
+    }
 
-return output_files, stats
+    return output_files, stats
