@@ -8,24 +8,19 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        uploaded_files = request.files.getlist("pdfs")
-        if not uploaded_files:
-            return render_template("index.html", error="No files uploaded.")
+        pdf_paths = []
+        for file in request.files.getlist("files"):
+            if file.filename.endswith(".pdf"):
+                filepath = os.path.join("/tmp", file.filename)
+                file.save(filepath)
+                pdf_paths.append(filepath)
 
-        temp_paths = []
-        for file in uploaded_files:
-            filename = f"/tmp/{uuid.uuid4().hex}_{file.filename}"
-            file.save(filename)
-            temp_paths.append(filename)
+        if not pdf_paths:
+            flash("Please upload at least one PDF file.", "error")
+            return redirect(url_for("index"))
 
         output_files, stats = generate_argx_and_heatmap(pdf_paths)
-
-        if output_files:
-            filenames = [os.path.basename(path) for path in output_files]
-            # Pass both filenames and stats to result.html
-            return render_template("result.html", outputs=filenames, stats=stats)
-        else:
-            return render_template("index.html", error="Something went wrong generating the report.")
+        return render_template("result.html", outputs=output_files, stats=stats)
 
     return render_template("index.html")
 
