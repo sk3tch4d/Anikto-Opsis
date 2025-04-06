@@ -74,7 +74,43 @@
       .button { padding: 0.5rem; }
       li { padding: 0.6rem; }
     }
-  </style>
+  
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.6em;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-left: 0.3rem;
+}
+.badge-day { background-color: #ffde59; color: #000; }
+.badge-evening { background-color: #ff914d; color: #000; }
+.badge-night { background-color: #4d9aff; color: #fff; }
+
+.panel {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+}
+.panel-header {
+  background: #1e1e1e;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: #00c6ff;
+  border-radius: 6px 6px 0 0;
+}
+.panel-header:hover {
+  background: #222;
+}
+.panel-body {
+  background: #181818;
+  padding: 1rem;
+  border-radius: 0 0 6px 6px;
+  border-top: 1px solid #333;
+}
+
+</style>
 </head>
 <body>
   <h2>Files Generated</h2>
@@ -88,7 +124,8 @@
     <p>No output files were generated.</p>
   {% endif %}
 
-  {% macro render_shift_section(title, shift_groups) %}
+  {% set shift_icons = {'Day': '☀️', 'Evening': '🌇', 'Night': '🌙'} %}
+{% macro render_shift_section(title, shift_groups) %}
   <div class="panel">
     <div class="panel-header" onclick="togglePanel(this)">
       <span>{{ title }}</span>
