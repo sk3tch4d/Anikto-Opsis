@@ -187,7 +187,7 @@ def generate_argx_from_pdfs(pdf_paths, output_xlsx, log_duplicates=True):
     write_argx_v2(df, output_path)
     print(f"Saved: {output_path}")
 
-return [output_path]
+    return [output_path]
 
 
 # === Compatibility alias ===
