@@ -181,13 +181,9 @@ def generate_argx_from_pdfs(pdf_paths, output_xlsx, log_duplicates=True):
             dups.to_excel("ARGX_DroppedDuplicates_Log.xlsx", index=False)
 
     df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
-    
-    first_date = df["DateObj"].min().strftime("%Y-%m-%d")
-    output_path = os.path.join("/tmp", f"ARGX_{first_date}.xlsx")
-    write_argx_v2(df, output_path)
-    print(f"Saved: {output_path}")
-
-    return [output_path]
+    write_argx_v2(df, output_xlsx)
+    print(f"Saved: {output_xlsx}")
+    return output_xlsx
 
 
 # === Compatibility alias ===
