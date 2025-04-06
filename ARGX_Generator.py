@@ -223,8 +223,6 @@ def detect_shift_swaps(df):
 # === Generator ===
 def generate_argx_and_heatmap(pdf_paths):
     frames = [parse_pdf(p) for p in pdf_paths]
-    df = pd.concat(frames, ignore_index=True)
-    raw_df_for_swaps = df.copy()
 
     # === Deduplicate based on filename date (safe to append) ===
     file_date_map = {}
@@ -240,6 +238,7 @@ def generate_argx_and_heatmap(pdf_paths):
         frame["FileDate"] = file_date_map.get(fname)
 
     df = pd.concat(frames, ignore_index=True)
+    raw_df_for_swaps = df.copy()
     # Sort so newer files come first
     df = df.sort_values(by=["DateObj", "Shift", "FileDate"], ascending=[True, True, False])
     # Deduplicate per shift assignment per day
