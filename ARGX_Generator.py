@@ -178,6 +178,20 @@ def generate_argx_from_pdfs(pdf_paths, output_xlsx, log_duplicates=True):
         print("No data found.")
         return None
 
+    today = datetime.now().date()
+    tomorrow = today + timedelta(days=1)
+
+    stats = {
+        "working_today": group_by_shift(df, today),
+        "working_tomorrow": group_by_shift(df, tomorrow),
+        "total_hours_week": round(df[df["WeekStart"] == today - timedelta(days=today.weekday())]["Hours"].sum()),
+        "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
+        "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
+        "rankings": df.groupby("Name")["Hours"].sum().sort_values(ascending=False).astype(int).items()
+    }
+
+    return output_files, stats
+
     if log_duplicates:
         dups = df[df.duplicated(subset=["Name", "DateObj", "Shift"], keep="first")]
         if not dups.empty:
@@ -208,37 +222,27 @@ def generate_heatmap_png(df, date_label):
 def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=False):
     frames = [parse_pdf(p) for p in pdf_paths]
     df = pd.concat(frames, ignore_index=True)
-
     if df.empty:
         print("No data found.")
         return None
-
     df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
     first_date = df["DateObj"].min().strftime("%Y-%m-%d")
     output_files = []
-
     if generate_argx:
         output_filename = f"ARGX_{first_date}.xlsx"
         output_path = os.path.join("/tmp", output_filename)
         write_argx_v2(df, output_path)
         print(f"Saved: {output_path}")
         output_files.append(output_path)
-
     if generate_heatmap:
         heatmap_path = generate_heatmap_png(df, first_date)  # Assuming this exists
         output_files.append(heatmap_path)
-    
-
 def group_by_shift(df, target_date):
     shifts = defaultdict(list)
     for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
         shifts[row["Type"]].append((row["Name"], row["Shift"]))
     return dict(shifts)
-
-        today = datetime.now().date()
         tomorrow = today + timedelta(days=1)
-
-        stats = {
             "working_today": group_by_shift(df, today),
             "working_tomorrow": group_by_shift(df, tomorrow),
             "total_hours_week": round(df[df["WeekStart"] == today - timedelta(days=today.weekday())]["Hours"].sum()),
@@ -246,12 +250,7 @@ def group_by_shift(df, target_date):
             "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
             "rankings": df.groupby("Name")["Hours"].sum().sort_values(ascending=False).astype(int).items()
         }
-
-        return output_files, stats
-    today = datetime.now().date()
     tomorrow = today + timedelta(days=1)
-
-    stats = {
         "working_today": group_by_shift(df, today),
         "working_tomorrow": group_by_shift(df, tomorrow),
         "total_hours_week": round(df[df["WeekStart"] == today - timedelta(days=today.weekday())]["Hours"].sum()),
@@ -259,5 +258,3 @@ def group_by_shift(df, target_date):
         "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
         "rankings": df.groupby("Name")["Hours"].sum().sort_values(ascending=False).astype(int).items()
     }
-
-    return output_files, stats
