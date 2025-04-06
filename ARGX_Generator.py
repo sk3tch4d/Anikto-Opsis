@@ -223,7 +223,6 @@ def detect_shift_swaps(df):
 # === Generator ===
 def generate_argx_and_heatmap(pdf_paths):
     frames = [parse_pdf(p) for p in pdf_paths]
-    shift_swaps = detect_shift_swaps(df)
     df = pd.concat(frames, ignore_index=True)
 
     # === Deduplicate based on filename date (safe to append) ===
@@ -249,6 +248,8 @@ def generate_argx_and_heatmap(pdf_paths):
     if df.empty:
         print("No data found.")
         return [], {}
+
+    shift_swaps = detect_shift_swaps(df)
 
     # Replaced with above logic
     #df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
