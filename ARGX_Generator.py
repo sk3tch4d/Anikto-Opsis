@@ -210,7 +210,7 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
 
     if df.empty:
         print("No data found.")
-        return [], {}
+        return None
 
     df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
     first_date = df["DateObj"].min().strftime("%Y-%m-%d")
@@ -226,29 +226,24 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
     if generate_heatmap:
         heatmap_path = generate_heatmap_png(df, first_date)  # Assuming this exists
         output_files.append(heatmap_path)
+from collections import defaultdict
 
-    from collections import defaultdict
+def group_by_shift(df, target_date):
+    shifts = defaultdict(list)
+    for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
+        shifts[row["Type"]].append((row["Name"], row["Shift"]))
+    return dict(shifts)
 
-    def group_by_shift(df, target_date):
-        shifts = defaultdict(list)
-        for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
-            shifts[row["Type"]].append((row["Name"], row["Shift"]))
-        return dict(shifts)
+today = datetime.now().date()
+tomorrow = today + timedelta(days=1)
 
-        today = datetime.now().date()
-        tomorrow = today + timedelta(days=1)
+stats = {
+    "working_today": group_by_shift(df, today),
+    "working_tomorrow": group_by_shift(df, tomorrow),
+    "total_hours_week": round(df[df["WeekStart"] == today - timedelta(days=today.weekday())]["Hours"].sum()),
+    "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
+    "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
+    "rankings": df.groupby("Name")["Hours"].sum().sort_values(ascending=False).astype(int).items()
+}
 
-        stats = {
-        "working_today": group_by_shift(df, today),
-        "working_tomorrow": group_by_shift(df, tomorrow),
-        "total_hours_week": round(df[df["WeekStart"] == today - timedelta(days=today.weekday())]["Hours"].sum()),
-        "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
-        "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
-        "rankings": df.groupby("Name")["Hours"].sum().sort_values(ascending=False).astype(int).items()
-        }
-        
-        if generate_heatmap:
-            heatmap_path = generate_heatmap_png(df, first_date)
-        output_files.append(heatmap_path)
-
-        return output_files, stats
+return output_files, stats
