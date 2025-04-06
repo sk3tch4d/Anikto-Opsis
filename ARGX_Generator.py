@@ -203,16 +203,6 @@ def generate_heatmap_png(df, date_label):
     print(f"Saved heatmap: {path}")
     return path
     
-
-from collections import defaultdict
-
-def group_by_shift(df, target_date):
-    shifts = defaultdict(list)
-    for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
-        shifts[row["Type"]].append((row["Name"], row["Shift"]))
-    return dict(shifts)
-
-
 # === Compatibility alias ===
 def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=False):
     frames = [parse_pdf(p) for p in pdf_paths]
@@ -238,11 +228,11 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
         output_files.append(heatmap_path)
 
     from collections import defaultdict
-        def group_by_shift(df, target_date):
-            shifts = defaultdict(list)
-            for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
-                shifts[row["Type"]].append((row["Name"], row["Shift"]))
-            return dict(shifts)
+def group_by_shift(df, target_date):
+        shifts = defaultdict(list)
+        for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
+            shifts[row["Type"]].append((row["Name"], row["Shift"]))
+        return dict(shifts)
 
         today = datetime.now().date()
         tomorrow = today + timedelta(days=1)
