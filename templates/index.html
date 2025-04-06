@@ -221,7 +221,7 @@
     <div class="panel-body" style="background: #181818; padding: 1rem; display: none; border-radius: 0 0 6px 6px; border-top: 1px solid #333;">
       {% for display_name, original_name in recent_pdfs %}
         <label style="display: block; margin-bottom: 0.4rem; cursor: pointer;">
-          <input type="checkbox" name="existing_pdfs" value="{{ original_name }}" />
+          <input type="checkbox" name="existing_pdfs" value="{{ display_name }}" />
           {{ display_name }}
         </label>
       {% endfor %}
