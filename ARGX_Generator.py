@@ -3,6 +3,8 @@ import os
 import re
 import pdfplumber
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 from datetime import datetime, timedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
@@ -187,8 +189,7 @@ def generate_argx_from_pdfs(pdf_paths, output_xlsx, log_duplicates=True):
 
 # === Generate ARGM ===
 def generate_heatmap_png(df, date_label):
-    import matplotlib.pyplot as plt
-    import seaborn as sns
+    df["WeekStart"] = df["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))
 
     pivot = df.pivot_table(index="Name", columns="WeekStart", values="Hours", aggfunc="sum", fill_value=0)
     plt.figure(figsize=(10, 6))
