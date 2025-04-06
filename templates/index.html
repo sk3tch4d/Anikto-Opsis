@@ -23,21 +23,36 @@
     h3 {
       color: #aaa;
       margin-bottom: 1rem;
+      text-align: center;
     }
 
     .drop-zone {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
       border: 2px dashed #00c6ff;
-      padding: 2rem;
+      padding: 1.5rem;
       border-radius: 10px;
       text-align: center;
       cursor: pointer;
-      transition: background 0.2s;
       max-width: 400px;
       width: 100%;
+      min-height: 120px;
+      box-sizing: border-box;
+      transition: background 0.2s;
     }
 
     .drop-zone:hover {
       background-color: rgba(0, 198, 255, 0.05);
+    }
+
+    .drop-text {
+      font-size: 1rem;
+      padding: 0.5rem;
+      color: #f0f0f0;
+      max-width: 90%;
+      word-wrap: break-word;
     }
 
     input[type="file"] {
@@ -103,6 +118,16 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+
+    @media (max-width: 480px) {
+      .drop-zone {
+        padding: 1rem;
+      }
+
+      .drop-text {
+        font-size: 0.95rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -110,9 +135,9 @@
   <h3>Upload ARG PDFs to Generate Results</h3>
 
   <div id="upload-form">
-    <form method="POST" enctype="multipart/form-data" id="upload-form-el">
+    <form method="POST" enctype="multipart/form-data">
       <label for="file-input" class="drop-zone" id="drop-zone">
-        Drop PDFs here or click to upload
+        <span class="drop-text">Drop PDFs here or tap to upload</span>
         <input type="file" id="file-input" name="pdfs" multiple required />
       </label>
       <ul id="file-list"></ul>
@@ -137,7 +162,7 @@
 
     const quotes = [
       "Crunching shifts like pros...",
-      "Summoning the ARG Gods...",
+      "Summoning the ARG gods...",
       "Shifts are aligning...",
       "Almost there — keep the faith!",
       "ARGX is forging your files..."
@@ -158,7 +183,6 @@
       });
     });
 
-    // Optional: drag & drop support
     dropZone.addEventListener("dragover", e => {
       e.preventDefault();
       dropZone.style.backgroundColor = "rgba(0,198,255,0.1)";
@@ -172,7 +196,8 @@
     dropZone.addEventListener("drop", e => {
       e.preventDefault();
       fileInput.files = e.dataTransfer.files;
-      fileInput.dispatchEvent(new Event("change")); // trigger file list display
+      fileInput.dispatchEvent(new Event("change"));
+      dropZone.style.backgroundColor = "";
     });
   </script>
 </body>
