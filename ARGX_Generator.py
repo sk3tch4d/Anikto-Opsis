@@ -232,7 +232,7 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
     def group_by_shift(df, target_date):
         shifts = defaultdict(list)
         for _, row in df[df["DateObj"] == target_date].sort_values("Name").iterrows():
-        shifts[row["Type"]].append((row["Name"], row["Shift"]))
+            shifts[row["Type"]].append((row["Name"], row["Shift"]))
         return dict(shifts)
 
         today = datetime.now().date()
