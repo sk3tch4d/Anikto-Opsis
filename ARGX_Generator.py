@@ -171,11 +171,13 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
         print("No data found.")
         return None
 
-    first_date = df["DateObj"].min().strftime("%Y-%m-%d")  # <== This was missing
+    df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
+    
+    # === THIS MUST COME AFTER df is defined ===
+    first_date = df["DateObj"].min().strftime("%Y-%m-%d")
     output_filename = f"ARGX_{first_date}.xlsx"
     output_path = os.path.join("/tmp", output_filename)
 
-    df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
     write_argx_v2(df, output_path)
     print(f"Saved: {output_path}")
 
