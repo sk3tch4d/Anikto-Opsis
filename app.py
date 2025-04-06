@@ -34,14 +34,20 @@ def index():
         else:
             return render_template("index.html", error="Something went wrong generating the report.")
 
-    # === GET method ===
-    recent_pdfs = sorted(
-        [f for f in os.listdir(UPLOAD_FOLDER) if f.endswith(".pdf")],
-        key=lambda f: os.path.getmtime(os.path.join(UPLOAD_FOLDER, f)),
-        reverse=True
-    )[:MAX_PDFS]
+        def format_pdf_display_name(filename):
+        # Extract date from filename
+        match = re.search(r'(\d{4}-\d{2}-\d{2})', filename)
+        date_str = match.group(1) if match else "Unknown"
+        return f"ARG_{date_str}.pdf", filename  # display_name, original_filename
 
-    return render_template("index.html", recent_pdfs=recent_pdfs)
+        recent_pdfs_raw = sorted(
+            [f for f in os.listdir(UPLOAD_FOLDER) if f.endswith(".pdf")],
+            key=lambda f: os.path.getmtime(os.path.join(UPLOAD_FOLDER, f)),
+            reverse=True)[:MAX_PDFS]
+
+        recent_pdfs = [format_pdf_display_name(f) for f in recent_pdfs_raw]
+
+        return render_template("index.html", recent_pdfs=recent_pdfs)
 
 
 @app.route("/download/<filename>")
