@@ -87,6 +87,57 @@
   {% else %}
     <p>No output files were generated.</p>
   {% endif %}
+
+  {% macro render_shift_section(title, shift_groups) %}
+  <div class="panel">
+    <div class="panel-header" onclick="togglePanel(this)">
+      <span>{{ title }}</span>
+    </div>
+    <div class="panel-body">
+      {% for type in ['Day', 'Evening', 'Night'] if type in shift_groups %}
+        <h4>{{ shift_icons[type] }} <span class="badge badge-{{ type|lower }}">{{ type }}</span></h4>
+        <ul>
+          {% for name, shift in shift_groups[type] %}
+            <li>{{ name }} ({{ shift }})</li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    </div>
+  </div>
+{% endmacro %}
+
+{{ render_shift_section("Working Today", stats.working_today) }}
+{{ render_shift_section("Working Tomorrow", stats.working_tomorrow) }}
+
+<div class="panel">
+  <div class="panel-header" onclick="togglePanel(this)">[ Stats ]</div>
+  <div class="panel-body">
+    <p><strong>Total Hours This Week:</strong> {{ stats.total_hours_week }}</p>
+    <p><strong>Top Day:</strong> {{ stats.top_day.strftime('%a, %b %d') }} ({{ stats.top_day_hours }} hrs)</p>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-header" onclick="togglePanel(this)">[ Rankings ]</div>
+  <div class="panel-body">
+    <ul>
+      {% for name, hrs in stats.rankings %}
+        <li>{{ name }} – {{ hrs }} hrs</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<script>
+function togglePanel(header) {
+  header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  body.style.display = (body.style.display === 'none') ? 'block' : 'none';
+}
+document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
+</script>
+
+  
   <form action="{{ url_for('index') }}" method="get">
     <button type="submit" class="button">Generate Another</button>
   </form>
