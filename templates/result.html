@@ -147,31 +147,6 @@
 </div>
 </div>
 
-<script>
-function togglePanel(header) {
-  header.classList.toggle('open');
-  const body = header.nextElementSibling;
-  body.style.display = (body.style.display === 'none') ? 'block' : 'none';
-}
-document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
-</script>
-
-<h3>Downloads</h3>
-{% if outputs %}
-    <ul>
-      {% for file in outputs %}
-        <li><a href="{{ url_for('download', filename=file) }}">{{ file }}</a></li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No output files were generated.</p>
-  {% endif %}
-
-  
-  <form action="{{ url_for('index') }}" method="get">
-    <button type="submit" class="button">Generate Another</button>
-  </form>
-
 <div class="panel">
   <div class="panel-header" onclick="togglePanel(this)">Weekly Rankings</div>
   <div class="panel-body">
@@ -204,6 +179,31 @@ document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
     </ul>
   </div>
 </div>
+
+<script>
+function togglePanel(header) {
+  header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  body.style.display = (body.style.display === 'none') ? 'block' : 'none';
+}
+document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
+</script>
+
+<h3>Downloads</h3>
+{% if outputs %}
+    <ul>
+      {% for file in outputs %}
+        <li><a href="{{ url_for('download', filename=file) }}">{{ file }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No output files were generated.</p>
+  {% endif %}
+
+  
+  <form action="{{ url_for('index') }}" method="get">
+    <button type="submit" class="button">Generate Another</button>
+  </form>
 
 </body>
 </html>
