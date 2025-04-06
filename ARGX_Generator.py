@@ -5,6 +5,7 @@ import pdfplumber
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from collections import defaultdict
 from datetime import datetime, timedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
@@ -226,9 +227,7 @@ def generate_argx_and_heatmap(pdf_paths, generate_argx=True, generate_heatmap=Fa
     if generate_heatmap:
         heatmap_path = generate_heatmap_png(df, first_date)  # Assuming this exists
         output_files.append(heatmap_path)
-
-    from collections import defaultdict
-        from collections import defaultdict
+    
 
 def group_by_shift(df, target_date):
     shifts = defaultdict(list)
