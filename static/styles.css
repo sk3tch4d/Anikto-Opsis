@@ -76,7 +76,7 @@ h3 {
   /* no glow here */
 }
 .panel.open .panel-header {
-  color: #00c6ff; /* A softer blue than the neon */
+  color: #00c6ff !important;
   background: #2b2b2b;
   border-radius: 6px 6px 0 0;
 }
