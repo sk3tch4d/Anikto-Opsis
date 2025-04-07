@@ -1,4 +1,3 @@
-
 import re
 from datetime import datetime
 from collections import defaultdict
@@ -34,7 +33,7 @@ def get_day_emoji(start):
     except:
         return "❓"
 
-def parse_exceptions_section(text, date, records_df=None):
+def parse_exceptions_section(text, date_obj, records_df=None):
     swaps = []
     lines = text.splitlines()
     off_blocks = []
@@ -65,38 +64,55 @@ def parse_exceptions_section(text, date, records_df=None):
                     "end": end
                 })
 
-    for i in range(min(len(off_blocks), len(on_blocks))):
-        off = off_blocks[i]
-        on = on_blocks[i]
+    max_len = max(len(off_blocks), len(on_blocks))
+    for i in range(max_len):
+        off = off_blocks[i] if i < len(off_blocks) else None
+        on = on_blocks[i] if i < len(on_blocks) else None
 
-        emoji, reason_label = clean_reason(off["reason"])
+        if not on:
+            continue
+
         time_range = f"{on['start']} - {on['end']}"
-        shift_id = "?"  # Shift ID unknown from exception section alone
+        shift_id = "?"
         shift_emoji = get_day_emoji(on["start"])
 
-
-        shift_id = "?"
         if records_df is not None:
-            on_name = on["name"]
-            start = on["start"]
-            end = on["end"]
-            match = records_df[
-                (records_df["Name"] == on_name) &
-                (records_df["DateObj"] == date) &
-                (records_df["Start"] == start) &
-                (records_df["End"] == end)
-            ]
-            if not match.empty:
-                shift_id = match.iloc[0]["Shift"]
-        
-        swaps.append({
-            "date": date.strftime("%a, %b %d"),
-            "shift": shift_id,
-            "emoji": shift_emoji,
-            "hours": time_range,
-            "off": f"{emoji} {flip_name(off['name'])}",
-            "on": f"🟢 {flip_name(on['name'])}",
-            "reason": reason_label
-        })
+            try:
+                match = records_df[
+                    (records_df["Name"].str.lower() == on["name"].lower()) &
+                    (records_df["DateObj"] == date_obj) &
+                    (records_df["Start"] == on["start"]) &
+                    (records_df["End"] == on["end"])
+                ]
+                if not match.empty:
+                    shift_id = match.iloc[0]["Shift"]
+            except Exception:
+                pass
+
+        if off:
+            if off["name"].lower() == on["name"].lower():
+                continue  # Skip self-coverage
+
+            emoji, reason_label = clean_reason(off["reason"])
+            swaps.append({
+                "date": date_obj.strftime("%a, %b %d"),
+                "shift": shift_id,
+                "emoji": shift_emoji,
+                "hours": time_range,
+                "off": f"{emoji} {flip_name(off['name'])}",
+                "on": f"🟢 {flip_name(on['name'])}",
+                "reason": reason_label
+            })
+        else:
+            # Vacant shift being covered
+            swaps.append({
+                "date": date_obj.strftime("%a, %b %d"),
+                "shift": shift_id,
+                "emoji": shift_emoji,
+                "hours": time_range,
+                "off": "⚪ Vacant Shift",
+                "on": f"🟢 {flip_name(on['name'])}",
+                "reason": ""
+            })
 
     return swaps
