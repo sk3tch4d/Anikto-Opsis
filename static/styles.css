@@ -26,6 +26,7 @@ h3 {
 
 /* Buttons */
 .button {
+  font-family: inherit;
   margin-top: 1rem;
   padding: 0.6rem 1.2rem;
   background-color: #00c6ff;
@@ -42,7 +43,7 @@ h3 {
 }
 .button.full-width {
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
 }
 
 /* Panels */
