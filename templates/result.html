@@ -118,19 +118,28 @@
 
   <script>
   function togglePanel(header) {
-    const panel = header.closest('.panel'); // This is the key fix
+    const panel = header.closest('.panel');
     const body = header.nextElementSibling;
 
+    // Close all other panels first
+    document.querySelectorAll('.panel').forEach(p => {
+      if (p !== panel) {
+        p.classList.remove('open');
+        const otherBody = p.querySelector('.panel-body');
+        if (otherBody) otherBody.classList.remove('open');
+      }
+    });
+
+    // Then toggle this panel open or closed
+    panel.classList.toggle('open');
     if (body) {
       body.classList.toggle('open');
     }
-
-    panel.classList.toggle('open'); // Now .panel gets "open", not the header!
   }
 
-  // Optional: start with all panels closed
-  document.querySelectorAll('.panel-body').forEach(e => {
-    e.classList.remove('open');
+  // Start all panels closed (optional)
+  document.querySelectorAll('.panel-body').forEach(body => {
+    body.classList.remove('open');
   });
   </script>
   
