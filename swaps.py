@@ -77,6 +77,9 @@ def parse_exceptions_section(text, date, records_df=None):
 
         shift_id = "?"
         if records_df is not None:
+            on_name = on["name"]
+            start = on["start"]
+            end = on["end"]
             match = records_df[
                 (records_df["Name"] == on_name) &
                 (records_df["DateObj"] == date) &
