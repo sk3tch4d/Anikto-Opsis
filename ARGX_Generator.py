@@ -61,10 +61,6 @@ def parse_pdf(pdf_path):
                         pass
                     break  # Stop after finding the date
 
-            # Parse exceptions section if it exists
-            if "Exceptions Day Unit:" in text and current_date:
-                swaps += parse_exceptions_section(text, current_date, pd.DataFrame(records))
-
             for line in lines:
                 if any(x in line for x in ["Off:", "On Call", "Relief"]):
                     continue
@@ -97,8 +93,11 @@ def parse_pdf(pdf_path):
                     except:
                         continue
 
-    return pd.DataFrame(records), swaps
+            # Now that records are built, we can pass them to the swap logic
+            if current_date and "Exceptions Day Unit:" in text:
+                swaps += parse_exceptions_section(text, current_date, pd.DataFrame(records))
 
+    return pd.DataFrame(records), swaps
 
 # === Excel Writer ===
 def write_argx_v2(df, output_path):
