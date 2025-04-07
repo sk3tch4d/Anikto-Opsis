@@ -51,25 +51,14 @@ h3 {
   transform: translateY(-2px);
 }
 .button.full-width {
-  display: block;
   width: 100%;
   max-width: 500px;
-  background-color: #40444b;
-  border: 1px solid #2f3136;
-  color: #fff;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  text-align: center;
-  transition: all 0.2s ease-in-out;
   box-sizing: border-box;
-}
-.button.full-width:hover {
-  background-color: #50545b;
 }
 
 /* Panels */
 .panel {
-  margin-top: 1.2rem; /* slightly reduced for tighter look */
+  margin-top: 1rem;
   width: 100%;
   max-width: 500px;
 }
@@ -84,7 +73,7 @@ h3 {
   transition: background 0.2s ease, color 0.2s ease;
 }
 .panel.open > .panel-header {
-  background-color: #1e2124; /* darker when open */
+  background-color: #1e1f22;
   color: #ffffff;
   border-radius: 8px 8px 0 0;
 }
@@ -95,7 +84,7 @@ h3 {
   outline: none;
 }
 .panel-body {
-  background-color: #1a1c1f;
+  background-color: #2f3136;
   max-height: 0;
   overflow: hidden;
   padding: 0;
@@ -124,7 +113,7 @@ ul {
 }
 li {
   background-color: #2f3136;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   padding: 0.75rem;
   border-radius: 8px;
   border: 1px solid #202225;
@@ -142,6 +131,25 @@ ul.downloads {
 ul.downloads li {
   margin-bottom: 0.5rem;
   padding: 0;
+}
+
+/* Fix button display inside list */
+ul.downloads li > .button {
+  all: unset;
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #40444b;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #2f3136;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease;
+}
+ul.downloads li > .button:hover {
+  background-color: #50545b;
 }
 
 /* Links */
