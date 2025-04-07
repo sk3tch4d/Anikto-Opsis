@@ -147,6 +147,9 @@
   <div class="panel">
   <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage</div>
   <div class="panel-body">
+     <div style="font-size: 0.85rem; color: #aaa;">
+     🔵 Sick, 🟠 Vacation, 🟣 Adjustment, ⚪ Vacant, 🟢 Coverage
+     </div>
     {% if stats.swaps %}
       <ul>
         {% for swap in stats.swaps %}
