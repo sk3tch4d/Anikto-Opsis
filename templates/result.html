@@ -102,11 +102,11 @@
       <ul>
         {% for file in outputs %}
           {% if "ARGX" in file %}
-          <li><a href="{{ url_for('download', filename=file) }}">Spreadsheet</a></li>
+          <li><a href="{{ url_for('download', filename=file) }}" class="button full-width">Spreadsheet</a></li>
           {% elif "ARGM" in file %}
-            <li><a href="{{ url_for('download', filename=file) }}">Heatmap</a></li>
+            <li><a href="{{ url_for('download', filename=file) }}" class="button full-width">Heatmap</a></li>
           {% else %}
-            <li><a href="{{ url_for('download', filename=file) }}">{{ file }}</a></li>
+            <li><a href="{{ url_for('download', filename=file) }}" class="button full-width">{{ file }}</a></li>
           {% endif %}
         {% endfor %}
       </ul>
@@ -125,7 +125,7 @@
     if (body) {
       body.classList.toggle('open');
     }
-    panel.classList.toggle('open'); // <== This is new and required
+    panel.classList.toggle('open');
   }
 
   // Optional: start with all panels closed
