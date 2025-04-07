@@ -90,7 +90,7 @@ def parse_exceptions_section(text, date, records_df=None):
                 shift_id = match.iloc[0]["Shift"]
         
         swaps.append({
-            "date": date_obj.strftime("%a, %b %d"),
+            "date": date.strftime("%a, %b %d"),
             "shift": shift_id,
             "emoji": shift_emoji,
             "hours": time_range,
