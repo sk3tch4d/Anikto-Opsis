@@ -97,8 +97,9 @@ h3 {
 }
 .panel-body.open {
   border-top: 1px solid #333;
-  max-height: 1000px;
+  max-height: 2000px;
   padding: 1rem;
+  border-radius: 0 0 6px 6px;
 }
 .panel.open {
   transition: box-shadow 0.3s ease;
