@@ -77,7 +77,8 @@ def parse_exceptions_section(text, date_obj):
         swaps.append({
             "date": date_obj.strftime("%a, %b %d"),
             "shift": shift_id,
-            "time": f"{shift_emoji} {time_range}",
+            "emoji": shift_emoji,
+            "hours": time_range,
             "off": f"{emoji} {flip_name(off['name'])}",
             "on": f"🟢 {flip_name(on['name'])}",
             "reason": reason_label
