@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Side, Font, PatternFill
 from openpyxl.formatting.rule import FormulaRule
+from swaps import parse_exceptions_section
 
 # === Constants ===
 VALID_NAMES = {
@@ -43,18 +44,28 @@ def classify_shift(start, end, shift_ids):
 # === PDF Parser ===
 def parse_pdf(pdf_path):
     records = []
+    swaps = []
+    current_date = None
+
     with pdfplumber.open(pdf_path) as pdf:
         for page in pdf.pages:
             text = page.extract_text()
             lines = text.splitlines() if text else []
-            current_date = None
+
+            # Find the date from "Inventory Services"
             for line in lines:
                 if "Inventory Services" in line:
                     try:
                         current_date = datetime.strptime(line.split()[-1], "%d/%b/%Y").date()
                     except:
-                        continue
-                    continue
+                        pass
+                    break  # Stop after finding the date
+
+            # Parse exceptions section if it exists
+            if "Exceptions Day Unit:" in text and current_date:
+                swaps += parse_exceptions_section(text, current_date)
+
+            for line in lines:
                 if any(x in line for x in ["Off:", "On Call", "Relief"]):
                     continue
                 tokens = line.strip().split()
@@ -85,7 +96,8 @@ def parse_pdf(pdf_path):
                         })
                     except:
                         continue
-    return pd.DataFrame(records)
+
+    return pd.DataFrame(records), swaps
 
 
 # === Excel Writer ===
