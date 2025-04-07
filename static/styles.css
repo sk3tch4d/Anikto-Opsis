@@ -10,7 +10,7 @@ body {
   padding: 2rem;
 }
 
-/* Headers */
+/* Headings */
 h1, h2 {
   color: #00c6ff;
   margin-bottom: 0.5rem;
@@ -31,9 +31,6 @@ h3 {
   font-size: 1rem;
   font-weight: bold;
   line-height: 1.2;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
   margin-top: 1rem;
   padding: 0.6rem 1.2rem;
   background: linear-gradient(145deg, #00c6ff, #00a6dd);
@@ -43,7 +40,7 @@ h3 {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 198, 255, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 198, 255, 0.15);
 }
 .button:hover {
   background-color: #00a6dd;
@@ -52,6 +49,9 @@ h3 {
 .button.full-width {
   width: 100%;
   max-width: 500px;
+}
+.button:focus {
+  outline: none;
 }
 
 /* Panels */
@@ -68,20 +68,23 @@ h3 {
   color: #00c6ff;
   border-radius: 6px 6px 0 0;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 198, 255, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 198, 255, 0.08);
   transition: all 0.2s ease-in-out;
 }
 .panel-header:hover {
   background: #2b2b2b;
   box-shadow: inset 0 0 0 1px #00c6ff;
 }
+.panel-header:focus {
+  outline: none;
+}
 .panel-body {
   background: #181818;
-  padding: 1rem;
   border-radius: 0 0 6px 6px;
   border-top: 1px solid #333;
   max-height: 0;
   overflow: hidden;
+  padding: 0;
   transition: max-height 0.3s ease, padding 0.3s ease;
 }
 .panel-body.open {
@@ -89,12 +92,7 @@ h3 {
   padding: 1rem;
 }
 
-/* Universal transition for subtle polish */
-* {
-  transition: all 0.2s ease-in-out;
-}
-
-/* List Styles */
+/* Lists */
 ul {
   list-style: none;
   padding: 0;
@@ -153,7 +151,7 @@ input[type="file"] {
   display: none;
 }
 
-/* Badge styles */
+/* Badges */
 .badge {
   display: inline-block;
   padding: 0.25em 0.6em;
@@ -172,7 +170,7 @@ input[type="file"] {
   margin-top: 1rem;
 }
 
-/* Loading Spinner */
+/* Spinner */
 #loading {
   display: none;
   text-align: center;
@@ -191,6 +189,11 @@ input[type="file"] {
 }
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* Transitions */
+* {
+  transition: all 0.2s ease-in-out;
 }
 
 /* Responsive */
