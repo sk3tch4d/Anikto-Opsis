@@ -215,23 +215,6 @@ def generate_heatmap_png(df, date_label):
     print(f"Saved heatmap: {path}")
     return path
 
-def detect_shift_swaps(df):
-    swaps = []
-    grouped = df.sort_values("FileDate").groupby(["DateObj", "Shift"])
-
-    for (date, shift), group in grouped:
-        unique_names = group["Name"].unique()
-        if len(unique_names) > 1:
-            # Old = name in older file, New = name in newer file
-            old, new = unique_names[0], unique_names[-1]
-            swaps.append({
-                "date": date.strftime("%a, %b %d"),
-                "shift": shift,
-                "old": old,
-                "new": new
-            })
-    return swaps
-
 # === Generator ===
 def generate_argx_and_heatmap(pdf_paths):
     frames_with_swaps = [parse_pdf(p) for p in pdf_paths]
@@ -262,8 +245,6 @@ def generate_argx_and_heatmap(pdf_paths):
     if df.empty:
         print("No data found.")
         return [], {}
-
-    shift_swaps = detect_shift_swaps(raw_df_for_swaps)
 
     # Replaced with above logic
     #df = df.drop_duplicates(subset=["Name", "DateObj", "Shift"])
@@ -314,7 +295,6 @@ def generate_argx_and_heatmap(pdf_paths):
     stats = {
         "working_today": group_by_shift(df, today),
         "working_tomorrow": group_by_shift(df, today + timedelta(days=1)),
-        "shift_swaps": shift_swaps,
         "total_hours_week": round(df[df["WeekStart"] == week_start]["Hours"].sum()),
         "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
         "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
