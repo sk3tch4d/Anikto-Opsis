@@ -26,7 +26,7 @@ h3 {
 
 /* Buttons */
 .button {
-  /*margin-top: 1rem;*/
+  margin-top: 1rem;
   padding: 0.6rem 1.2rem;
   background-color: #00c6ff;
   color: #000;
@@ -35,6 +35,7 @@ h3 {
   border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
+  text-align: center;
 }
 .button:hover {
   background-color: #00a6dd;
