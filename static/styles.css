@@ -91,13 +91,17 @@ h3 {
   overflow: hidden;
   padding: 0;
   transition: max-height 0.3s ease, padding 0.3s ease;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 .panel-body.open {
   max-height: 1000px;
   padding: 1rem;
 }
 .panel.open {
-  box-shadow: 0 0 0 2px rgba(0, 198, 255, 0.25);
   transition: box-shadow 0.3s ease;
 }
 
