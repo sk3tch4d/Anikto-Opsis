@@ -1,3 +1,4 @@
+
 import re
 from datetime import datetime
 from collections import defaultdict
@@ -39,49 +40,103 @@ def parse_exceptions_section(text, date, records_df=None):
     lines = text.splitlines()
     off_blocks = []
     on_blocks = []
+    relief_lines = []
 
-    for line in lines:
+    for i, line in enumerate(lines):
         if line.startswith("Off:"):
-            match = re.search(r"Off:\s+([^\d]+?)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", line)
-            if match:
+            # Special handling for lines with embedded Relief info
+            if "Relief:" in line:
+                off_part, relief_part = line.split("Relief:", 1)
+                name_match = re.search(r"Off:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", off_part)
+                if name_match:
+                    name = name_match.group(1).strip()
+                    start, end = name_match.group(2), name_match.group(3)
+                    reason = name_match.group(4).strip()
+                    off_blocks.append({
+                        "name": name,
+                        "start": start,
+                        "end": end,
+                        "reason": reason
+                    })
+                    # Try to extract Relief person as On block
+                    on_match = re.search(r"([A-Za-z\-']+),\s+([A-Za-z\-']+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", relief_part)
+                    if on_match:
+                        lname, fname = on_match.group(1), on_match.group(2)
+                        on_name = f"{lname}, {fname}"
+                        on_start, on_end = on_match.group(3), on_match.group(4)
+                        on_blocks.append({
+                            "name": on_name,
+                            "start": on_start,
+                            "end": on_end
+                        })
+                continue
+
+        if line.startswith("Off:"):
+            name_match = re.search(r"Off:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", line)
+            if name_match:
+                name = name_match.group(1).strip()
+                start, end = name_match.group(2), name_match.group(3)
+                reason = name_match.group(4).strip()
                 off_blocks.append({
-                    "name": match.group(1).strip(),
-                    "start": match.group(2),
-                    "end": match.group(3),
-                    "reason": match.group(4).strip()
+                    "name": name,
+                    "start": start,
+                    "end": end,
+                    "reason": reason
                 })
-        elif "Covering" in line and "On:" in line:
-            match = re.search(r"On:\s+([^\d]+?)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
-            if match:
+        elif "Relief:" in line:
+            relief_lines.append(line)
+        elif line.startswith("On:") and "Covering" in line:
+            name_match = re.search(r"On:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
+            if name_match:
+                name = name_match.group(1).strip()
+                start, end = name_match.group(2), name_match.group(3)
                 on_blocks.append({
-                    "name": match.group(1).strip(),
-                    "start": match.group(2),
-                    "end": match.group(3)
+                    "name": name,
+                    "start": start,
+                    "end": end
                 })
 
-    for off, on in zip(off_blocks, on_blocks):
-        if flip_name(off["name"]) == flip_name(on["name"]):
-            continue  # skip if covering own shift
+    # Parse relief lines to detect accurate coverage
+    for line in relief_lines:
+        match = re.search(r"Relief:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
+        if match:
+            name = match.group(1).strip()
+            start, end = match.group(2), match.group(3)
+            on_blocks.insert(0, {  # Prioritize relief-sourced coverage
+                "name": name,
+                "start": start,
+                "end": end
+            })
 
-        on_name = on["name"]
-        start = on["start"]
-        end = on["end"]
+    for i in range(min(len(off_blocks), len(on_blocks))):
+        off = off_blocks[i]
+        on = on_blocks[i]
+
+        if on["name"].strip().lower() == off["name"].strip().lower():
+            continue  # skip self-coverage
+
+        emoji, reason_label = clean_reason(off["reason"])
+        time_range = f"{on['start']} - {on['end']}"
         shift_id = "?"
+
         if records_df is not None:
+            on_name = on["name"]
+            start = on["start"]
+            end = on["end"]
+
             match = records_df[
-                (records_df["Name"].str.contains(on_name.strip(), case=False)) &
+                (records_df["Name"].str.lower() == on_name.lower()) &
                 (records_df["DateObj"] == date) &
                 (records_df["Start"] == start) &
                 (records_df["End"] == end)
             ]
             if not match.empty:
                 shift_id = match.iloc[0]["Shift"]
-            else:
-                continue  # skip if no confirmed match
 
-        emoji, reason_label = clean_reason(off["reason"])
+        if shift_id == "?":
+            continue  # Skip swaps with no identifiable shift
+
         shift_emoji = get_day_emoji(on["start"])
-        time_range = f"{on['start']} - {on['end']}"
 
         swaps.append({
             "date": date.strftime("%a, %b %d"),
