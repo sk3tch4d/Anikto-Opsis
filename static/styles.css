@@ -27,6 +27,13 @@ h3 {
 /* Buttons */
 .button {
   font-family: inherit;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.2;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /**/
   margin-top: 1rem;
   padding: 0.6rem 1.2rem;
   background-color: #00c6ff;
