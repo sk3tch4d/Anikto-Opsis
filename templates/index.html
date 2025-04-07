@@ -102,10 +102,21 @@
 
   <script>
   function togglePanel(header) {
+    const panel = header.parentElement;
     const body = header.nextElementSibling;
-    body.style.display = (body.style.display === "none" || !body.style.display) ? "block" : "none";
+
+    header.classList.toggle('open');
+    if (body) {
+      body.classList.toggle('open');
+    }
+    panel.classList.toggle('open'); // <== This is new and required
   }
-  </script>
+
+  // Optional: start with all panels closed
+  document.querySelectorAll('.panel-body').forEach(e => {
+    e.classList.remove('open');
+  });
+</script>
   
 </body>
 </html>
