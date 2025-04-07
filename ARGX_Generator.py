@@ -234,7 +234,9 @@ def detect_shift_swaps(df):
 
 # === Generator ===
 def generate_argx_and_heatmap(pdf_paths):
-    frames = [parse_pdf(p) for p in pdf_paths]
+    frames_with_swaps = [parse_pdf(p) for p in pdf_paths]
+    frames = [f[0] for f in frames_with_swaps]
+    swaps_all = sum([f[1] for f in frames_with_swaps], [])
 
     # === Deduplicate based on filename date (safe to append) ===
     file_date_map = {}
