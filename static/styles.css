@@ -99,11 +99,10 @@ h3 {
   padding: 1rem;
 }
 .panel.open {
-  box-shadow: 0 0 0 2px #00c6ff;
+  box-shadow: 0 0 0 2px rgba(0, 198, 255, 0.25);
   border-radius: 6px;
   transition: box-shadow 0.3s ease;
 }
-
 /* Lists */
 ul {
   list-style: none;
