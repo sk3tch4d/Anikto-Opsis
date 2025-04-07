@@ -12,7 +12,7 @@ REASON_CATEGORIES = {
 }
 
 def clean_reason(reason):
-    reason = reason.lower().replace("continued", "").replace("adjustm", "adjustment")
+    reason = reason.lower().replace("continued", "").replace("adjustm", "adjustment").strip()
     for key in REASON_CATEGORIES:
         if key in reason:
             return REASON_CATEGORIES[key], key.title()
@@ -37,46 +37,50 @@ def get_day_emoji(start):
 def parse_exceptions_section(text, date_obj):
     swaps = []
     lines = text.splitlines()
-    current_shift = "?"
-    current_start = ""
-    current_end = ""
-    off_name = None
-    reason = ""
-    coverage_line = ""
-    on_name = None
+    off_blocks = []
+    on_blocks = []
 
     for i, line in enumerate(lines):
         if line.startswith("Off:"):
-            match = re.search(r"Off:\s+(.*)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", line)
-            if match:
-                off_name = flip_name(match.group(1))
-                current_start = match.group(2)
-                current_end = match.group(3)
-                reason = match.group(4)
+            name_match = re.search(r"Off:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", line)
+            if name_match:
+                name = name_match.group(1).strip()
+                start, end = name_match.group(2), name_match.group(3)
+                reason = name_match.group(4).strip()
+                off_blocks.append({
+                    "name": name,
+                    "start": start,
+                    "end": end,
+                    "reason": reason
+                })
 
-        elif "Covering Vacant" in line or "C On:" in line:
-            match = re.search(r"(?:C On:)?\s*(.*)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
-            if match:
-                on_name = flip_name(match.group(1))
-                start = match.group(2)
-                end = match.group(3)
+        elif line.startswith("On:") and "Covering" in line:
+            name_match = re.search(r"On:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
+            if name_match:
+                name = name_match.group(1).strip()
+                start, end = name_match.group(2), name_match.group(3)
+                on_blocks.append({
+                    "name": name,
+                    "start": start,
+                    "end": end
+                })
 
-                if off_name and on_name:
-                    emoji, cleaned_reason = clean_reason(reason)
-                    swaps.append({
-                        "date": date_obj.strftime("%a, %b %d"),
-                        "shift": current_shift,
-                        "start": current_start,
-                        "end": current_end,
-                        "emoji": get_day_emoji(current_start),
-                        "off": off_name,
-                        "on": on_name,
-                        "reason": cleaned_reason,
-                        "reason_emoji": emoji
-                    })
+    for i in range(min(len(off_blocks), len(on_blocks))):
+        off = off_blocks[i]
+        on = on_blocks[i]
 
-                    # Reset
-                    off_name = None
-                    on_name = None
+        emoji, reason_label = clean_reason(off["reason"])
+        time_range = f"{on['start']} - {on['end']}"
+        shift_id = "?"  # Shift ID unknown from exception section alone
+        shift_emoji = get_day_emoji(on["start"])
+
+        swaps.append({
+            "date": date_obj.strftime("%a, %b %d"),
+            "shift": shift_id,
+            "time": f"{shift_emoji} {time_range}",
+            "off": f"{emoji} {flip_name(off['name'])}",
+            "on": f"🟢 {flip_name(on['name'])}",
+            "reason": reason_label
+        })
 
     return swaps
