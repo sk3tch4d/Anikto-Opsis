@@ -147,6 +147,25 @@ li > .button:hover {
   transform: translateY(-2px);
 }
 
+/* Target only the downloads list to avoid breaking other lists */
+ul.downloads {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+/* Make each list item take full width and remove internal padding */
+ul.downloads li {
+  margin-bottom: 0.75rem;
+  padding: 0;
+}
+/* Ensure button fills list item */
+.button.full-width {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 /* Links */
 a {
   text-decoration: none;
