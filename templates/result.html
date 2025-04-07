@@ -148,17 +148,18 @@
   <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage</div>
   <div class="panel-body">
     {% if stats.swaps %}
-  <ul>
-    {% for swap in stats.swaps %}
-      <li>
-        <strong>{{ swap.date }}</strong>: {{ swap.off }} off ({{ swap.reason }}),
-        covered by {{ swap.on }} ({{ swap.time }})
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No shift swaps or exceptions detected.</p>
-{% endif %}
+      <ul style="list-style: none; padding-left: 0;">
+        {% for swap in stats.swaps %}
+          <li style="margin-bottom: 1rem;">
+            <div><strong>{{ swap.icon }} {{ swap.date }}: {{ swap.shift }}</strong></div>
+            <div>{{ swap.off_icon }} {{ swap.off }} [{{ swap.reason }}]</div>
+            <div>{{ swap.on_icon }} {{ swap.on }} {{ swap.time }}</div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No shift swaps or exceptions detected.</p>
+    {% endif %}
   </div>
   </div>
   
