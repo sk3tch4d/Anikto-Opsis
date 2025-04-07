@@ -1,4 +1,3 @@
-
 import re
 from datetime import datetime
 from collections import defaultdict
@@ -40,94 +39,103 @@ def parse_exceptions_section(text, date, records_df=None):
     off_blocks = []
     on_blocks = []
 
-    for i, line in enumerate(lines):
+    for line in lines:
         if line.startswith("Off:"):
-            name_match = re.search(r"Off:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", line)
-            if name_match:
-                name = name_match.group(1).strip()
-                start, end = name_match.group(2), name_match.group(3)
-                reason = name_match.group(4).strip()
+            m = re.search(r"Off:\s+([^\d]+?)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", line)
+            if m:
                 off_blocks.append({
-                    "name": name,
-                    "start": start,
-                    "end": end,
-                    "reason": reason
+                    "name": m.group(1).strip(),
+                    "start": m.group(2),
+                    "end": m.group(3),
+                    "reason": m.group(4).strip()
                 })
-
-        elif line.startswith("On:"):
-            name_match = re.search(r"On:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
-            if name_match:
-                name = name_match.group(1).strip()
-                start, end = name_match.group(2), name_match.group(3)
+        elif "Covering Vacant" in line and "On:" in line:
+            m = re.search(r"On:\s+([^\d]+?)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
+            if m:
                 on_blocks.append({
-                    "name": name,
-                    "start": start,
-                    "end": end,
-                    "line": line.lower(),
-                    "is_vacant": "vacant" in line.lower()
+                    "name": m.group(1).strip(),
+                    "start": m.group(2),
+                    "end": m.group(3)
                 })
 
     used_ons = set()
+
     for off in off_blocks:
-        match = None
+        match_found = False
         for i, on in enumerate(on_blocks):
-            if i in used_ons:
+            on_key = (on['name'], on['start'], on['end'])
+            if on_key in used_ons:
                 continue
-            if on["is_vacant"]:
-                continue
-            if on["start"] == off["start"] and on["end"] == off["end"]:
-                match = on
-                used_ons.add(i)
+            if off["start"] == on["start"] and off["end"] == on["end"]:
+                used_ons.add(on_key)
+                emoji, reason_label = clean_reason(off["reason"])
+                time_range = f"{on['start']} - {on['end']}"
+                shift_id = "?"
+                shift_emoji = get_day_emoji(on["start"])
+                if records_df is not None:
+                    try:
+                        match = records_df[
+                            (records_df["Name"].str.strip().str.lower() == on["name"].strip().lower()) &
+                            (records_df["DateObj"] == date) &
+                            (records_df["Start"] == on["start"]) &
+                            (records_df["End"] == on["end"])
+                        ]
+                        if not match.empty:
+                            shift_id = match.iloc[0]["Shift"]
+                    except Exception:
+                        pass
+                swaps.append({
+                    "date": date.strftime("%a, %b %d"),
+                    "shift": shift_id,
+                    "emoji": shift_emoji,
+                    "hours": time_range,
+                    "off": f"{emoji} {flip_name(off['name'])}",
+                    "on": f"🟢 {flip_name(on['name'])}",
+                    "reason": reason_label
+                })
+                match_found = True
                 break
-
-        emoji, reason_label = clean_reason(off["reason"])
-        time_range = f"{off['start']} - {off['end']}"
-        shift_id = "?"
-        shift_emoji = get_day_emoji(off["start"])
-
-        if match:
-            on_name = match["name"]
-            if records_df is not None:
-                rec_match = records_df[
-                    (records_df["Name"] == on_name) &
-                    (records_df["DateObj"] == date) &
-                    (records_df["Start"] == match["start"]) &
-                    (records_df["End"] == match["end"])
-                ]
-                if not rec_match.empty:
-                    shift_id = rec_match.iloc[0]["Shift"]
+        if not match_found:
+            emoji, reason_label = clean_reason(off["reason"])
+            time_range = f"{off['start']} - {off['end']}"
+            shift_emoji = get_day_emoji(off["start"])
             swaps.append({
                 "date": date.strftime("%a, %b %d"),
-                "shift": shift_id,
+                "shift": "?",
                 "emoji": shift_emoji,
                 "hours": time_range,
                 "off": f"{emoji} {flip_name(off['name'])}",
-                "on": f"🟢 {flip_name(match['name'])}",
+                "on": f"⚪ Vacant Shift",
                 "reason": reason_label
             })
 
-    for i, on in enumerate(on_blocks):
-        if on["is_vacant"] and i not in used_ons:
-            shift_id = "?"
-            if records_df is not None:
-                rec_match = records_df[
-                    (records_df["Name"] == on["name"]) &
+    for on in on_blocks:
+        on_key = (on['name'], on['start'], on['end'])
+        if on_key in used_ons:
+            continue
+        time_range = f"{on['start']} - {on['end']}"
+        shift_emoji = get_day_emoji(on["start"])
+        shift_id = "?"
+        if records_df is not None:
+            try:
+                match = records_df[
+                    (records_df["Name"].str.strip().str.lower() == on["name"].strip().lower()) &
                     (records_df["DateObj"] == date) &
                     (records_df["Start"] == on["start"]) &
                     (records_df["End"] == on["end"])
                 ]
-                if not rec_match.empty:
-                    shift_id = rec_match.iloc[0]["Shift"]
-            time_range = f"{on['start']} - {on['end']}"
-            shift_emoji = get_day_emoji(on["start"])
-            swaps.append({
-                "date": date.strftime("%a, %b %d"),
-                "shift": shift_id,
-                "emoji": shift_emoji,
-                "hours": time_range,
-                "off": "⚪ Vacant Shift",
-                "on": f"🟢 {flip_name(on['name'])}",
-                "reason": ""
-            })
+                if not match.empty:
+                    shift_id = match.iloc[0]["Shift"]
+            except Exception:
+                pass
+        swaps.append({
+            "date": date.strftime("%a, %b %d"),
+            "shift": shift_id,
+            "emoji": shift_emoji,
+            "hours": time_range,
+            "off": "⚪ Vacant Shift",
+            "on": f"🟢 {flip_name(on['name'])}",
+            "reason": ""
+        })
 
     return swaps
