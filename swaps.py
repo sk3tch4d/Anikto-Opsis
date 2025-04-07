@@ -9,7 +9,6 @@ REASON_CATEGORIES = {
     "adjustment": "🟣",
     "bereavement": "⚫",
     "shift swap": "🔴",
-    "banked": "🔴"
 }
 
 def clean_reason(reason):
@@ -35,42 +34,118 @@ def get_day_emoji(start):
     except:
         return "❓"
 
-def parse_exceptions_section(text, date, records_df=None):
+
+def parse_exceptions_section(text, date_obj, records_df=None):
     swaps = []
     lines = text.splitlines()
     off_blocks = []
     on_blocks = []
-    relief_lines = []
+
+    for line in lines:
+        if line.startswith("Off:"):
+            name_match = re.search(r"Off:\s+([^\d]+?)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", line)
+            if name_match:
+                name = name_match.group(1).strip()
+                start, end = name_match.group(2), name_match.group(3)
+                reason = re.sub(r"Covering.*", "", name_match.group(4)).strip()
+                off_blocks.append({
+                    "name": name,
+                    "start": start,
+                    "end": end,
+                    "reason": reason
+                })
+
+        elif line.startswith("On:") and "Covering" in line:
+            name_match = re.search(r"On:\s+(?:Covering\s+)?[^:]*:?\s*([^\d]+?)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
+            if name_match:
+                name = name_match.group(1).strip().rstrip(",")
+                start, end = name_match.group(2), name_match.group(3)
+                on_blocks.append({
+                    "name": name,
+                    "start": start,
+                    "end": end
+                })
+
+    # Match on/off pairs
+    for off in off_blocks:
+        match_found = False
+        for i, on in enumerate(on_blocks):
+            if off["start"] == on["start"] and off["end"] == on["end"]:
+                match_found = True
+                shift_id = "?"
+                if records_df is not None:
+                    match = records_df[
+                        (records_df["Name"].str.lower() == on["name"].lower()) &
+                        (records_df["DateObj"] == date_obj) &
+                        (records_df["Start"] == on["start"]) &
+                        (records_df["End"] == on["end"])
+                    ]
+                    if not match.empty:
+                        shift_id = match.iloc[0]["Shift"]
+
+                emoji, reason_label = clean_reason(off["reason"])
+                shift_emoji = get_day_emoji(on["start"])
+                time_range = f"{on['start']} - {on['end']}"
+
+                swaps.append({
+                    "date": date_obj.strftime("%a, %b %d"),
+                    "shift": shift_id,
+                    "emoji": shift_emoji,
+                    "hours": time_range,
+                    "off": f"{emoji} {flip_name(off['name'])}",
+                    "on": f"🟢 {flip_name(on['name'])}",
+                    "reason": reason_label
+                })
+                del on_blocks[i]
+                break
+
+        if not match_found:
+            emoji, reason_label = clean_reason(off["reason"])
+            shift_emoji = get_day_emoji(off["start"])
+            time_range = f"{off['start']} - {off['end']}"
+            swaps.append({
+                "date": date_obj.strftime("%a, %b %d"),
+                "shift": "?",
+                "emoji": shift_emoji,
+                "hours": time_range,
+                "off": f"{emoji} {flip_name(off['name'])}",
+                "on": f"⚪ Vacant Shift",
+                "reason": reason_label
+            })
+
+    # Add leftover vacant shifts
+    for on in on_blocks:
+        shift_id = "?"
+        if records_df is not None:
+            match = records_df[
+                (records_df["Name"].str.lower() == on["name"].lower()) &
+                (records_df["DateObj"] == date_obj) &
+                (records_df["Start"] == on["start"]) &
+                (records_df["End"] == on["end"])
+            ]
+            if not match.empty:
+                shift_id = match.iloc[0]["Shift"]
+
+        shift_emoji = get_day_emoji(on["start"])
+        time_range = f"{on['start']} - {on['end']}"
+        swaps.append({
+            "date": date_obj.strftime("%a, %b %d"),
+            "shift": shift_id,
+            "emoji": shift_emoji,
+            "hours": time_range,
+            "off": "⚪ Vacant Shift",
+            "on": f"🟢 {flip_name(on['name'])}",
+            "reason": "Vacant"
+        })
+
+    return swaps
+
+    swaps = []
+    lines = text.splitlines()
+    off_blocks = []
+    on_blocks = []
 
     for i, line in enumerate(lines):
-        if line.startswith("Off:"):
-            # Special handling for lines with embedded Relief info
-            if "Relief:" in line:
-                off_part, relief_part = line.split("Relief:", 1)
-                name_match = re.search(r"Off:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", off_part)
-                if name_match:
-                    name = name_match.group(1).strip()
-                    start, end = name_match.group(2), name_match.group(3)
-                    reason = name_match.group(4).strip()
-                    off_blocks.append({
-                        "name": name,
-                        "start": start,
-                        "end": end,
-                        "reason": reason
-                    })
-                    # Try to extract Relief person as On block
-                    on_match = re.search(r"([A-Za-z\-']+),\s+([A-Za-z\-']+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", relief_part)
-                    if on_match:
-                        lname, fname = on_match.group(1), on_match.group(2)
-                        on_name = f"{lname}, {fname}"
-                        on_start, on_end = on_match.group(3), on_match.group(4)
-                        on_blocks.append({
-                            "name": on_name,
-                            "start": on_start,
-                            "end": on_end
-                        })
-                continue
-
         if line.startswith("Off:"):
             name_match = re.search(r"Off:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", line)
             if name_match:
@@ -83,8 +158,7 @@ def parse_exceptions_section(text, date, records_df=None):
                     "end": end,
                     "reason": reason
                 })
-        elif "Relief:" in line:
-            relief_lines.append(line)
+
         elif line.startswith("On:") and "Covering" in line:
             name_match = re.search(r"On:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
             if name_match:
@@ -96,53 +170,19 @@ def parse_exceptions_section(text, date, records_df=None):
                     "end": end
                 })
 
-    # Parse relief lines to detect accurate coverage
-    for line in relief_lines:
-        match = re.search(r"Relief:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
-        if match:
-            name = match.group(1).strip()
-            start, end = match.group(2), match.group(3)
-            on_blocks.insert(0, {  # Prioritize relief-sourced coverage
-                "name": name,
-                "start": start,
-                "end": end
-            })
-
     for i in range(min(len(off_blocks), len(on_blocks))):
         off = off_blocks[i]
         on = on_blocks[i]
 
-        if on["name"].strip().lower() == off["name"].strip().lower():
-            continue  # skip self-coverage
-
         emoji, reason_label = clean_reason(off["reason"])
         time_range = f"{on['start']} - {on['end']}"
-        shift_id = "?"
-
-        if records_df is not None:
-            on_name = on["name"]
-            start = on["start"]
-            end = on["end"]
-
-            match = records_df[
-                (records_df["Name"].str.lower() == on_name.lower()) &
-                (records_df["DateObj"] == date) &
-                (records_df["Start"] == start) &
-                (records_df["End"] == end)
-            ]
-            if not match.empty:
-                shift_id = match.iloc[0]["Shift"]
-
-        if shift_id == "?":
-            continue  # Skip swaps with no identifiable shift
-
+        shift_id = "?"  # Shift ID unknown from exception section alone
         shift_emoji = get_day_emoji(on["start"])
 
         swaps.append({
-            "date": date.strftime("%a, %b %d"),
+            "date": date_obj.strftime("%a, %b %d"),
             "shift": shift_id,
-            "emoji": shift_emoji,
-            "hours": time_range,
+            "time": f"{shift_emoji} {time_range}",
             "off": f"{emoji} {flip_name(off['name'])}",
             "on": f"🟢 {flip_name(on['name'])}",
             "reason": reason_label
