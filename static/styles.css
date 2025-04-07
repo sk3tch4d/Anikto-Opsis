@@ -205,6 +205,18 @@ a:hover {
 input[type="file"] {
   display: none;
 }
+/* Upload File Box */
+.file-box li {
+  background-color: #00c6ff; /* solid blue */
+  color: #000; /* black text for contrast */
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 198, 255, 0.2);
+  word-break: break-word;
+}
 
 /* Badges */
 .badge {
