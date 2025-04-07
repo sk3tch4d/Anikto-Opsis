@@ -1,91 +1,71 @@
+
 import re
 from datetime import datetime
-
-# Emoji per reason type (fallback is red)
-REASON_EMOJI = {
-    "Sick": "🔵",
-    "Vacation": "🟠",
-    "Personal": "🟣",
-    "Emergency": "🔴",
-    "Training": "🟡",
-    "Meeting": "🟡",
-    "Bereavement": "⚫",
-    "Adjustment": "🟤",
-}
-
-SHIFT_EMOJI = {
-    "day": "☀️",
-    "evening": "🌆",
-    "night": "🌙",
-    "unknown": "❓"
-}
+from collections import defaultdict
 
 def normalize_name(name):
-    parts = name.replace(",", "").split()
-    if len(parts) >= 2:
-        return f"{parts[1]} {parts[0]}"
+    if "," in name:
+        last, first = name.split(",", 1)
+        return f"{first.strip()} {last.strip()}"
     return name.strip()
 
+def classify_shift_emoji(start_time):
+    try:
+        hour = int(start_time.split(":")[0])
+        if 6 <= hour < 14:
+            return "☀️"
+        elif 14 <= hour < 22:
+            return "🌆"
+        else:
+            return "🌙"
+    except:
+        return "❓"
+
+def clean_reason(reason):
+    reason = re.sub(r"\bcontinued\b", "", reason, flags=re.IGNORECASE)
+    reason = re.sub(r"\bschedule adjustm\b", "Adjustment", reason, flags=re.IGNORECASE)
+    return reason.strip()
+
 def parse_exceptions_section(text, current_date):
+    swaps = []
     lines = text.splitlines()
     off_records = []
     on_records = []
 
     for line in lines:
-        if "Off:" in line:
-            m = re.search(r"Off:\s*(.*?)(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})(.*?)$", line)
-            if m:
-                name = normalize_name(m.group(1).strip())
-                start, end = m.group(2), m.group(3)
-                note = m.group(4).strip()
-                note = note.replace("Continued", "").replace("Schedule Adjustm", "Adjustment").strip(" []:")
-                off_records.append({
-                    "name": name,
-                    "start": start,
-                    "end": end,
-                    "reason": note or "Unknown",
-                    "date": current_date.strftime("%a, %b %d"),
-                })
-        elif "On:" in line:
-            m = re.search(r"On:\s*(.*?)(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})", line)
-            if m:
-                name = normalize_name(m.group(1).strip())
-                start, end = m.group(2), m.group(3)
-                on_records.append({
-                    "name": name,
-                    "start": start,
-                    "end": end,
-                })
+        if line.startswith("Off:"):
+            off_records.append(line)
+        elif line.startswith("On:"):
+            on_records.append(line)
 
-    swaps = []
-    used_ons = set()
+    used_on = set()
 
     for off in off_records:
-        # Find a matching on-record with same shift time and not used
-        match = next((on for on in on_records if on["start"] == off["start"] and on["end"] == off["end"]
-                      and (on["start"], on["end"]) not in used_ons), None)
+        match = re.match(r"Off:\s+(.*?),\s+(.*?)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", off)
         if match:
-            used_ons.add((match["start"], match["end"]))
-
-            # Determine shift label for emoji
-            hour = int(off["start"].split(":")[0])
-            if 6 <= hour < 12:
-                shift_icon = SHIFT_EMOJI["day"]
-            elif 14 <= hour < 18:
-                shift_icon = SHIFT_EMOJI["evening"]
-            elif 22 <= hour <= 23 or 0 <= hour < 6:
-                shift_icon = SHIFT_EMOJI["night"]
-            else:
-                shift_icon = SHIFT_EMOJI["unknown"]
-
-            reason_icon = REASON_EMOJI.get(off["reason"], "🔴")
-
-            swaps.append({
-                "date": f"{shift_icon} {off['date']}: ?",
-                "time": f"{off['start']} - {off['end']}",
-                "off": f"{reason_icon} {off['name']}",
-                "on": f"🟢 {match['name']}",
-                "reason": off["reason"]
-            })
+            last, first, start, end, reason = match.groups()
+            off_name = normalize_name(f"{last}, {first}")
+            reason = clean_reason(reason)
+            matched_on = None
+            for idx, on in enumerate(on_records):
+                if idx in used_on:
+                    continue
+                if f"{start} - {end}" in on:
+                    name_match = re.search(r"On:.*?(?::\s+)?(.*?),\s+(.*?)\s+\d{2}:\d{2}\s+-\s+\d{2}:\d{2}", on)
+                    if name_match:
+                        o_last, o_first = name_match.groups()
+                        on_name = normalize_name(f"{o_last}, {o_first}")
+                        matched_on = (on_name, start, end)
+                        used_on.add(idx)
+                        break
+            if matched_on:
+                emoji = classify_shift_emoji(start)
+                swaps.append({
+                    "date": current_date.strftime("%a, %b %d"),
+                    "shift": "?",  # You may update this from context if available
+                    "off": f"🔴 {off_name}",
+                    "on": f"{emoji} {matched_on[1]} - {matched_on[2]}\n🟢 {matched_on[0]}",
+                    "reason": reason
+                })
 
     return swaps
