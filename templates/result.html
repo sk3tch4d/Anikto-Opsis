@@ -118,14 +118,14 @@
 
   <script>
   function togglePanel(header) {
-    const panel = header.parentElement;
+    const panel = header.closest('.panel'); // This is the key fix
     const body = header.nextElementSibling;
 
-    // Only toggle class on the body and panel
     if (body) {
       body.classList.toggle('open');
     }
-    panel.classList.toggle('open');
+
+    panel.classList.toggle('open'); // Now .panel gets "open", not the header!
   }
 
   // Optional: start with all panels closed
