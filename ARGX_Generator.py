@@ -63,7 +63,7 @@ def parse_pdf(pdf_path):
 
             # Parse exceptions section if it exists
             if "Exceptions Day Unit:" in text and current_date:
-                swaps += parse_exceptions_section(text, current_date)
+                swaps += parse_exceptions_section(text, current_date, pd.DataFrame(records))
 
             for line in lines:
                 if any(x in line for x in ["Off:", "On Call", "Relief"]):
