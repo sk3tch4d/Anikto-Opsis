@@ -8,9 +8,7 @@ REASON_CATEGORIES = {
     "adjustment": "🟣",
     "bereavement": "⚫",
     "shift swap": "🔴",
-    "banked": "🟤",
-    "unpaid": "⚫",
-    "vacant": "⚪",
+    "banked": "🔴"
 }
 
 def clean_reason(reason):
@@ -42,62 +40,56 @@ def parse_exceptions_section(text, date, records_df=None):
     off_blocks = []
     on_blocks = []
 
-    # Gather OFF and ON entries
     for line in lines:
         if line.startswith("Off:"):
-            m = re.search(r"Off:\s+(.+?)\s+(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})\s+(.*)", line)
-            if m:
+            match = re.search(r"Off:\s+([^\d]+?)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", line)
+            if match:
                 off_blocks.append({
-                    "name": m.group(1).strip(),
-                    "start": m.group(2),
-                    "end": m.group(3),
-                    "reason": m.group(4).strip()
+                    "name": match.group(1).strip(),
+                    "start": match.group(2),
+                    "end": match.group(3),
+                    "reason": match.group(4).strip()
                 })
-        elif line.startswith("On:") and "Covering" in line:
-            m = re.search(r"On:.*?([A-Za-z ,.'-]+)\s+(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})", line)
-            if m:
+        elif "Covering" in line and "On:" in line:
+            match = re.search(r"On:\s+([^\d]+?)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
+            if match:
                 on_blocks.append({
-                    "name": m.group(1).strip(),
-                    "start": m.group(2),
-                    "end": m.group(3)
+                    "name": match.group(1).strip(),
+                    "start": match.group(2),
+                    "end": match.group(3)
                 })
 
-    max_len = max(len(off_blocks), len(on_blocks))
-    for i in range(max_len):
-        off = off_blocks[i] if i < len(off_blocks) else None
-        on = on_blocks[i] if i < len(on_blocks) else None
+    for off, on in zip(off_blocks, on_blocks):
+        if flip_name(off["name"]) == flip_name(on["name"]):
+            continue  # skip if covering own shift
 
+        on_name = on["name"]
+        start = on["start"]
+        end = on["end"]
         shift_id = "?"
-        start = on["start"] if on else (off["start"] if off else "00:00")
-        end = on["end"] if on else (off["end"] if off else "00:00")
-        shift_emoji = get_day_emoji(start)
-        time_range = f"{start} - {end}"
-        reason_label = "Vacant"
-        emoji = "⚪"
-
-        if off:
-            emoji, reason_label = clean_reason(off["reason"])
-        if on and off and flip_name(on["name"]) == flip_name(off["name"]):
-            continue  # skip self-coverage
-
         if records_df is not None:
-            matched = records_df[
+            match = records_df[
+                (records_df["Name"].str.contains(on_name.strip(), case=False)) &
                 (records_df["DateObj"] == date) &
                 (records_df["Start"] == start) &
                 (records_df["End"] == end)
             ]
-            if on:
-                matched = matched[matched["Name"].str.contains(on["name"].split()[0], case=False, na=False)]
-            if not matched.empty:
-                shift_id = matched.iloc[0]["Shift"]
+            if not match.empty:
+                shift_id = match.iloc[0]["Shift"]
+            else:
+                continue  # skip if no confirmed match
+
+        emoji, reason_label = clean_reason(off["reason"])
+        shift_emoji = get_day_emoji(on["start"])
+        time_range = f"{on['start']} - {on['end']}"
 
         swaps.append({
             "date": date.strftime("%a, %b %d"),
             "shift": shift_id,
             "emoji": shift_emoji,
             "hours": time_range,
-            "off": f"{emoji} {flip_name(off['name'])}" if off else "⚪ Vacant Shift",
-            "on": f"🟢 {flip_name(on['name'])}" if on else "⚪ Vacant Shift",
+            "off": f"{emoji} {flip_name(off['name'])}",
+            "on": f"🟢 {flip_name(on['name'])}",
             "reason": reason_label
         })
 
