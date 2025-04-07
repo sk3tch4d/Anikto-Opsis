@@ -60,26 +60,6 @@ h3 {
   width: 100%;
   max-width: 500px;
 }
-.panel-header {
-  background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
-  padding: 0.6rem 1rem;
-  cursor: pointer;
-  font-weight: bold;
-  color: #33bfff !important;
-  border-radius: 6px;
-  text-align: center;
-  box-shadow: 0 1px 3px rgba(0, 198, 255, 0.08);
-  transition: color 0.3s ease, background 0.3s ease, box-shadow 0.2s ease;
-}
-.panel-header:hover {
-  background: #222;
-  /* no glow here */
-}
-.panel.open .panel-header {
-  color: #00c6ff;
-  background: #2b2b2b;
-  border-radius: 6px 6px 0 0;
-}
 .panel-header:focus {
   outline: none;
 }
@@ -106,6 +86,26 @@ h3 {
   box-shadow: 0 0 0 2px rgba(0, 198, 255, 0.25);
   border-radius: 6px;
   transition: box-shadow 0.3s ease;
+}
+.panel-header {
+  background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: #33bfff !important;
+  border-radius: 6px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 198, 255, 0.08);
+  transition: color 0.3s ease, background 0.3s ease, box-shadow 0.2s ease;
+}
+.panel-header:hover {
+  background: #222;
+  /* no glow here */
+}
+.panel.open .panel-header {
+  color: #00c6ff;
+  background: #2b2b2b;
+  border-radius: 6px 6px 0 0;
 }
 
 /* Lists */
@@ -257,11 +257,6 @@ input[type="file"] {
 }
 @keyframes spin {
   to { transform: rotate(360deg); }
-}
-
-/* Transitions */
-* {
-  transition: all 0.2s ease-in-out;
 }
 
 /* Responsive */
