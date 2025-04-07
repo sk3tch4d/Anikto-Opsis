@@ -147,11 +147,15 @@
   <div class="panel">
   <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage</div>
   <div class="panel-body">
-     <div style="font-size: 0.85rem; color: #aaa;">
-     🔵 Sick, 🟠 Vacation, 🟣 Adjustment, ⚪ Vacant, 🟢 Coverage
-     </div>
     {% if stats.swaps %}
       <ul>
+        <div style="font-size: 0.85rem; color: #aaa;">
+          🔵 Sick<br>
+          🟠 Vacation<br>
+          🟣 Adjustment<br>
+          ⚪ Vacant<br>
+          🟢 Coverage
+        </div>
         {% for swap in stats.swaps %}
           <li style="margin-bottom: 1em;">
             <strong>{{ swap.date }}: {{ swap.shift }}</strong><br>
