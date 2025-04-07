@@ -98,6 +98,11 @@ h3 {
   max-height: 1000px;
   padding: 1rem;
 }
+.panel.open {
+  box-shadow: 0 0 0 2px #00c6ff;
+  border-radius: 6px;
+  transition: box-shadow 0.3s ease;
+}
 
 /* Lists */
 ul {
