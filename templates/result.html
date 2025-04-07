@@ -101,7 +101,13 @@
     {% if outputs %}
       <ul>
         {% for file in outputs %}
-          <li><a href="{{ url_for('download', filename=file) }}">{{ file }}</a></li>
+          {% if "ARGX" in file %}
+          <li><a href="{{ url_for('download', filename=file) }}">Spreadsheet</a></li>
+          {% elif "ARGM" in file %}
+            <li><a href="{{ url_for('download', filename=file) }}">Heatmap</a></li>
+          {% else %}
+            <li><a href="{{ url_for('download', filename=file) }}">{{ file }}</a></li>
+          {% endif %}
         {% endfor %}
       </ul>
     {% else %}
