@@ -152,10 +152,10 @@
         {% for swap in stats.swaps %}
           <li style="margin-bottom: 1em;">
             <strong>{{ swap.date }}: {{ swap.shift }}</strong><br>
-            {{ swap.hours }}<br>
-            <span style="color:#ff6b6b;">{{ swap.off }}</span><br>
-            <span style="color:#32cd32;">{{ swap.on }}</span><br>
-            <em style="color:#aaa;">{{ swap.reason }}</em>
+            {{ swap.emoji }} {{ swap.hours }}<br>
+            {{ swap.off }}<br>
+            {{ swap.on }}<br>
+            <em>{{ swap.reason }}</em>
           </li>
         {% endfor %}
       </ul>
