@@ -127,6 +127,26 @@ li {
   font-size: 0.9rem;
 }
 
+/* Button Lists */
+li > .button {
+  all: unset; /* resets inherited li styles */
+  display: block;
+  width: 100%;
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(145deg, #00c6ff, #00a6dd);
+  color: #000;
+  font-weight: bold;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 198, 255, 0.15);
+}
+li > .button:hover {
+  background-color: #00a6dd;
+  transform: translateY(-2px);
+}
+
 /* Links */
 a {
   text-decoration: none;
