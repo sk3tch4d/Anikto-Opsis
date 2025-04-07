@@ -3,15 +3,28 @@ import re
 from datetime import datetime
 from collections import defaultdict
 
-def normalize_name(name):
-    if "," in name:
-        last, first = name.split(",", 1)
-        return f"{first.strip()} {last.strip()}"
-    return name.strip()
+REASON_CATEGORIES = {
+    "sick": "🔵",
+    "vacation": "🟠",
+    "adjustment": "🟣",
+    "bereavement": "⚫",
+    "shift swap": "🔴",
+}
 
-def classify_shift_emoji(start_time):
+def clean_reason(reason):
+    reason = reason.lower().replace("continued", "").replace("adjustm", "adjustment")
+    for key in REASON_CATEGORIES:
+        if key in reason:
+            return REASON_CATEGORIES[key], key.title()
+    return "🔴", reason.title()
+
+def flip_name(name):
+    parts = name.split(",")
+    return f"{parts[1].strip()} {parts[0].strip()}" if len(parts) == 2 else name
+
+def get_day_emoji(start):
     try:
-        hour = int(start_time.split(":")[0])
+        hour = int(start.split(":")[0])
         if 6 <= hour < 14:
             return "☀️"
         elif 14 <= hour < 22:
@@ -21,51 +34,49 @@ def classify_shift_emoji(start_time):
     except:
         return "❓"
 
-def clean_reason(reason):
-    reason = re.sub(r"\bcontinued\b", "", reason, flags=re.IGNORECASE)
-    reason = re.sub(r"\bschedule adjustm\b", "Adjustment", reason, flags=re.IGNORECASE)
-    return reason.strip()
-
-def parse_exceptions_section(text, current_date):
+def parse_exceptions_section(text, date_obj):
     swaps = []
     lines = text.splitlines()
-    off_records = []
-    on_records = []
+    current_shift = "?"
+    current_start = ""
+    current_end = ""
+    off_name = None
+    reason = ""
+    coverage_line = ""
+    on_name = None
 
-    for line in lines:
+    for i, line in enumerate(lines):
         if line.startswith("Off:"):
-            off_records.append(line)
-        elif line.startswith("On:"):
-            on_records.append(line)
+            match = re.search(r"Off:\s+(.*)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", line)
+            if match:
+                off_name = flip_name(match.group(1))
+                current_start = match.group(2)
+                current_end = match.group(3)
+                reason = match.group(4)
 
-    used_on = set()
+        elif "Covering Vacant" in line or "C On:" in line:
+            match = re.search(r"(?:C On:)?\s*(.*)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
+            if match:
+                on_name = flip_name(match.group(1))
+                start = match.group(2)
+                end = match.group(3)
 
-    for off in off_records:
-        match = re.match(r"Off:\s+(.*?),\s+(.*?)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.*)", off)
-        if match:
-            last, first, start, end, reason = match.groups()
-            off_name = normalize_name(f"{last}, {first}")
-            reason = clean_reason(reason)
-            matched_on = None
-            for idx, on in enumerate(on_records):
-                if idx in used_on:
-                    continue
-                if f"{start} - {end}" in on:
-                    name_match = re.search(r"On:.*?(?::\s+)?(.*?),\s+(.*?)\s+\d{2}:\d{2}\s+-\s+\d{2}:\d{2}", on)
-                    if name_match:
-                        o_last, o_first = name_match.groups()
-                        on_name = normalize_name(f"{o_last}, {o_first}")
-                        matched_on = (on_name, start, end)
-                        used_on.add(idx)
-                        break
-            if matched_on:
-                emoji = classify_shift_emoji(start)
-                swaps.append({
-                    "date": current_date.strftime("%a, %b %d"),
-                    "shift": "?",  # You may update this from context if available
-                    "off": f"🔴 {off_name}",
-                    "on": f"{emoji} {matched_on[1]} - {matched_on[2]}\n🟢 {matched_on[0]}",
-                    "reason": reason
-                })
+                if off_name and on_name:
+                    emoji, cleaned_reason = clean_reason(reason)
+                    swaps.append({
+                        "date": date_obj.strftime("%a, %b %d"),
+                        "shift": current_shift,
+                        "start": current_start,
+                        "end": current_end,
+                        "emoji": get_day_emoji(current_start),
+                        "off": off_name,
+                        "on": on_name,
+                        "reason": cleaned_reason,
+                        "reason_emoji": emoji
+                    })
+
+                    # Reset
+                    off_name = None
+                    on_name = None
 
     return swaps
