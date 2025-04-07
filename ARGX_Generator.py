@@ -323,6 +323,9 @@ def generate_argx_and_heatmap(pdf_paths):
         }
     }
 
+    # Add swaps to stats
+    stats["swaps"] = swaps_all
+    # Final return
     return output_files, stats
 
 def group_by_shift(df, target_date):
