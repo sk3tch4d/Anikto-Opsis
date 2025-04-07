@@ -45,8 +45,21 @@ h3 {
   background-color: #4752c4;
 }
 .button.full-width {
+  display: block;
   width: 100%;
-  max-width: 500px;
+  padding: 0.75rem 1rem;
+  font-weight: bold;
+  background: #2f3136;
+  color: #ffffff;
+  border: 1px solid #202225;
+  border-radius: 6px; /* Match panel-header */
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.button.full-width:hover {
+  background: #40444b;
 }
 .button:focus {
   outline: none;
