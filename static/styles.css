@@ -69,14 +69,14 @@ h3 {
   border-radius: 6px;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0, 198, 255, 0.08);
-  transition: all 0.2s ease-in-out;
+  transition: color 0.3s ease, background 0.3s ease, box-shadow 0.2s ease;
 }
 .panel-header:hover {
   background: #222;
   /* no glow here */
 }
 .panel.open .panel-header {
-  color: #00c6ff;
+  color: #00c6ff !important;
   background: #2b2b2b;
   border-radius: 6px 6px 0 0;
 }
