@@ -34,7 +34,7 @@ def get_day_emoji(start):
     except:
         return "❓"
 
-def parse_exceptions_section(text, date_obj):
+def parse_exceptions_section(text, date, records_df=None):
     swaps = []
     lines = text.splitlines()
     off_blocks = []
@@ -74,6 +74,18 @@ def parse_exceptions_section(text, date_obj):
         shift_id = "?"  # Shift ID unknown from exception section alone
         shift_emoji = get_day_emoji(on["start"])
 
+
+        shift_id = "?"
+        if records_df is not None:
+            match = records_df[
+                (records_df["Name"] == on_name) &
+                (records_df["DateObj"] == date) &
+                (records_df["Start"] == start) &
+                (records_df["End"] == end)
+            ]
+            if not match.empty:
+                shift_id = match.iloc[0]["Shift"]
+        
         swaps.append({
             "date": date_obj.strftime("%a, %b %d"),
             "shift": shift_id,
