@@ -1,99 +1,63 @@
 import re
 from datetime import datetime
 
-# Maps reason keywords to icons
-REASON_ICONS = {
-    "sick": "🔵",
-    "vacation": "🟠",
-    "schedule": "🟣",
-    "adjustm": "🟣",
-    "personal": "🟡",
-    "training": "🟤",
-    "union": "⚫",
-    "bereavement": "⚰️",
-}
+def clean_reason(text):
+    text = text.replace("Continued", "").replace("Schedule Adjustm", "Adjustment").strip()
+    return re.sub(r"[\[\]]", "", text)
 
-# Maps hour windows to shift emojis
-def shift_icon(start):
-    try:
-        hour = int(start.split(":")[0])
-        if 6 <= hour < 14:
-            return "☀️"  # Day
-        elif 14 <= hour < 22:
-            return "🌆"  # Evening
-        else:
-            return "🌙"  # Night
-    except:
-        return "❓"
-
-def to_name_format(raw_name):
-    parts = raw_name.strip().split(",")
-    if len(parts) == 2:
-        return f"{parts[1].strip()} {parts[0].strip()}"
-    return raw_name.strip()
-
-def parse_exceptions_section(text, current_date):
-    swaps = []
-    date_str = current_date.strftime("%a, %b %-d") if hasattr(current_date, 'strftime') else str(current_date)
-
-    # Capture lines in the Exceptions block
+def parse_exceptions_section(text, date_obj):
     lines = text.splitlines()
-    block = []
-    in_block = False
+    swaps = []
+    current_off = None
+    off_time = None
+    shift = None
+    time = None
+    on_found = False
+
     for line in lines:
-        if "Exceptions Day Unit" in line:
-            in_block = True
-            continue
-        if in_block and line.strip() == "":
-            break
-        if in_block:
-            block.append(line)
-
-    off_info = None
-    for line in block:
         if line.startswith("Off:"):
-            match = re.match(r"Off: ([^\d]+) (\d{2}:\d{2}) - (\d{2}:\d{2}) (.+)", line)
+            match = re.search(r"Off:\s+([^\d]+)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})\s+(.+)", line)
             if match:
-                name = to_name_format(match.group(1))
-                start = match.group(2)
-                end = match.group(3)
-                note = match.group(4)
-                icon = "🔴"
-                for k, v in REASON_ICONS.items():
-                    if k in note.lower():
-                        icon = v
-                        break
-                off_info = {
-                    "date": date_str,
-                    "start": start,
-                    "end": end,
-                    "name": name,
-                    "reason": note,
-                    "off_icon": icon,
-                    "shift": "",  # Filled when coverage found
-                }
-
-        elif line.startswith("On:") and "Covering Vacant" in line and off_info:
-            time_match = re.search(r"(\d{2}:\d{2}) - (\d{2}:\d{2})", line)
-            name_match = re.search(r"On: ([^\d]+) \d{2}:\d{2}", line)
-            shift_match = re.search(r"([A-Z]{1}\d{3,4})", line)
-            if time_match and name_match:
-                on_name = to_name_format(name_match.group(1))
-                start = time_match.group(1)
-                end = time_match.group(2)
-                shift_id = shift_match.group(1) if shift_match else "?"
-                icon = shift_icon(start)
+                name_raw, start, end, reason = match.groups()
+                current_off = name_raw.strip().replace(",", "")
+                off_time = f"{start} - {end}"
+                shift = None
+                time = f"{start} - {end}"
+                reason = clean_reason(reason)
+                on_found = False
                 swaps.append({
-                    "icon": icon,
-                    "date": off_info["date"],
-                    "shift": shift_id,
-                    "off_icon": off_info["off_icon"],
-                    "off": off_info["name"],
-                    "reason": off_info["reason"],
-                    "on_icon": "🟢",
-                    "on": on_name,
-                    "time": f"{start} - {end}"
+                    "date": date_obj.strftime("%a, %b %d"),
+                    "shift": "?",
+                    "time": time,
+                    "off": current_off,
+                    "on": None,
+                    "reason": reason
                 })
-                off_info = None  # Reset after match
 
-    return swaps
+        elif line.startswith("On:") and current_off and not on_found:
+            match = re.search(r"On:\s+(.*?)\s+(\d{2}:\d{2})\s+-\s+(\d{2}:\d{2})", line)
+            shift_match = re.search(r"([A-Z]+\d{3,4})", line)
+            if match:
+                name_raw, start, end = match.groups()
+                on_person = name_raw.strip().replace(",", "")
+                if swaps:
+                    swaps[-1]["on"] = on_person
+                    if shift_match:
+                        swaps[-1]["shift"] = shift_match.group(1)
+                on_found = True
+
+    # Format swap objects for display
+    formatted_swaps = []
+    for s in swaps:
+        emoji = "☀️" if "07:00" in s["time"] else "🌙"
+        off_icon = "🔴"
+        on_icon = "🟢"
+        formatted_swaps.append({
+            "date": f"{emoji} {s['date']}: {s['shift']}",
+            "time": s["time"],
+            "off": f"{off_icon} {s['off']}",
+            "on": f"{on_icon} {s['on']} {s['time']}" if s["on"] else "?",
+            "reason": clean_reason(s["reason"])
+        })
+
+    return formatted_swaps
