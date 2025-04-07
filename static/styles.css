@@ -269,3 +269,8 @@ input[type="file"] {
   .drop-zone { padding: 1rem; }
   .drop-text { font-size: 0.95rem; }
 }
+
+
+div.panel.open > div.panel-header {
+  color: red !important;
+}
