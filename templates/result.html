@@ -111,12 +111,18 @@
 </div>
 
   <script>
-function togglePanel(header) {
-  header.classList.toggle('open');
-  const body = header.nextElementSibling;
-  body.style.display = (body.style.display === 'none') ? 'block' : 'none';
-}
-document.querySelectorAll('.panel-body').forEach(e => e.style.display = 'none');
+  function togglePanel(header) {
+    header.classList.toggle('open');
+    const body = header.nextElementSibling;
+    if (body) {
+      body.classList.toggle('open');
+    }
+  }
+
+  // Optional: Start with all panels closed (no need for display = none)
+  document.querySelectorAll('.panel-body').forEach(e => {
+    e.classList.remove('open');
+  });
   </script>
   
   <div class="panel">
