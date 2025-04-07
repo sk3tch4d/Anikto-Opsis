@@ -1,8 +1,8 @@
-/* Base Styles */
+/* Base */
 body {
   margin: 0;
-  background-color: #2b2d31;
-  color: #dbdee1;
+  background-color: #2c2f33; /* Discord dark background */
+  color: #ffffff;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;
@@ -12,80 +12,95 @@ body {
 
 /* Headings */
 h1 {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: #fff;
-  margin-bottom: 1.2rem;
+  font-size: 2rem;
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
   text-align: center;
+  letter-spacing: 0.3px;
 }
 h2 {
   font-size: 1.6rem;
-  color: #fff;
-  margin-bottom: 0.75rem;
+  color: #ffffff;
   text-align: center;
+  margin-bottom: 0.75rem;
 }
 h3 {
-  color: #b5bac1;
+  color: #ccc;
   margin-bottom: 1rem;
   text-align: center;
 }
 
+/* Buttons */
+.button {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  padding: 0.75rem 1.2rem;
+  background-color: #40444b;
+  color: #fff;
+  border: 1px solid #2f3136;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+.button:hover {
+  background-color: #50545b;
+  transform: translateY(-2px);
+}
+.button.full-width {
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+}
+
 /* Panels */
 .panel {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   width: 100%;
   max-width: 500px;
 }
 .panel-header {
-  background: #313338;
+  background-color: #36393f;
   padding: 0.8rem 1rem;
   cursor: pointer;
   font-weight: bold;
-  color: #fff;
+  color: #cccccc;
   border-radius: 8px;
   text-align: center;
   transition: background 0.2s ease, color 0.2s ease;
 }
-.panel-header:hover {
-  background-color: #3a3c41;
-}
 .panel.open > .panel-header {
-  background-color: #3f4147;
+  background-color: #40444b;
+  color: #ffffff;
+  border-radius: 8px 8px 0 0;
+}
+.panel-header:hover {
+  background-color: #3a3d42;
+}
+.panel-header:focus {
+  outline: none;
 }
 .panel-body {
-  background-color: #2b2d31;
+  background-color: #2f3136;
   max-height: 0;
   overflow: hidden;
   padding: 0;
-  transition: max-height 0.3s ease, padding 0.3s ease;
+  transition: max-height 0.2s ease, padding 0.2s ease;
 }
 .panel-body.open {
-  padding: 1rem 0.5rem;
-  max-height: 2000px;
-  border-top: 1px solid #4e5058;
+  border-top: 1px solid #202225;
+  border-bottom: 1px solid #202225;
+  max-height: 1000px;
+  padding: 1rem;
   border-radius: 0 0 8px 8px;
 }
-
-/* Buttons */
-.button {
-  display: block;
-  width: 100%;
-  padding: 0.75rem;
-  margin-top: 1rem;
-  font-weight: bold;
-  background-color: #5865f2;
-  color: #fff;
-  border: none;
+.panel.open {
+  box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.25);
   border-radius: 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-.button:hover {
-  background-color: #4752c4;
-}
-.button.full-width {
-  width: 100%;
+  transition: box-shadow 0.3s ease;
 }
 
 /* Lists */
@@ -93,75 +108,94 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%;
+  max-width: 500px;
 }
 li {
-  background: #1e1f22;
-  border: 1px solid #4e5058;
-  border-radius: 8px;
-  padding: 0.75rem;
+  background-color: #2f3136;
   margin-bottom: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #202225;
   text-align: center;
-  font-size: 0.95rem;
-  color: #fff;
+  font-size: 0.9rem;
 }
 
-/* List Buttons */
+/* Downloads list buttons */
+ul.downloads {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
 ul.downloads li {
   margin-bottom: 0.5rem;
   padding: 0;
 }
-li > .button {
-  all: unset;
+.button.full-width {
   display: block;
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #404249;
-  color: #fff;
-  text-align: center;
+  background-color: #40444b;
+  border: 1px solid #2f3136;
   border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s ease;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  text-align: center;
 }
-li > .button:hover {
-  background-color: #4e5058;
+.button.full-width:hover {
+  background-color: #50545b;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+}
+a:hover {
+  text-decoration: underline;
 }
 
 /* Drop Zone */
 .drop-zone {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px dashed #4e5058;
-  background-color: #2b2d31;
-  color: #dbdee1;
-  padding: 2rem;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 500px;
+  flex-direction: column;
+  border: 2px dashed #7289da;
+  padding: 1.5rem;
+  border-radius: 10px;
   text-align: center;
-  transition: background 0.2s ease, border-color 0.2s ease;
   cursor: pointer;
+  max-width: 400px;
+  width: 100%;
+  min-height: 120px;
+  box-sizing: border-box;
 }
 .drop-zone:hover {
-  background-color: #313338;
-  border-color: #5865f2;
+  background-color: rgba(114, 137, 218, 0.05);
+}
+.drop-text {
+  font-size: 1rem;
+  padding: 0.5rem;
+  color: #ccc;
+  max-width: 90%;
+  word-wrap: break-word;
 }
 input[type="file"] {
   display: none;
 }
 
-/* Uploaded file list */
-#file-list li {
-  background-color: #1e1f22;
-  border: 1px solid #4e5058;
-  border-radius: 10px;
+/* File box list */
+.file-box li {
+  background-color: transparent;
+  border: 2px solid #7289da;
+  color: #ffffff;
   padding: 0.75rem 1rem;
+  border-radius: 8px;
   margin-top: 1rem;
-  color: #dbdee1;
-  word-break: break-word;
   text-align: center;
   font-weight: bold;
+  word-break: break-word;
 }
 
 /* Badges */
@@ -173,8 +207,15 @@ input[type="file"] {
   font-weight: bold;
   margin-left: 0.3rem;
 }
-.badge-day { background-color: #ffcc00; color: #000; }
-.badge-night { background-color: #5865f2; color: #fff; }
+.badge-day { background-color: #ffde59; color: #000; }
+.badge-evening { background-color: #ff914d; color: #000; }
+.badge-night { background-color: #4d9aff; color: #fff; }
+
+/* Error */
+.error {
+  color: #ff6b6b;
+  margin-top: 1rem;
+}
 
 /* Spinner */
 #loading {
@@ -182,11 +223,11 @@ input[type="file"] {
   text-align: center;
   padding: 2rem;
   font-size: 1.2rem;
-  color: #fff;
+  color: #7289da;
 }
 .spinner {
   border: 4px solid rgba(255, 255, 255, 0.1);
-  border-top: 4px solid #5865f2;
+  border-top: 4px solid #7289da;
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -199,8 +240,8 @@ input[type="file"] {
 
 /* Responsive */
 @media (max-width: 500px) {
-  h1 { font-size: 1.75rem; }
+  h1 { font-size: 1.8rem; }
   h2 { font-size: 1.4rem; }
-  .button { padding: 0.6rem; font-size: 1rem; }
-  li { font-size: 0.9rem; }
+  .button { padding: 0.6rem; }
+  li { padding: 0.6rem; }
 }
