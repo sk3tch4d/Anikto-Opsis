@@ -4,125 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARGX Results</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #121212;
-      color: #f0f0f0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
-
-    h2 {
-      font-size: 1.8rem;
-      color: #00c6ff;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      width: 100%;
-      max-width: 400px;
-    }
-
-    li {
-      background: #1e1e1e;
-      margin-bottom: 0.5rem;
-      padding: 0.75rem;
-      border-radius: 8px;
-      text-align: center;
-      box-shadow: 0 0 6px rgba(0, 255, 255, 0.1);
-      word-wrap: break-word;
-    }
-
-    a {
-      text-decoration: none;
-      color: #00c6ff;
-      font-weight: bold;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .button {
-      margin-top: 2rem;
-      padding: 0.6rem;
-      background-color: #00c6ff;
-      color: #000;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      width: 100%;
-      max-width: 400px;
-      transition: 0.2s;
-    }
-
-    .button:hover {
-      background-color: #00a6dd;
-    }
-
-    .button.full-width {
-      width: 100%;
-      max-width: 400px;
-    }
-
-    @media (max-width: 500px) {
-      h2 { font-size: 1.5rem; }
-      .button { padding: 0.5rem; }
-      li { padding: 0.6rem; }
-    }
-  
-.badge {
-  display: inline-block;
-  padding: 0.25em 0.6em;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  margin-left: 0.3rem;
-}
-.badge-day { background-color: #ffde59; color: #000; }
-.badge-evening { background-color: #ff914d; color: #000; }
-.badge-night { background-color: #4d9aff; color: #fff; }
-
-.panel {
-  margin-top: 1.5rem;
-  width: 100%;
-  max-width: 500px;
-}
-.panel-header {
-  background: #1e1e1e;
-  padding: 0.6rem 1rem;
-  cursor: pointer;
-  font-weight: bold;
-  color: #00c6ff;
-  border-radius: 6px 6px 0 0;
-  text-align: center;
-}
-.panel-header:hover {
-  background: #222;
-}
-.panel-body {
-  background: #181818;
-  padding: 1rem;
-  border-radius: 0 0 6px 6px;
-  border-top: 1px solid #333;
-}
-
-</style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h2>ARGX Summary</h2>
-
+  <h1>ARGX Summary</h1>
   {% set shift_icons = {'Day': '☀️', 'Evening': '🌇', 'Night': '🌙'} %}
-{% macro render_shift_section(title, shift_groups) %}
+  {% macro render_shift_section(title, shift_groups) %}
   <div class="panel">
     <div class="panel-header" onclick="togglePanel(this)">
       <span>{{ title }}</span>
