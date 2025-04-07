@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, send_file
 import os
 import uuid
 import re
-from ARGX_Generator import generate_argx_and_heatmap
+from generator import generate_argx_and_heatmap
 
 UPLOAD_FOLDER = "/tmp/uploads"
 MAX_PDFS = 30
