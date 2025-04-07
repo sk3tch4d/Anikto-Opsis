@@ -147,18 +147,18 @@
   <div class="panel">
   <div class="panel-header" onclick="togglePanel(this)">Shift Swaps</div>
   <div class="panel-body">
-    {% if stats.shift_swaps %}
-      <ul>
-        {% for swap in stats.shift_swaps %}
-          <li>
-            <strong>{{ swap.date }} – Shift {{ swap.shift }}:</strong><br>
-            {{ swap.old }} → {{ swap.new }}
-          </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No swaps detected.</p>
-    {% endif %}
+    {% if stats.swaps %}
+  <ul>
+    {% for swap in stats.swaps %}
+      <li>
+        <strong>{{ swap.date }}</strong>: {{ swap.off }} off ({{ swap.reason }}),
+        covered by {{ swap.on }} ({{ swap.time }})
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No shift swaps or exceptions detected.</p>
+{% endif %}
   </div>
   </div>
   
