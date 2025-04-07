@@ -58,7 +58,7 @@ h3 {
 
 /* Panels */
 .panel {
-  margin-top: 1.5rem;
+  margin-top: 0.75rem;
   width: 100%;
   max-width: 500px;
 }
@@ -91,6 +91,7 @@ h3 {
   transition: max-height 0.2s ease, padding 0.2s ease;
 }
 .panel-body.open {
+  background-color: #1f2124; /* darker than default */
   border-top: 1px solid #202225;
   border-bottom: 1px solid #202225;
   max-height: 1000px;
