@@ -79,7 +79,7 @@ h3 {
 
 .panel-header.open {
   background: #2b2b2b;
-  box-shadow: inset 0 0 0 1px #33bfff; /* softer, more cohesive */
+  box-shadow: inset 0 0 0 1px rgba(0, 198, 255, 0.2);
 }
 
 .panel-header:focus {
