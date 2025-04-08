@@ -176,12 +176,11 @@
     try {
       const response = await fetch(`/api/working_on_date?date=${dateStr}`);
       const data = await response.json();
-
       const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
       let html = '';
 
       if (data.error) {
-        html = `<p style="color: red;">${data.error}</p>`;
+        html = `<p class="error">${data.error}</p>`;
       } else {
         ['Day', 'Evening', 'Night'].forEach(type => {
           if (data[type]) {
@@ -197,35 +196,29 @@
 
       resultsDiv.innerHTML = html;
     } catch (err) {
-      resultsDiv.innerHTML = `<p style="color: red;">Error fetching data</p>`;
+      resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
     } finally {
       loadingDiv.style.display = "none";
     }
   }
 
-  function handleDateChange() {
-    const dateInput = document.getElementById("working-date");
-    const display = document.getElementById("date-display");
-    display.textContent = dateInput.value || "Select a date...";
-    fetchWorkingOnDate();
-  }
-
   window.addEventListener("DOMContentLoaded", () => {
     const dateInput = document.getElementById("working-date");
-    const display = document.getElementById("date-display");
+    const customText = document.getElementById("custom-date-text");
 
-    if (dateInput && display) {
+    if (dateInput && customText) {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const iso = tomorrow.toISOString().split('T')[0];
 
       dateInput.value = iso;
-      display.textContent = iso;
+      customText.textContent = iso;
 
       fetchWorkingOnDate();
 
       dateInput.addEventListener("change", () => {
-        display.textContent = dateInput.value || "Select a date...";
+        customText.textContent = dateInput.value || "Select a date...";
+        fetchWorkingOnDate();
       });
     }
   });
