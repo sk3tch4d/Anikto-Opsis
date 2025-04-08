@@ -11,6 +11,11 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app = Flask(__name__)
 
+@app.template_filter("reorder_name")
+def reorder_name(value):
+    parts = value.split(", ")
+    return f"{parts[1]} {parts[0]}" if len(parts) == 2 else value
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     def format_pdf_display_name(filename):
