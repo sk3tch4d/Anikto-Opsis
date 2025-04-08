@@ -250,6 +250,32 @@ input[type="file"] {
   to { transform: rotate(360deg); }
 }
 
+
+/* Date input styling */
+input[type="date"] {
+  background-color: #2f3136;
+  color: #ffffff;
+  border: 1px solid #202225;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  box-sizing: border-box;
+  appearance: none;
+}
+
+/* ==== DATE INPUT ==== */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Makes the calendar icon visible on dark backgrounds */
+  cursor: pointer;
+}
+
+input[type="date"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.25);
+}
+
 /* Responsive */
 @media (max-width: 500px) {
   h1 { font-size: 1.8rem; }
