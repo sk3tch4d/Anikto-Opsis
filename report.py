@@ -24,6 +24,14 @@ def group_by_shift(df, target_date):
 
     return dict(shifts)
 
+def get_working_on_date(df, date_str):
+    try:
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+    except ValueError:
+        return {"error": "Invalid date format. Use YYYY-MM-DD"}
+
+    return group_by_shift(df, date_obj)
+
 
 def process_report(pdf_paths):
     frames_with_swaps = [parse_pdf(p) for p in pdf_paths]
