@@ -326,6 +326,12 @@ input[type="date"]:focus {
   text-align: center;
   width: 100%;
 }
+.date-wrapper input[type="date"]::-webkit-datetime-edit-text,
+.date-wrapper input[type="date"]::-webkit-datetime-edit-month-field,
+.date-wrapper input[type="date"]::-webkit-datetime-edit-day-field,
+.date-wrapper input[type="date"]::-webkit-datetime-edit-year-field {
+  text-align: center;
+}
 
 /* Placeholder (fake one using span) */
 .date-wrapper .date-placeholder {
