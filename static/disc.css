@@ -296,6 +296,7 @@ input[type="date"]:focus {
   width: 100%;
   max-width: 500px;
 }
+
 .date-wrapper input[type="date"] {
   width: 100%;
   padding: 0.75rem;
@@ -308,13 +309,14 @@ input[type="date"]:focus {
   -moz-appearance: textfield;
   -webkit-appearance: none;
   text-align: center;
-  text-align-last: center;
-  direction: rtl;
+  text-align-last: center; /* Helps with Firefox */
+  direction: ltr; /* Prevents right-alignment issues */
 }
+
 .date-wrapper input[type="date"]::-webkit-datetime-edit {
   text-align: center;
-  direction: ltr;
 }
+
 /* Placeholder (fake one using span) */
 .date-wrapper .date-placeholder {
   position: absolute;
@@ -326,6 +328,7 @@ input[type="date"]:focus {
   transition: 0.2s ease;
   text-align: center;
 }
+
 .date-wrapper input[type="date"]:focus + .date-placeholder,
 .date-wrapper input[type="date"]:valid + .date-placeholder {
   opacity: 0;
