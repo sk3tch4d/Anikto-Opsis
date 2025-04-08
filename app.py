@@ -4,7 +4,8 @@ import uuid
 import re
 from report import process_report, get_working_on_date
 
-UPLOAD_FOLDER = "/tmp/uploads"
+#UPLOAD_FOLDER = "/tmp/uploads"
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
 MAX_PDFS = 30
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
