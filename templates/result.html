@@ -33,15 +33,22 @@
   {{ render_shift_section("Working Tomorrow", stats.working_tomorrow) }}
 
   <!-- ======== WORKING DATE ======== -->
-  <div class="date-wrapper">
-    <input type="date" id="working-date" onchange="fetchWorkingOnDate()" />
-    <label for="working-date" class="placeholder">Select a date..</label>
+  <div class="panel">
+  <div class="panel-header" onclick="togglePanel(this)">
+    <span>Working on Date</span>
   </div>
-  <div id="working-date-loading" style="display: none; text-align: center;">
-  <div class="spinner"></div>
-    <p style="margin-top: 0.5rem;">Fetching schedule...</p>
+  <div class="panel-body">
+    <div class="date-wrapper">
+      <input type="date" id="working-date" onchange="fetchWorkingOnDate()" required />
+      <span class="date-placeholder">Select a date..</span>
+    </div>
+    <div id="working-date-loading" style="display: none; text-align: center;">
+      <div class="spinner"></div>
+      <p style="margin-top: 0.5rem;">Fetching schedule...</p>
+    </div>
+    <div id="working-date-results" style="margin-top: 1em;"></div>
   </div>
-  <div id="working-date-results" style="margin-top: 1em;"></div>
+  </div>
   
   <!-- ======== SWAPS & COVERAGE ======== --> 
   <div class="panel">
