@@ -34,7 +34,7 @@
   <!-- ======== WORKING DATE ======== -->
   <div class="panel">
   <div class="panel-header" onclick="togglePanel(this)">
-    <span>Working on Date</span>
+    <span>Scheduled</span>
   </div>
   <div class="panel-body">
     <div class="date-wrapper">
@@ -115,11 +115,11 @@
         <ul class="downloads">
           {% for file in outputs %}
             {% if "ARGX" in file %}
-              <li><a href="{{ url_for('download', filename=file) }}" class="button full-width">Spreadsheet</a></li>
+              <li><a href="{{ url_for('download', filename=file) }}" class="download-link">Spreadsheet</a></li>
             {% elif "ARGM" in file %}
-              <li><a href="{{ url_for('download', filename=file) }}" class="button full-width">Heatmap</a></li>
+              <li><a href="{{ url_for('download', filename=file) }}" class="download-link">Heatmap</a></li>
             {% else %}
-              <li><a href="{{ url_for('download', filename=file) }}" class="button full-width">{{ file }}</a></li>
+              <li><a href="{{ url_for('download', filename=file) }}" class="download-link">{{ file }}</a></li>
             {% endif %}
           {% endfor %}
         </ul>
