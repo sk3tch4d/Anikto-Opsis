@@ -32,6 +32,18 @@
   {{ render_shift_section("Working Today", stats.working_today) }}
   {{ render_shift_section("Working Tomorrow", stats.working_tomorrow) }}
 
+  <!-- ======== WORKING DATE ======== -->
+  <div class="panel">
+    <div class="panel-header" onclick="togglePanel(this)">
+    <span>Working on Date</span>
+  </div>
+  <div class="panel-body">
+    <label for="working-date">Select a date:</label>
+    <input type="date" id="working-date" onchange="fetchWorkingOnDate()" />
+    <div id="working-date-results" style="margin-top: 1em;"></div>
+    </div>
+  </div>
+  
   <!-- ======== SWAPS & COVERAGE ======== --> 
   <div class="panel">
   <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage (WIP)</div>
@@ -149,6 +161,42 @@
   document.querySelectorAll('.panel-body').forEach(body => {
     body.classList.remove('open');
   });
+
+  // ==== New: Fetch Working on Date ====
+  async function fetchWorkingOnDate() {
+    const dateInput = document.getElementById('working-date');
+    const resultsDiv = document.getElementById('working-date-results');
+    const dateStr = dateInput.value;
+
+    if (!dateStr) return;
+
+    try {
+      const response = await fetch(`/api/working_on_date?date=${dateStr}`);
+      const data = await response.json();
+
+      if (data.error) {
+        resultsDiv.innerHTML = `<p style="color: red;">${data.error}</p>`;
+        return;
+      }
+
+      const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
+      let html = '';
+
+      ['Day', 'Evening', 'Night'].forEach(type => {
+        if (data[type]) {
+          html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><ul>`;
+          data[type].forEach(([name, shift]) => {
+            html += `<li>${name} (${shift})</li>`;
+          });
+          html += `</ul>`;
+        }
+      });
+
+      resultsDiv.innerHTML = html || "<p>No employees scheduled for this date.</p>";
+    } catch (err) {
+      resultsDiv.innerHTML = `<p style="color: red;">Error fetching data</p>`;
+    }
+  }
   </script>
   
   <div class="panel">
