@@ -181,6 +181,11 @@ a:hover {
 .drop-zone:hover {
   background-color: rgba(114, 137, 218, 0.05);
 }
+.drop-zone.active {
+  background-color: rgba(114, 137, 218, 0.1); /* subtle Discord blue */
+  border-color: #7289da;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
 .drop-text {
   font-size: 1rem;
   padding: 0.5rem;
