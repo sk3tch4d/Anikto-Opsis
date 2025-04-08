@@ -40,6 +40,7 @@
   <div class="panel-body">
     <label for="working-date">Select a date:</label>
     <input type="date" id="working-date" onchange="fetchWorkingOnDate()" />
+    <div id="working-date-loading" style="display: none;">Loading...</div>
     <div id="working-date-results" style="margin-top: 1em;"></div>
     </div>
   </div>
@@ -162,39 +163,45 @@
     body.classList.remove('open');
   });
 
-  // ==== New: Fetch Working on Date ====
+  // ==== Enhanced: Fetch Working on Date with Spinner ====
   async function fetchWorkingOnDate() {
     const dateInput = document.getElementById('working-date');
     const resultsDiv = document.getElementById('working-date-results');
+    const loadingDiv = document.getElementById('working-date-loading');
     const dateStr = dateInput.value;
 
     if (!dateStr) return;
+
+    resultsDiv.innerHTML = "";
+    loadingDiv.style.display = "block";
 
     try {
       const response = await fetch(`/api/working_on_date?date=${dateStr}`);
       const data = await response.json();
 
-      if (data.error) {
-        resultsDiv.innerHTML = `<p style="color: red;">${data.error}</p>`;
-        return;
-      }
-
       const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
       let html = '';
 
-      ['Day', 'Evening', 'Night'].forEach(type => {
-        if (data[type]) {
-          html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><ul>`;
-          data[type].forEach(([name, shift]) => {
-            html += `<li>${name} (${shift})</li>`;
-          });
-          html += `</ul>`;
-        }
-      });
+      if (data.error) {
+        html = `<p style="color: red;">${data.error}</p>`;
+      } else {
+        ['Day', 'Evening', 'Night'].forEach(type => {
+          if (data[type]) {
+            html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><ul>`;
+            data[type].forEach(([name, shift]) => {
+              html += `<li>${name} (${shift})</li>`;
+            });
+            html += `</ul>`;
+          }
+        });
+        if (!html) html = "<p>No employees scheduled for this date.</p>";
+      }
 
-      resultsDiv.innerHTML = html || "<p>No employees scheduled for this date.</p>";
+      resultsDiv.innerHTML = html;
     } catch (err) {
       resultsDiv.innerHTML = `<p style="color: red;">Error fetching data</p>`;
+    } finally {
+      loadingDiv.style.display = "none";
     }
   }
   </script>
