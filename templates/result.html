@@ -38,7 +38,10 @@
     <span>Working on Date</span>
   </div>
   <div class="panel-body">
-    <label for="working-date">Select a date:</label>
+    <div class="date-wrapper">
+      <input type="date" id="date-input" required>
+      <span class="date-placeholder">Select a date..</span>
+    </div>
     <input type="date" id="working-date" onchange="fetchWorkingOnDate()" />
     <div id="working-date-loading" style="display: none; text-align: center;">
   <div class="spinner"></div>
@@ -207,6 +210,21 @@
     } finally {
       loadingDiv.style.display = "none";
     }
+  }
+
+  // === Overlay Placeholder Support for input[type="date"] ===
+  const dateInput = document.getElementById("working-date");
+  const placeholder = document.querySelector(".date-placeholder");
+
+  if (dateInput && placeholder) {
+    dateInput.addEventListener("change", () => {
+      placeholder.style.display = dateInput.value ? "none" : "block";
+    });
+
+    // Hide placeholder initially if there's already a date
+    window.addEventListener("DOMContentLoaded", () => {
+      if (dateInput.value) placeholder.style.display = "none";
+    });
   }
   </script>
   
