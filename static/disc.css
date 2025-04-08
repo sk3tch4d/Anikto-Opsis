@@ -98,7 +98,7 @@ h3 {
   border-radius: 0 0 8px 8px;
 }
 .panel.open {
-  box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.25);
+  box-shadow: 0 0 0 2px rgba(020, 020, 025, 0.3);
   border-radius: 8px;
   transition: box-shadow 0.3s ease;
 }
