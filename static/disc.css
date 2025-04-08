@@ -150,6 +150,9 @@ ul.downloads li > .button {
 ul.downloads li > .button:hover {
   background-color: #50545b;
 }
+ul.downloads li:last-child {
+  margin-bottom: 0;
+}
 
 /* Links */
 a {
