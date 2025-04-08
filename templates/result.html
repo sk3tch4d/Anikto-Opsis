@@ -133,6 +133,7 @@
   function togglePanel(header) {
     const panel = header.closest('.panel');
     const body = header.nextElementSibling;
+
     document.querySelectorAll('.panel').forEach(p => {
       if (p !== panel) {
         p.classList.remove('open');
@@ -140,42 +141,21 @@
         if (otherBody) otherBody.classList.remove('open');
       }
     });
+
     panel.classList.toggle('open');
     if (body) body.classList.toggle('open');
-  }
-
-  function formatDisplayDate(dateStr) {
-    const date = new Date(dateStr);
-    const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 1);
-
-    const isToday = date.toDateString() === today.toDateString();
-    const isTomorrow = date.toDateString() === tomorrow.toDateString();
-
-    if (isToday) return "Today";
-    if (isTomorrow) return "Tomorrow";
-
-    return date.toLocaleDateString("en-US", {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric'
-    });
   }
 
   async function fetchWorkingOnDate() {
     const dateInput = document.getElementById('working-date');
     const resultsDiv = document.getElementById('working-date-results');
     const loadingDiv = document.getElementById('working-date-loading');
-    const customText = document.getElementById("custom-date-text");
     const dateStr = dateInput.value;
 
     if (!dateStr) return;
 
-    customText.textContent = formatDisplayDate(dateStr);
-
     resultsDiv.innerHTML = "";
-    const spinnerTimeout = setTimeout(() => loadingDiv.style.display = "block", 150);
+    loadingDiv.style.display = "block";
 
     try {
       const response = await fetch(`/api/working_on_date?date=${dateStr}`);
@@ -199,24 +179,46 @@
       }
 
       resultsDiv.innerHTML = html;
-    } catch {
+    } catch (err) {
       resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
     } finally {
-      clearTimeout(spinnerTimeout);
       loadingDiv.style.display = "none";
+    }
+  }
+
+  function updateCustomDateText(date, element) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    if (date.toDateString() === today.toDateString()) {
+      element.textContent = "Today";
+    } else if (date.toDateString() === tomorrow.toDateString()) {
+      element.textContent = "Tomorrow";
+    } else {
+      const options = { weekday: 'long', month: 'long', day: 'numeric' };
+      element.textContent = date.toLocaleDateString(undefined, options);
     }
   }
 
   window.addEventListener("DOMContentLoaded", () => {
     const dateInput = document.getElementById("working-date");
-    if (dateInput) {
-      const today = new Date();
-      const iso = today.toISOString().split('T')[0];
-      dateInput.value = iso;
+    const customText = document.getElementById("custom-date-text");
 
+    if (dateInput && customText) {
+      const today = new Date();
+      const isoDate = today.toISOString().split('T')[0];
+      dateInput.value = isoDate;
+
+      updateCustomDateText(today, customText);
       fetchWorkingOnDate();
 
-      dateInput.addEventListener("change", fetchWorkingOnDate);
+      dateInput.addEventListener("change", () => {
+        const newDate = new Date(dateInput.value + "T00:00:00");
+        updateCustomDateText(newDate, customText);
+        fetchWorkingOnDate();
+      });
     }
   });
 </script>
