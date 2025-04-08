@@ -303,6 +303,8 @@ input[type="date"]:focus {
   border-radius: 8px;
   font-size: 1rem;
   appearance: none;
+  text-align: center;
+  text-align-last: center;
 }
 .date-wrapper .placeholder {
   position: absolute;
