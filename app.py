@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, send_file, jsonify
 import os
 import uuid
 import re
-from report import process_report, get_working_on_date, get_combined_dataframe
+from report import process_report, get_working_on_date
 
 UPLOAD_FOLDER = "/tmp/uploads"
 MAX_PDFS = 30
@@ -23,7 +23,12 @@ def working_on_date():
     if not date_str:
         return jsonify({"error": "Missing date parameter"}), 400
 
-    df = get_combined_dataframe()  # however your report builds it
+    # Load your PDF files here — adjust this to where your PDFs live
+    pdf_folder = "uploads"  # or whatever folder your app uses
+    pdf_paths = [os.path.join(pdf_folder, f) for f in os.listdir(pdf_folder) if f.endswith(".pdf")]
+
+    _, _, df = process_report(pdf_paths)
+
     result = get_working_on_date(df, date_str)
     return jsonify(result)
 
