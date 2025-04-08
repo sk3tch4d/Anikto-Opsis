@@ -6,8 +6,8 @@ from datetime import datetime, timedelta
 from collections import defaultdict
 
 from argx import write_argx, make_pay_period_fn
-from heatmap import generate_heatmap_png
-from parser import parse_pdf
+#from heatmap import generate_heatmap_png
+#from parser import parse_pdf
 
 get_pay_period = make_pay_period_fn(datetime(2025, 1, 13))
 
