@@ -63,7 +63,7 @@ h3 {
   max-width: 500px;
 }
 .panel-header {
-  background-color: #36393f;
+  background-color: #525760;
   padding: 0.8rem 1rem;
   cursor: pointer;
   font-weight: bold;
@@ -93,7 +93,7 @@ h3 {
 .panel-body.open {
   border-top: 1px solid #202225;
   border-bottom: 1px solid #202225;
-  max-height: 1000px;
+  max-height: 2000px;
   padding: 1rem;
   border-radius: 0 0 8px 8px;
 }
