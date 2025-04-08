@@ -27,7 +27,7 @@ def working_on_date():
     pdf_folder = "uploads"  # or whatever folder your app uses
     pdf_paths = [os.path.join(pdf_folder, f) for f in os.listdir(pdf_folder) if f.endswith(".pdf")]
 
-    _, _, df = process_report(pdf_paths)
+    _, _, df = process_report(pdf_paths, return_df=True)
 
     result = get_working_on_date(df, date_str)
     return jsonify(result)
