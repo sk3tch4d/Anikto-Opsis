@@ -1,4 +1,11 @@
-import os import re import pandas as pd from datetime import datetime, timedelta from argx import write_argx, make_pay_period_fn from heatmap import generate_heatmap_png  # assumes generate_heatmap_png lives in heatmap.py from parser import parse_pdf  # assumes parse_pdf is in parser.py
+import os
+import re
+import pandas as pd
+from datetime import datetime, timedelta
+
+from argx import write_argx, make_pay_period_fn
+from heatmap import generate_heatmap_png  # if modularized
+from parser import parse_pdf  # assuming parser.py exists
 
 get_pay_period = make_pay_period_fn(datetime(2025, 1, 13))
 
