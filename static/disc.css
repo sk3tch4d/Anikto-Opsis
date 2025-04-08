@@ -279,15 +279,43 @@ input[type="date"] {
   appearance: none;
   text-align: center; /* Center the date text */
 }
-
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1); /* White calendar icon */
   cursor: pointer;
 }
-
 input[type="date"]:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.4); /* More visible highlight */
+}
+/* ==== DATE TEXT WRAPPER ==== */
+.date-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.date-wrapper input[type="date"] {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #7289da;
+  background-color: #2f3136;
+  color: #fff;
+  font-size: 1rem;
+  appearance: none;
+}
+.date-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  color: #888;
+  pointer-events: none;
+  font-size: 1rem;
+}
+.date-wrapper input[type="date"]:focus + .date-placeholder,
+.date-wrapper input[type="date"]:valid + .date-placeholder {
+  display: none;
 }
 
 /* Responsive */
