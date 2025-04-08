@@ -1,7 +1,7 @@
 /* Base */
 body {
   margin: 0;
-  background-color: #2c2f33;
+  background-color: #232529;
   color: #ffffff;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
@@ -63,7 +63,7 @@ h3 {
   max-width: 500px;
 }
 .panel-header {
-  background-color: #525760;
+  background-color: #2f3237;
   padding: 0.8rem 1rem;
   cursor: pointer;
   font-weight: bold;
@@ -73,7 +73,7 @@ h3 {
   transition: background 0.2s ease, color 0.2s ease;
 }
 .panel.open > .panel-header {
-  background-color: #1e1f22;
+  background-color: #525760;
   color: #ffffff;
   border-radius: 8px 8px 0 0;
 }
@@ -112,7 +112,7 @@ ul {
   max-width: 500px;
 }
 li {
-  background-color: #2f3136;
+  background-color: #232529;
   margin-bottom: 0.4rem;
   padding: 0.75rem;
   border-radius: 8px;
