@@ -297,58 +297,29 @@ input[type="date"]:focus {
   max-width: 500px;
 }
 
+/* Hide the native input */
 .date-wrapper input[type="date"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Custom styled display */
+.custom-date-display {
   width: 100%;
   padding: 0.75rem;
   background-color: #2f3136;
-  color: #ffffff;
+  color: #aaa;
   border: 1px solid #7289da;
   border-radius: 8px;
   font-size: 1rem;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   text-align: center;
-  text-align-last: center;
-  direction: ltr;
-  text-indent: 0;
-  display: flex;
-  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-/* For WebKit (Chrome, Safari) */
-.date-wrapper input[type="date"]::-webkit-datetime-edit-fields-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-.date-wrapper input[type="date"]::-webkit-datetime-edit {
-  text-align: center;
-  width: 100%;
-}
-.date-wrapper input[type="date"]::-webkit-datetime-edit-text,
-.date-wrapper input[type="date"]::-webkit-datetime-edit-month-field,
-.date-wrapper input[type="date"]::-webkit-datetime-edit-day-field,
-.date-wrapper input[type="date"]::-webkit-datetime-edit-year-field {
-  text-align: center;
-}
-
-/* Placeholder (fake one using span) */
-.date-wrapper .date-placeholder {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #aaa;
-  pointer-events: none;
-  transition: 0.2s ease;
-  text-align: center;
-}
-
-.date-wrapper input[type="date"]:focus + .date-placeholder,
-.date-wrapper input[type="date"]:valid + .date-placeholder {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.95);
+.custom-date-display:hover {
+  background-color: #36393f;
 }
 
 /* Responsive */
