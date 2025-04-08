@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, send_file
 import os
 import uuid
 import re
-from report import process_report
+from report import process_report, get_working_on_date
 
 UPLOAD_FOLDER = "/tmp/uploads"
 MAX_PDFS = 30
@@ -15,6 +15,18 @@ app = Flask(__name__)
 def reorder_name(value):
     parts = value.split(", ")
     return f"{parts[1]} {parts[0]}" if len(parts) == 2 else value
+
+
+@app.route("/api/working_on_date")
+def working_on_date():
+    date_str = request.args.get("date")
+    if not date_str:
+        return jsonify({"error": "Missing date parameter"}), 400
+
+    df = get_combined_dataframe()  # whatever you do for the report
+    result = get_working_on_date(df, date_str)
+    return jsonify(result)
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
