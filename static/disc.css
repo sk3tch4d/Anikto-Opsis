@@ -290,10 +290,10 @@ input[type="date"]:focus {
 /* ==== DATE TEXT WRAPPER ==== */
 .date-wrapper {
   position: relative;
-  display: inline-block;
   width: 100%;
   max-width: 500px;
 }
+
 .date-wrapper input[type="date"] {
   width: 100%;
   padding: 0.75rem;
@@ -303,22 +303,25 @@ input[type="date"]:focus {
   border-radius: 8px;
   font-size: 1rem;
   appearance: none;
-  text-align: center;
-  text-align-last: center;
+  text-align: center; /* Center date value */
 }
-.date-wrapper .placeholder {
+
+/* Placeholder (fake one using span) */
+.date-wrapper .date-placeholder {
   position: absolute;
   top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
   color: #aaa;
   pointer-events: none;
   transition: 0.2s ease;
+  text-align: center;
 }
-.date-wrapper input[type="date"]:focus + .placeholder,
-.date-wrapper input[type="date"]:valid + .placeholder {
+
+.date-wrapper input[type="date"]:focus + .date-placeholder,
+.date-wrapper input[type="date"]:valid + .date-placeholder {
   opacity: 0;
-  transform: translateY(-50%) scale(0.95);
+  transform: translate(-50%, -50%) scale(0.95);
 }
 
 /* Responsive */
