@@ -150,7 +150,6 @@
     const panel = header.closest('.panel');
     const body = header.nextElementSibling;
 
-    // Close all other panels first
     document.querySelectorAll('.panel').forEach(p => {
       if (p !== panel) {
         p.classList.remove('open');
@@ -159,19 +158,10 @@
       }
     });
 
-    // Then toggle this panel open or closed
     panel.classList.toggle('open');
-    if (body) {
-      body.classList.toggle('open');
-    }
+    if (body) body.classList.toggle('open');
   }
 
-  // Start all panels closed (optional)
-  document.querySelectorAll('.panel-body').forEach(body => {
-    body.classList.remove('open');
-  });
-
-  // ==== Enhanced: Fetch Working on Date with Spinner ====
   async function fetchWorkingOnDate() {
     const dateInput = document.getElementById('working-date');
     const resultsDiv = document.getElementById('working-date-results');
@@ -186,7 +176,6 @@
     try {
       const response = await fetch(`/api/working_on_date?date=${dateStr}`);
       const data = await response.json();
-
       const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
       let html = '';
 
@@ -213,51 +202,32 @@
     }
   }
 
-  // === Overlay Placeholder Support for input[type="date"] ===
+  function handleDateChange() {
+    const dateInput = document.getElementById("working-date");
+    const display = document.getElementById("date-display");
+    display.textContent = dateInput.value || "Select a date..";
+    fetchWorkingOnDate();
+  }
+
   window.addEventListener("DOMContentLoaded", () => {
     const dateInput = document.getElementById("working-date");
-    const placeholder = document.querySelector(".date-placeholder");
+    const display = document.getElementById("date-display");
 
-    if (dateInput && placeholder) {
-      const togglePlaceholder = () => {
-        placeholder.style.display = dateInput.value ? "none" : "block";
-      };
-      togglePlaceholder();
-      dateInput.addEventListener("input", togglePlaceholder);
+    if (dateInput && display) {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const iso = tomorrow.toISOString().split('T')[0];
+
+      dateInput.value = iso;
+      display.textContent = iso;
+
+      fetchWorkingOnDate();
+
+      dateInput.addEventListener("change", () => {
+        display.textContent = dateInput.value || "Select a date..";
+      });
     }
   });
-
-  // ==== PRELOAD DATE
-  window.addEventListener("DOMContentLoaded", () => {
-  const dateInput = document.getElementById("working-date");
-  if (dateInput) {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const iso = tomorrow.toISOString().split('T')[0]; // YYYY-MM-DD
-    dateInput.value = iso;
-
-    fetchWorkingOnDate(); // Automatically load content for tomorrow
-  }
-  });
-
-  document.addEventListener("DOMContentLoaded", () => {
-  const dateInput = document.getElementById("working-date");
-  const customText = document.getElementById("custom-date-text");
-
-  if (dateInput) {
-    // Default to tomorrow
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const iso = tomorrow.toISOString().split('T')[0];
-    dateInput.value = iso;
-    customText.textContent = iso;
-    fetchWorkingOnDate();
-    
-    dateInput.addEventListener("change", () => {
-      customText.textContent = dateInput.value;
-    });
-  }
-});
   </script>
   
   <div class="panel">
