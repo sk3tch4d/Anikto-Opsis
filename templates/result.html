@@ -176,6 +176,7 @@
     try {
       const response = await fetch(`/api/working_on_date?date=${dateStr}`);
       const data = await response.json();
+
       const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
       let html = '';
 
@@ -205,7 +206,7 @@
   function handleDateChange() {
     const dateInput = document.getElementById("working-date");
     const display = document.getElementById("date-display");
-    display.textContent = dateInput.value || "Select a date..";
+    display.textContent = dateInput.value || "Select a date...";
     fetchWorkingOnDate();
   }
 
@@ -224,11 +225,11 @@
       fetchWorkingOnDate();
 
       dateInput.addEventListener("change", () => {
-        display.textContent = dateInput.value || "Select a date..";
+        display.textContent = dateInput.value || "Select a date...";
       });
     }
   });
-  </script>
+</script>
   
   <div class="panel">
   <form action="{{ url_for('index') }}" method="get">
