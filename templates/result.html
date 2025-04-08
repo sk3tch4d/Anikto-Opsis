@@ -40,8 +40,12 @@
   <div class="panel-body">
     <label for="working-date">Select a date:</label>
     <input type="date" id="working-date" onchange="fetchWorkingOnDate()" />
-    <div id="working-date-loading" style="display: none;">Loading...</div>
-    <div id="working-date-results" style="margin-top: 1em;"></div>
+    <div id="working-date-loading" style="display: none; text-align: center;">
+  <div class="spinner"></div>
+  <p style="margin-top: 0.5rem;">Fetching schedule...</p>
+</div>
+
+<div id="working-date-results" style="margin-top: 1em;"></div>
     </div>
   </div>
   
