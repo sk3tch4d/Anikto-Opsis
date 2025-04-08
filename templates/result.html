@@ -224,6 +224,19 @@
       dateInput.addEventListener("input", togglePlaceholder);
     }
   });
+
+  // ==== PRELOAD DATE
+  window.addEventListener("DOMContentLoaded", () => {
+  const dateInput = document.getElementById("working-date");
+  if (dateInput) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const iso = tomorrow.toISOString().split('T')[0]; // YYYY-MM-DD
+    dateInput.value = iso;
+
+    fetchWorkingOnDate(); // Automatically load content for tomorrow
+  }
+});
   </script>
   
   <div class="panel">
