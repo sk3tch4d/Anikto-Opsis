@@ -57,50 +57,53 @@
     <p id="quote" style="font-style: italic;"></p>
   </div>
 
+  <!-- ==== DROPZONE ==== -->
   <script>
-    const dropZone = document.getElementById("drop-zone");
-    const fileInput = document.getElementById("file-input");
-    const fileList = document.getElementById("file-list");
+  const dropZone = document.getElementById("drop-zone");
+  const fileInput = document.getElementById("file-input");
+  const fileList = document.getElementById("file-list");
 
-    const quotes = [
-      "Crunching shifts like pros...",
-      "Summoning the ARG gods...",
-      "Shifts are aligning...",
-      "Liam is frantically typing..",
-      "ARGX is forging your files..."
-    ];
+  const quotes = [
+    "Crunching JB2699 like a boss...",
+    "Summoning the ARG gods...",
+    "Shifts are aligning...",
+    "Liam is frantically typing..",
+    "ARGX is forging your files...",
+    "Ughh.. my stomach!...",
+    "Pulling the curtains up..."
+  ];
 
-    document.querySelector("form").addEventListener("submit", function () {
-      document.getElementById("upload-form").style.display = "none";
-      document.getElementById("loading").style.display = "block";
-      document.getElementById("quote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
+  document.querySelector("form").addEventListener("submit", function () {
+    document.getElementById("upload-form").style.display = "none";
+    document.getElementById("loading").style.display = "block";
+    document.getElementById("quote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
+  });
+
+  fileInput.addEventListener("change", () => {
+    fileList.innerHTML = "";
+    [...fileInput.files].forEach(file => {
+      const li = document.createElement("li");
+      li.textContent = file.name;
+      fileList.appendChild(li);
     });
+  });
 
-    fileInput.addEventListener("change", () => {
-      fileList.innerHTML = "";
-      [...fileInput.files].forEach(file => {
-        const li = document.createElement("li");
-        li.textContent = file.name;
-        fileList.appendChild(li);
-      });
-    });
+  dropZone.addEventListener("dragover", e => {
+    e.preventDefault();
+    dropZone.classList.add("active");
+  });
 
-    dropZone.addEventListener("dragover", e => {
-      e.preventDefault();
-      dropZone.style.backgroundColor = "rgba(0,198,255,0.1)";
-    });
+  dropZone.addEventListener("dragleave", e => {
+    e.preventDefault();
+    dropZone.classList.remove("active");
+  });
 
-    dropZone.addEventListener("dragleave", e => {
-      e.preventDefault();
-      dropZone.style.backgroundColor = "";
-    });
-
-    dropZone.addEventListener("drop", e => {
-      e.preventDefault();
-      fileInput.files = e.dataTransfer.files;
-      fileInput.dispatchEvent(new Event("change"));
-      dropZone.style.backgroundColor = "";
-    });
+  dropZone.addEventListener("drop", e => {
+    e.preventDefault();
+    fileInput.files = e.dataTransfer.files;
+    fileInput.dispatchEvent(new Event("change"));
+    dropZone.classList.remove("active");
+  });
   </script>
 
   <script>
