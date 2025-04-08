@@ -9,7 +9,7 @@ from parser import parse_pdf
 # Initialize pay period function
 get_pay_period = make_pay_period_fn(datetime(2025, 1, 13))
 
-def generate_argx_from_pdfs(pdf_paths, output_xlsx, log_duplicates=True):
+def generate_argx(pdf_paths, output_xlsx, log_duplicates=True):
     """Legacy-compatible function for writing an ARGX Excel file."""
     frames = [parse_pdf(p) for p in pdf_paths]
     df = pd.concat(frames, ignore_index=True)
