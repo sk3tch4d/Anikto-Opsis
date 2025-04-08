@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, send_file
 import os
 import uuid
 import re
-from generator import generate_argx_and_heatmap
+from report import process_report
 
 UPLOAD_FOLDER = "/tmp/uploads"
 MAX_PDFS = 30
@@ -57,7 +57,7 @@ def index():
         if not all_files:
             return render_template("index.html", error="No valid PDFs selected or uploaded.", recent_pdfs=recent_pdfs)
 
-        output_files, stats = generate_argx_and_heatmap(all_files)
+        output_files, stats = process_report(all_files)
 
         if output_files:
             filenames = [os.path.basename(path) for path in output_files]
