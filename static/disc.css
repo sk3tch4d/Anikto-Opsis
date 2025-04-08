@@ -268,7 +268,7 @@ input[type="date"] {
 /* ==== DATE INPUT ==== */
 input[type="date"] {
   background-color: #2f3136;
-  color: #ffffff; /* Bright white text */
+  color: #ffffff;
   border: 1px solid #40444b;
   border-radius: 8px;
   padding: 0.6rem 1rem;
@@ -277,7 +277,9 @@ input[type="date"] {
   margin-top: 0.5rem;
   box-sizing: border-box;
   appearance: none;
-  text-align: center; /* Center the date text */
+  -moz-appearance: textfield; /* Needed for Firefox */
+  text-indent: 0;
+  text-align: center; /* Center value */
 }
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1); /* White calendar icon */
@@ -287,6 +289,7 @@ input[type="date"]:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.4); /* More visible highlight */
 }
+
 /* ==== DATE TEXT WRAPPER ==== */
 .date-wrapper {
   position: relative;
