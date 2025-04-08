@@ -33,7 +33,7 @@ def get_working_on_date(df, date_str):
     return group_by_shift(df, date_obj)
 
 
-def process_report(pdf_paths):
+def process_report(pdf_paths, return_df=False):
     frames_with_swaps = [parse_pdf(p) for p in pdf_paths]
     frames = [f[0] for f in frames_with_swaps]
     swaps_all = sum([f[1] for f in frames_with_swaps], [])
@@ -112,4 +112,6 @@ def process_report(pdf_paths):
         "swaps": swaps_all
     }
 
-    return output_files, stats, df
+    if return_df:
+        return output_files, stats, df
+    return output_files, stats
