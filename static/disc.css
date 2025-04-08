@@ -290,32 +290,33 @@ input[type="date"]:focus {
 /* ==== DATE TEXT WRAPPER ==== */
 .date-wrapper {
   position: relative;
+  display: inline-block;
   width: 100%;
-  max-width: 300px;
+  max-width: 500px;
 }
-
 .date-wrapper input[type="date"] {
   width: 100%;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #7289da;
+  padding: 0.75rem;
   background-color: #2f3136;
-  color: #fff;
+  color: #ffffff;
+  border: 1px solid #7289da;
+  border-radius: 8px;
   font-size: 1rem;
   appearance: none;
 }
-.date-placeholder {
+.date-wrapper .placeholder {
   position: absolute;
   top: 50%;
-  left: 16px;
+  left: 12px;
   transform: translateY(-50%);
-  color: #888;
+  color: #aaa;
   pointer-events: none;
-  font-size: 1rem;
+  transition: 0.2s ease;
 }
-.date-wrapper input[type="date"]:focus + .date-placeholder,
-.date-wrapper input[type="date"]:valid + .date-placeholder {
-  display: none;
+.date-wrapper input[type="date"]:focus + .placeholder,
+.date-wrapper input[type="date"]:valid + .placeholder {
+  opacity: 0;
+  transform: translateY(-50%) scale(0.95);
 }
 
 /* Responsive */
