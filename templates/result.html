@@ -28,7 +28,7 @@
   </div>
   {% endmacro %}
 
-  {{ render_shift_section("Working Today", stats.working_today) }}
+  <!-- {{ render_shift_section("Working Today", stats.working_today) }} -->
   <!-- {{ render_shift_section("Working Tomorrow", stats.working_tomorrow) }} -->
 
   <!-- ======== WORKING DATE ======== -->
@@ -187,19 +187,41 @@
   }
 
   function updateCustomDateText(date, element) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
 
-    if (date.toDateString() === today.toDateString()) {
-      element.textContent = "Today";
-    } else if (date.toDateString() === tomorrow.toDateString()) {
-      element.textContent = "Tomorrow";
-    } else {
-      const options = { weekday: 'long', month: 'long', day: 'numeric' };
-      element.textContent = date.toLocaleDateString(undefined, options);
+  if (date.toDateString() === today.toDateString()) {
+    element.textContent = "Today";
+    return;
+  } else if (date.toDateString() === tomorrow.toDateString()) {
+    element.textContent = "Tomorrow";
+    return;
+  }
+
+  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const getOrdinal = (n) => {
+    if (n > 3 && n < 21) return "th";
+    switch (n % 10) {
+      case 1: return "st";
+      case 2: return "nd";
+      case 3: return "rd";
+      default: return "th";
     }
+  };
+
+  const weekday = dayNames[date.getDay()];
+  const month = monthNames[date.getMonth()];
+  const day = date.getDate();
+  const formatted = `${weekday} ${month} ${day}${getOrdinal(day)}`;
+
+  element.textContent = formatted;
   }
 
   window.addEventListener("DOMContentLoaded", () => {
