@@ -306,15 +306,22 @@ input[type="date"]:focus {
   border-radius: 8px;
   font-size: 1rem;
   appearance: none;
-  -moz-appearance: textfield;
+  -moz-appearance: none;
   -webkit-appearance: none;
   text-align: center;
-  text-align-last: center; /* Helps with Firefox */
-  direction: ltr; /* Prevents right-alignment issues */
+  text-align-last: center;
+  direction: ltr;
+}
+
+.date-wrapper input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .date-wrapper input[type="date"]::-webkit-datetime-edit {
   text-align: center;
+  width: 100%;
 }
 
 /* Placeholder (fake one using span) */
