@@ -112,4 +112,4 @@ def process_report(pdf_paths):
         "swaps": swaps_all
     }
 
-    return output_files, stats
+    return output_files, stats, df
