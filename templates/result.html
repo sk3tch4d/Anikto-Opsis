@@ -19,7 +19,7 @@
         <h4>{{ shift_icons[type] }} <span class="badge badge-{{ type|lower }}">{{ type }}</span></h4>
         <ul>
           {% for name, shift in shift_groups[type] %}
-            <li>{{ name }} ({{ shift }})</li>
+            <li>{{ name|reorder_name }} ({{ shift }})</li>
           {% endfor %}
         </ul>
       {% endfor %}
@@ -66,7 +66,7 @@
   <div class="panel-body">
     <ul>
       {% for name, hrs in stats.rankings.weekly %}
-        <li>{{ name }} – {{ hrs }} hrs</li>
+        <li>{{ name|reorder_name }} – {{ hrs }} hrs</li>
       {% endfor %}
     </ul>
   </div>
@@ -77,7 +77,7 @@
   <div class="panel-body">
     <ul>
       {% for name, hrs in stats.rankings.period %}
-        <li>{{ name }} – {{ hrs }} hrs</li>
+        <li>{{ name|reorder_name }} – {{ hrs }} hrs</li>
       {% endfor %}
     </ul>
   </div>
