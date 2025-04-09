@@ -1,4 +1,4 @@
-#\\\\\\\\ DATA MANAGEMENT \\\\\\\\#
+# \\\\\\ DATA MANAGEMENT \\\\\\ #
 
 import csv
 from io import StringIO
@@ -6,6 +6,8 @@ from flask import Response, jsonify, request
 from models import db, ShiftRecord, CoverageShift
 from datetime import datetime
 
+
+# //// Import JSON //// #
 def import_shifts_from_json():
     try:
         data = request.get_json()
@@ -62,7 +64,7 @@ def import_shifts_from_json():
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
-
+# //// Import CSV //// #
 def import_shifts_from_csv():
     try:
         file = request.files.get("file")
@@ -143,35 +145,7 @@ def import_shifts_from_csv():
         return jsonify({"error": str(e)}), 500
 
 
-
-def export_shifts_csv():
-    output = StringIO()
-    writer = csv.writer(output)
-
-    writer.writerow(["ShiftRecord Table"])
-    writer.writerow(["ID", "Name", "Date", "Shift", "Start", "End", "Type", "Hours", "IsCoverage", "SourcePDF", "Created", "Modified", "Notes"])
-    for r in ShiftRecord.query.all():
-        writer.writerow([
-            r.id, r.name, r.date, r.shift, r.start, r.end, r.type,
-            r.hours, r.is_coverage, r.source_pdf, r.created_at, r.modified_at, r.notes
-        ])
-
-    writer.writerow([])
-    writer.writerow(["CoverageShift Table"])
-    writer.writerow(["ID", "Date", "Shift", "Start", "End", "Hours", "OrgName", "CovName", "Reason", "ShiftType", "SourcePDF", "Created", "Modified", "Notes"])
-    for c in CoverageShift.query.all():
-        writer.writerow([
-            c.id, c.date, c.shift, c.start, c.end, c.hours, c.org_name, c.cov_name,
-            c.reason, c.shift_type, c.source_pdf, c.created_at, c.modified_at, c.notes
-        ])
-
-    output.seek(0)
-
-    print(f"[CSV Export] Exported {ShiftRecord.query.count()} ShiftRecord(s) and {CoverageShift.query.count()} CoverageShift(s).")
-    
-    return Response(output, mimetype="text/csv", headers={"Content-Disposition": "attachment; filename=argx_export.csv"})
-
-
+# //// Export JSON //// #
 def export_shifts_json():
     shift_records = [
         {
@@ -213,9 +187,50 @@ def export_shifts_json():
         for c in CoverageShift.query.all()
     ]
 
+    # Log export
     print(f"[JSON Export] Exported {len(shift_records)} ShiftRecord(s) and {len(coverage_shifts)} CoverageShift(s).")
     
-    return jsonify({
+    # Convert the data to JSON and return it as a downloadable file
+    data = {
         "shift_records": shift_records,
         "coverage_shifts": coverage_shifts
-    })
+    }
+    
+    # Force download of the JSON file
+    response = Response(
+        json.dumps(data, indent=2),  # JSON formatted with indentation
+        mimetype="application/json",
+        headers={
+            "Content-Disposition": "attachment; filename=argx_export.json"  # Forces download
+        }
+    )
+    return response
+
+# //// Export CSV //// #
+def export_shifts_csv():
+    output = StringIO()
+    writer = csv.writer(output)
+
+    writer.writerow(["ShiftRecord Table"])
+    writer.writerow(["ID", "Name", "Date", "Shift", "Start", "End", "Type", "Hours", "IsCoverage", "SourcePDF", "Created", "Modified", "Notes"])
+    for r in ShiftRecord.query.all():
+        writer.writerow([
+            r.id, r.name, r.date, r.shift, r.start, r.end, r.type,
+            r.hours, r.is_coverage, r.source_pdf, r.created_at, r.modified_at, r.notes
+        ])
+
+    writer.writerow([])
+    writer.writerow(["CoverageShift Table"])
+    writer.writerow(["ID", "Date", "Shift", "Start", "End", "Hours", "OrgName", "CovName", "Reason", "ShiftType", "SourcePDF", "Created", "Modified", "Notes"])
+    for c in CoverageShift.query.all():
+        writer.writerow([
+            c.id, c.date, c.shift, c.start, c.end, c.hours, c.org_name, c.cov_name,
+            c.reason, c.shift_type, c.source_pdf, c.created_at, c.modified_at, c.notes
+        ])
+
+    output.seek(0)
+
+    print(f"[CSV Export] Exported {ShiftRecord.query.count()} ShiftRecord(s) and {CoverageShift.query.count()} CoverageShift(s).")
+    
+    return Response(output, mimetype="text/csv", headers={"Content-Disposition": "attachment; filename=argx_export.csv"})
+
