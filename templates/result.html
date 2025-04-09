@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='disc.css') }}">
 </head>
 <body>
-  <h1>ARG Summary</h1>
+  <h1 id="typed-header"><span id="typed-text"></span></h1>
   <!--
   {% set shift_icons = {'Day': '☀️', 'Evening': '🌇', 'Night': '🌙'} %}
   {% macro render_shift_section(title, shift_groups) %}
@@ -129,6 +129,24 @@
     </div>
   </div>
 
+
+  <script>
+  const text = "ARG Summary";
+  const speed = 100;
+  const target = document.getElementById("typed-text");
+
+  let i = 0;
+  function typeWriter() {
+    if (i < text.length) {
+      target.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typeWriter, speed);
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", typeWriter);
+  </script>
+  
   <script>
   function togglePanel(header) {
     const panel = header.closest('.panel');
