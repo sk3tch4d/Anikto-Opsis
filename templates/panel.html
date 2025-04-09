@@ -3,16 +3,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='disc.css') }}">
+  <style>
+    #login-panel {
+      background: #1e1e1e;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    #login-panel input {
+      margin-top: 0.5rem;
+      padding: 0.6rem;
+      border-radius: 0.5rem;
+      background: #2c2c2c;
+      border: 1px solid #444;
+      color: white;
+    }
+    #login-panel button {
+      margin-top: 1rem;
+    }
+    #login-error {
+      color: #ff4e4e;
+      margin-top: 0.8rem;
+      display: none;
+    }
+  </style>
 </head>
 <body>
   <h1>Settings Panel</h1>
-  <p style="text-align: center; font-style: italic; color: #888;">Welcome, Shift Wizard.</p>  <!-- LOGIN PANEL -->  <div id="login-panel" class="panel open" style="max-width: 400px; margin: 0 auto;">
+  <p style="text-align: center; font-style: italic; color: #888;">Welcome, Shift Wizard.</p>  <!-- LOGIN PANEL -->  <div id="login-panel" class="panel open" style="max-width: 400px; margin: 2rem auto;">
     <div class="panel-header">Access Panel</div>
     <div class="panel-body open">
-      <label for="admin-password">Enter Admin Password:</label>
-      <input type="password" id="admin-password" class="input full-width" style="margin-top: 0.5rem;" />
-      <button onclick="checkPassword()" class="button full-width" style="margin-top: 1rem;">Login</button>
-      <p id="login-error" style="color: red; display: none; text-align: center; margin-top: 0.5rem;">Incorrect password. Try again.</p>
+      <label for="admin-password" style="display: block; margin-top: 1rem;">Enter Admin Password:</label>
+      <input type="password" id="admin-password" class="input full-width" placeholder="••••••••" />
+      <button onclick="checkPassword()" class="button full-width">Login</button>
+      <p id="login-error">Incorrect password. Try again.</p>
     </div>
   </div>  <!-- PANEL CONTENT -->  <div id="admin-panels" style="display: none;">
     <div class="panel">
@@ -64,7 +89,7 @@
     function checkPassword() {
       const input = document.getElementById("admin-password").value;
       const errorMsg = document.getElementById("login-error");
-      const correctPassword = "correct' then 'continue";
+      const correctPassword = "fantasies";
 
       if (input === correctPassword) {
         document.getElementById("login-panel").style.display = "none";
