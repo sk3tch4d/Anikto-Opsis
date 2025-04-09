@@ -12,3 +12,6 @@ class ShiftRecord(db.Model):
     type = db.Column(db.String(16), nullable=False)
     hours = db.Column(db.Float, nullable=False)
     source_file = db.Column(db.String(256))
+
+    def __repr__(self):
+        return f"<ShiftRecord {self.name} on {self.date} ({self.shift})>"
