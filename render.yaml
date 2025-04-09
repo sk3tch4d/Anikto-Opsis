@@ -4,3 +4,8 @@ services:
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: python app.py
+
+databases:
+  - name: arg-db
+    databaseName: argdb
+    user: arg_user
