@@ -76,7 +76,10 @@
     }
 
     document.querySelectorAll('.panel-body').forEach(body => {
+    // Don't collapse login panel
+    if (!body.closest("#login-panel")) {
       body.classList.remove('open');
-    });
+  }
+});
   </script></body>
 </html>
