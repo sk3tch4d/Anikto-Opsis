@@ -4,17 +4,20 @@ import uuid
 import re
 from report import process_report, get_working_on_date
 from flask_sqlalchemy import SQLAlchemy
+from models import db
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app = Flask(__name__)
 
+# Use DATABASE_URL if present (e.g. on Render), else fallback to local sqlite
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///local.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
 
 #UPLOAD_FOLDER = "/tmp/uploads"
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
 MAX_PDFS = 30
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-app = Flask(__name__)
 
 @app.template_filter("reorder_name")
 def reorder_name(value):
