@@ -4,11 +4,22 @@
   <title>Settings</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='disc.css') }}">
   <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #111;
+      margin: 0;
+    }
     #login-panel {
+      max-width: 400px;
+      width: 100%;
       background: #1e1e1e;
       padding: 1.5rem;
       border-radius: 1rem;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
       text-align: center;
     }
     #login-panel input {
@@ -27,11 +38,20 @@
       margin-top: 0.8rem;
       display: none;
     }
+    h1 {
+      color: #7ca0f6;
+      margin-bottom: 0.25rem;
+    }
+    p.intro {
+      font-style: italic;
+      color: #888;
+      margin-bottom: 2rem;
+    }
   </style>
 </head>
 <body>
   <h1>Settings Panel</h1>
-  <p style="text-align: center; font-style: italic; color: #888;">Welcome, Shift Wizard.</p>  <!-- LOGIN PANEL -->  <div id="login-panel" class="panel open" style="max-width: 400px; margin: 2rem auto;">
+  <p class="intro">Welcome, Shift Wizard.</p>  <!-- LOGIN PANEL -->  <div id="login-panel" class="panel open">
     <div class="panel-header">Access Panel</div>
     <div class="panel-body open">
       <label for="admin-password" style="display: block; margin-top: 1rem;">Enter Admin Password:</label>
@@ -39,7 +59,7 @@
       <button onclick="checkPassword()" class="button full-width">Login</button>
       <p id="login-error">Incorrect password. Try again.</p>
     </div>
-  </div>  <!-- PANEL CONTENT -->  <div id="admin-panels" style="display: none;">
+  </div>  <!-- PANEL CONTENT -->  <div id="admin-panels" style="display: none; width: 100%; max-width: 600px; margin-top: 2rem;">
     <div class="panel">
       <div class="panel-header" onclick="togglePanel(this)">Data Management</div>
       <div class="panel-body">
