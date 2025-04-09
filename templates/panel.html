@@ -17,16 +17,28 @@
   </div>  <!-- PANEL CONTENT -->  
   <div id="admin-panels" style="display: none; max-width: 600px; margin: 0 auto;">
     <div class="panel">
-      <div class="panel-header" onclick="togglePanel(this)">Data Management</div>
-      <div class="panel-body">
-        <button class="button full-width">Export Cached Schedule</button>
-        <button class="button full-width">Import Cached Data</button>
-        <p class="subtle">Manage cached shift data manually here.</p>
-      </div>
-    </div><div class="panel">
-  <div class="panel-header" onclick="togglePanel(this)">Analytics & Stats</div>
+  <div class="panel-header" onclick="togglePanel(this)">Data Management</div>
   <div class="panel-body">
-    <p>Placeholder for: regenerate rankings, view full history, etc.</p>
+    <!-- EXPORT Buttons -->
+    <a href="/export/shifts.csv" class="button full-width">Export as CSV</a>
+    <a href="/export/shifts.json" class="button full-width">Export as JSON</a>
+
+    <!-- Divider -->
+    <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #444;" />
+
+    <!-- IMPORT: JSON -->
+    <form action="/import/shifts" method="POST" enctype="application/json" onsubmit="return handleJSONUpload(event)">
+      <input type="file" id="json-upload" accept=".json" required />
+      <button type="submit" class="button full-width">Import JSON</button>
+    </form>
+
+    <!-- IMPORT: CSV -->
+    <form action="/import/shifts.csv" method="POST" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".csv" required />
+      <button type="submit" class="button full-width">Import CSV</button>
+    </form>
+  </div>
+</div>
   </div>
 </div>
 
