@@ -339,10 +339,14 @@ input[type="date"]:focus {
   box-sizing: border-box;
   margin: 0; /* Important */
 }
-
 .download-link:hover {
   background-color: #32353a;
   color: #fff;
+}
+.download-link:focus,
+.download-link:active {
+  text-decoration: none;
+  outline: none;
 }
 
 /* Responsive */
