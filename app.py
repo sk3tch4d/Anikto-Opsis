@@ -3,6 +3,10 @@ import os
 import uuid
 import re
 from report import process_report, get_working_on_date
+from flask_sqlalchemy import SQLAlchemy
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+
 
 #UPLOAD_FOLDER = "/tmp/uploads"
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
