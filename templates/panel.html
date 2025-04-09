@@ -3,72 +3,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='disc.css') }}">
-  <style>
-    body {
-      background-color: #181a1b;
-      margin: 0;
-      padding: 2rem 1rem;
-      font-family: system-ui, sans-serif;
-    }
-    #login-wrapper {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    #login-panel {
-      max-width: 400px;
-      width: 100%;
-      background: #1e1e1e;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      text-align: center;
-    }
-    #login-panel input {
-      margin-top: 0.5rem;
-      padding: 0.6rem;
-      border-radius: 0.5rem;
-      background: #2c2c2c;
-      border: 1px solid #444;
-      color: white;
-    }
-    #login-panel button {
-      margin-top: 1rem;
-    }
-    #login-error {
-      color: #ff4e4e;
-      margin-top: 0.8rem;
-      display: none;
-    }
-    h1 {
-      color: #7ca0f6;
-      text-align: center;
-      margin-bottom: 0.25rem;
-    }
-    p.intro {
-      font-style: italic;
-      color: #888;
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-  </style>
 </head>
 <body>
-  <div id="login-wrapper">
-    <h1>Settings Panel</h1>
-    <p class="intro">Welcome, Shift Wizard.</p><!-- LOGIN PANEL -->
-<div id="login-panel" class="panel open">
-  <div class="panel-header">Access Panel</div>
-  <div class="panel-body open">
-    <label for="admin-password" style="display: block; margin-top: 1rem;">Enter Admin Password:</label>
-    <input type="password" id="admin-password" class="input full-width" placeholder="••••••••" />
-    <button onclick="checkPassword()" class="button full-width">Login</button>
-    <p id="login-error">Incorrect password. Try again.</p>
-  </div>
-</div>
-
+  <h1 class="title">Settings Panel</h1>
+  <p style="text-align: center; font-style: italic; color: #888;">Welcome, Shift Wizard.</p>  <!-- LOGIN PANEL -->  <div id="login-panel" class="panel" style="max-width: 400px; margin: 2rem auto;">
+    <div class="panel-header">Access Panel</div>
+    <div class="panel-body">
+      <label for="admin-password">Enter Admin Password:</label>
+      <input type="password" id="admin-password" class="input full-width" placeholder="••••••••" />
+      <button onclick="checkPassword()" class="button full-width">Login</button>
+      <p id="login-error" style="color: #ff4e4e; display: none; text-align: center; margin-top: 0.5rem;">Incorrect password. Try again.</p>
+    </div>
   </div>  <!-- PANEL CONTENT -->  <div id="admin-panels" style="display: none; max-width: 600px; margin: 0 auto;">
     <div class="panel">
       <div class="panel-header" onclick="togglePanel(this)">Data Management</div>
@@ -122,7 +67,7 @@
       const correctPassword = "getElementById";
 
       if (input === correctPassword) {
-        document.getElementById("login-wrapper").style.display = "none";
+        document.getElementById("login-panel").style.display = "none";
         document.getElementById("admin-panels").style.display = "block";
       } else {
         errorMsg.style.display = "block";
