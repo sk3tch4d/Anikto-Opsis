@@ -98,5 +98,9 @@ def download(filename):
     else:
         return "File not found", 404
 
+@app.route("/1902")
+def panel():
+    return render_template("panel.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
