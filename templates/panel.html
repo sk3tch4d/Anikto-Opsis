@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings</title>
@@ -7,15 +6,15 @@
 </head>
 <body>
   <h1>Settings Panel</h1>
-  <p style="text-align: center; font-style: italic; color: #888;">Welcome, Shift Wizard.</p>  <!-- LOGIN PANEL -->  <div id="login-panel" class="panel" style="max-width: 400px; margin: 0 auto;">
-    <div class="panel-header">Restricted Access</div>
-    <div class="panel-body">
+  <p style="text-align: center; font-style: italic; color: #888;">Welcome, Shift Wizard.</p>  <!-- LOGIN PANEL -->  <div id="login-panel" class="panel open" style="max-width: 400px; margin: 0 auto;">
+    <div class="panel-header">Access Panel</div>
+    <div class="panel-body open">
       <label for="admin-password">Enter Admin Password:</label>
       <input type="password" id="admin-password" class="input full-width" style="margin-top: 0.5rem;" />
       <button onclick="checkPassword()" class="button full-width" style="margin-top: 1rem;">Login</button>
       <p id="login-error" style="color: red; display: none; text-align: center; margin-top: 0.5rem;">Incorrect password. Try again.</p>
     </div>
-  </div>  <!-- REAL PANEL CONTENT -->  <div id="admin-panels" style="display: none;">
+  </div>  <!-- PANEL CONTENT -->  <div id="admin-panels" style="display: none;">
     <div class="panel">
       <div class="panel-header" onclick="togglePanel(this)">Data Management</div>
       <div class="panel-body">
@@ -65,7 +64,7 @@
     function checkPassword() {
       const input = document.getElementById("admin-password").value;
       const errorMsg = document.getElementById("login-error");
-      const correctPassword = "fantasies";
+      const correctPassword = "correct' then 'continue";
 
       if (input === correctPassword) {
         document.getElementById("login-panel").style.display = "none";
@@ -76,10 +75,9 @@
     }
 
     document.querySelectorAll('.panel-body').forEach(body => {
-    // Don't collapse login panel
-    if (!body.closest("#login-panel")) {
-      body.classList.remove('open');
-  }
-});
+      if (!body.closest("#login-panel")) {
+        body.classList.remove('open');
+      }
+    });
   </script></body>
 </html>
