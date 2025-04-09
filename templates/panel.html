@@ -2,32 +2,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARG Admin Panel</title>
+  <title>Settings</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='disc.css') }}">
 </head>
 <body>
-  <h1>ARG Admin Panel</h1>
-  <p style="text-align: center; font-style: italic; color: #888;">Welcome, Shift Wizard.</p>  <!-- ======== ADMIN CONTROLS ======== -->  <div class="panel">
-    <div class="panel-header" onclick="togglePanel(this)">Data Management</div>
+  <h1>Settings Panel</h1>
+  <p style="text-align: center; font-style: italic; color: #888;">Welcome, Shift Wizard.</p>  <!-- LOGIN PANEL -->  <div id="login-panel" class="panel" style="max-width: 400px; margin: 0 auto;">
+    <div class="panel-header">Restricted Access</div>
     <div class="panel-body">
-      <button class="button full-width">Export Cached Schedule</button>
-      <button class="button full-width">Import Cached Data</button>
-      <p style="margin-top: 1em; font-size: 0.9rem; color: #777;">Manage cached shift data manually here.</p>
+      <label for="admin-password">Enter Admin Password:</label>
+      <input type="password" id="admin-password" class="input full-width" style="margin-top: 0.5rem;" />
+      <button onclick="checkPassword()" class="button full-width" style="margin-top: 1rem;">Login</button>
+      <p id="login-error" style="color: red; display: none; text-align: center; margin-top: 0.5rem;">Incorrect password. Try again.</p>
     </div>
-  </div>  <div class="panel">
-    <div class="panel-header" onclick="togglePanel(this)">Analytics & Stats</div>
-    <div class="panel-body">
-      <p>Placeholder for: regenerate rankings, view full history, etc.</p>
-    </div>
-  </div>  <div class="panel">
-    <div class="panel-header" onclick="togglePanel(this)">Developer Tools</div>
-    <div class="panel-body">
-      <p>Placeholder for logs, manual PDF parse, etc.</p>
-    </div>
-  </div>  <div class="panel">
-    <form action="{{ url_for('index') }}" method="get">
-      <button type="submit" class="button full-width">Back to Main</button>
-    </form>
+  </div>  <!-- REAL PANEL CONTENT -->  <div id="admin-panels" style="display: none;">
+    <div class="panel">
+      <div class="panel-header" onclick="togglePanel(this)">Data Management</div>
+      <div class="panel-body">
+        <button class="button full-width">Export Cached Schedule</button>
+        <button class="button full-width">Import Cached Data</button>
+        <p style="margin-top: 1em; font-size: 0.9rem; color: #777;">Manage cached shift data manually here.</p>
+      </div>
+    </div><div class="panel">
+  <div class="panel-header" onclick="togglePanel(this)">Analytics & Stats</div>
+  <div class="panel-body">
+    <p>Placeholder for: regenerate rankings, view full history, etc.</p>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-header" onclick="togglePanel(this)">Developer Tools</div>
+  <div class="panel-body">
+    <p>Placeholder for logs, manual PDF parse, etc.</p>
+  </div>
+</div>
+
+<div class="panel">
+  <form action="{{ url_for('index') }}" method="get">
+    <button type="submit" class="button full-width">Back to Main</button>
+  </form>
+</div>
+
   </div>  <script>
     function togglePanel(header) {
       const panel = header.closest('.panel');
@@ -44,6 +59,19 @@
       panel.classList.toggle('open');
       if (body) {
         body.classList.toggle('open');
+      }
+    }
+
+    function checkPassword() {
+      const input = document.getElementById("admin-password").value;
+      const errorMsg = document.getElementById("login-error");
+      const correctPassword = "fantasies";
+
+      if (input === correctPassword) {
+        document.getElementById("login-panel").style.display = "none";
+        document.getElementById("admin-panels").style.display = "block";
+      } else {
+        errorMsg.style.display = "block";
       }
     }
 
