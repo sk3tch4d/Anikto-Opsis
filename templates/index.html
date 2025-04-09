@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='disc.css') }}">
 </head>
 <body>
-  <h1>ARG Analyzer</h1>
+  <h1 id="typed-header"><span id="typed-text"></span></h1>
   <h3>Upload ARG PDFs to Generate Results</h3>
 
   <div id="upload-form">
@@ -57,6 +57,24 @@
     <p id="quote" style="font-style: italic;"></p>
   </div>
 
+  <!-- ==== HEADER ==== -->
+  <script>
+  const text = "ARG Analyzer";
+  const speed = 100;
+  const target = document.getElementById("typed-text");
+
+  let i = 0;
+  function typeWriter() {
+    if (i < text.length) {
+      target.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typeWriter, speed);
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", typeWriter);
+  </script>
+  
   <!-- ==== DROPZONE ==== -->
   <script>
   const dropZone = document.getElementById("drop-zone");
