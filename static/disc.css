@@ -354,6 +354,34 @@ input[type="date"]:focus {
   outline: none;
 }
 
+
+#typed-header {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  position: relative;
+  background: linear-gradient(90deg, #7289da, #9ea7e1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#typed-header::after {
+  content: "|";
+  position: absolute;
+  right: -10px;
+  animation: blink 0.7s infinite;
+  color: #9ea7e1;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 /* Responsive */
 @media (max-width: 500px) {
   h1 { font-size: 1.8rem; }
