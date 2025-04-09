@@ -129,8 +129,8 @@ ul.downloads {
   width: 100%;
 }
 ul.downloads li {
-  margin-bottom: 0.5rem;
   padding: 0;
+  margin: 0 0 0.5rem 0; /* just bottom margin */
 }
 /* Fix button display inside list */
 ul.downloads li > .button {
@@ -325,11 +325,10 @@ input[type="date"]:focus {
 }
 
 .download-link {
-  /*all: unset;*/
   display: block;
   width: 100%;
-  padding: 0.5rem;
-  background-color: #26282c; /* slightly darker */
+  padding: 0.75rem 1rem;
+  background-color: #26282c;
   color: #ccc;
   border: 1px solid #7289da;
   border-radius: 8px;
@@ -338,7 +337,7 @@ input[type="date"]:focus {
   cursor: pointer;
   transition: background 0.2s ease;
   box-sizing: border-box;
-  margin-bottom: 0.5rem;
+  margin: 0; /* Important */
 }
 
 .download-link:hover {
