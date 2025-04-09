@@ -307,10 +307,12 @@ input[type="date"]:focus {
 .custom-date-display {
   all: unset;
   display: block;
+  background: linear-gradient(90deg, #2f3136, #2c2f39);
+  background-size: 400% 400%;
+  animation: gradientShift 5s ease infinite;
   width: 100%;
   text-align: center;
   padding: 0.75rem;
-  background-color: #2f3136;
   color: #aaa;
   border: 1px solid #7289da;
   border-radius: 8px;
@@ -355,4 +357,17 @@ input[type="date"]:focus {
   h2 { font-size: 1.4rem; }
   .button { padding: 0.6rem; }
   li { padding: 0.6rem; }
+}
+
+/* Gradient Shift */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
