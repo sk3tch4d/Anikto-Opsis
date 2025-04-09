@@ -109,8 +109,19 @@ def download(filename):
 def panel():
     return render_template("panel.html")
 
+@app.route("/dbcheck")
+def dbcheck():
+    from models import ShiftRecord, CoverageShift
+    try:
+        shift_count = ShiftRecord.query.count()
+        coverage_count = CoverageShift.query.count()
+        return {
+            "ShiftRecords": shift_count,
+            "CoverageShifts": coverage_count
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-        print("✓ Database tables created.")
     app.run(debug=True)
