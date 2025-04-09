@@ -63,15 +63,18 @@
   const fileInput = document.getElementById("file-input");
   const fileList = document.getElementById("file-list");
 
-  const quotes = [
-    "Crunching JB2699 like a boss...",
-    "Summoning the ARG gods...",
-    "Shifts are aligning...",
-    "Liam is frantically typing..",
-    "ARGX is forging your files...",
-    "Ughh.. my stomach!...",
-    "Pulling the curtains up..."
-  ];
+  fetch('/static/quotes.json')
+  .then(response => response.json())
+  .then(data => {
+    const quotes = data;
+    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+
+    // Display it in your loading div
+    document.getElementById("quote").textContent = quote;
+  })
+  .catch(error => {
+    console.error("Failed to load quotes:", error);
+  });
 
   document.querySelector("form").addEventListener("submit", function () {
     document.getElementById("upload-form").style.display = "none";
