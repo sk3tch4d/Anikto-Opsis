@@ -5,13 +5,17 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='disc.css') }}">
   <style>
     body {
+      background-color: #181a1b;
+      margin: 0;
+      padding: 2rem 1rem;
+      font-family: system-ui, sans-serif;
+    }
+    #login-wrapper {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background-color: #111;
-      margin: 0;
     }
     #login-panel {
       max-width: 400px;
@@ -40,26 +44,32 @@
     }
     h1 {
       color: #7ca0f6;
+      text-align: center;
       margin-bottom: 0.25rem;
     }
     p.intro {
       font-style: italic;
       color: #888;
+      text-align: center;
       margin-bottom: 2rem;
     }
   </style>
 </head>
 <body>
-  <h1>Settings Panel</h1>
-  <p class="intro">Welcome, Shift Wizard.</p>  <!-- LOGIN PANEL -->  <div id="login-panel" class="panel open">
-    <div class="panel-header">Access Panel</div>
-    <div class="panel-body open">
-      <label for="admin-password" style="display: block; margin-top: 1rem;">Enter Admin Password:</label>
-      <input type="password" id="admin-password" class="input full-width" placeholder="••••••••" />
-      <button onclick="checkPassword()" class="button full-width">Login</button>
-      <p id="login-error">Incorrect password. Try again.</p>
-    </div>
-  </div>  <!-- PANEL CONTENT -->  <div id="admin-panels" style="display: none; width: 100%; max-width: 600px; margin-top: 2rem;">
+  <div id="login-wrapper">
+    <h1>Settings Panel</h1>
+    <p class="intro">Welcome, Shift Wizard.</p><!-- LOGIN PANEL -->
+<div id="login-panel" class="panel open">
+  <div class="panel-header">Access Panel</div>
+  <div class="panel-body open">
+    <label for="admin-password" style="display: block; margin-top: 1rem;">Enter Admin Password:</label>
+    <input type="password" id="admin-password" class="input full-width" placeholder="••••••••" />
+    <button onclick="checkPassword()" class="button full-width">Login</button>
+    <p id="login-error">Incorrect password. Try again.</p>
+  </div>
+</div>
+
+  </div>  <!-- PANEL CONTENT -->  <div id="admin-panels" style="display: none; max-width: 600px; margin: 0 auto;">
     <div class="panel">
       <div class="panel-header" onclick="togglePanel(this)">Data Management</div>
       <div class="panel-body">
@@ -112,7 +122,7 @@
       const correctPassword = "getElementById";
 
       if (input === correctPassword) {
-        document.getElementById("login-panel").style.display = "none";
+        document.getElementById("login-wrapper").style.display = "none";
         document.getElementById("admin-panels").style.display = "block";
       } else {
         errorMsg.style.display = "block";
