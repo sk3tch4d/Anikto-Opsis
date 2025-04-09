@@ -270,17 +270,19 @@ input[type="date"] {
 /* ==== STD INPUT ==== */
 input.full-width {
   width: 100%;
-  padding: 0.6rem;
+  max-width: 100%;
+  padding: 0.6rem 1rem;
   font-size: 1rem;
   color: #fff;
   background-color: #121212;
   border: 1px solid #333;
-  border-radius: 0.6rem;
+  border-radius: 8px;
   box-shadow: inset 0 0 0 1px #1f1f1f;
   outline: none;
+  text-align: center;
+  box-sizing: border-box;
   transition: border 0.2s ease-in-out;
 }
-
 input.full-width:focus {
   border-color: #5c7aff;
 }
