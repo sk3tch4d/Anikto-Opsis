@@ -51,6 +51,9 @@ h3 {
   transform: translateY(-2px);
 }
 .button.full-width {
+  padding: 0.8rem 1rem; /* match .panel-header exactly */
+  font-size: 1rem;
+  font-weight: bold;
   width: 100%;
   max-width: 500px;
   box-sizing: border-box;
