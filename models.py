@@ -24,14 +24,14 @@ class ShiftRecord(db.Model):
 class CoverageShift(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)
-    shift = db.Column(db.String(64), nullable=False)
+    shift = db.Column(db.String(16), nullable=False)
     start = db.Column(db.String(8), nullable=False)
     end = db.Column(db.String(8), nullable=False)
+    type = db.Column(db.String(16), nullable=False)
     hours = db.Column(db.Float, nullable=False)
     org_name = db.Column(db.String(128), nullable=False)
     cov_name = db.Column(db.String(128), nullable=False)
     reason = db.Column(db.String(128))
-    shift_type = db.Column(db.String(16))
     source_pdf = db.Column(db.String(256))  # trace back to file
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     modified_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
@@ -41,3 +41,16 @@ class CoverageShift(db.Model):
 
     def __repr__(self):
         return f"<CoverageShift {self.cov_name} covering {self.org_name} on {self.date} ({self.shift})>"
+
+class Employee(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(128), nullable=False)
+    last_name = db.Column(db.String(128), nullable=False)
+    email = db.Column(db.String(256), unique=True, nullable=True)
+    status = db.Column(db.String(32), nullable=False)
+    seniority = db.Column(db.Float, nullable=True)
+    assignment = db.Column(db.String(16), nullable=True)
+    notes = db.Column(db.Text)
+
+    def __repr__(self):
+        return f"<Employee {self.first_name} {self.last_name}>"
