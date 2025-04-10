@@ -380,8 +380,8 @@ input[type="date"]:focus {
   padding: 0.75rem 1rem;
   background-color: #26282c;
   color: #ccc;
-  outline: 1px solid #7289da;      /* replaces the border visually */
-  outline-offset: 0px;             /* keeps it aligned tight to the edges */
+  outline: 1px solid #7289da;     
+  outline-offset: 0px;            
   border-radius: 8px;
   font-size: 1rem;
   text-align: center;
@@ -389,6 +389,7 @@ input[type="date"]:focus {
   transition: background-color 0.2s ease;
   box-sizing: border-box;
   margin: 0;
+  margin-bottom: 0.4rem; /* or remove completely */
 }
 .file-action:hover {
   background-color: #32353a;
@@ -398,6 +399,9 @@ input[type="date"]:focus {
 .file-action:active {
   text-decoration: none !important;
   outline-style: solid;
+}
+.file-group {
+  margin-bottom: 1.25rem;
 }
 
 
