@@ -12,6 +12,9 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 app.logger.setLevel(logging.DEBUG)
 
+# Quiet down pdfminer
+logging.getLogger("pdfminer").setLevel(logging.WARNING)
+
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///local.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -22,7 +25,7 @@ db.init_app(app)
 # Register routes
 register_routes(app)
 
-# Optional: Add a minimal health check
+# Add a minimal health check
 @app.route("/healthz")
 def health_check():
     return "OK", 200
