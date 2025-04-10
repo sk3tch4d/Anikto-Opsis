@@ -397,7 +397,7 @@ input[type="date"]:focus {
 }
 .file-action:focus,
 .file-action:active {
-  text-decoration: none;
+  text-decoration: none !important;
   outline-style: solid;
 }
 
