@@ -38,13 +38,19 @@
 
         <!-- Import JSON -->
         <form id="json-import-form" method="POST" enctype="multipart/form-data">
-          <input type="file" id="json-upload" accept=".json" required style="margin-bottom: 0.5rem;" />
+          <label class="label-button">
+            Choose JSON File
+            <input type="file" id="json-upload" accept=".json" required />
+          </label>
           <button type="submit" class="button full-width">Import JSON</button>
         </form>
 
         <!-- Import CSV -->
         <form action="/import/shifts.csv" method="POST" enctype="multipart/form-data">
-          <input type="file" name="file" accept=".csv" required style="margin-bottom: 0.5rem;" />
+          <label class="label-button">
+            Choose CSV File
+            <input type="file" name="file" accept=".csv" required />
+          </label>
           <button type="submit" class="button full-width">Import CSV</button>
         </form>
       </div>
