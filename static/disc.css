@@ -128,6 +128,10 @@ h3 {
   border-radius: 8px;
   transition: box-shadow 0.3s ease;
 }
+.panel-body:not(.open) .downloads .file-action {
+  margin: 0.4rem 0;
+  opacity: 0.6;
+}
 
 /* Lists */
 ul {
