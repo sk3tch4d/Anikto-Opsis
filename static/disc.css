@@ -59,6 +59,29 @@ h3 {
   box-sizing: border-box;
 }
 
+/* Button Themed Labels */
+.label-button {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  padding: 0.8rem 1rem;
+  background-color: #40444b;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #2f3136;
+  border-radius: 8px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease;
+  font-family: inherit;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+.label-button:hover {
+  background-color: #50545b;
+}
+
 /* Panels */
 .panel {
   margin-top: 1rem;
@@ -197,7 +220,7 @@ a:hover {
 }
 
 /* Remove std input for dropzone */
-.index-upload input[type="file"] {
+input[type="file"] {
   display: none;
 }
 
