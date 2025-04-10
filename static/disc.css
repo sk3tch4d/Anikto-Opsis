@@ -374,7 +374,8 @@ input[type="date"]:focus {
   background-color: #36393f;
 }
 
-.download-link {
+/* General file action button */
+.file-action {
   display: block;
   width: 100%;
   padding: 0.75rem 1rem;
@@ -387,14 +388,14 @@ input[type="date"]:focus {
   cursor: pointer;
   transition: background 0.2s ease;
   box-sizing: border-box;
-  margin: 0; /* Important */
+  margin: 0;
 }
-.download-link:hover {
+.file-action:hover {
   background-color: #32353a;
   color: #fff;
 }
-.download-link:focus,
-.download-link:active {
+.file-action:focus,
+.file-action:active {
   text-decoration: none;
   outline: none;
 }
