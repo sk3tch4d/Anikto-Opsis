@@ -8,8 +8,8 @@ from routes import register_routes
 # Initialize Flask app
 app = Flask(__name__)
 
-# Set up logging to ensure all logs are captured
-logging.basicConfig(level=logging.DEBUG)  # Set log level to DEBUG to capture everything
+# Configure logging to capture all logs (DEBUG level)
+logging.basicConfig(level=logging.DEBUG)
 app.logger.setLevel(logging.DEBUG)
 
 # Set the database URI (PostgreSQL or SQLite)
@@ -25,17 +25,17 @@ register_routes(app)
 # Reset the database (drop and recreate tables)
 if __name__ == "__main__":
     with app.app_context():
-        app.logger.info("Dropping all tables...")  # Log the dropping process
+        app.logger.debug("Dropping all tables...")  # Debug level log
         try:
             db.drop_all()  # Drop all tables in the database
-            app.logger.info("Tables dropped.")
+            app.logger.debug("Tables dropped.")
         except Exception as e:
             app.logger.error(f"Error dropping tables: {str(e)}")
         
-        app.logger.info("Creating tables...")  # Log the creation process
+        app.logger.debug("Creating tables...")  # Debug level log
         try:
             db.create_all()  # Recreate tables from models
-            app.logger.info("✓ Tables created.")
+            app.logger.debug("✓ Tables created.")
         except Exception as e:
             app.logger.error(f"Error creating tables: {str(e)}")
     
