@@ -195,7 +195,9 @@ a:hover {
   max-width: 90%;
   word-wrap: break-word;
 }
-input[type="file"] {
+
+/* Remove std input for dropzone */
+.index-upload input[type="file"] {
   display: none;
 }
 
