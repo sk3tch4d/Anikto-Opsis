@@ -13,8 +13,10 @@ register_routes(app)
 
 #if __name__ == "__main__":
 #    app.run(debug=True)
+
 if __name__ == "__main__":
     with app.app_context():
-        db.create_all()  # This will create all tables based on your models
+        db.drop_all()  # drop all tables
+        db.create_all()  # recreate tables
         print("✓ Tables created.")
     app.run(debug=True)
