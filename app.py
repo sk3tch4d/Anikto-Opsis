@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from models import ShiftRecord, CoverageShift, Employee
+from models import db, ShiftRecord, CoverageShift, Employee
 from routes import register_routes
 import os
 
