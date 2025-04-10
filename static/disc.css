@@ -343,21 +343,20 @@ input[type="date"]:focus {
   width: 100%;
   max-width: 500px;
 }
-
 /* Hide the native input */
 .date-wrapper input[type="date"] {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
-
 /* Custom styled display */
 .custom-date-display {
   all: unset;
   display: block;
-  background: linear-gradient(90deg, #2f3136, #2c2f39);
-  background-size: 400% 400%;
-  animation: gradientShift 5s ease infinite;
+  /*background: linear-gradient(90deg, #434756, #2f3136, #2c2f39);*/
+  background: linear-gradient(-30deg, #2f3136, #2f3136, #2f3136, #363649, #2f3136, #2f3136);
+  background-size: 600% 600%;
+  animation: gradientShift 16s ease infinite;
   width: 100%;
   text-align: center;
   padding: 0.75rem;
@@ -366,7 +365,7 @@ input[type="date"]:focus {
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.3s ease;
   box-sizing: border-box;
 }
 
