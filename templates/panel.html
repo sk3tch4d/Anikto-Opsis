@@ -120,9 +120,11 @@
         .then(res => res.json())
         .then(data => {
           alert("Import successful:\n" + JSON.stringify(data));
-          fileInput.value = "";  // Clear the file input field
+          fileInput.value = "";  // Reset the file input field
         })
-        .catch(err => alert("Error: " + err.message));
+        .catch(err => {
+          alert("Error: " + err.message);
+        });
       };
       reader.readAsText(file);
     });
