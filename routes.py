@@ -88,10 +88,12 @@ def register_routes(app):
 
     @app.route("/import/shifts", methods=["POST"])
     def handle_import_json():
+        print("[INFO] /import/shifts called")
         return import_shifts_from_json()
 
     @app.route("/import/shifts.csv", methods=["POST"])
     def handle_import_csv():
+        print("[INFO] /import/shifts.csv called")
         return import_shifts_from_csv()
 
     @app.route("/api/working_on_date")
