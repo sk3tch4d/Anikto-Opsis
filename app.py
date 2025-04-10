@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from models import db
+from models import ShiftRecord, CoverageShift, Employee
 from routes import register_routes
 import os
 
@@ -16,7 +16,12 @@ register_routes(app)
 
 if __name__ == "__main__":
     with app.app_context():
-        db.drop_all()  # drop all tables
-        db.create_all()  # recreate tables
+        print("Dropping all tables...")
+        db.drop_all()  # Drops all tables in the database
+        print("Tables dropped.")
+        
+        print("Creating tables...")
+        db.create_all()  # Creates the tables from models
         print("✓ Tables created.")
+    
     app.run(debug=True)
