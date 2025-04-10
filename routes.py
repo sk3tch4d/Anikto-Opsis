@@ -1,7 +1,12 @@
 
 import os
 import re
-from flask import request, render_template, jsonify, send_file
+from flask import (
+    request, 
+    render_template, 
+    jsonify, 
+    send_file,
+)
 from dataman import (
     export_shifts_csv,
     export_shifts_json,
