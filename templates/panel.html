@@ -38,7 +38,7 @@
 
         <!-- Import JSON -->
         <form id="json-import-form" method="POST" enctype="multipart/form-data">
-          <label class="label-button">
+          <label class="file-action">
             Choose JSON File
             <input type="file" id="json-upload" accept=".json" required />
           </label>
@@ -47,7 +47,7 @@
 
         <!-- Import CSV -->
         <form action="/import/shifts.csv" method="POST" enctype="multipart/form-data">
-          <label class="label-button">
+          <label class="file-action">
             Choose CSV File
             <input type="file" name="file" accept=".csv" required />
           </label>
@@ -75,71 +75,102 @@
 
   <!-- Scripts -->
   <script>
-    function togglePanel(header) {
-      const panel = header.closest('.panel');
-      const body = header.nextElementSibling;
+  // ==========================
+  // Panel Expand/Collapse Logic
+  // ==========================
+  function togglePanel(header) {
+    const panel = header.closest('.panel');
+    const body = header.nextElementSibling;
 
-      document.querySelectorAll('.panel').forEach(p => {
-        if (p !== panel) {
-          p.classList.remove('open');
-          const otherBody = p.querySelector('.panel-body');
-          if (otherBody) otherBody.classList.remove('open');
-        }
+    document.querySelectorAll('.panel').forEach(p => {
+      if (p !== panel) {
+        p.classList.remove('open');
+        const otherBody = p.querySelector('.panel-body');
+        if (otherBody) otherBody.classList.remove('open');
+      }
+    });
+
+    panel.classList.toggle('open');
+    if (body) body.classList.toggle('open');
+  }
+
+  // ==========================
+  // Admin Panel Login
+  // ==========================
+  function chpw() {
+    const input = document.getElementById("adpw").value;
+    const errorMsg = document.getElementById("login-error");
+    const correct = "getElementById";
+
+    if (input === correct) {
+      document.getElementById("login-panel").style.display = "none";
+      document.getElementById("admin-panels").style.display = "block";
+    } else {
+      errorMsg.style.display = "block";
+    }
+  }
+
+  // ==========================
+  // JSON Upload via JavaScript (Custom Fetch)
+  // ==========================
+  document.getElementById('json-import-form')?.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const fileInput = document.getElementById('json-upload');
+    const file = fileInput.files[0];
+
+    if (!file) {
+      alert("Please select a JSON file.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function() {
+      fetch("/import/shifts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: reader.result
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert("Import successful:\n" + JSON.stringify(data));
+        fileInput.value = "";  // Reset the file input field
+      })
+      .catch(err => {
+        alert("Error: " + err.message);
       });
+    };
+    reader.readAsText(file);
+  });
 
-      panel.classList.toggle('open');
-      if (body) body.classList.toggle('open');
-    }
+  // ==========================
+  // Auto-Submit & Label Update on File Select
+  // ==========================
+  const jsonInput = document.getElementById("json-upload");
+  const csvInput = document.getElementById("csv-upload");
 
-    function chpw() {
-      const input = document.getElementById("adpw").value;
-      const errorMsg = document.getElementById("login-error");
-      const correct = "getElementById";
-
-      if (input === correct) {
-        document.getElementById("login-panel").style.display = "none";
-        document.getElementById("admin-panels").style.display = "block";
-      } else {
-        errorMsg.style.display = "block";
-      }
-    }
-
-    // JSON Import Handling with JavaScript
-    document.getElementById('json-import-form').addEventListener('submit', function(event) {
-      event.preventDefault();  // Prevent the default form submission
-
-      const fileInput = document.getElementById('json-upload');
-      const file = fileInput.files[0];
-
-      if (!file) {
-        alert("Please select a JSON file.");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function() {
-        fetch("/import/shifts", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: reader.result
-        })
-        .then(res => res.json())
-        .then(data => {
-          alert("Import successful:\n" + JSON.stringify(data));
-          fileInput.value = "";  // Reset the file input field
-        })
-        .catch(err => {
-          alert("Error: " + err.message);
-        });
-      };
-      reader.readAsText(file);
+  if (jsonInput) {
+    jsonInput.addEventListener("change", function () {
+      this.parentElement.textContent = this.files[0]?.name || "Choose JSON File";
+      this.form.requestSubmit();  // Safer than .submit() — triggers 'submit' event
     });
+  }
 
-    document.querySelectorAll('.panel-body').forEach(body => {
-      if (!body.closest("#login-panel")) {
-        body.classList.remove('open');
-      }
+  if (csvInput) {
+    csvInput.addEventListener("change", function () {
+      this.parentElement.textContent = this.files[0]?.name || "Choose CSV File";
+      this.form.submit();
     });
-  </script>
+  }
+
+  // ==========================
+  // Collapse All Panels Except Login Initially
+  // ==========================
+  document.querySelectorAll('.panel-body').forEach(body => {
+    if (!body.closest("#login-panel")) {
+      body.classList.remove('open');
+    }
+  });
+</script>
 </body>
 </html>
