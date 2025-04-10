@@ -181,6 +181,29 @@ ul.downloads li > .button:hover {
   background-color: #50545b;
 }
 
+/* Attempt override for Downloads display fix */
+ul.downloads li > a.file-action {
+  all: unset;
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #26282c;
+  color: #ccc;
+  border: 1px solid #7289da;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-bottom: 0.4rem;
+  transition: background-color 0.2s ease;
+}
+ul.downloads li > a.file-action:hover {
+  background-color: #32353a;
+  color: #fff;
+}
+
+
 /* Links */
 a {
   text-decoration: none;
