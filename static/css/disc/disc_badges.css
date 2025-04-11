@@ -1,0 +1,11 @@
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.6em;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-left: 0.3rem;
+}
+.badge-day { background-color: #ffde59; color: #000; }
+.badge-evening { background-color: #ff914d; color: #000; }
+.badge-night { background-color: #4d9aff; color: #fff; }
