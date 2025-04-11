@@ -1,0 +1,19 @@
+h1 {
+  font-size: 2rem;
+  color: #5e77d4;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+h2 {
+  font-size: 1.6rem;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+h3 {
+  color: #ccc;
+  margin-bottom: 1rem;
+  text-align: center;
+}
