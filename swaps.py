@@ -64,7 +64,31 @@ def classify_type(start_time):
         return "Evening"
     return "Night"
 
-def parse_exceptions_section(swaps_raw, schedule_df, file_name, file_date):
+
+def parse_exceptions_section(text, schedule_df, file_name, file_date):
+    from .parser_helpers import extract_swap_lines  # if needed
+    lines = text.splitlines()
+    swaps_raw = []
+    for line in lines:
+        if "Off:" in line or "On:" in line or "Relief:" in line or "Covering Vacant" in line:
+            # crude filter — mimic original extractor
+            start_time = re.search(r"(\d{2}:\d{2})", line)
+            if not start_time:
+                continue
+            swaps_raw.append({
+                "original": "Vacant" if "Covering Vacant" in line else "UNKNOWN",
+                "coverer": "UNKNOWN",
+                "start": start_time.group(1),
+                "end": "UNKNOWN",
+                "reason": None,
+                "reason_raw": line,
+                "notes": line
+            })
+    # Fake fallback until raw swap parsing is re-wired properly
+    return parse_exceptions_section_internal(swaps_raw, schedule_df, file_name, file_date)
+
+def parse_exceptions_section_internal(swaps_raw, schedule_df, file_name, file_date):
+
     shift_records = []
     for swap in swaps_raw:
         norm_original = normalize_name(swap["original"])
