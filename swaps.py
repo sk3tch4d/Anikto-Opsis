@@ -66,7 +66,7 @@ def classify_type(start_time):
 
 
 def parse_exceptions_section(text, schedule_df, file_name, file_date):
-    #from .parser_helpers import extract_swap_lines  # if needed
+    from .parser_helpers import extract_swap_lines  # if needed
     lines = text.splitlines()
     swaps_raw = []
     for line in lines:
@@ -91,6 +91,8 @@ def parse_exceptions_section_internal(swaps_raw, schedule_df, file_name, file_da
 
     shift_records = []
     for swap in swaps_raw:
+        if "UNKNOWN" in (swap["start"], swap["end"]):
+            continue
         norm_original = normalize_name(swap["original"])
         norm_coverer = normalize_name(swap["coverer"])
         shift_id = get_shift_id_for(norm_coverer, file_date, schedule_df)
