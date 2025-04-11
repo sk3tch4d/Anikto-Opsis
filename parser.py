@@ -131,6 +131,11 @@ def parse_pdf(pdf_path):
 
             # Parse any swaps in the exceptions section
             if current_date and "Exceptions Day Unit:" in text:
-                swaps += parse_exceptions_section(text, current_date, pd.DataFrame(records))
+                swaps += parse_exceptions_section(
+                    text,  # raw swap section
+                    pd.DataFrame(records),  # main schedule
+                    os.path.basename(pdf_path),  # file name
+                    current_date  # file date
+                )
 
     return pd.DataFrame(records), swaps
