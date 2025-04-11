@@ -1,0 +1,71 @@
+input.full-width {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #121212;
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px #1f1f1f;
+  outline: none;
+  text-align: center;
+  box-sizing: border-box;
+  transition: border 0.2s ease-in-out;
+}
+input.full-width:focus {
+  border-color: #5c7aff;
+}
+input[type="date"] {
+  background-color: #2f3136;
+  color: #ffffff;
+  border: 1px solid #40444b;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+  box-sizing: border-box;
+  appearance: none;
+  -moz-appearance: textfield;
+  text-indent: 0;
+  text-align: center;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+input[type="date"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.4);
+}
+.date-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+.date-wrapper input[type="date"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.custom-date-display {
+  all: unset;
+  display: block;
+  background: linear-gradient(-30deg, #2f3136, #2f3136, #2f3136, #363649, #2f3136, #2f3136);
+  background-size: 600% 600%;
+  animation: gradientShift 16s ease infinite;
+  width: 100%;
+  text-align: center;
+  padding: 0.75rem;
+  color: #aaa;
+  border: 1px solid #7289da;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  box-sizing: border-box;
+}
+.custom-date-display:hover {
+  background-color: #36393f;
+}
