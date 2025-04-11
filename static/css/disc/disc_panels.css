@@ -1,0 +1,49 @@
+.panel {
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 500px;
+}
+.panel-header {
+  background-color: #2f3237;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  color: #cccccc;
+  border-radius: 8px;
+  text-align: center;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.panel.open > .panel-header {
+  background-color: #525760;
+  color: #ffffff;
+  border-radius: 8px 8px 0 0;
+}
+.panel-header:hover {
+  background-color: #3a3d42;
+}
+.panel-header:focus {
+  outline: none;
+}
+.panel-body {
+  background-color: #2f3136;
+  max-height: 0;
+  overflow: hidden;
+  padding: 0;
+  transition: max-height 0.2s ease, padding 0.2s ease;
+}
+.panel-body.open {
+  border-top: 1px solid #232529;
+  border-bottom: 1px solid #232529;
+  max-height: 3000px;
+  padding: 1rem;
+  border-radius: 0 0 8px 8px;
+}
+.panel.open {
+  box-shadow: 0 0 0 2px rgba(20, 20, 25, 0.3);
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+.panel-body:not(.open) .downloads .file-action {
+  margin: 0.4rem 0;
+  opacity: 0.6;
+}
