@@ -1,0 +1,47 @@
+.button {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  padding: 0.75rem 1.2rem;
+  background-color: #40444b;
+  color: #fff;
+  border: 1px solid #2f3136;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+.button:hover {
+  background-color: #50545b;
+  transform: translateY(-2px);
+}
+.button.full-width {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+}
+.label-button {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  padding: 0.8rem 1rem;
+  background-color: #40444b;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #2f3136;
+  border-radius: 8px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease;
+  font-family: inherit;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+.label-button:hover {
+  background-color: #50545b;
+}
