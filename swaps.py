@@ -102,10 +102,16 @@ def format_notes(raw):
         return f"{' '.join(words[:-1]).title()} - {suffix.upper()}"
     return raw.title()
 
-def find_coverer_candidate(on_blocks, shift_hint):
+def find_coverer_candidate(on_blocks, start_time, end_time):
     for line in on_blocks:
-        name_match = re.search(r"On:\s(\d{2}:\d{2})\s-\s(\d{2}:\d{2})\s.*?([A-Za-z-\s']+),\s([A-Za-z-\s']+)", line)
-        if name_match:
-            _, _, last, first = name_match.groups()
+        match = re.search(r"On:\s(\d{2}:\d{2})\s-\s(\d{2}:\d{2})\s.*?([A-Za-z-\s']+),\s([A-Za-z-\s']+)", line)
+        if match:
+            on_start, on_end, last, first = match.groups()
+            if on_start == start_time and on_end == end_time:
+                return f"{first} {last}"
+    for line in on_blocks:
+        fallback = re.search(r"([A-Za-z-\s']+),\s([A-Za-z-\s']+)", line)
+        if fallback:
+            last, first = fallback.groups()
             return f"{first} {last}"
     return "Vacant"
