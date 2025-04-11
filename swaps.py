@@ -1,129 +1,107 @@
-
-from datetime import datetime, timedelta
 import re
-import os
+from datetime import datetime, timedelta
 
-def clean_reason(reason_raw):
-    if not reason_raw:
-        return None
-    reason_raw = reason_raw.lower()
-    if "sick" in reason_raw:
-        return "Sick Leave"
-    if "vacation" in reason_raw:
-        return "Vacation"
-    if "cancel" in reason_raw:
-        return "Shift Cancellation"
-    if "training" in reason_raw:
-        return "Training"
-    if "bereavement" in reason_raw:
-        return "Bereavement"
-    return reason_raw.title()
-
-def extract_notes(reason_raw, reason_clean, prefix=None):
-    if not reason_raw:
-        return ""
-    raw_tokens = reason_raw.split()
-    clean_tokens = set(reason_clean.lower().split()) if reason_clean else set()
-    word_tokens = []
-    code_tokens = []
-
-    for t in raw_tokens:
-        t_lower = t.lower()
-        if t_lower in clean_tokens:
-            continue
-        if t_lower == "continued":
-            word_tokens.append("Continued")
-        elif t_lower == "new":
-            word_tokens.append("New")
-        elif t_lower == "paid":
-            word_tokens.append("Paid")
-        elif t.isalpha() and len(t) <= 2:
-            code_tokens.append(t.upper())
-
-    note_parts = []
-    if prefix:
-        note_parts.append(prefix)
-    if word_tokens:
-        note_parts.append(" ".join(word_tokens))
-    if code_tokens:
-        note_parts.append(" ".join(code_tokens))
-
-    return " - ".join(note_parts).strip()
+# === Emoji helper (legacy UI support only) ===
+REASON_EMOJIS = {
+    "Sick Leave": "💊",
+    "Vacation": "🌴",
+    "Shift Cancellation": "❌",
+    "Stat Holiday": "⭐",
+    "Leave of Absence": "✈️",
+    "Other": "🔁",
+}
 
 def normalize_name(name):
-    if "," in name:
-        last, first = [x.strip() for x in name.split(",", 1)]
-        return f"{first} {last}"
+    parts = [p.strip() for p in name.split(",")]
+    if len(parts) == 2:
+        return f"{parts[1]} {parts[0]}"
     return name.strip()
 
-def classify_type(start_time):
-    h = int(start_time.split(":")[0])
-    if h < 14:
-        return "Day"
-    if h < 22:
-        return "Evening"
-    return "Night"
-
-
 def parse_exceptions_section(text, schedule_df, file_name, file_date):
-    #from .parser_helpers import extract_swap_lines  # if needed
+    swaps = []
+    if "Exceptions Day Unit:" not in text:
+        return swaps
+
     lines = text.splitlines()
-    swaps_raw = []
-    for line in lines:
-        if "Off:" in line or "On:" in line or "Relief:" in line or "Covering Vacant" in line:
-            # crude filter — mimic original extractor
-            start_time = re.search(r"(\d{2}:\d{2})", line)
-            if not start_time:
+    start = next((i for i, line in enumerate(lines) if "Exceptions Day Unit:" in line), -1)
+    if start == -1:
+        return swaps
+
+    block = lines[start:]
+    off_blocks = [l for l in block if l.strip().startswith("Off:")]
+    on_blocks  = [l for l in block if l.strip().startswith("On:")]
+
+    for off in off_blocks:
+        try:
+            off_line = off.replace("Off:", "").strip()
+            name_match = re.match(r"([A-Za-z\-\s']+),\s([A-Za-z\-\s']+)", off_line)
+            if not name_match:
                 continue
-            swaps_raw.append({
-                "original": "Vacant" if "Covering Vacant" in line else "UNKNOWN",
-                "coverer": "UNKNOWN",
-                "start": start_time.group(1),
-                "end": "UNKNOWN",
-                "reason": None,
-                "reason_raw": line,
-                "notes": line
+
+            last, first = name_match.groups()
+            full_name = f"{first} {last}"
+
+            time_match = re.search(r"(\d{2}:\d{2})\s-\s(\d{2}:\d{2})", off_line)
+            start_time, end_time = ("UNKNOWN", "UNKNOWN")
+            if time_match:
+                start_time, end_time = time_match.groups()
+
+            raw_reason = off_line.split(end_time)[-1].strip() if end_time != "UNKNOWN" else ""
+            reason, notes = clean_reason(raw_reason)
+
+            match_row = schedule_df[schedule_df["Name"].str.contains(last) & schedule_df["Name"].str.contains(first)]
+            shift = match_row["Shift"].iloc[0] if not match_row.empty else "UNKNOWN"
+            hours = match_row["Hours"].iloc[0] if not match_row.empty else 0.0
+
+            coverer = find_coverer_candidate(on_blocks, shift)
+
+            swaps.append({
+                "date": str(file_date),
+                "shift": shift,
+                "off": full_name,
+                "on": coverer,
+                "reason": reason,
+                "reason_raw": raw_reason,
+                "start": start_time,
+                "end": end_time,
+                "hours": hours,
+                "notes": notes,
+                "emoji": REASON_EMOJIS.get(reason, "")
             })
-    # Fake fallback until raw swap parsing is re-wired properly
-    return parse_exceptions_section_internal(swaps_raw, schedule_df, file_name, file_date)
-
-def parse_exceptions_section_internal(swaps_raw, schedule_df, file_name, file_date):
-
-    shift_records = []
-    for swap in swaps_raw:
-        if "UNKNOWN" in (swap["start"], swap["end"]):
+        except Exception:
             continue
-        norm_original = normalize_name(swap["original"])
-        norm_coverer = normalize_name(swap["coverer"])
-        shift_id = get_shift_id_for(norm_coverer, file_date, schedule_df)
 
-        start_time = datetime.strptime(swap["start"], "%H:%M")
-        end_time = datetime.strptime(swap["end"], "%H:%M")
-        if end_time <= start_time:
-            end_time += timedelta(days=1)
-        hours = round((end_time - start_time).seconds / 3600, 1)
+    return swaps
 
-        shift_records.append({
-            "date": file_date,
-            "start": swap["start"],
-            "end": swap["end"],
-            "shift": shift_id,
-            "type": classify_type(swap["start"]),
-            "day_type": "Weekend" if file_date.weekday() >= 5 else "Weekday",
-            "hours": hours,
-            "original": norm_original,
-            "coverer": norm_coverer,
-            "reason": None if norm_original == "Vacant" else swap.get("reason"),
-            "reason_raw": None if norm_original == "Vacant" else swap.get("reason_raw"),
-            "notes": swap.get("notes"),
-            "source_pdf": os.path.splitext(file_name)[0],
-            "file_date": file_date
-        })
-    return shift_records
+def clean_reason(raw):
+    raw = raw.strip()
+    if not raw:
+        return ("Other", "")
 
-def get_shift_id_for(name, date_obj, df):
-    norm = normalize_name(name)
-    row = df[(df["Name"] == norm) & (df["DateObj"] == date_obj)]
-    if not row.empty:
-        return row.iloc[0]["Shift"]
-    return None
+    r = raw.lower()
+    if "sick" in r:
+        return ("Sick Leave", format_notes(raw))
+    if "vacation" in r:
+        return ("Vacation", format_notes(raw))
+    if "stat" in r:
+        return ("Stat Holiday", format_notes(raw))
+    if "cancel" in r:
+        return ("Shift Cancellation", format_notes(raw))
+    if "leave" in r:
+        return ("Leave of Absence", format_notes(raw))
+    return ("Other", format_notes(raw))
+
+def format_notes(raw):
+    words = raw.split()
+    suffix = words[-1] if words else ""
+    if suffix.lower() in ["n", "pn", "p", "c"]:
+        return f"{' '.join(words[:-1]).title()} - {suffix.upper()}"
+    return raw.title()
+
+def find_coverer_candidate(on_blocks, shift_hint):
+    for line in on_blocks:
+        name_match = re.search(r"On:\s(\d{2}:\d{2})\s-\s(\d{2}:\d{2})\s.*?([A-Za-z-\s']+),\s([A-Za-z-\s']+)", line)
+        if name_match:
+            _, _, last, first = name_match.groups()
+            return f"{first} {last}"
+    return "Vacant"
