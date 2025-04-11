@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +6,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
 </head>
 <body>
-  <h1 id="typed-header"><span id="typed-text"></span></h1>
-  <!--
-  {% set shift_icons = {'Day': '☀️', 'Evening': '🌇', 'Night': '🌙'} %}
-  {% macro render_shift_section(title, shift_groups) %}
+  <h1 id="typed-header"><span id="typed-text"></span></h1>  <!-- ======== WORKING TODAY / TOMORROW ======== -->{% set shift_icons = {'Day': '☀️', 'Evening': '🌇', 'Night': '🌙'} %} {% macro render_shift_section(title, shift_groups) %}
+
   <div class="panel">
     <div class="panel-header" onclick="togglePanel(this)">
       <span>{{ title }}</span>
@@ -26,43 +23,37 @@
       {% endfor %}
     </div>
   </div>
-  {% endmacro %}
+  {% endmacro %}{{ render_shift_section("Working Today", stats.working_today) }} {{ render_shift_section("Working Tomorrow", stats.working_tomorrow) }}
 
-  {{ render_shift_section("Working Today", stats.working_today) }} -->
-  <!-- {{ render_shift_section("Working Tomorrow", stats.working_tomorrow) }} -->
-
-  <!-- ======== WORKING DATE ======== -->
-  <div class="panel">
-  <div class="panel-header open" onclick="togglePanel(this)">
-    <span>Scheduled</span>
-  </div>
-  <div class="panel-body">
-    <div class="date-wrapper">
-      <input type="date" id="working-date" />
-      <div class="custom-date-display" onclick="document.getElementById('working-date').showPicker()">
-        <span id="custom-date-text">Today</span>
+  <!-- ======== SCHEDULED BY DATE ======== -->  <div class="panel">
+    <div class="panel-header open" onclick="togglePanel(this)">
+      <span>Scheduled</span>
+    </div>
+    <div class="panel-body">
+      <div class="date-wrapper">
+        <input type="date" id="working-date" />
+        <div class="custom-date-display" onclick="document.getElementById('working-date').showPicker()">
+          <span id="custom-date-text">Today</span>
+        </div>
       </div>
+      <div id="working-date-loading" style="display: none; text-align: center;">
+        <div class="spinner"></div>
+        <p style="margin-top: 0.5rem;">Fetching schedule...</p>
+      </div>
+      <div id="working-date-results" style="margin-top: 1em;"></div>
     </div>
-    <div id="working-date-loading" style="display: none; text-align: center;">
-      <div class="spinner"></div>
-      <p style="margin-top: 0.5rem;">Fetching schedule...</p>
-    </div>
-    <div id="working-date-results" style="margin-top: 1em;"></div>
-  </div>
-  </div>
-
-  <!-- ======== SWAPS & COVERAGE ======== --> 
-  <div class="panel">
+  </div>  <!-- ======== SWAPS & COVERAGE ======== -->   <div class="panel">
     <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage (WIP)</div>
     <div class="panel-body">
       {% if stats.swaps %}
         <ul>
           {% for swap in stats.swaps %}
             <li style="margin-bottom: 1em;">
-              <strong>{{ swap.date }}: {{ swap.shift }}</strong><br>
-              {{ swap.emoji }} {{ swap.hours }}<br>
-              {{ swap.off }} → {{ swap.on }}<br>
+              <strong>{{ swap.date }}</strong><br>
+              {{ swap.start }} - {{ swap.end }}<br>
+              {{ swap.original }} → {{ swap.coverer }}<br>
               <em>{{ swap.reason }}</em>
+              {% if swap.notes %}<br>{{ swap.notes }}{% endif %}
             </li>
           {% endfor %}
         </ul>
@@ -70,10 +61,7 @@
         <p>No shift swaps or exceptions detected.</p>
       {% endif %}
     </div>
-  </div>
-
-  <!-- ======== WEEKLY RANKINGS ======== -->
-  <div class="panel">
+  </div>  <!-- ======== WEEKLY RANKINGS ======== -->  <div class="panel">
     <div class="panel-header" onclick="togglePanel(this)">Weekly Rankings</div>
     <div class="panel-body">
       <ul>
@@ -82,10 +70,7 @@
         {% endfor %}
       </ul>
     </div>
-  </div>
-
-  <!-- ======== PERIOD RANKINGS ======== -->
-  <div class="panel">
+  </div>  <!-- ======== PERIOD RANKINGS ======== -->  <div class="panel">
     <div class="panel-header" onclick="togglePanel(this)">Period Rankings</div>
     <div class="panel-body">
       <ul>
@@ -94,10 +79,7 @@
         {% endfor %}
       </ul>
     </div>
-  </div>
-
-  <!-- ======== STATS ======== -->
-  <div class="panel">
+  </div>  <!-- ======== STATS ======== -->  <div class="panel">
     <div class="panel-header" onclick="togglePanel(this)">Stats</div>
     <div class="panel-body">
       <ul style="list-style: none; padding-left: 0;">
@@ -105,10 +87,7 @@
         <li><p style="text-align: center"><strong>Top Day:</strong> {{ stats.top_day.strftime('%a, %b %d') }} ({{ stats.top_day_hours }} hrs)</p></li>
       </ul>
     </div>
-  </div>
-
-  <!-- ======== DOWNLOADS ======== -->
-  <div class="panel">
+  </div>  <!-- ======== DOWNLOADS ======== -->  <div class="panel">
     <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
     <div class="panel-body">
       {% if outputs %}
@@ -127,10 +106,7 @@
         <p>No output files were generated.</p>
       {% endif %}
     </div>
-  </div>
-
-
-  <script>
+  </div>  <!-- ======== SCRIPTS ======== -->  <script>
   const text = "ARG Summary";
   const speed = 100;
   const target = document.getElementById("typed-text");
@@ -145,9 +121,7 @@
   }
 
   window.addEventListener("DOMContentLoaded", typeWriter);
-  </script>
-  
-  <script>
+  </script>  <script>
   function togglePanel(header) {
     const panel = header.closest('.panel');
     const body = header.nextElementSibling;
@@ -205,41 +179,41 @@
   }
 
   function updateCustomDateText(date, element) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
 
-  if (date.toDateString() === today.toDateString()) {
-    element.textContent = "Today";
-    return;
-  } else if (date.toDateString() === tomorrow.toDateString()) {
-    element.textContent = "Tomorrow";
-    return;
-  }
-
-  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
-  const getOrdinal = (n) => {
-    if (n > 3 && n < 21) return "th";
-    switch (n % 10) {
-      case 1: return "st";
-      case 2: return "nd";
-      case 3: return "rd";
-      default: return "th";
+    if (date.toDateString() === today.toDateString()) {
+      element.textContent = "Today";
+      return;
+    } else if (date.toDateString() === tomorrow.toDateString()) {
+      element.textContent = "Tomorrow";
+      return;
     }
-  };
 
-  const weekday = dayNames[date.getDay()];
-  const month = monthNames[date.getMonth()];
-  const day = date.getDate();
-  const formatted = `${weekday} ${month} ${day}${getOrdinal(day)}`;
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
 
-  element.textContent = formatted;
+    const getOrdinal = (n) => {
+      if (n > 3 && n < 21) return "th";
+      switch (n % 10) {
+        case 1: return "st";
+        case 2: return "nd";
+        case 3: return "rd";
+        default: return "th";
+      }
+    };
+
+    const weekday = dayNames[date.getDay()];
+    const month = monthNames[date.getMonth()];
+    const day = date.getDate();
+    const formatted = `${weekday} ${month} ${day}${getOrdinal(day)}`;
+
+    element.textContent = formatted;
   }
 
   window.addEventListener("DOMContentLoaded", () => {
@@ -261,13 +235,9 @@
       });
     }
   });
-</script>
-
-  <div class="panel">
+  </script>  <div class="panel">
     <form action="{{ url_for('index') }}" method="get">
       <button type="submit" class="button full-width">Generate Another</button>
     </form>
-  </div>
-
-</body>
+  </div></body>
 </html>
