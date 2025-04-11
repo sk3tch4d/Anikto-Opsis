@@ -61,7 +61,8 @@ class CoverageShift(db.Model):
     cov_employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
     cov_employee = db.relationship('Employee', foreign_keys=[cov_employee_id], backref='coverage_shifts_cov')  # Covering employee
 
-    reason = db.Column(db.String(128))  # Reason for coverage (e.g., sick leave)
+    reason = db.Column(db.String(128))  # Cleaned reason for coverage
+    reason_raw = db.Column(db.String(256))  # Original text before cleaning
     source_pdf = db.Column(db.String(256))  # File source
     file_date = db.Column(db.Date, nullable=True)  # Date associated with source PDF
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
