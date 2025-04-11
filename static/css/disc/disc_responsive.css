@@ -1,0 +1,6 @@
+@media (max-width: 500px) {
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.4rem; }
+  .button { padding: 0.6rem; }
+  li { padding: 0.6rem; }
+}
