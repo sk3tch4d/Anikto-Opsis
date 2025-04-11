@@ -14,6 +14,8 @@ class Employee(db.Model):
     seniority = db.Column(db.Float, nullable=True)
     assignment = db.Column(db.String(16), nullable=True)  # Optional assignment code
     notes = db.Column(db.Text)  # Any additional notes
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
 
     def __repr__(self):
         return f"<Employee {self.first_name} {self.last_name}>"
@@ -34,7 +36,7 @@ class ShiftRecord(db.Model):
     source_pdf = db.Column(db.String(256))  # File source
     file_date = db.Column(db.Date, nullable=True)  # Date associated with source PDF
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    modified_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
     notes = db.Column(db.Text)
 
     def __repr__(self):
@@ -63,7 +65,7 @@ class CoverageShift(db.Model):
     source_pdf = db.Column(db.String(256))  # File source
     file_date = db.Column(db.Date, nullable=True)  # Date associated with source PDF
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    modified_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
     notes = db.Column(db.Text)
 
     def __repr__(self):
