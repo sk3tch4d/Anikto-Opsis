@@ -45,25 +45,29 @@
       </div>
       <div id="working-date-results" style="margin-top: 1em;"></div>
     </div>
-  </div>  <!-- ======== SWAPS & COVERAGE ======== -->   <div class="panel">
+  <!-- Swaps & Coverage -->
+    <div class="panel">
     <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage (WIP)</div>
-    <div class="panel-body">
+      <div class="panel-body">
       {% if stats.swaps %}
         <ul>
           {% for swap in stats.swaps %}
             <li style="margin-bottom: 1em;">
-              <strong>{{ swap.date }}</strong><br>
-              {{ swap.start }} - {{ swap.end }}<br>
-              {{ swap.original }} → {{ swap.coverer }}<br>
-              <em>{{ swap.reason }}</em>{% if swap.notes %} – {{ swap.notes }}{% endif %}
+              <strong>{{ swap.date }} &ndash; {{ swap.shift }}</strong><br>
+              {{ swap.emoji }} {{ swap.start }} &ndash; {{ swap.end }}<br>
+              {{ swap.original }} &rarr; {{ swap.coverer }}<br>
+              <em>{{ swap.reason }}</em>{% if swap.notes %} &ndash; {{ swap.notes }}{% endif %}
             </li>
           {% endfor %}
         </ul>
       {% else %}
         <p>No shift swaps or exceptions detected.</p>
       {% endif %}
+      </div>
     </div>
-  </div>  <!-- ======== WEEKLY RANKINGS ======== -->  <div class="panel">
+    </div>
+
+  <!-- ======== WEEKLY RANKINGS ======== -->  <div class="panel">
     <div class="panel-header" onclick="togglePanel(this)">Weekly Rankings</div>
     <div class="panel-body">
       <ul>
