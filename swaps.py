@@ -66,7 +66,7 @@ def classify_type(start_time):
 
 
 def parse_exceptions_section(text, schedule_df, file_name, file_date):
-    from .parser_helpers import extract_swap_lines  # if needed
+    #from .parser_helpers import extract_swap_lines  # if needed
     lines = text.splitlines()
     swaps_raw = []
     for line in lines:
