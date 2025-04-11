@@ -1,5 +1,5 @@
 import re
-from datetime import datetime, timedelta
+from datetime import datetime
 
 # === Emoji helper (legacy UI support only) ===
 REASON_EMOJIS = {
@@ -39,7 +39,7 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
                 continue
 
             last, first = name_match.groups()
-            full_name = f"{first} {last}"
+            org_full_name = f"{first} {last}"
 
             time_match = re.search(r"(\d{2}:\d{2})\s-\s(\d{2}:\d{2})", off_line)
             start_time, end_time = ("UNKNOWN", "UNKNOWN")
@@ -52,19 +52,23 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
             match_row = schedule_df[schedule_df["Name"].str.contains(last) & schedule_df["Name"].str.contains(first)]
             shift = match_row["Shift"].iloc[0] if not match_row.empty else "UNKNOWN"
             hours = match_row["Hours"].iloc[0] if not match_row.empty else 0.0
+            shift_type = match_row["Type"].iloc[0] if not match_row.empty else "Other"
+            day_type = match_row["DayType"].iloc[0] if not match_row.empty else "Weekday"
 
             coverer = find_coverer_candidate(on_blocks, shift)
 
             swaps.append({
                 "date": str(file_date),
                 "shift": shift,
-                "off": full_name,
-                "on": coverer,
-                "reason": reason,
-                "reason_raw": raw_reason,
                 "start": start_time,
                 "end": end_time,
+                "type": shift_type,
+                "day_type": day_type,
                 "hours": hours,
+                "org_employee": org_full_name,
+                "cov_employee": coverer,
+                "reason": reason,
+                "reason_raw": raw_reason,
                 "notes": notes,
                 "emoji": REASON_EMOJIS.get(reason, "")
             })
