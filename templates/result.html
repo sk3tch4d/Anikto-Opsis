@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head>
-  <meta charset="UTF-8">
+<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARG Summary</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
@@ -23,27 +22,8 @@
       {% endfor %}
     </div>
   </div>
-  {% endmacro %}
+  {% endmacro %}{{ render_shift_section("Working Today", stats.working_today) }} {{ render_shift_section("Working Tomorrow", stats.working_tomorrow) }} -->  <!-- ======== SCHEDULED ======== -->  <div class="panel"> <div class="panel-header open" onclick="togglePanel(this)"> <span>Scheduled</span> </div> <div class="panel-body"> <div class="date-wrapper"> <input type="date" id="working-date" /> <div class="custom-date-display" onclick="document.getElementById('working-date').showPicker()"> <span id="custom-date-text">Today</span> </div> </div> <div id="working-date-loading" style="display: none; text-align: center;"> <div class="spinner"></div> <p style="margin-top: 0.5rem;">Fetching schedule...</p> </div> <div id="working-date-results" style="margin-top: 1em;"></div> </div>
 
-  {{ render_shift_section("Working Today", stats.working_today) }}
-  {{ render_shift_section("Working Tomorrow", stats.working_tomorrow) }}
-  -->  <!-- ======== SCHEDULED ======== -->  <div class="panel">
-    <div class="panel-header open" onclick="togglePanel(this)">
-      <span>Scheduled</span>
-    </div>
-    <div class="panel-body">
-      <div class="date-wrapper">
-        <input type="date" id="working-date" />
-        <div class="custom-date-display" onclick="document.getElementById('working-date').showPicker()">
-          <span id="custom-date-text">Today</span>
-        </div>
-      </div>
-      <div id="working-date-loading" style="display: none; text-align: center;">
-        <div class="spinner"></div>
-        <p style="margin-top: 0.5rem;">Fetching schedule...</p>
-      </div>
-      <div id="working-date-results" style="margin-top: 1em;"></div>
-    </div>
   </div>  <!-- ======== SWAPS & COVERAGE ======== -->  <div class="panel">
     <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage (WIP)</div>
     <div class="panel-body">
@@ -52,7 +32,7 @@
           {% for swap in stats.swaps %}
             <li style="margin-bottom: 1em;">
               <strong>{{ swap.date }} – {{ swap.shift }}</strong><br>
-              {{ swap.emoji }} {{ swap.start }} - {{ swap.end }}<br>
+              {{ shift_icons.get(swap.type, '🔁') }} {{ swap.start }} – {{ swap.end }}<br>
               {{ swap.org_employee }} → {{ swap.cov_employee }}<br>
               <em>{{ swap.reason }}</em>{% if swap.notes %} – {{ swap.notes }}{% endif %}
             </li>
@@ -220,10 +200,10 @@
         });
       }
     });
-  </script>  <div class="panel">
-    <form action="{{ url_for('index') }}" method="get">
-      <button type="submit" class="button full-width">Generate Another</button>
-    </form>
+  </script>  <div class="panel"><form action="{{ url_for('index') }}" method="get">
+  <button type="submit" class="button full-width">Generate Another</button>
+</form>
+
   </div>
 </body>
 </html>
