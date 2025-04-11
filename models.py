@@ -1,3 +1,4 @@
+
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -27,9 +28,11 @@ class ShiftRecord(db.Model):
     start = db.Column(db.String(8), nullable=False)
     end = db.Column(db.String(8), nullable=False)
     type = db.Column(db.String(16), nullable=False)  # E.g., Day, Evening, Night
+    day_type = db.Column(db.String(16), nullable=False)  # Weekday or Weekend
     hours = db.Column(db.Float, nullable=False)
     is_coverage = db.Column(db.Boolean, default=False)
     source_pdf = db.Column(db.String(256))  # File source
+    file_date = db.Column(db.Date, nullable=True)  # Date associated with source PDF
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     modified_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
     notes = db.Column(db.Text)
@@ -45,18 +48,20 @@ class CoverageShift(db.Model):
     start = db.Column(db.String(8), nullable=False)
     end = db.Column(db.String(8), nullable=False)
     type = db.Column(db.String(16), nullable=False)  # E.g., Day, Evening, Night
+    day_type = db.Column(db.String(16))  # Weekday or Weekend
     hours = db.Column(db.Float, nullable=False)
-    
+
     # Employee being covered (org_employee)
     org_employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
     org_employee = db.relationship('Employee', foreign_keys=[org_employee_id], backref='coverage_shifts_org')  # Original employee
-    
+
     # Employee who is covering (cov_employee)
     cov_employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)
     cov_employee = db.relationship('Employee', foreign_keys=[cov_employee_id], backref='coverage_shifts_cov')  # Covering employee
-    
+
     reason = db.Column(db.String(128))  # Reason for coverage (e.g., sick leave)
     source_pdf = db.Column(db.String(256))  # File source
+    file_date = db.Column(db.Date, nullable=True)  # Date associated with source PDF
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     modified_at = db.Column(db.DateTime, onupdate=datetime.utcnow)
     notes = db.Column(db.Text)
