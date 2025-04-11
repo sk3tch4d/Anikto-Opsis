@@ -1,0 +1,43 @@
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 500px;
+}
+li {
+  background-color: #232529;
+  margin-bottom: 0.4rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #202225;
+  text-align: center;
+  font-size: 0.9rem;
+}
+ul.downloads {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+ul.downloads li {
+  padding: 0;
+  margin: 0 0 0.5rem 0;
+}
+ul.downloads li > .button {
+  all: unset;
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #40444b;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid #2f3136;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease;
+}
+ul.downloads li > .button:hover {
+  background-color: #50545b;
+}
