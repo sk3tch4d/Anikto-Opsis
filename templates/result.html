@@ -35,7 +35,7 @@
               <strong>{{ swap.date }} – {{ swap.shift }}</strong><br>
               {{ shift_icons[swap.type] }} {{ swap.start }} – {{ swap.end }}<br>
               {{ swap.org_employee }} → {{ swap.cov_employee }}<br>
-              <em>{{ swap.reason }}</em>{% if swap.notes %} – {{ swap.notes }}{% endif %}
+              <em>{{ swap.reason }}</em>
             </li>
           {% endfor %}
         </ul>
