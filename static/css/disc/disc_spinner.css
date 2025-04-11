@@ -1,0 +1,19 @@
+#loading {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #7289da;
+}
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #7289da;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 1rem auto;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
