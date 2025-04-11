@@ -111,14 +111,14 @@ def parse_pdf(pdf_path):
 
             if current_date and "Exceptions Day Unit:" in text:
                 from swaps import parse_exceptions_section
-                    swaps_found = parse_exceptions_section(
-                        text,
-                        pd.DataFrame(records),
-                        os.path.basename(pdf_path),
-                        current_date
-                    )
-                    print("SWAPS FOUND:", swaps_found)
-                    swaps += swaps_found
+                swaps_found = parse_exceptions_section(
+                    text,
+                    pd.DataFrame(records),
+                    os.path.basename(pdf_path),
+                    current_date
+                )
+                print("SWAPS FOUND:", swaps_found)
+                swaps += swaps_found
     
     print("[DEBUG] Total swaps found:", len(swaps))
     
