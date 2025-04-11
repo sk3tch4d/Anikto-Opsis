@@ -66,7 +66,7 @@ def classify_type(start_time):
 
 
 def parse_exceptions_section(text, schedule_df, file_name, file_date):
-    #from .parser_helpers import extract_swap_lines  # if needed
+    from .parser_helpers import extract_swap_lines  # if needed
     lines = text.splitlines()
     swaps_raw = []
     for line in lines:
@@ -96,8 +96,7 @@ def parse_exceptions_section_internal(swaps_raw, schedule_df, file_name, file_da
         shift_id = get_shift_id_for(norm_coverer, file_date, schedule_df)
 
         start_time = datetime.strptime(swap["start"], "%H:%M")
-        if swap["end"] == "UNKNOWN": continue
-    end_time = datetime.strptime(swap["end"], "%H:%M")
+        end_time = datetime.strptime(swap["end"], "%H:%M")
         if end_time <= start_time:
             end_time += timedelta(days=1)
         hours = round((end_time - start_time).seconds / 3600, 1)
