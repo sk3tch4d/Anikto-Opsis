@@ -130,17 +130,17 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
             day_type = scheduled_row["DayType"].values[0]
             used_coverers.add(name)
             all_swaps.append({
-                "org_employee": "Vacant",
-                "cov_employee": name,
-                "start": start,
-                "end": end,
-                "date": str(file_date),
-                "reason_raw": "Covering Vacant",
-                "reason": "Covering Vacant",
-                "type": actual_type.title(),
-                "day_type": day_type.title(),
-                "notes": suffix,
-                "shift": f"d{shift.replace('d', '').replace('n', '')}"
+            "org_employee": "Vacant",
+            "cov_employee": name,
+            "start": start,
+            "end": end,
+            "date": str(file_date),
+            "reason_raw": "Covering Vacant",
+            "reason": "Covering Vacant",
+            "type": actual_type.title(),
+            "day_type": day_type.title(),
+            "notes": suffix,
+            "shift": f"d{shift.replace('d', '').replace('n', '')}"
             })
                     "reason": "Covering Vacant",
             "shift_type": actual_type,
