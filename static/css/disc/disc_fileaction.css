@@ -40,3 +40,15 @@
 .file-action.uploaded {
   margin-top: 0.5rem;
 }
+ul.file-box {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+ul.file-box li {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
