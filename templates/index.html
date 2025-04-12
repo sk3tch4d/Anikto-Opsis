@@ -11,6 +11,7 @@
   <h1 id="typed-header"><span id="typed-text"></span></h1>
   <h3>Upload ARG PDFs to Generate Results</h3>
 
+  <button id="mobile-focus-reset" style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;" tabindex="-1"></button>
   <div id="upload-form" class="index-upload">
   <form method="POST" enctype="multipart/form-data">
 
@@ -168,10 +169,20 @@
     panel.classList.toggle('open'); // <== This is new and required
   }
 
-  // Optional: start with all panels closed
+  // Start with all panels closed
   document.querySelectorAll('.panel-body').forEach(e => {
     e.classList.remove('open');
   });
+
+  // Remove Panel Focus: Mobile
+  if (!isOpen) {
+    setTimeout(() => {
+      const resetTarget = document.getElementById('mobile-focus-reset');
+      if (resetTarget) {
+        resetTarget.focus();
+      }
+    }, 10);
+  }
 </script>
   
 </body>
