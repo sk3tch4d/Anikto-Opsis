@@ -160,6 +160,9 @@
 
       panel.classList.toggle('open');
       if (body) body.classList.toggle('open');
+      if (!panel.classList.contains('open') && window.matchMedia('(pointer: fine)').matches) {
+        header.blur();
+      }
     }
   </script>
 
