@@ -1,6 +1,10 @@
 
 import re
 from datetime import datetime
+import json
+
+with open("static/emp_all.json", "r") as f:
+    EMP_ALL = json.load(f)
 
 # === Emoji helper (legacy UI support only) ===
 REASON_EMOJIS = {
