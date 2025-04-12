@@ -1,11 +1,16 @@
 
 import re
 from datetime import datetime
-import json
 
-with open("static/emp_all.json", "r") as f:
-    EMP_ALL = json.load(f)
-
+# === Emoji helper (legacy UI support only) ===
+REASON_EMOJIS = {
+    "Sick Leave": "💊",
+    "Vacation": "🌴",
+    "Shift Cancellation": "❌",
+    "Stat Holiday": "⭐",
+    "Leave of Absence": "✈️",
+    "Other": "🔁",
+}
 
 def normalize_name(name):
     parts = [p.strip() for p in name.split(",")]
@@ -49,7 +54,9 @@ def find_coverer_candidate(on_blocks, start_time, end_time):
 
 def parse_exceptions_section(text, schedule_df, file_name, file_date):
     import re
-    from emp_all import EMP_ALL
+import json
+with open("static/emp_all.json", "r") as f:
+    EMP_ALL = json.load(f)
 
     def extract_relief_name(line):
         match = re.search(r"Relief:\s*([A-Za-z\-\s']+),\s([A-Za-z\-\s']+)", line)
