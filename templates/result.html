@@ -163,6 +163,10 @@
       if (!panel.classList.contains('open') && window.matchMedia('(pointer: fine)').matches) {
         header.blur();
       }
+
+      document.querySelectorAll('.panel-header').forEach(header => {
+        header.setAttribute('tabindex', '-1');
+      });
     }
   </script>
 
