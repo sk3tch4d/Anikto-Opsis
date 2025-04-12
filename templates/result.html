@@ -144,109 +144,133 @@
     window.addEventListener("DOMContentLoaded", typeWriter);
   </script>
 
-  <script>
-    function togglePanel(header) {
-      const panel = header.closest('.panel');
-      const body = header.nextElementSibling;
-      document.querySelectorAll('.panel').forEach(p => {
-        if (p !== panel) {
-          p.classList.remove('open');
-          const otherBody = p.querySelector('.panel-body');
-          if (otherBody) otherBody.classList.remove('open');
-        }
-      });
-      panel.classList.toggle('open');
-      if (body) body.classList.toggle('open');
-    }
+  <!-- ========== PANEL TOGGLING ========== -->
+<script>
+  function togglePanel(header) {
+    const panel = header.closest('.panel');
+    const body = header.nextElementSibling;
 
-    async function fetchWorkingOnDate() {
-      const dateInput = document.getElementById('working-date');
-      const resultsDiv = document.getElementById('working-date-results');
-      const loadingDiv = document.getElementById('working-date-loading');
-      const dateStr = dateInput.value;
-      if (!dateStr) return;
-
-      resultsDiv.innerHTML = "";
-      loadingDiv.style.display = "block";
-
-      try {
-        const response = await fetch(`/api/working_on_date?date=${dateStr}`);
-        const data = await response.json();
-        const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
-        let html = '';
-
-        if (data.error) {
-          html = `<p class="error">${data.error}</p>`;
-        } else {
-          ['Day', 'Evening', 'Night'].forEach(type => {
-            if (data[type]) {
-              html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><ul>`;
-              data[type].forEach(([name, shift]) => {
-                html += `<li>${name} (${shift})</li>`;
-              });
-              html += `</ul>`;
-            }
-          });
-          if (!html) html = "<p>No employees scheduled for this date.</p>";
-        }
-        resultsDiv.innerHTML = html;
-      } catch (err) {
-        resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
-      } finally {
-        loadingDiv.style.display = "none";
-      }
-    }
-
-    function updateCustomDateText(date, element) {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const tomorrow = new Date(today);
-      tomorrow.setDate(today.getDate() + 1);
-
-      if (date.toDateString() === today.toDateString()) {
-        element.textContent = "Today";
-        return;
-      } else if (date.toDateString() === tomorrow.toDateString()) {
-        element.textContent = "Tomorrow";
-        return;
-      }
-
-      const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      const getOrdinal = (n) => {
-        if (n > 3 && n < 21) return "th";
-        switch (n % 10) {
-          case 1: return "st";
-          case 2: return "nd";
-          case 3: return "rd";
-          default: return "th";
-        }
-      };
-      const weekday = dayNames[date.getDay()];
-      const month = monthNames[date.getMonth()];
-      const day = date.getDate();
-      element.textContent = `${weekday} ${month} ${day}${getOrdinal(day)}`;
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-      const dateInput = document.getElementById("working-date");
-      const customText = document.getElementById("custom-date-text");
-
-      if (dateInput && customText) {
-        const today = new Date();
-        const isoDate = today.toISOString().split('T')[0];
-        dateInput.value = isoDate;
-        updateCustomDateText(today, customText);
-        fetchWorkingOnDate();
-
-        dateInput.addEventListener("change", () => {
-          const newDate = new Date(dateInput.value + "T00:00:00");
-          updateCustomDateText(newDate, customText);
-          fetchWorkingOnDate();
-        });
+    document.querySelectorAll('.panel').forEach(p => {
+      if (p !== panel) {
+        p.classList.remove('open');
+        const otherBody = p.querySelector('.panel-body');
+        if (otherBody) otherBody.classList.remove('open');
       }
     });
-  </script>
+
+    panel.classList.toggle('open');
+    if (body) body.classList.toggle('open');
+  }
+</script>
+
+<!-- ========== FETCHING SCHEDULE ========== -->
+<script>
+  async function fetchWorkingOnDate() {
+    const dateInput = document.getElementById('working-date');
+    const resultsDiv = document.getElementById('working-date-results');
+    const loadingDiv = document.getElementById('working-date-loading');
+    const dateStr = dateInput.value;
+
+    if (!dateStr) return;
+
+    resultsDiv.innerHTML = "";
+    loadingDiv.style.display = "block";
+
+    try {
+      const response = await fetch(`/api/working_on_date?date=${dateStr}`);
+      const data = await response.json();
+      const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
+      let html = '';
+
+      if (data.error) {
+        html = `<p class="error">${data.error}</p>`;
+      } else {
+        ['Day', 'Evening', 'Night'].forEach(type => {
+          if (data[type] && data[type].length > 0) {
+            html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><ul>`;
+            data[type].forEach(([name, shift]) => {
+              html += `<li>${name} (${shift})</li>`;
+            });
+            html += `</ul>`;
+          }
+        });
+        if (!html) html = "<p>No employees scheduled for this date.</p>";
+      }
+
+      resultsDiv.innerHTML = html;
+    } catch (err) {
+      resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
+    } finally {
+      loadingDiv.style.display = "none";
+    }
+  }
+</script>
+
+<!-- ========== FORMAT CUSTOM LABEL (TODAY / TOMORROW) ========== -->
+<script>
+  function updateCustomDateText(date, element) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const inputDate = new Date(date);
+    inputDate.setHours(0, 0, 0, 0);
+
+    if (inputDate.getTime() === today.getTime()) {
+      element.textContent = "Today";
+      return;
+    } else if (inputDate.getTime() === tomorrow.getTime()) {
+      element.textContent = "Tomorrow";
+      return;
+    }
+
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const getOrdinal = (n) => {
+      if (n > 3 && n < 21) return "th";
+      switch (n % 10) {
+        case 1: return "st";
+        case 2: return "nd";
+        case 3: return "rd";
+        default: return "th";
+      }
+    };
+
+    const weekday = dayNames[inputDate.getDay()];
+    const month = monthNames[inputDate.getMonth()];
+    const day = inputDate.getDate();
+    element.textContent = `${weekday} ${month} ${day}${getOrdinal(day)}`;
+  }
+</script>
+
+<!-- ========== INIT LOGIC ========== -->
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const dateInput = document.getElementById("working-date");
+    const customText = document.getElementById("custom-date-text");
+
+    if (dateInput && customText) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // normalize
+      const isoDate = today.toISOString().split('T')[0];
+
+      dateInput.value = isoDate;
+      updateCustomDateText(today, customText);
+      fetchWorkingOnDate();
+
+      dateInput.addEventListener("change", () => {
+        const selected = new Date(dateInput.value + "T00:00:00");
+        updateCustomDateText(selected, customText);
+        fetchWorkingOnDate();
+      });
+    }
+  });
+</script>
 
   <div class="panel">
     <form action="{{ url_for('index') }}" method="get">
