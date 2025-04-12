@@ -36,7 +36,8 @@
 input[type="file"] {
   display: none;
 }
-/* -- Hide dropzone -- */
+
+/* ---- Hide dropzone ---- */
 .uploaded-file {
   word-break: break-word;
   overflow-wrap: anywhere;
@@ -44,6 +45,18 @@ input[type="file"] {
 .drop-zone.hidden {
   display: none;
 }
+
+/* ---- Reactive Drop ---- */
+.drop-zone {
+  transition: transform 0.3s cubic-bezier(0.25, 1.5, 0.5, 1), 
+              box-shadow 0.3s ease;
+  transform-origin: center;
+}
+.drop-zone:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(114, 137, 218, 0.15);
+}
+
 
 /* TESTING */
 .drop-zone {
