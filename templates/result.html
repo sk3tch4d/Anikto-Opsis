@@ -10,6 +10,7 @@
   <h1 id="typed-header"><span id="typed-text"></span></h1>
   {% set shift_icons = {'Day': '☀️', 'Evening': '🌇', 'Night': '🌙'} %}
   {% macro render_shift_section(title, shift_groups) %}
+  <button id="mobile-focus-reset" style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;" tabindex="-1" aria-hidden="true"></button>
   <!--
   <div class="panel">
     <div class="panel-header" onclick="togglePanel(this)">
@@ -164,8 +165,14 @@
         header.blur();
       }
 
-      if (!panel.classList.contains('open')) {
-        setTimeout(() => header.blur(), 10);
+      // Remove Panel Focus: Mobile
+      if (!isOpen) {
+        setTimeout(() => {
+          const resetTarget = document.getElementById('mobile-focus-reset');
+          if (resetTarget) {
+            resetTarget.focus();
+          }
+        }, 10);
       }
     }
   </script>
