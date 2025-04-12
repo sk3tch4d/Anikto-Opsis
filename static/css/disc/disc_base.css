@@ -14,8 +14,8 @@ html {
 /* Body Style */
 body {
   min-height: 100vh;
-  background-color: #232529;
-  color: #ffffff;
+  background-color: #232529 !important;
+  color: #ccc;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;
