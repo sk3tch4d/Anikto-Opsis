@@ -25,6 +25,10 @@ def get_working_on_date(df, date_str):
         date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
     except ValueError:
         return {"error": "Invalid date format. Use YYYY-MM-DD"}
+
+    # Normalize df['date'] to pure date objects
+    df['date'] = pd.to_datetime(df['date'], errors='coerce').dt.date
+
     return group_by_shift(df, date_obj)
 
 def process_report(pdf_paths, return_df=False):
