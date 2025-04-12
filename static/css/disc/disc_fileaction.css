@@ -45,13 +45,20 @@ ul.file-box {
   margin: 0;
   list-style: none;
 }
-
 ul.file-box li {
   width: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+.file-action.mimic-drop {
+  border: 2px solid #7289da;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
 
 /* -- Match Dropzone Padding -- */
 .index-upload .file-action {
