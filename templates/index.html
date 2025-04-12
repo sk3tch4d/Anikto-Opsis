@@ -131,6 +131,29 @@
     fileInput.dispatchEvent(new Event("change"));
     dropZone.classList.remove("active");
   });
+
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+      dropZone.classList.add("hidden");
+      fileList.innerHTML = "";
+
+      const li = document.createElement("li");
+      const link = document.createElement("a");
+
+      link.className = "file-action mimic-drop";
+      link.textContent = fileInput.files[0].name;
+      link.href = "#";
+
+      // Reopen file dialog when clicked
+      link.addEventListener("click", e => {
+        e.preventDefault();
+        fileInput.click();
+      });
+
+      li.appendChild(link);
+      fileList.appendChild(li);
+    }
+  });
   </script>
 
   <script>
