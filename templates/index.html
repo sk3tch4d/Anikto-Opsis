@@ -105,7 +105,7 @@
     [...fileInput.files].forEach(file => {
       const li = document.createElement("li");
       const link = document.createElement("a");
-        link.className = "file-action";
+        link.className = "file-action uploaded";
         link.href = "#"; // optional: you can link to a local file or blob if needed
         link.textContent = file.name;
         li.appendChild(link);
