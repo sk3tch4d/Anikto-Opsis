@@ -53,6 +53,12 @@ def process_report(pdf_paths, return_df=False):
     frames = [f[0] for f in frames_with_swaps]
     swaps_all = sum((f[1] for f in frames_with_swaps), [])
 
+    # ✅ Prevent crash if no data
+    if not frames:
+        if return_df:
+            return None, [], pd.DataFrame()
+        return None, []
+
     # Map file → date
     file_date_map = {}
     for path in pdf_paths:
