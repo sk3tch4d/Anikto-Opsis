@@ -1,4 +1,9 @@
-/* 🔷 Base style for all file actions (uploads and downloads) */
+/* ==========================================================
+   FILE ACTION STYLES
+   Shared styles for upload/download file blocks
+   ========================================================== */
+
+/* -- Base Style -- */
 .file-action {
   display: block;
   width: 100%;
@@ -14,26 +19,24 @@
   margin: 0 0 0.4rem;
   transition: background-color 0.2s ease;
   text-decoration: none;
+  font-weight: normal;
 }
 
-/* 🔹 Hover + Focus Styles */
-.file-action:hover {
+/* -- Hover + Focus States -- */
+.file-action:hover,
+.file-action:focus {
   background-color: #32353a;
   color: #fff;
-}
-
-.file-action:focus,
-.file-action:active {
-  outline: none;
   text-decoration: none;
+  outline: none;
 }
 
-/* 📁 Upload-specific style (optional spacing) */
+/* -- Visited State -- */
+.file-action:visited {
+  color: #ccc;
+}
+
+/* -- Upload-Specific Tweaks -- */
 .file-action.uploaded {
   margin-top: 0.5rem;
-}
-
-/* 🧩 Optional group container spacing */
-.file-group {
-  margin-bottom: 1.25rem;
 }
