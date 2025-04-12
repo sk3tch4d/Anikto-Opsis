@@ -1,7 +1,7 @@
 import re
 import json
 
-with open("static/emp_all.json", "r") as f:
+with open("/mnt/data/emp_all.json", "r") as f:
     EMP_ALL = json.load(f)
 
 def clean_reason_text(reason_raw):
@@ -104,12 +104,10 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
                 "date": str(file_date),
                 "reason_raw": reason_text,
                 "reason": clean_reason_text(reason_text),
-            "shift_type": actual_type,
+            "type": actual_type.title(),
             "day_type": day_type.title(),
                 "notes": suffix,
-                "shift": f"d{shift.replace('d', '').replace('n', '')}",
-                "org_type": actual_type
-            })
+                "shift": f"d{shift.replace('d', '').replace('n', '')}",            })
 
         for line in on_lines:
             if "Covering Vacant" in line:
@@ -142,11 +140,9 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
                     "date": str(file_date),
                     "reason_raw": "Covering Vacant",
                     "reason": "Covering Vacant",
-            "shift_type": actual_type,
+            "type": actual_type.title(),
             "day_type": day_type.title(),
                     "notes": suffix,
-                    "shift": f"d{shift.replace('d', '').replace('n', '')}",
-                    "org_type": actual_type
-                })
+                    "shift": f"d{shift.replace('d', '').replace('n', '')}",                })
 
     return all_swaps
