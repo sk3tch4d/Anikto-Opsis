@@ -91,6 +91,8 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
             scheduled_row = schedule_df[schedule_df["Name"] == coverer]
             if scheduled_row.empty:
                 continue
+            if scheduled_row.empty:
+                continue
 
             shift = scheduled_row["Shift"].values[0]
             actual_type = scheduled_row["Type"].values[0]
@@ -122,6 +124,8 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
             suffix_match = re.findall(r"\b([NPCpnc]{1,2})\b", line)
             suffix = suffix_match[-1].upper() if suffix_match else ""
             scheduled_row = schedule_df[schedule_df["Name"] == name]
+            if scheduled_row.empty:
+                continue
             if scheduled_row.empty:
                 continue
             shift = scheduled_row["Shift"].values[0]
