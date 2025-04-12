@@ -22,6 +22,10 @@
   border-color: #7289da;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
+.drop-zone.drag-over {
+  background-color: #2b2e34;
+  border-color: #5a7fff;
+}
 .drop-text {
   font-size: 1rem;
   padding: 0.5rem;
@@ -32,3 +36,26 @@
 input[type="file"] {
   display: none;
 }
+.uploaded-file {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* TESTING */
+.drop-zone {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+.drop-zone:hover {
+  box-shadow: 0 0 6px rgba(100, 140, 255, 0.3);
+}
+
+
+
+/* ==== JS ==== */
+dropzone.addEventListener('dragover', () => {
+  dropzone.classList.add('drag-over');
+});
+dropzone.addEventListener('dragleave', () => {
+  dropzone.classList.remove('drag-over');
+});
