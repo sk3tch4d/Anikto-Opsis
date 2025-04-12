@@ -91,28 +91,23 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
             scheduled_row = schedule_df[schedule_df["Name"] == coverer]
             if scheduled_row.empty:
                 continue
-            if scheduled_row.empty:
-                continue
-            if scheduled_row.empty:
-                continue
 
             shift = scheduled_row["Shift"].values[0]
             actual_type = scheduled_row["Type"].values[0]
             day_type = scheduled_row["DayType"].values[0]
 
-        all_swaps.append({
-            "org_employee": org_name,
-            "cov_employee": coverer,
-            "start": start,
-            "end": end,
-            "date": str(file_date),
-            "reason_raw": reason_text,
-            "reason": clean_reason_text(reason_text),
-            "day_type": day_type.title(),
-            "notes": suffix,
-            "shift": f"d{shift.replace('d', '').replace('n', '')}",
-            "type": actual_type.title()
-        })
+            all_swaps.append({
+                "org_employee": org_name,
+                "cov_employee": coverer,
+                "start": start,
+                "end": end,
+                "date": str(file_date),
+                "reason_raw": reason_text,
+                "reason": clean_reason_text(reason_text),            "day_type": day_type.title(),
+                "notes": suffix,
+                "shift": f"d{shift.replace('d', '').replace('n', '')}",
+                "org_type": actual_type
+            })
 
     for line in on_lines:
         if "Covering Vacant" in line:
@@ -126,10 +121,6 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
             suffix_match = re.findall(r"\b([NPCpnc]{1,2})\b", line)
             suffix = suffix_match[-1].upper() if suffix_match else ""
             scheduled_row = schedule_df[schedule_df["Name"] == name]
-            if scheduled_row.empty:
-                continue
-            if scheduled_row.empty:
-                continue
             if scheduled_row.empty:
                 continue
             shift = scheduled_row["Shift"].values[0]
