@@ -58,10 +58,12 @@ def parse_pdf(pdf_path):
 
             for line in lines:
                 if "Inventory Services" in line:
+                    print("[DEBUG] Date line found:", line)
                     try:
                         current_date = datetime.strptime(line.split()[-1], "%d/%b/%Y").date()
-                    except ValueError:
-                        pass
+                        print("[DEBUG] Parsed current_date:", current_date)
+                    except ValueError as e:
+                        print("[ERROR] Date parsing failed:", e)
                     break
 
             for line in lines:
