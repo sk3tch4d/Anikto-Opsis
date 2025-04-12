@@ -9,7 +9,7 @@ from swaps import parse_exceptions_section
 
 # === Load Names from JSON ===
 STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
-EMP_LIST_PATH = os.path.join(STATIC_DIR, 'emp_list.json')
+EMP_LIST_PATH = os.path.join(STATIC_DIR, 'emp_ext.json')
 with open(EMP_LIST_PATH, 'r') as f:
     VALID_NAMES = set(json.load(f))
 
