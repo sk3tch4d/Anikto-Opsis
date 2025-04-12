@@ -14,10 +14,10 @@ with open(EMP_LIST_PATH, 'r') as f:
     VALID_NAMES = set(json.load(f))
 
 # === Helpers ===
-def extract_shift_info(line, current_date):
+def extract_shift_info(line, processing_date):
     matches = re.findall(r'\b(SA\d|od\d+|OE|\w{1,3}\d{2,4}|\d{3,4})\b', line, re.IGNORECASE)
     results = []
-    is_weekend = current_date.weekday() >= 5
+    is_weekend = processing_date.weekday() >= 5
     day_type = "Weekend" if is_weekend else "Weekday"
 
     for m in matches:
@@ -49,7 +49,7 @@ def extract_shift_info(line, current_date):
 def parse_pdf(pdf_path):
     records = []
     swaps = []
-    current_date = None
+    processing_date = None
 
     with pdfplumber.open(pdf_path) as pdf:
         for page in pdf.pages:
@@ -60,8 +60,8 @@ def parse_pdf(pdf_path):
                 if "Inventory Services" in line:
                     print("[DEBUG] Date line found:", line)
                     try:
-                        current_date = datetime.strptime(line.split()[-1], "%d/%b/%Y").date()
-                        print("[DEBUG] Parsed current_date:", current_date)
+                        processing_date = datetime.strptime(line.split()[-1], "%d/%b/%Y").date()
+                        print("[DEBUG] Parsed processing_date:", processing_date)
                     except ValueError as e:
                         print("[ERROR] Date parsing failed:", e)
                     break
@@ -81,7 +81,7 @@ def parse_pdf(pdf_path):
                     if full_name not in VALID_NAMES:
                         continue
 
-                    infos = extract_shift_info(line, current_date)
+                    infos = extract_shift_info(line, processing_date)
                     if not infos:
                         continue
 
@@ -89,8 +89,8 @@ def parse_pdf(pdf_path):
                     shift_type    = infos[0]["type"]
                     day_type      = infos[0]["DayType"]
 
-                    dt_start = datetime.strptime(f"{current_date} {start_time}", "%Y-%m-%d %H:%M")
-                    dt_end   = datetime.strptime(f"{current_date} {end_time}",   "%Y-%m-%d %H:%M")
+                    dt_start = datetime.strptime(f"{processing_date} {start_time}", "%Y-%m-%d %H:%M")
+                    dt_end   = datetime.strptime(f"{processing_date} {end_time}",   "%Y-%m-%d %H:%M")
                     if dt_end <= dt_start:
                         dt_end += timedelta(days=1)
 
@@ -98,8 +98,8 @@ def parse_pdf(pdf_path):
 
                     records.append({
                         "Name":     full_name,
-                        "Date":     current_date.strftime("%a, %b %d"),
-                        "DateObj":  current_date,
+                        "Date":     processing_date.strftime("%a, %b %d"),
+                        "DateObj":  processing_date,
                         "Shift":    full_shift_id,
                         "Type":     shift_type,
                         "DayType":  day_type,
@@ -111,13 +111,13 @@ def parse_pdf(pdf_path):
                 except Exception:
                     continue
 
-            if current_date and "Exceptions Day Unit:" in text:
+            if processing_date and "Exceptions Day Unit:" in text:
                 from swaps import parse_exceptions_section
                 swaps_found = parse_exceptions_section(
                     text,
                     pd.DataFrame(records),
                     os.path.basename(pdf_path),
-                    current_date
+                    processing_date
                 )
                 print("SWAPS FOUND:", swaps_found)
                 swaps += swaps_found
