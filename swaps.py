@@ -107,7 +107,7 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
             "shift_type": actual_type,
             "day_type": day_type,
                 "notes": suffix,
-                "shift": f"d{shift.replace("d", "").replace("n", "")}",
+                "shift": f"d{shift.replace('d', '').replace('n', '')}",
                 "org_type": actual_type
             })
 
@@ -145,7 +145,7 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
             "shift_type": actual_type,
             "day_type": day_type,
                     "notes": suffix,
-                    "shift": f"d{shift.replace("d", "").replace("n", "")}",
+                    "shift": f"d{shift.replace('d', '').replace('n', '')}",
                     "org_type": actual_type
                 })
 
