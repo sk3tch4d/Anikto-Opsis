@@ -104,45 +104,50 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
                 "date": str(file_date),
                 "reason_raw": reason_text,
                 "reason": clean_reason_text(reason_text),
-            "type": actual_type.title(),
+            "shift_type": actual_type,
             "day_type": day_type.title(),
                 "notes": suffix,
-                "shift": f"d{shift.replace('d', '').replace('n', '')}",            })
+                "shift": f"d{shift.replace('d', '').replace('n', '')}",
+                "org_type": actual_type
+            })
 
-        for line in on_lines:
-            if "Covering Vacant" in line:
-                name = extract_name_from_line(line)
-                if not name or name in used_coverers:
-                    continue
-
-                time_matches = re.findall(r"(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})", line)
-                if not time_matches:
-                    continue
-                start, end = time_matches[0]
-
-                suffix_match = re.findall(r"\b([NPCpnc]{1,2})\b", line)
-                suffix = suffix_match[-1].upper() if suffix_match else ""
-
-                scheduled_row = schedule_df[schedule_df["Name"] == name]
-                if scheduled_row.empty:
-                    continue
-
-                shift = scheduled_row["Shift"].values[0]
-                actual_type = scheduled_row["Type"].values[0]
-                day_type = scheduled_row["DayType"].values[0]
-
-                used_coverers.add(name)
-                all_swaps.append({
-                    "off": "Vacant",
-                    "on": name,
-                    "start": start,
-                    "end": end,
-                    "date": str(file_date),
-                    "reason_raw": "Covering Vacant",
+    for line in on_lines:
+        if "Covering Vacant" in line:
+            name = extract_name_from_line(line)
+            if not name or name in used_coverers:
+                continue
+            time_matches = re.findall(r"(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})", line)
+            if not time_matches:
+                continue
+            start, end = time_matches[0]
+            suffix_match = re.findall(r"\b([NPCpnc]{1,2})\b", line)
+            suffix = suffix_match[-1].upper() if suffix_match else ""
+            scheduled_row = schedule_df[schedule_df["Name"] == name]
+            if scheduled_row.empty:
+                continue
+            shift = scheduled_row["Shift"].values[0]
+            actual_type = scheduled_row["Type"].values[0]
+            day_type = scheduled_row["DayType"].values[0]
+            used_coverers.add(name)
+            all_swaps.append({
+                "org_employee": "Vacant",
+                "cov_employee": name,
+                "start": start,
+                "end": end,
+                "date": str(file_date),
+                "reason_raw": "Covering Vacant",
+                "reason": "Covering Vacant",
+                "type": actual_type.title(),
+                "day_type": day_type.title(),
+                "notes": suffix,
+                "shift": f"d{shift.replace('d', '').replace('n', '')}"
+            })
                     "reason": "Covering Vacant",
-            "type": actual_type.title(),
+            "shift_type": actual_type,
             "day_type": day_type.title(),
                     "notes": suffix,
-                    "shift": f"d{shift.replace('d', '').replace('n', '')}",                })
+                    "shift": f"d{shift.replace('d', '').replace('n', '')}",
+                    "org_type": actual_type
+                })
 
     return all_swaps
