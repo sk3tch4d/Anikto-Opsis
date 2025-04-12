@@ -1,7 +1,7 @@
 import re
 import json
 
-with open("/mnt/data/emp_all.json", "r") as f:
+with open("static/emp_all.json", "r") as f:
     EMP_ALL = json.load(f)
 
 def clean_reason_text(reason_raw):
