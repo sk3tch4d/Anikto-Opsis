@@ -1,61 +1,39 @@
+/* 🔷 Base style for all file actions (uploads and downloads) */
 .file-action {
-  all: unset;
   display: block;
   width: 100%;
   padding: 0.75rem 1rem;
   background-color: #26282c;
   color: #ccc;
-  outline: 1px solid #7289da;
-  outline-offset: 0px;
+  border: 1px solid #7289da;
   border-radius: 8px;
   font-size: 1rem;
   text-align: center;
   cursor: pointer;
-  transition: background-color 0.2s ease;
   box-sizing: border-box;
-  margin: 0;
-  margin-bottom: 0.4rem;
+  margin: 0 0 0.4rem;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
 }
+
+/* 🔹 Hover + Focus Styles */
 .file-action:hover {
   background-color: #32353a;
   color: #fff;
 }
+
 .file-action:focus,
 .file-action:active {
-  text-decoration: none !important;
-  outline-style: solid;
-}
-.file-group {
-  margin-bottom: 1.25rem;
-}
-ul.downloads li > a.file-action {
-  all: unset;
-  display: block;
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background-color: #26282c;
-  color: #ccc;
-  border: 1px solid #7289da;
-  border-radius: 8px;
-  font-size: 1rem;
-  text-align: center;
-  cursor: pointer;
-  box-sizing: border-box;
-  margin-bottom: 0.4rem;
-  transition: background-color 0.2s ease;
-}
-ul.downloads li > a.file-action:hover {
-  background-color: #32353a;
-  color: #fff;
+  outline: none;
+  text-decoration: none;
 }
 
-ul.file-box li > .file-action {
-  border: 1px solid #7289da;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  background-color: #1f2023;
-  color: #ccc;
-  margin-top: 1rem;
-  display: block;
-  word-break: break-word;
+/* 📁 Upload-specific style (optional spacing) */
+.file-action.uploaded {
+  margin-top: 0.5rem;
+}
+
+/* 🧩 Optional group container spacing */
+.file-group {
+  margin-bottom: 1.25rem;
 }
