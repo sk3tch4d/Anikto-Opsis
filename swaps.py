@@ -96,18 +96,19 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
             actual_type = scheduled_row["Type"].values[0]
             day_type = scheduled_row["DayType"].values[0]
 
-            all_swaps.append({
-                "org_employee": org_name,
-                "cov_employee": coverer,
-                "start": start,
-                "end": end,
-                "date": str(file_date),
-                "reason_raw": reason_text,
-                "reason": clean_reason_text(reason_text),            "day_type": day_type.title(),
-                "notes": suffix,
-                "shift": f"d{shift.replace('d', '').replace('n', '')}",
-                "org_type": actual_type
-            })
+        all_swaps.append({
+            "org_employee": org_name,
+            "cov_employee": coverer,
+            "start": start,
+            "end": end,
+            "date": str(file_date),
+            "reason_raw": reason_text,
+            "reason": clean_reason_text(reason_text),
+            "day_type": day_type.title(),
+            "notes": suffix,
+            "shift": f"d{shift.replace('d', '').replace('n', '')}",
+            "type": actual_type.title()
+        })
 
     for line in on_lines:
         if "Covering Vacant" in line:
