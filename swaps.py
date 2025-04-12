@@ -105,7 +105,7 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
                 "reason_raw": reason_text,
                 "reason": clean_reason_text(reason_text),
             "shift_type": actual_type,
-            "day_type": day_type,
+            "day_type": day_type.title(),
                 "notes": suffix,
                 "shift": f"d{shift.replace('d', '').replace('n', '')}",
                 "org_type": actual_type
@@ -143,7 +143,7 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
                     "reason_raw": "Covering Vacant",
                     "reason": "Covering Vacant",
             "shift_type": actual_type,
-            "day_type": day_type,
+            "day_type": day_type.title(),
                     "notes": suffix,
                     "shift": f"d{shift.replace('d', '').replace('n', '')}",
                     "org_type": actual_type
