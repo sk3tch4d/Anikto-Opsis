@@ -1,16 +1,11 @@
 
 import re
 from datetime import datetime
+import json
 
-# === Emoji helper (legacy UI support only) ===
-REASON_EMOJIS = {
-    "Sick Leave": "💊",
-    "Vacation": "🌴",
-    "Shift Cancellation": "❌",
-    "Stat Holiday": "⭐",
-    "Leave of Absence": "✈️",
-    "Other": "🔁",
-}
+with open("static/emp_all.json", "r") as f:
+    EMP_ALL = json.load(f)
+
 
 def normalize_name(name):
     parts = [p.strip() for p in name.split(",")]
