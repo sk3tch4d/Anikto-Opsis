@@ -14,22 +14,38 @@ get_pay_period = make_pay_period_fn(datetime(2025, 1, 13))
 
 def group_by_shift(df, target_date):
     shifts = defaultdict(list)
+    shift_types = ['Day', 'Evening', 'Night']  # Define expected categories
+
     for _, row in df.iterrows():
-        dt = datetime.combine(row["DateObj"], datetime.strptime(row["Start"], "%H:%M").time())
-        if dt.date() == target_date:
-            shifts[row["Type"]].append((row["Name"], row["Shift"]))
-    return dict(shifts)
+        row_date = row.get("DateObj")
+        if row_date != target_date:
+            continue
+
+        # Parse time safely (in case Start is empty or bad)
+        try:
+            shift_time = datetime.strptime(str(row["Start"]), "%H:%M").time()
+        except (ValueError, TypeError):
+            shift_time = None
+
+        shift_name = row.get("Shift", "Unknown")
+        full_name = row.get("Employee", "Unknown")
+
+        shift_category = shift_name if shift_name in shift_types else "Other"
+
+        shifts[shift_category].append((full_name, row.get("Start", "?")))
+
+    return shifts
 
 def get_working_on_date(df, date_str):
     try:
-        date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+        target_date = datetime.strptime(date_str, "%Y-%m-%d").date()
     except ValueError:
         return {"error": "Invalid date format. Use YYYY-MM-DD"}
 
-    # Normalize df['date'] to pure date objects
-    df['date'] = pd.to_datetime(df['date'], errors='coerce').dt.date
+    # Normalize all dates in df
+    df['DateObj'] = pd.to_datetime(df['date'], errors='coerce').dt.date
 
-    return group_by_shift(df, date_obj)
+    return group_by_shift(df, target_date)
 
 def process_report(pdf_paths, return_df=False):
     # Parse each PDF
