@@ -1,4 +1,4 @@
-# process_report.py
+# report.py
 import os
 import re
 import pandas as pd
@@ -14,50 +14,24 @@ get_pay_period = make_pay_period_fn(datetime(2025, 1, 13))
 
 def group_by_shift(df, target_date):
     shifts = defaultdict(list)
-    shift_types = ['Day', 'Evening', 'Night']  # Define expected categories
-
     for _, row in df.iterrows():
-        row_date = row.get("DateObj")
-        if row_date != target_date:
-            continue
-
-        # Parse time safely (in case Start is empty or bad)
-        try:
-            shift_time = datetime.strptime(str(row["Start"]), "%H:%M").time()
-        except (ValueError, TypeError):
-            shift_time = None
-
-        shift_name = row.get("Shift", "Unknown")
-        full_name = row.get("Employee", "Unknown")
-
-        shift_category = shift_name if shift_name in shift_types else "Other"
-
-        shifts[shift_category].append((full_name, row.get("Start", "?")))
-
-    return shifts
+        dt = datetime.combine(row["DateObj"], datetime.strptime(row["Start"], "%H:%M").time())
+        if dt.date() == target_date:
+            shifts[row["Type"]].append((row["Name"], row["Shift"]))
+    return dict(shifts)
 
 def get_working_on_date(df, date_str):
     try:
-        target_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
     except ValueError:
         return {"error": "Invalid date format. Use YYYY-MM-DD"}
-
-    # Normalize all dates in df
-    df['DateObj'] = pd.to_datetime(df['date'], errors='coerce').dt.date
-
-    return group_by_shift(df, target_date)
+    return group_by_shift(df, date_obj)
 
 def process_report(pdf_paths, return_df=False):
     # Parse each PDF
     frames_with_swaps = [parse_pdf(p) for p in pdf_paths]
     frames = [f[0] for f in frames_with_swaps]
     swaps_all = sum((f[1] for f in frames_with_swaps), [])
-
-    # ✅ Prevent crash if no data
-    if not frames:
-        if return_df:
-            return None, [], pd.DataFrame()
-        return None, []
 
     # Map file → date
     file_date_map = {}
