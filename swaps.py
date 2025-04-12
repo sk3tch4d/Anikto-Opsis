@@ -137,6 +137,8 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
                 "end": end,
                 "date": str(file_date.date()),
                 "reason": reason_text,
+            "reason_raw": reason_text,
+            "reason": clean_reason_text(reason_text),
                 "notes": suffix,
                 "org_shift": shift.replace("d", "").replace("n", ""),
                 "org_type": actual_type
@@ -178,3 +180,18 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
                 })
 
     return all_swaps
+def clean_reason_text(reason_raw):
+    r = reason_raw.lower()
+    if "sick" in r:
+        return "Sick Leave"
+    if "vacation" in r:
+        return "Vacation"
+    if "stat" in r:
+        return "Stat Holiday"
+    if "cancel" in r:
+        return "Shift Cancellation"
+    if "leave" in r:
+        return "Leave of Absence"
+    if "covering vacant" in r:
+        return "Covering Vacant"
+    return "Other"
