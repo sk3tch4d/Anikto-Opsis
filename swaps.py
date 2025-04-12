@@ -1,83 +1,43 @@
-
 import re
-from datetime import datetime
 import json
 
 with open("static/emp_all.json", "r") as f:
     EMP_ALL = json.load(f)
 
-# === Emoji helper (legacy UI support only) ===
-REASON_EMOJIS = {
-    "Sick Leave": "💊",
-    "Vacation": "🌴",
-    "Shift Cancellation": "❌",
-    "Stat Holiday": "⭐",
-    "Leave of Absence": "✈️",
-    "Other": "🔁",
-}
-
-def normalize_name(name):
-    parts = [p.strip() for p in name.split(",")]
-    if len(parts) == 2:
-        return f"{parts[1]} {parts[0]}"
-    return name.strip()
-
-def clean_reason(raw):
-    raw = raw.strip()
-    if not raw:
-        return ("Other", "")
-
-    r = raw.lower()
+def clean_reason_text(reason_raw):
+    r = reason_raw.lower()
     if "sick" in r:
-        return ("Sick Leave", format_notes(raw))
+        return "Sick Leave"
     if "vacation" in r:
-        return ("Vacation", format_notes(raw))
+        return "Vacation"
     if "stat" in r:
-        return ("Stat Holiday", format_notes(raw))
+        return "Stat Holiday"
     if "cancel" in r:
-        return ("Shift Cancellation", format_notes(raw))
+        return "Shift Cancellation"
     if "leave" in r:
-        return ("Leave of Absence", format_notes(raw))
-    return ("Other", format_notes(raw))
+        return "Leave of Absence"
+    if "covering vacant" in r:
+        return "Covering Vacant"
+    return "Other"
 
-def format_notes(raw):
-    words = raw.split()
-    suffix = words[-1] if words else ""
-    if suffix.lower() in ["n", "pn", "p", "c"]:
-        return f"{' '.join(words[:-1]).title()} - {suffix.upper()}"
-    return raw.title()
+def extract_relief_name(line):
+    match = re.search(r"Relief:\s*([A-Za-z\-\s']+),\s([A-Za-z\-\s']+)", line)
+    if match:
+        last, first = match.groups()
+        return f"{last.strip()}, {first.strip()}"
+    return None
 
-def find_coverer_candidate(on_blocks, start_time, end_time):
-    for line in on_blocks:
-        if start_time in line and end_time in line:
-            name_match = re.search(r"On:\s\d{2}:\d{2}\s-\s\d{2}:\d{2}\s.*?([A-Za-z-\s']+),\s([A-Za-z-\s']+)", line)
-            if name_match:
-                last, first = name_match.groups()
-                return f"{first} {last}"
-    return "Vacant"
+def extract_name_from_line(line):
+    for name in EMP_ALL:
+        if name in line:
+            return name
+    return None
 
 def parse_exceptions_section(text, schedule_df, file_name, file_date):
-    import re
-import json
-with open("static/emp_all.json", "r") as f:
-    EMP_ALL = json.load(f)
-
-    def extract_relief_name(line):
-        match = re.search(r"Relief:\s*([A-Za-z\-\s']+),\s([A-Za-z\-\s']+)", line)
-        if match:
-            last, first = match.groups()
-            return f"{last.strip()}, {first.strip()}"
-        return None
-
-    def extract_name_from_line(line):
-        for name in EMP_ALL:
-            if name in line:
-                return name
-        return None
-
     lines = text.splitlines()
     sections = {"Day": [], "Evening": [], "Night": []}
     current = None
+
     for line in lines:
         if "Exceptions Day Unit:" in line:
             current = "Day"
@@ -142,9 +102,8 @@ with open("static/emp_all.json", "r") as f:
                 "start": start,
                 "end": end,
                 "date": str(file_date.date()),
-                "reason": reason_text,
-            "reason_raw": reason_text,
-            "reason": clean_reason_text(reason_text),
+                "reason_raw": reason_text,
+                "reason": clean_reason_text(reason_text),
                 "notes": suffix,
                 "org_shift": shift.replace("d", "").replace("n", ""),
                 "org_type": actual_type
@@ -179,6 +138,7 @@ with open("static/emp_all.json", "r") as f:
                     "start": start,
                     "end": end,
                     "date": str(file_date.date()),
+                    "reason_raw": "Covering Vacant",
                     "reason": "Covering Vacant",
                     "notes": suffix,
                     "org_shift": shift.replace("d", "").replace("n", ""),
@@ -186,18 +146,3 @@ with open("static/emp_all.json", "r") as f:
                 })
 
     return all_swaps
-def clean_reason_text(reason_raw):
-    r = reason_raw.lower()
-    if "sick" in r:
-        return "Sick Leave"
-    if "vacation" in r:
-        return "Vacation"
-    if "stat" in r:
-        return "Stat Holiday"
-    if "cancel" in r:
-        return "Shift Cancellation"
-    if "leave" in r:
-        return "Leave of Absence"
-    if "covering vacant" in r:
-        return "Covering Vacant"
-    return "Other"
