@@ -8,6 +8,7 @@
 </head>
 <body>
   <h1 class="title">Settings Panel</h1>
+  <button id="mobile-focus-reset" style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;" tabindex="-1" aria-hidden="true"></button>
   <p style="text-align: center; font-style: italic; color: #888;">Welcome, Shift Wizard.</p>  
 
   <!-- Login Panel -->
@@ -100,6 +101,16 @@
 
     if (!panel.classList.contains('open')) {
       setTimeout(() => header.blur(), 10);
+    }
+
+    // Remove Panel Focus: Mobile
+    if (!isOpen) {
+      setTimeout(() => {
+        const resetTarget = document.getElementById('mobile-focus-reset');
+        if (resetTarget) {
+          resetTarget.focus();
+        }
+      }, 10);
     }
 
   // ==========================
