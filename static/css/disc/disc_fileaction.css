@@ -52,3 +52,8 @@ ul.file-box li {
   padding: 0;
   box-sizing: border-box;
 }
+
+/* -- Match Dropzone Padding -- */
+.index-upload .file-action {
+  padding: 1.5rem;
+}
