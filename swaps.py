@@ -97,15 +97,17 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
             day_type = scheduled_row["DayType"].values[0]
 
             all_swaps.append({
-                "off": org_name,
-                "on": coverer,
+                "org_employee": org_name,
+                "cov_employee": coverer,
                 "start": start,
                 "end": end,
-                "date": str(file_date),
+                "date": str(file_date.date()),
                 "reason_raw": reason_text,
                 "reason": clean_reason_text(reason_text),
+            "shift_type": actual_type,
+            "day_type": day_type,
                 "notes": suffix,
-                "org_shift": shift.replace("d", "").replace("n", ""),
+                "shift": f"d{shift.replace("d", "").replace("n", "")}",
                 "org_type": actual_type
             })
 
@@ -137,11 +139,13 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
                     "on": name,
                     "start": start,
                     "end": end,
-                    "date": str(file_date),
+                    "date": str(file_date.date()),
                     "reason_raw": "Covering Vacant",
                     "reason": "Covering Vacant",
+            "shift_type": actual_type,
+            "day_type": day_type,
                     "notes": suffix,
-                    "org_shift": shift.replace("d", "").replace("n", ""),
+                    "shift": f"d{shift.replace("d", "").replace("n", "")}",
                     "org_type": actual_type
                 })
 
