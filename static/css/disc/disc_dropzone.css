@@ -36,9 +36,13 @@
 input[type="file"] {
   display: none;
 }
+/* -- Hide dropzone -- */
 .uploaded-file {
   word-break: break-word;
   overflow-wrap: anywhere;
+}
+.drop-zone.hidden {
+  display: none;
 }
 
 /* TESTING */
