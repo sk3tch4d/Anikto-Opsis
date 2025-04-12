@@ -95,8 +95,12 @@
     });
 
     panel.classList.toggle('open');
-    if (body) body.classList.toggle('open');
-  }
+      if (body) body.classList.toggle('open');
+    }
+
+    if (!panel.classList.contains('open')) {
+      setTimeout(() => header.blur(), 10);
+    }
 
   // ==========================
   // Admin Panel Login
