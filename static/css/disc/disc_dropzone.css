@@ -48,13 +48,13 @@ input[type="file"] {
 
 /* ---- Reactive Drop ---- */
 .drop-zone {
-  transition: transform 0.3s cubic-bezier(0.25, 1.5, 0.5, 1), 
-              box-shadow 0.3s ease;
+  transition: transform 0.45s cubic-bezier(0.25, 1.5, 0.5, 1), 
+              box-shadow 0.45s ease;
   transform-origin: center;
 }
 .drop-zone:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 20px rgba(114, 137, 218, 0.15);
+  transform: scale(1.05);
+  box-shadow: 0 12px 24px rgba(114, 137, 218, 0.2);
 }
 
 
