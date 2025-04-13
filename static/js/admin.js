@@ -1,6 +1,7 @@
 // ==============================
 // ADMIN MODULE
 // ==============================
+import { collapseAllPanels } from './panels.js';
 
 // ==============================
 // ADMIN GATE
@@ -13,9 +14,11 @@ export function initAdminLogin() {
 
   if (!input || !errorMsg || !loginPanel || !adminPanels) return;
 
+  collapseAllPanels({ excludeSelector: "#login-panel" });
+
   window.chpw = function () {
     const value = input.value;
-    const correct = "getElementById"; // your chosen password
+    const correct = "getElementById";
 
     if (value === correct) {
       loginPanel.style.display = "none";
