@@ -35,7 +35,7 @@ if (document.querySelector("#quote")) {
 // SCHEDULE MODULE
 // ==============================
 import { initScheduleUI } from './schedule.js';
-if (document.querySelector("#schedule-section")) {
+if (document.querySelector("#working-date")) {
   initScheduleUI();
 }
 
