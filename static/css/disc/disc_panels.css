@@ -20,7 +20,6 @@
 }
 .panel-header:hover {
   background-color: #3a3d42;
-  animation: hover-bounce 0.4s cubic-bezier(0.25, 1.5, 0.5, 1);
 }
 .panel-header:focus {
   outline: none;
@@ -50,8 +49,11 @@
 }
 
 
-@keyframes hover-bounce {
+@keyframes panel-bounce {
   0%   { transform: scale(1); }
   50%  { transform: scale(1.06); }
   100% { transform: scale(1); }
+}
+.panel-header.bounce {
+  animation: panel-bounce 0.4s cubic-bezier(0.25, 1.5, 0.5, 1);
 }
