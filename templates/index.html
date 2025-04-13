@@ -59,7 +59,8 @@
     <p id="quote" style="font-style: italic;"></p>
   </div>
 
-  <script type="module" src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+  <script src="/static/js/scripts.js" defer></script>
+  <script src="/static/js/dropzone.js" defer></script>
   <script>
   function togglePanel(header) {
     const panel = header.parentElement;
