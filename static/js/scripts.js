@@ -1,11 +1,9 @@
 // ==============================
-//  SHARED SCRIPTS
+// HEADER TYPEWRITER (SAFE DEFAULT)
 // ==============================
-
-// === HEADER TYPEWRITER ===
 const typedTextEl = document.getElementById("typed-text");
 if (typedTextEl) {
-  const text = typedTextEl.innerText?.trim() || "ARG Analyzer";
+  const text = typedTextEl.dataset.title || "ARG Analyzer";
   const speed = 100;
   let i = 0;
   function typeWriter() {
@@ -18,7 +16,9 @@ if (typedTextEl) {
   window.addEventListener("DOMContentLoaded", typeWriter);
 }
 
-// === DROPZONE FUNCTIONALITY ===
+// ==============================
+// DROPZONE FUNCTIONALITY
+// ==============================
 const dropZone = document.getElementById("drop-zone");
 const fileInput = document.getElementById("file-input");
 const fileList = document.getElementById("file-list");
@@ -72,8 +72,10 @@ dropZone?.addEventListener("drop", e => {
   dropZone.classList.remove("active");
 });
 
-// === PANEL TOGGLE MERGED VERSION ===
-function togglePanel(header) {
+// ==============================
+// GLOBAL PANEL TOGGLE FUNCTION
+// ==============================
+window.togglePanel = function(header) {
   const panel = header.closest('.panel');
   const body = header.nextElementSibling;
 
@@ -103,14 +105,17 @@ function togglePanel(header) {
   header.classList.remove('bounce');
   void header.offsetWidth;
   header.classList.add('bounce');
-}
+};
 
-// === Shared: Close all panel bodies initially ===
+// Initial state
 document.querySelectorAll('.panel-body').forEach(e => {
   e.classList.remove('open');
 });
 
-// === FETCHING SCHEDULE ===
+// ==============================
+// WORKING DATE & LABEL LOGIC
+// ==============================
+
 async function fetchWorkingOnDate() {
   const dateInput = document.getElementById('working-date');
   const resultsDiv = document.getElementById('working-date-results');
@@ -151,7 +156,6 @@ async function fetchWorkingOnDate() {
   }
 }
 
-// === FORMAT CUSTOM DATE LABEL ===
 function updateCustomDateText(date, element) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -187,7 +191,6 @@ function updateCustomDateText(date, element) {
   element.textContent = `${weekday} ${month} ${day}${getOrdinal(day)}`;
 }
 
-// === INIT LABELS AND FETCH ON LOAD ===
 window.addEventListener("DOMContentLoaded", () => {
   const dateInput = document.getElementById("working-date");
   const customText = document.getElementById("custom-date-text");
