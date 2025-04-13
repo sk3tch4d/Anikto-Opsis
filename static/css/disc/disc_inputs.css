@@ -57,7 +57,7 @@ input[type="date"]:focus {
   animation: gradientShift 16s ease infinite;
   width: 100%;
   text-align: center;
-  padding: 0.4rem 1rem;
+  padding: 0.5rem 0.9rem;
   color: #aaa;
   border: 1px solid #7289da;
   border-radius: 8px;
