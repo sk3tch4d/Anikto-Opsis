@@ -1,61 +1,46 @@
 // ==============================
-// HEADER TYPEWRITER
+// IMPORTS
 // ==============================
+
+// ----- Header -----
 import { initTypewriter } from './header.js';
-if (document.querySelector("#typed-header")) {
-  initTypewriter();
-}
-
-// ==============================
-// PANEL MODULE
-// ==============================
+// ----- Panels -----
 import { togglePanel, collapseAllPanels } from './panels.js';
-if (document.querySelector(".panel")) {
-  window.togglePanel = togglePanel;
-  collapseAllPanels();
-}
-
-// ==============================
-// DROPZONE MODULE
-// ==============================
+// ----- Dropzone -----
 import { initDropzone } from './dropzone.js';
-if (document.querySelector(".drop-zone")) {
-  initDropzone();
-}
-
-// ==============================
-// QUOTES MODULE
-// ==============================
+// ----- Quotes -----
 import { initQuotes } from './quotes.js';
-if (document.querySelector("#quote")) {
-  document.addEventListener("DOMContentLoaded", initQuotes);
-}
-
-// ==============================
-// SCHEDULE MODULE
-// ==============================
+// ----- Schedule -----
 import { initScheduleUI } from './schedule.js';
-document.addEventListener("DOMContentLoaded", () => {
-  if (document.querySelector("#working-date")) {
-    initScheduleUI();
-  }
-});
-
-// ==============================
-// ADMIN MODULE
-// ==============================
+// ----- Admin -----
 import {
   initAdminLogin,
   initJsonUploadForm,
   initFileUploadDisplay
 } from './admin.js';
 
-if (document.querySelector("#admin-login")) {
-  initAdminLogin();
-}
-if (document.querySelector("#json-upload")) {
-  initJsonUploadForm();
-}
-if (document.querySelector("#file-upload-group")) {
-  initFileUploadDisplay();
-}
+
+// ==============================
+// DOM-READY INITIALIZATION
+// ==============================
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ----- Header -----
+  if (document.querySelector("#typed-header")) initTypewriter();
+  // ----- Panels -----
+  if (document.querySelector(".panel")) {
+    window.togglePanel = togglePanel;
+    collapseAllPanels();
+  }
+  // ----- Dropzone -----
+  if (document.querySelector(".drop-zone")) initDropzone();
+  // ----- Quotes -----
+  if (document.querySelector("#quote")) initQuotes();
+  // ----- Schedule -----
+  if (document.querySelector("#working-date")) initScheduleUI();
+  // ----- Admin -----
+  if (document.querySelector("#admin-login")) initAdminLogin();
+  if (document.querySelector("#json-upload")) initJsonUploadForm();
+  if (document.querySelector("#file-upload-group")) initFileUploadDisplay();
+
+});
