@@ -23,6 +23,8 @@ export function initDropzone() {
 // ==============================
 // FORM SUBMISSION BEHAVIOR
 // ==============================
+import { displayRandomQuote } from './quotes.js';
+// ==============================
 function setupFormBehavior() {
   const form = document.querySelector("form");
   if (!form) return;
@@ -30,15 +32,16 @@ function setupFormBehavior() {
   form.addEventListener("submit", function () {
     const uploadForm = document.getElementById("upload-form");
     const loading = document.getElementById("loading");
-    const quoteEl = document.getElementById("quote");
 
     if (uploadForm) uploadForm.style.display = "none";
     if (loading) loading.style.display = "block";
-    if (quoteEl && quotes.length) {
-      quoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
-    }
+
+    displayRandomQuote(); // ✅ this handles quote logic properly
   });
 }
+
+export { setupFormBehavior };
+
 
 // ==============================
 // FILE INPUT BEHAVIOR
