@@ -24,3 +24,9 @@ body {
   line-height: 1.6;
   font-size: 1rem;
 }
+
+/* Prevent Overflow */
+html, body {
+  overflow-x: hidden;
+  overscroll-behavior: contain; /* optional, reduces "rubber band" scroll on mobile */
+}
