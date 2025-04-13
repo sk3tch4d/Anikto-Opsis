@@ -1,3 +1,7 @@
+import { togglePanel, collapseAllPanels } from './panels.js';
+window.togglePanel = togglePanel;
+collapseAllPanels();
+
 // ==============================
 // HEADER TYPEWRITER (SAFE DEFAULT)
 // ==============================
@@ -85,46 +89,6 @@ if (dropZone) {
     dropZone.classList.remove("active");
   });
 }
-
-// ==============================
-// GLOBAL PANEL TOGGLE FUNCTION
-// ==============================
-window.togglePanel = function(header) {
-  const panel = header.closest('.panel');
-  const body = header.nextElementSibling;
-
-  document.querySelectorAll('.panel').forEach(p => {
-    if (p !== panel) {
-      p.classList.remove('open');
-      const otherBody = p.querySelector('.panel-body');
-      if (otherBody) otherBody.classList.remove('open');
-    }
-  });
-
-  const isOpen = panel.classList.toggle('open');
-  header.classList.toggle('open', isOpen);
-  if (body) body.classList.toggle('open', isOpen);
-
-  // Mobile focus reset
-  if (!isOpen) {
-    setTimeout(() => {
-      const resetTarget = document.getElementById('mobile-focus-reset');
-      if (resetTarget) {
-        resetTarget.focus();
-      }
-    }, 10);
-  }
-
-  // Re-trigger bounce
-  header.classList.remove('bounce');
-  void header.offsetWidth;
-  header.classList.add('bounce');
-};
-
-// Initial state
-document.querySelectorAll('.panel-body').forEach(e => {
-  e.classList.remove('open');
-});
 
 // ==============================
 // WORKING DATE & LABEL LOGIC
