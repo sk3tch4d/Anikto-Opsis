@@ -5,8 +5,9 @@
 }
 .panel-header {
   background-color: #2f3237;
-  padding: 0.8rem 1rem;
+  padding: 0.65rem 1rem;
   cursor: pointer;
+  font-size: 0.95rem;
   font-weight: bold;
   color: #cccccc;
   border-radius: 8px;
