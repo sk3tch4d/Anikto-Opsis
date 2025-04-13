@@ -79,7 +79,7 @@
 /* Match uploaded file buttons in panels */
 .panel-body .file-action.uploaded {
   background-color: #26282c;
-  padding: 1.5rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 8px;
   border: 1px solid #7289da;
   display: flex;
