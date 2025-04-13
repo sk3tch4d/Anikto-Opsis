@@ -7,9 +7,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
 </head>
 <body>
-  <h1 id="typed-header">
-    <span id="typed-text" data-title="ARG Summary"></span>
-  </h1>
+  <h1 id="typed-header"><span id="typed-text" data-title="ARG Summary"></span></h1>
   {% set shift_icons = {'Day': '☀️', 'Evening': '🌇', 'Night': '🌙'} %}
   {% macro render_shift_section(title, shift_groups) %}
   <button id="mobile-focus-reset" style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;" tabindex="-1" aria-hidden="true"></button>
