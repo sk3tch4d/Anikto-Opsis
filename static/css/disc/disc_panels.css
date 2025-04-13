@@ -55,10 +55,10 @@
   align-items: center;
   jusify-content: center;
   gap: 0.5rem;
-  padding: 0.4rem 1rem;
+  padding: 0.2rem 1rem;
   background: #1f2023;
   border: 1px solid #7289da;
-  border-radius: 8px;
+  border-radius: 6px;
   margin-bottom: 0.4rem;
   cursor: pointer;
   color: #ccc;
@@ -79,18 +79,19 @@
 /* Match uploaded file buttons in panels */
 .panel-body .file-action.uploaded {
   background-color: #26282c;
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
+  padding: 1.5rem;
+  border-radius: 8px;
   border: 1px solid #7289da;
   display: flex;
   align-items: center;
+  justify-content: center;
   color: #ccc;
   transition: background 0.2s ease;
-  font-size: 0.95rem;
-  line-height: 1.2;
-  gap: 0.5rem;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
-
+/* Optional hover */
 .panel-body .file-action.uploaded:hover {
   background-color: #32353a;
 }
