@@ -3,7 +3,7 @@
 // ==============================
 import { togglePanel, collapseAllPanels } from './panels.js';
 window.togglePanel = togglePanel;
-collapseAllPanels();
+collapseAllPanels({ excludeSelector: "#login-panel" });
 
 // ==============================
 // DROPZONE MODULE
@@ -28,3 +28,11 @@ initQuotes();
 // ==============================
 import { initScheduleUI } from './schedule.js';
 initScheduleUI();
+
+// ==============================
+// ADMIN MODULE
+// ==============================
+import { initAdminLogin, initJsonUploadForm, initFileUploadDisplay } from './admin.js';
+initAdminLogin();
+initJsonUploadForm();
+initFileUploadDisplay();
