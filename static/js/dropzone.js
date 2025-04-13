@@ -14,7 +14,6 @@ export function initDropzone() {
   const fileInput = document.getElementById("file-input");
   const fileList = document.getElementById("file-list");
 
-  loadQuotes();
   setupFormBehavior();
   setupFileInput(fileInput, fileList);
   setupDragAndDrop(dropZone, fileInput);
