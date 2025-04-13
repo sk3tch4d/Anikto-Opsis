@@ -15,6 +15,7 @@ from dataman import (
 )
 from report import process_report, get_working_on_date
 from models import ShiftRecord, CoverageShift
+from datetime import datetime
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
 MAX_PDFS = 30
