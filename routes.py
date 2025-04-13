@@ -106,15 +106,17 @@ def register_routes(app):
         date_str = request.args.get("date")
         if not date_str:
             return jsonify({"error": "Missing date parameter"}), 400
-
+    
         pdf_paths = [
             os.path.join(UPLOAD_FOLDER, f)
             for f in os.listdir(UPLOAD_FOLDER)
             if f.endswith(".pdf")
         ]
-        _, _, df = process_report(pdf_paths, return_df=True)
+        stop_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        _, _, df = process_report(pdf_paths, return_df=True, stop_on_date=stop_date)
         result = get_working_on_date(df, date_str)
         return jsonify(result)
+
 
     @app.route("/download/<filename>")
     def download(filename):
