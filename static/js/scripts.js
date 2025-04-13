@@ -3,8 +3,11 @@
 // ==============================
 import { togglePanel, collapseAllPanels } from './panels.js';
 window.togglePanel = togglePanel;
-collapseAllPanels({ excludeSelector: "#login-panel" });
-
+if (document.getElementById("login-panel")) {
+  collapseAllPanels({ excludeSelector: "#store-panel" });
+} else {
+  collapseAllPanels();
+}
 // ==============================
 // DROPZONE MODULE
 // ==============================
