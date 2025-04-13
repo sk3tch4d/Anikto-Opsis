@@ -46,7 +46,7 @@ def extract_shift_info(line, processing_date):
     return results
 
 # === PDF Parser ===
-def parse_pdf(pdf_path):
+def parse_pdf(pdf_path, stop_on_date=None):
     records = []
     swaps = []
     processing_date = None
@@ -62,6 +62,8 @@ def parse_pdf(pdf_path):
                     try:
                         processing_date = datetime.strptime(line.split()[-1], "%d/%b/%Y").date()
                         print("[DEBUG] Parsed processing_date:", processing_date)
+                        if stop_on_date and processing_date == stop_on_date:
+                            return pd.DataFrame(records), swaps
                     except ValueError as e:
                         print("[ERROR] Date parsing failed:", e)
                     break
