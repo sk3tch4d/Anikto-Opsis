@@ -12,7 +12,6 @@ export function initQuotes() {
     .then(response => response.json())
     .then(data => {
       quotes = data;
-      displayRandomQuote();
     })
     .catch(error => {
       console.error("Failed to load quotes:", error);
