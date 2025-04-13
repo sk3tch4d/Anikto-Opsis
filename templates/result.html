@@ -14,26 +14,6 @@
   {% set shift_icons = {'Day': '☀️', 'Evening': '🌇', 'Night': '🌙'} %}
   {% macro render_shift_section(title, shift_groups) %}
   <button id="mobile-focus-reset" style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;" tabindex="-1" aria-hidden="true"></button>
-  <!--
-  <div class="panel">
-    <div class="panel-header" onclick="togglePanel(this)">
-      <span>{{ title }}</span>
-    </div>
-    <div class="panel-body">
-      {% for type in ['Day', 'Evening', 'Night'] if type in shift_groups %}
-        <h4>{{ shift_icons[type] }} <span class="badge badge-{{ type|lower }}">{{ type }}</span></h4>
-        <ul>
-          {% for name, shift in shift_groups[type] %}
-            <li>{{ name|reorder_name }} ({{ shift }})</li>
-          {% endfor %}
-        </ul>
-      {% endfor %}
-    </div>
-  </div>
-  {% endmacro %}
-  {{ render_shift_section("Working Today", stats.working_today) }}
-  {{ render_shift_section("Working Tomorrow", stats.working_tomorrow) }}
-  -->
 
   <!-- ======== SCHEDULED ======== -->
   <div class="panel">
