@@ -1,6 +1,5 @@
 // ==============================
 // LOAD QUOTES
-// Random Quote Logic
 // ==============================
 function loadQuotes() {
   fetch('/static/quotes.json')
@@ -16,3 +15,4 @@ function loadQuotes() {
       console.error("Failed to load quotes:", error);
     });
 }
+export { displayRandomQuote };
