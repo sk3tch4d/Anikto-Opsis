@@ -1,4 +1,8 @@
 // ==============================
+// PANELS MODULE
+// ==============================
+
+// ==============================
 // GLOBAL PANEL TOGGLE FUNCTION
 // ==============================
 export function togglePanel(header) {
@@ -17,7 +21,7 @@ export function togglePanel(header) {
   header.classList.toggle('open', isOpen);
   if (body) body.classList.toggle('open', isOpen);
 
-  // Only bounce when opening
+  // Bounce only when opening
   if (isOpen) {
     header.classList.remove('bounce');
     void header.offsetWidth;
@@ -36,10 +40,13 @@ export function togglePanel(header) {
 }
 
 // ==============================
-// INIT: COLLAPSE ALL ON LOAD
+// COLLAPSE ALL PANELS
+// Optional: Exclude container by 
+// selector "#exclusion-name"
 // ==============================
-export function collapseAllPanels() {
-  document.querySelectorAll('.panel-body').forEach(e => {
-    e.classList.remove('open');
+export function collapseAllPanels({ excludeSelector = null } = {}) {
+  document.querySelectorAll('.panel-body').forEach(body => {
+    if (excludeSelector && body.closest(excludeSelector)) return;
+    body.classList.remove('open');
   });
 }
