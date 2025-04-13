@@ -29,48 +29,62 @@ fetch('/static/quotes.json')
   .then(response => response.json())
   .then(data => {
     quotes = data;
-    const quote = quotes[Math.floor(Math.random() * quotes.length)];
-    document.getElementById("quote").textContent = quote;
+    const quoteEl = document.getElementById("quote");
+    if (quoteEl) {
+      quoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+    }
   })
   .catch(error => {
     console.error("Failed to load quotes:", error);
   });
 
-document.querySelector("form")?.addEventListener("submit", function () {
-  document.getElementById("upload-form")?.style?.display = "none";
-  document.getElementById("loading")?.style?.display = "block";
-  document.getElementById("quote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
-});
-
-fileInput?.addEventListener("change", () => {
-  fileList.innerHTML = "";
-  [...fileInput.files].forEach(file => {
-    const li = document.createElement("li");
-    const link = document.createElement("a");
-    link.className = "file-action uploaded";
-    link.href = "#";
-    link.textContent = file.name;
-    li.appendChild(link);
-    fileList.appendChild(li);
+const form = document.querySelector("form");
+if (form) {
+  form.addEventListener("submit", function () {
+    const uploadForm = document.getElementById("upload-form");
+    const loading = document.getElementById("loading");
+    const quoteEl = document.getElementById("quote");
+    if (uploadForm) uploadForm.style.display = "none";
+    if (loading) loading.style.display = "block";
+    if (quoteEl && quotes.length) {
+      quoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+    }
   });
-});
+}
 
-dropZone?.addEventListener("dragover", e => {
-  e.preventDefault();
-  dropZone.classList.add("active");
-});
+if (fileInput) {
+  fileInput.addEventListener("change", () => {
+    if (fileList) fileList.innerHTML = "";
+    [...fileInput.files].forEach(file => {
+      const li = document.createElement("li");
+      const link = document.createElement("a");
+      link.className = "file-action uploaded";
+      link.href = "#";
+      link.textContent = file.name;
+      li.appendChild(link);
+      if (fileList) fileList.appendChild(li);
+    });
+  });
+}
 
-dropZone?.addEventListener("dragleave", e => {
-  e.preventDefault();
-  dropZone.classList.remove("active");
-});
+if (dropZone) {
+  dropZone.addEventListener("dragover", e => {
+    e.preventDefault();
+    dropZone.classList.add("active");
+  });
 
-dropZone?.addEventListener("drop", e => {
-  e.preventDefault();
-  fileInput.files = e.dataTransfer.files;
-  fileInput.dispatchEvent(new Event("change"));
-  dropZone.classList.remove("active");
-});
+  dropZone.addEventListener("dragleave", e => {
+    e.preventDefault();
+    dropZone.classList.remove("active");
+  });
+
+  dropZone.addEventListener("drop", e => {
+    e.preventDefault();
+    fileInput.files = e.dataTransfer.files;
+    fileInput.dispatchEvent(new Event("change"));
+    dropZone.classList.remove("active");
+  });
+}
 
 // ==============================
 // GLOBAL PANEL TOGGLE FUNCTION
@@ -124,8 +138,8 @@ async function fetchWorkingOnDate() {
 
   if (!dateStr) return;
 
-  resultsDiv.innerHTML = "";
-  loadingDiv.style.display = "block";
+  if (resultsDiv) resultsDiv.innerHTML = "";
+  if (loadingDiv) loadingDiv.style.display = "block";
 
   try {
     const response = await fetch(`/api/working_on_date?date=${dateStr}`);
@@ -148,11 +162,11 @@ async function fetchWorkingOnDate() {
       if (!html) html = "<p>No employees scheduled for this date.</p>";
     }
 
-    resultsDiv.innerHTML = html;
+    if (resultsDiv) resultsDiv.innerHTML = html;
   } catch (err) {
-    resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
+    if (resultsDiv) resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
   } finally {
-    loadingDiv.style.display = "none";
+    if (loadingDiv) loadingDiv.style.display = "none";
   }
 }
 
