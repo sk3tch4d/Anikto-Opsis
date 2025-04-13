@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="dark light">
   <title>ARG Analyzer</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
-  <script src="/static/js/scripts.js" type="module"></script>
+  <script src="/static/js/scripts.js" type="module" defer></script>
 </head>
 <body>
   <h1 id="typed-header"><span id="typed-text" data-title="ARG Summary"></span></h1>
@@ -59,40 +59,6 @@
     <br>
     <p id="quote" style="font-style: italic;"></p>
   </div>
-
-<!--
-  <script>
-  function togglePanel(header) {
-    const panel = header.parentElement;
-    const body = header.nextElementSibling;
-
-    header.classList.toggle('open');
-    if (body) {
-      body.classList.toggle('open');
-    }
-    panel.classList.toggle('open'); // <== This is new and required
-  }
-
-  // Start with all panels closed
-  document.querySelectorAll('.panel-body').forEach(e => {
-    e.classList.remove('open');
-  });
-
-  // Re-trigger bounce on every click
-  header.classList.remove('bounce');
-  void header.offsetWidth; // force reflow
-  header.classList.add('bounce');
-
-  // Remove Panel Focus: Mobile
-  if (!isOpen) {
-    setTimeout(() => {
-      const resetTarget = document.getElementById('mobile-focus-reset');
-      if (resetTarget) {
-        resetTarget.focus();
-      }
-    }, 10);
-  }
-</script>-->
   
 </body>
 </html>
