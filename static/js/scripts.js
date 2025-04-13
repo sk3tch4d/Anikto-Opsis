@@ -1,4 +1,12 @@
 // ==============================
+// HEADER TYPEWRITER
+// ==============================
+import { initTypewriter } from './header.js';
+if (document.querySelector("#typed-header")) {
+  initTypewriter();
+}
+
+// ==============================
 // PANEL MODULE
 // ==============================
 import { togglePanel, collapseAllPanels } from './panels.js';
@@ -13,14 +21,6 @@ if (document.querySelector(".panel")) {
 import { initDropzone } from './dropzone.js';
 if (document.querySelector(".drop-zone")) {
   initDropzone();
-}
-
-// ==============================
-// HEADER TYPEWRITER
-// ==============================
-import { initTypewriter } from './header.js';
-if (document.querySelector("#typed-header")) {
-  initTypewriter();
 }
 
 // ==============================
