@@ -52,9 +52,9 @@ input[type="date"]:focus {
 .custom-date-display {
   all: unset;
   display: block;
-  background: linear-gradient(-30deg, #2f3136, #242529, #242529, #363649, #363649, #2f3136, #242529, #242529, #2f3136);
+  background: linear-gradient(-30deg, #232529, #2b2b3b, #232529);
   background-size: 600% 600%;
-  animation: gradientShift 16s ease infinite;
+  animation: gradientShift 20s ease infinite;
   width: 100%;
   text-align: center;
   padding: 0.5rem 0.9rem;
