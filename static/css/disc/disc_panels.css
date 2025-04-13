@@ -49,6 +49,14 @@
   opacity: 0.6;
 }
 
+/* Override Panel for Upload Display */
+.panel-wrapper {
+  max-width: 400px;
+  width: 100%;
+  margin: 1.5rem auto 0 auto;
+  box-sizing: border-box;
+}
+
 
 /* Bounce animation keyframes */
 @keyframes hover-bounce {
