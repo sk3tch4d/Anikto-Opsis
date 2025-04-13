@@ -75,13 +75,14 @@
   margin: 0 auto;
   box-sizing: border-box;
 }
+/*
 .panel-wrapper {
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
   padding: 0 1rem;
-}
+} */
 /* Match uploaded file buttons in panels */
 .panel-body .file-action.uploaded {
   background-color: #26282c;
