@@ -62,11 +62,6 @@ def parse_pdf(pdf_path, stop_on_date=None):
                     try:
                         processing_date = datetime.strptime(line.split()[-1], "%d/%b/%Y").date()
                         print("[DEBUG] Parsed processing_date:", processing_date)
-                        ## Check if processing_date matches stop_on_date
-                        if stop_on_date and processing_date == stop_on_date:
-                            print(f"[DEBUG] stop_on_date {stop_on_date} reached. Stopping processing.")
-                            return pd.DataFrame(records), swaps
-                        ##
                     except ValueError as e:
                         print("[ERROR] Date parsing failed:", e)
                     break
@@ -126,6 +121,12 @@ def parse_pdf(pdf_path, stop_on_date=None):
                 )
                 print("SWAPS FOUND:", swaps_found)
                 swaps += swaps_found
+
+            ## Check if processing_date matches stop_on_date
+            if stop_on_date and processing_date == stop_on_date:
+                print(f"[DEBUG] stop_on_date {stop_on_date} reached. Stopping processing.")
+                return pd.DataFrame(records), swaps
+            ##
     
     print("[DEBUG] Total swaps found:", len(swaps))
     
