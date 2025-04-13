@@ -48,16 +48,31 @@ export { setupFormBehavior };
 function setupFileInput(fileInput, fileList) {
   if (!fileInput || !fileList) return;
 
+  const dropZone = document.getElementById("drop-zone");
+
   fileInput.addEventListener("change", () => {
+    if (fileInput.files.length === 0) return;
+
+    // Hide the dropzone
+    if (dropZone) dropZone.style.display = "none";
+
+    // Clear previous file list
     fileList.innerHTML = "";
-    [...fileInput.files].forEach(file => {
-      const li = document.createElement("li");
-      const link = document.createElement("a");
-      link.className = "file-action uploaded";
-      link.href = "#";
-      link.textContent = file.name;
-      li.appendChild(link);
-      fileList.appendChild(li);
+
+    // Display selected file name
+    const file = fileInput.files[0];
+    const li = document.createElement("li");
+    const link = document.createElement("a");
+    link.className = "file-action uploaded";
+    link.href = "#";
+    link.textContent = file.name;
+    li.appendChild(link);
+    fileList.appendChild(li);
+
+    // Reopen file selector on filename click
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      fileInput.click();
     });
   });
 }
