@@ -2,42 +2,58 @@
 // PANEL MODULE
 // ==============================
 import { togglePanel, collapseAllPanels } from './panels.js';
-window.togglePanel = togglePanel;
-
-// Close Panels: General Override
-if (document.getElementById("force-panel")) {
-  collapseAllPanels({ excludeSelector: "#force-panel" });
-} else {
+if (document.querySelector(".panel")) {
+  window.togglePanel = togglePanel;
   collapseAllPanels();
 }
+
 // ==============================
 // DROPZONE MODULE
 // ==============================
 import { initDropzone } from './dropzone.js';
-initDropzone();
+if (document.querySelector(".drop-zone")) {
+  initDropzone();
+}
 
 // ==============================
 // HEADER TYPEWRITER
 // ==============================
 import { initTypewriter } from './header.js';
-initTypewriter();
+if (document.querySelector("#typed-header")) {
+  initTypewriter();
+}
 
 // ==============================
 // QUOTES MODULE
 // ==============================
-import { initQuotes, displayRandomQuote } from './quotes.js';
-initQuotes();
+import { initQuotes } from './quotes.js';
+if (document.querySelector("#quote")) {
+  document.addEventListener("DOMContentLoaded", initQuotes);
+}
 
 // ==============================
 // SCHEDULE MODULE
 // ==============================
 import { initScheduleUI } from './schedule.js';
-initScheduleUI();
+if (document.querySelector("#schedule-section")) {
+  initScheduleUI();
+}
 
 // ==============================
 // ADMIN MODULE
 // ==============================
-import { initAdminLogin, initJsonUploadForm, initFileUploadDisplay } from './admin.js';
-initAdminLogin();
-initJsonUploadForm();
-initFileUploadDisplay();
+import {
+  initAdminLogin,
+  initJsonUploadForm,
+  initFileUploadDisplay
+} from './admin.js';
+
+if (document.querySelector("#admin-login")) {
+  initAdminLogin();
+}
+if (document.querySelector("#json-upload")) {
+  initJsonUploadForm();
+}
+if (document.querySelector("#file-upload-group")) {
+  initFileUploadDisplay();
+}
