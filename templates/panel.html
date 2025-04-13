@@ -7,12 +7,14 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
 </head>
 <body>
-  <h1 id="typed-header"><span id="typed-text" data-title="Settings Panel"></span></h1>
+  <h1 id="typed-header">
+    <span id="typed-text" data-title="Settings Panel"></span>
+  </h1>
   <button id="mobile-focus-reset" style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;" tabindex="-1" aria-hidden="true"></button>
   <p style="text-align: center; font-style: italic; color: #888;">Welcome, Shift Wizard.</p>  
 
-  <!-- Login Panel -->
-  <div id="login-panel" class="panel open" style="max-width: 400px; margin: 2rem auto;">
+  <!-- Settings Panel -->
+  <div id="override-panel" class="panel open" style="max-width: 400px; margin: 2rem auto;">
     <div class="panel-header">Access Panel</div>
     <div class="panel-body open">
       <input type="password" id="adpw" class="input full-width" placeholder="••••••••" 
@@ -22,7 +24,7 @@
     </div>
   </div>
 
-  <!-- Admin Panel (Hidden until login) -->
+  <!-- Full Settings -->
   <div id="admin-panels" style="display: none; max-width: 600px; margin: 0 auto;">
 
     <!-- Data Management -->
