@@ -75,33 +75,25 @@
   margin: 0 auto;
   box-sizing: border-box;
 }
-/*
-.panel-wrapper {
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
-  box-sizing: border-box;
-  padding: 0 1rem;
-} */
 /* Match uploaded file buttons in panels */
 .panel-body .file-action.uploaded {
   background-color: #26282c;
-  padding: 1.5rem;
-  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
   border: 1px solid #7289da;
   display: flex;
   align-items: center;
-  justify-content: center;
   color: #ccc;
   transition: background 0.2s ease;
-  text-align: center;
-  width: 100%;
-  box-sizing: border-box;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  gap: 0.5rem;
 }
-/* Optional hover */
+
 .panel-body .file-action.uploaded:hover {
   background-color: #32353a;
 }
+
 
 
 /* Bounce animation keyframes */
