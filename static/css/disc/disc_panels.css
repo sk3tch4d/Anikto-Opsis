@@ -49,6 +49,25 @@
   opacity: 0.6;
 }
 
+/* -- Panel Label - Checkbox Elements --*/
+.panel-body label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #1f2023;
+  border: 1px solid #7289da;
+  border-radius: 8px;
+  margin-bottom: 0.4rem;
+  cursor: pointer;
+  color: #ccc;
+  transition: background 0.2s ease;
+}
+.panel-body label:hover {
+  background: #2a2d33;
+}
+
+
 /* Override Panel for Upload Display */
 .panel-wrapper {
   max-width: 400px;
