@@ -28,5 +28,5 @@ body {
 /* Prevent Overflow */
 html, body {
   overflow-x: hidden;
-  overscroll-behavior: contain; /* optional, reduces "rubber band" scroll on mobile */
+  /* overscroll-behavior: contain; (reduces "rubber band" scroll on mobile) */
 }
