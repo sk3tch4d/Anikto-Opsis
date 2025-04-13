@@ -3,8 +3,10 @@
 // ==============================
 import { togglePanel, collapseAllPanels } from './panels.js';
 window.togglePanel = togglePanel;
-if (document.getElementById("login-panel")) {
-  collapseAllPanels({ excludeSelector: "#store-panel" });
+
+// Close Panels: Override Option
+if (document.getElementById("override-panel")) {
+  collapseAllPanels({ excludeSelector: "#override-panel" });
 } else {
   collapseAllPanels();
 }
