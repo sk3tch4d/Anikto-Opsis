@@ -96,8 +96,8 @@ def process_report(pdf_paths, return_df=False, stop_on_date=None):
     )
 
     stats = {
-        "working_today":    group_by_shift(df, today),
-        "working_tomorrow": group_by_shift(df, today + timedelta(days=1)),
+        #"working_today":    group_by_shift(df, today),
+        #"working_tomorrow": group_by_shift(df, today + timedelta(days=1)),
         "total_hours_week": round(df[df["WeekStart"] == week_start]["Hours"].sum()),
         "top_day":          df.groupby("DateObj")["Hours"].sum().idxmax(),
         "top_day_hours":    int(df.groupby("DateObj")["Hours"].sum().max()),
