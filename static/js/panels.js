@@ -27,11 +27,14 @@ export function togglePanel(header) {
     void header.offsetWidth;
     header.classList.add('bounce');
 
-    // Scroll to the panel header
+    // Scroll after layout is stable
     setTimeout(() => {
-      header.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      window.scrollBy(0, -20); // offset for header
-    }, 200); // slight delay for smooth animation sync
+      requestAnimationFrame(() => {
+        const yOffset = -20; // adjust for sticky header
+        const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      });
+    }, 250); // slight delay for animation/layout to settle
   }
 
   // Mobile focus reset
