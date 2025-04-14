@@ -3,17 +3,21 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+
   border: 0.18rem dashed #7289da;
-  padding: 3rem 2.6rem;
   border-radius: 10px;
-  text-align: center;
-  cursor: pointer;
-  width: 100%;
+  padding: 3rem 2.6rem;
+
+  width: 95%;
   min-height: 120px;
   max-height: 200px;
   box-sizing: border-box;
-  margin-top: 2rem;
+
+  cursor: pointer;
+  text-align: center;
+  margin: 2rem auto 1.4rem;
 }
+
 .drop-zone:hover {
   background-color: rgba(114, 137, 218, 0.05);
 }
@@ -49,25 +53,13 @@ input[type="file"] {
 /* ---- Reactive Drop ---- */
 .drop-zone {
   transition: transform 0.45s cubic-bezier(0.25, 1.5, 0.5, 1), 
-              box-shadow 0.45s ease;
+              box-shadow 1s ease;
   transform-origin: center;
 }
 .drop-zone:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 24px rgba(114, 137, 218, 0.2);
+  transform: scale(1.03);
+  box-shadow: 0 0 22px rgba(114, 137, 218, 0.2);
 }
-
-
-/* TESTING */
-.drop-zone {
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
-  transition: box-shadow 0.3s ease;
-}
-.drop-zone:hover {
-  box-shadow: 0 0 6px rgba(100, 140, 255, 0.3);
-}
-
-
 
 /* ==== JS ==== */
 dropzone.addEventListener('dragover', () => {
