@@ -1,3 +1,6 @@
+####################
+## SWAPS PY
+####################
 import re
 import json
 
@@ -39,11 +42,11 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
     current = None
 
     for line in lines:
-        if "Exceptions Day Unit:" in line:
+        if "Exceptions Day" in line:
             current = "Day"
-        elif "Exceptions Evening Unit:" in line:
+        elif "Exceptions Evening" in line:
             current = "Evening"
-        elif "Exceptions Night Unit:" in line:
+        elif "Exceptions Night" in line:
             current = "Night"
         elif "Scheduled Shifts" in line:
             current = None
