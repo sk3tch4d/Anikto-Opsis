@@ -118,20 +118,6 @@
       <button type="submit" class="button full-width">Generate Another</button>
     </form>
   </div>
-
-  <script>
-    window.addEventListener('load', function () {
-    const params = new URLSearchParams(window.location.search);
-    const panelId = params.get('panel') || 'scheduled'; // default to scheduled
-    const panel = document.getElementById(panelId);
-
-    if (panel) {
-      const offset = -20;
-      const top = panel.getBoundingClientRect().top + window.pageYOffset + offset;
-      window.scrollTo({ top: top, behavior: 'smooth' });
-    }
-  });
-  </script>
   
 </body>
 </html>
