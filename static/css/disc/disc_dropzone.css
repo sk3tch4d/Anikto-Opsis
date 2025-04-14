@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border: 0.2rem dashed #7289da;
+  border: 0.18rem dashed #7289da;
   padding: 3rem 2.6rem;
   border-radius: 10px;
   text-align: center;
@@ -27,7 +27,7 @@
   border-color: #5a7fff;
 }
 .drop-text {
-  font-size: 1rem;
+  font-size: 0.94rem;
   padding: 0.5rem;
   color: #ccc;
   max-width: 90%;
