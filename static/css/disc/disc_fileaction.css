@@ -7,7 +7,7 @@
 .file-action {
   display: block;
   width: 100%;
-  padding: 0.6rem 1rem;
+  padding: 0.5rem 1rem;
   background-color: #26282c;
   color: #ccc !important;
   border: 1px solid #7289da;
@@ -16,7 +16,7 @@
   text-align: center;
   cursor: pointer;
   box-sizing: border-box;
-  margin: 0 0 0.8rem;
+  margin: 0 0 0.75rem;
   transition: background-color 0.2s ease;
   text-decoration: none;
   font-weight: normal;
