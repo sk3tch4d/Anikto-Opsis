@@ -98,6 +98,24 @@
 }
 
 
+.scrollable-panel {
+  max-height: 70vh; 
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  padding: 1em;
+}
+.scrollable-panel::after {
+  content: "";
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+/* background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1)); */
+  pointer-events: none;
+}
+
 /* Slide-In Animation */
 .panel-animate {
   opacity: 0;
