@@ -12,6 +12,7 @@
   min-height: 120px;
   max-height: 200px;
   box-sizing: border-box;
+  margin-top: 1rem;
 }
 .drop-zone:hover {
   background-color: rgba(114, 137, 218, 0.05);
