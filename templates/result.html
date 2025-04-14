@@ -15,7 +15,7 @@
   <button id="mobile-focus-reset" style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;" tabindex="-1" aria-hidden="true"></button>
 
   <!-- ======== SCHEDULED ======== -->
-  <div class="panel" id="scheduled">
+  <div class="panel panel-animate" id="scheduled">
     <div class="panel-header open" onclick="togglePanel(this)">
       <span>Scheduled</span>
     </div>
@@ -35,7 +35,7 @@
   </div>
 
   <!-- ======== SWAPS & COVERAGE ======== -->
-  <div class="panel" id="coverage">
+  <div class="panel panel-animate" id="coverage">
     <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage (WIP)</div>
     <div class="panel-body">
       {% if stats.swaps %}
@@ -56,7 +56,7 @@
   </div>
 
   <!-- ======== WEEKLY RANKINGS ======== -->
-  <div class="panel" id="rank-week">
+  <div class="panel panel-animate" id="rank-week">
     <div class="panel-header" onclick="togglePanel(this)">Weekly Rankings</div>
     <div class="panel-body">
       <ul>
@@ -68,7 +68,7 @@
   </div>
 
   <!-- ======== PERIOD RANKINGS ======== -->
-  <div class="panel" id="rank-period">
+  <div class="panel panel-animate" id="rank-period">
     <div class="panel-header" onclick="togglePanel(this)">Period Rankings</div>
     <div class="panel-body">
       <ul>
@@ -80,7 +80,7 @@
   </div>
 
   <!-- ======== STATS ======== -->
-  <div class="panel" id="stats">
+  <div class="panel panel-animate" id="stats">
     <div class="panel-header" onclick="togglePanel(this)">Stats</div>
     <div class="panel-body">
       <ul style="list-style: none; padding-left: 0;">
@@ -91,7 +91,7 @@
   </div>
 
   <!-- ======== DOWNLOADS ======== -->
-  <div class="panel" id="downloads">
+  <div class="panel panel-animate" id="downloads">
     <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
     <div class="panel-body">
       {% if outputs %}
@@ -113,7 +113,7 @@
   </div>
 
   <!-- ======== SUBMIT ======== -->
-  <div class="panel">
+  <div class="panel panel-animate">
     <form action="{{ url_for('index') }}" method="get">
       <button type="submit" class="button full-width">Generate Another</button>
     </form>
