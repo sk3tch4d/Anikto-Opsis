@@ -12,6 +12,7 @@ input.full-width {
   text-align: center;
   box-sizing: border-box;
   transition: border 0.2s ease-in-out;
+  margin-bottom: 1rem;
 }
 input.full-width:focus {
   border-color: #5c7aff;
