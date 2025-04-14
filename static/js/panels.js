@@ -8,7 +8,9 @@
 export function togglePanel(header) {
   const panel = header.closest('.panel');
   const body = header.nextElementSibling;
+  const panelId = panel.id;
 
+  // Collapse other panels
   document.querySelectorAll('.panel').forEach(p => {
     if (p !== panel) {
       p.classList.remove('open');
@@ -34,7 +36,27 @@ export function togglePanel(header) {
         const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
       });
-    }, 250); // slight delay for animation/layout to settle
+    }, 250);
+
+    // Auto-close when tapping inside the panel body (with exclusions)
+    if (panelId !== 'downloads') {
+      const closePanelOnTouch = (event) => {
+        const target = event.target;
+
+        const isInsideHeader = header.contains(target);
+        const isDateInput = panelId === 'scheduled' &&
+          (target.closest('#working-date') || target.closest('.custom-date-display'));
+
+        if (!isInsideHeader && !isDateInput) {
+          panel.classList.remove('open');
+          header.classList.remove('open');
+          body.classList.remove('open');
+          body.removeEventListener('click', closePanelOnTouch);
+        }
+      };
+
+      body.addEventListener('click', closePanelOnTouch);
+    }
   }
 
   // Mobile focus reset
