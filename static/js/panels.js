@@ -30,7 +30,7 @@ export function togglePanel(header) {
     // Scroll after layout is stable
     setTimeout(() => {
       requestAnimationFrame(() => {
-        const yOffset = -18; // adjust for sticky header
+        const yOffset = -14; // adjust for sticky header
         const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
       });
