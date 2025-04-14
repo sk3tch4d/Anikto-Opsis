@@ -15,7 +15,7 @@
   <button id="mobile-focus-reset" style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;" tabindex="-1" aria-hidden="true"></button>
 
   <!-- ======== SCHEDULED ======== -->
-  <div class="panel">
+  <div class="panel" id="scheduled">
     <div class="panel-header open" onclick="togglePanel(this)">
       <span>Scheduled</span>
     </div>
@@ -35,7 +35,7 @@
   </div>
 
   <!-- ======== SWAPS & COVERAGE ======== -->
-  <div class="panel">
+  <div class="panel" id="coverage">
     <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage (WIP)</div>
     <div class="panel-body">
       {% if stats.swaps %}
@@ -56,7 +56,7 @@
   </div>
 
   <!-- ======== WEEKLY RANKINGS ======== -->
-  <div class="panel">
+  <div class="panel" id="rank-week">
     <div class="panel-header" onclick="togglePanel(this)">Weekly Rankings</div>
     <div class="panel-body">
       <ul>
@@ -68,7 +68,7 @@
   </div>
 
   <!-- ======== PERIOD RANKINGS ======== -->
-  <div class="panel">
+  <div class="panel" id="rank-period">
     <div class="panel-header" onclick="togglePanel(this)">Period Rankings</div>
     <div class="panel-body">
       <ul>
@@ -80,7 +80,7 @@
   </div>
 
   <!-- ======== STATS ======== -->
-  <div class="panel">
+  <div class="panel" id="stats">
     <div class="panel-header" onclick="togglePanel(this)">Stats</div>
     <div class="panel-body">
       <ul style="list-style: none; padding-left: 0;">
@@ -91,7 +91,7 @@
   </div>
 
   <!-- ======== DOWNLOADS ======== -->
-  <div class="panel">
+  <div class="panel" id="downloads">
     <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
     <div class="panel-body">
       {% if outputs %}
@@ -118,6 +118,20 @@
       <button type="submit" class="button full-width">Generate Another</button>
     </form>
   </div>
+
+  <script>
+    window.addEventListener('load', function () {
+    const params = new URLSearchParams(window.location.search);
+    const panelId = params.get('panel') || 'scheduled'; // default to scheduled
+    const panel = document.getElementById(panelId);
+
+    if (panel) {
+      const offset = -20;
+      const top = panel.getBoundingClientRect().top + window.pageYOffset + offset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+  });
+  </script>
   
 </body>
 </html>
