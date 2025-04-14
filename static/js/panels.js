@@ -58,8 +58,8 @@ export function togglePanel(header) {
           .includes(target.tagName);
 
         // === Exclude based on class
-        const isIgnoredClass = target.closest('.downloads');
-
+        const isIgnoredClass = target.closest('.downloads') || target.closest('.file-action');
+        
         if (!isInsideHeader && !isDateInput && !isInteractive && !isIgnoredClass) {
           panel.classList.remove('open');
           header.classList.remove('open');
