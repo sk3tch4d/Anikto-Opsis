@@ -26,6 +26,12 @@ export function togglePanel(header) {
     header.classList.remove('bounce');
     void header.offsetWidth;
     header.classList.add('bounce');
+
+    // Scroll to the panel header
+    setTimeout(() => {
+      header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.scrollBy(0, -20); // offset for header
+    }, 200); // slight delay for smooth animation sync
   }
 
   // Mobile focus reset
