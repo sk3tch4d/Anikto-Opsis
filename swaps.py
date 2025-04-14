@@ -106,7 +106,8 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
                 "end": end,
                 "date": str(file_date),
                 "reason_raw": reason_text,
-                "reason": clean_reason_text(reason_text),            "day_type": day_type.title(),
+                "reason": clean_reason_text(reason_text),            
+                "day_type": day_type.title(),
                 "notes": suffix,
                 "shift": f"d{shift.replace('d', '').replace('n', '')}",
                 "org_type": actual_type
