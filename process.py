@@ -1,4 +1,11 @@
-from dataclasses import dataclass from datetime import datetime, timedelta import pdfplumber import re from models import db, Employee, ShiftRecord, CoverageShift import os import pandas as pd
+
+import re
+import os 
+import pdfplumber 
+import pandas as pd
+from dataclasses import dataclass 
+from datetime import datetime, timedelta 
+from models import db, Employee, ShiftRecord, CoverageShift 
 
 @dataclass class ShiftData: full_name: str date: datetime start: str end: str shift: str shift_type: str day_type: str hours: float source_pdf: str file_date: datetime is_coverage: bool = False coverage_pair: tuple[str, str] | None = None  # (original_name, covering_name) reason: str | None = None
 
