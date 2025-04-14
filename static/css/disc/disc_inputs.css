@@ -12,7 +12,6 @@ input.full-width {
   text-align: center;
   box-sizing: border-box;
   transition: border 0.2s ease-in-out;
-  margin-bottom: 1rem;
 }
 input.full-width:focus {
   border-color: #5c7aff;
@@ -66,6 +65,7 @@ input[type="date"]:focus {
   cursor: pointer;
   transition: background 0.3s ease;
   box-sizing: border-box;
+  margin-bottom: 2rem;
 }
 .custom-date-display:hover {
   background-color: #36393f;
