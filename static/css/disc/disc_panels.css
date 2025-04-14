@@ -102,15 +102,15 @@
 .panel-animate {
   opacity: 0;
   transform: translateY(-40px);
-  animation: slideInTop 0.8s ease-out forwards;
+  animation: slideInTop 0.6s ease-out forwards;
 }
-.panel-animate:nth-child(1) { animation-delay: 0.1s; }
-.panel-animate:nth-child(2) { animation-delay: 0.2s; }
-.panel-animate:nth-child(3) { animation-delay: 0.3s; }
-.panel-animate:nth-child(4) { animation-delay: 0.4s; }
-.panel-animate:nth-child(5) { animation-delay: 0.5s; }
-.panel-animate:nth-child(6) { animation-delay: 0.6s; }
-.panel-animate:nth-child(7) { animation-delay: 0.7s; }
+#panel-container .panel:nth-child(1) { animation-delay: 0.1s; }
+#panel-container .panel:nth-child(2) { animation-delay: 0.2s; }
+#panel-container .panel:nth-child(3) { animation-delay: 0.3s; }
+#panel-container .panel:nth-child(4) { animation-delay: 0.4s; }
+#panel-container .panel:nth-child(5) { animation-delay: 0.5s; }
+#panel-container .panel:nth-child(6) { animation-delay: 0.6s; }
+#panel-container .panel:nth-child(7) { animation-delay: 0.7s; }
 @keyframes slideInTop {
   to {
     opacity: 1;
@@ -118,8 +118,7 @@
   }
 }
 
-
-/* Bounce animation keyframes */
+/* Bounce Animation */
 @keyframes hover-bounce {
   0%   { transform: scale(1); }
   50%  { transform: scale(1.06); }
