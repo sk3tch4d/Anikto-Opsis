@@ -10,7 +10,7 @@ export function togglePanel(header) {
   const body = header.nextElementSibling;
   const panelId = panel.id;
 
-  // Collapse other panels
+  // Collapse all other panels
   document.querySelectorAll('.panel').forEach(p => {
     if (p !== panel) {
       p.classList.remove('open');
@@ -19,62 +19,61 @@ export function togglePanel(header) {
     }
   });
 
-  const isOpen = panel.classList.toggle('open');
-  header.classList.toggle('open', isOpen);
-  if (body) body.classList.toggle('open', isOpen);
+  const isOpen = panel.classList.contains('open');
+
+  if (isOpen) {
+    closePanel();
+  } else {
+    openPanel();
+  }
 
   // ==============================
-  // Bounce animation + auto scroll
+  // Helper: OPEN PANEL
   // ==============================
-  if (isOpen) {
+  function openPanel() {
+    panel.classList.add('open');
+    header.classList.add('open');
+    body.classList.add('open');
+
+    // Bounce effect
     header.classList.remove('bounce');
     void header.offsetWidth;
     header.classList.add('bounce');
-    document.body.classList.add('lock-scroll');
 
+    // Smooth scroll into view
     setTimeout(() => {
       requestAnimationFrame(() => {
         const yOffset = -14;
         const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
+
+        // Lock scroll AFTER scrolling completes
+        setTimeout(() => {
+          document.body.classList.add('lock-scroll');
+        }, 300);
       });
     }, 250);
 
-    // ==============================
-    // Auto-close on click inside body (with exclusions)
-    // ==============================
+    // Auto-close on tap inside body
     if (panelId !== 'downloads') {
       const closePanelOnTouch = (event) => {
         const target = event.target;
-
-        // === Exclude clicks inside header
         const isInsideHeader = header.contains(target);
-
-        // === Exclude clicks on scheduled date input/display
         const isDateInput = panelId === 'scheduled' &&
           (target.closest('#working-date') || target.closest('.custom-date-display'));
-
-        // === Exclude based on tag type
         const isInteractive = ['BUTTON', 'INPUT', 'SELECT', 'A'].includes(target.tagName);
-
-        // === Exclude based on class
         const isIgnoredClass = target.closest('.downloads') || target.closest('.file-action');
 
         if (!isInsideHeader && !isDateInput && !isInteractive && !isIgnoredClass) {
-          panel.classList.remove('open');
-          header.classList.remove('open');
-          body.classList.remove('open');
+          closePanel();
           body.removeEventListener('click', closePanelOnTouch);
         }
       };
 
       body.addEventListener('click', closePanelOnTouch);
 
-      // ==============================
-      // Auto-close when pulling down at scrollTop = 0 (touch only)
-      // ==============================
+      // Pull-to-close when at top
       let startY = null;
-
       body.addEventListener('touchstart', (e) => {
         if (body.scrollTop === 0) {
           startY = e.touches[0].clientY;
@@ -87,10 +86,7 @@ export function togglePanel(header) {
           const deltaY = currentY - startY;
 
           if (deltaY > 40 && body.scrollTop === 0) {
-            panel.classList.remove('open');
-            header.classList.remove('open');
-            body.classList.remove('open');
-            document.body.classList.remove('lock-scroll');
+            closePanel();
             startY = null;
           }
         }
@@ -103,9 +99,14 @@ export function togglePanel(header) {
   }
 
   // ==============================
-  // Mobile focus reset
+  // Helper: CLOSE PANEL
   // ==============================
-  if (!isOpen) {
+  function closePanel() {
+    panel.classList.remove('open');
+    header.classList.remove('open');
+    body.classList.remove('open');
+    document.body.classList.remove('lock-scroll');
+
     setTimeout(() => {
       const resetTarget = document.getElementById('mobile-focus-reset');
       if (resetTarget) {
