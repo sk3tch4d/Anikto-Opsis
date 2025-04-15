@@ -105,6 +105,8 @@
   overflow: hidden;
   padding: 0 1em;
   transition: max-height 0.3s ease, opacity 0.3s ease;
+  -ms-overflow-style: none;  /* Remove Bar: IE and Edge */
+  scrollbar-width: none;     /* Remove Bar: Firefox */
 }
 /* Panel Open — Content scrollable */
 .panel.open .scrollable-panel {
@@ -115,6 +117,10 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
 }
+.scrollable-panel::-webkit-scrollbar {
+  display: none; /* Remove Bar: Chromium Based */
+}
+
 
 /* Slide-In Animation */
 .panel-animate {
