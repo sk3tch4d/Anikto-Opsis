@@ -128,14 +128,10 @@ body.lock-scroll {
 }
 
 /* Seniority List Edit */
-.panel-body.flex-column {
+.seniority-panel-content {
   display: flex;
   flex-direction: column;
   max-height: 82vh;
-  padding: 1rem;
-}
-.search-controls {
-  flex: 0 0 auto;
 }
 .scrollable-fill {
   flex: 1 1 auto;
@@ -143,6 +139,9 @@ body.lock-scroll {
   margin-top: 1rem;
   padding-right: 0.5rem;
   -webkit-overflow-scrolling: touch;
+}
+.search-controls {
+  flex: 0 0 auto;
 }
 
 
