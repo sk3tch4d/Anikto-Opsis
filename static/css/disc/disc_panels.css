@@ -120,6 +120,12 @@
 .scrollable-panel::-webkit-scrollbar {
   display: none; /* Remove Bar: Chromium Based */
 }
+/* Lock while scroll enabled */
+body.lock-scroll {
+  overflow: hidden;
+  height: 100%;
+  touch-action: none;
+}
 
 
 /* Slide-In Animation */
