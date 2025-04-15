@@ -139,9 +139,14 @@ body.lock-scroll {
   margin-top: 1rem;
   padding-right: 0.5rem;
   -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
 }
 .search-controls {
   flex: 0 0 auto;
+}
+.scrollable-fill::-webkit-scrollbar {
+  display: none;
 }
 
 
