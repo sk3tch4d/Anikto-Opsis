@@ -54,7 +54,7 @@
 .panel-body label {
   display: flex;
   align-items: center;
-  jusify-content: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.2rem 1rem;
   background: #1f2023;
@@ -121,9 +121,9 @@
   display: none; /* Remove Bar: Chromium Based */
 }
 /* Lock while scroll enabled */
-#panel-wrapper.lock-scroll {
+body.lock-scroll {
   overflow: hidden;
-  height: 100vh;
+  height: 100%;
   touch-action: none;
 }
 
