@@ -108,7 +108,7 @@
 }
 /* Panel Open — Content scrollable */
 .panel.open .scrollable-panel {
-  max-height: 85vh;
+  max-height: 82vh;
   opacity: 1;
   overflow-y: auto;
   padding: 1em;
