@@ -10,6 +10,8 @@ export function togglePanel(header) {
   const body = header.nextElementSibling;
   const panelId = panel.id;
 
+  const wrapper = document.getElementById('panel-wrapper'); // <-- NEW
+
   // Collapse all other panels
   document.querySelectorAll('.panel').forEach(p => {
     if (p !== panel) {
@@ -47,10 +49,10 @@ export function togglePanel(header) {
         const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
 
-     //  Lock scroll AFTER scrolling completes
-     //  setTimeout(() => {
-       //  document.body.classList.add('lock-scroll');
-       //}, 300);
+        // Lock scroll on wrapper (not body)
+        setTimeout(() => {
+          if (wrapper) wrapper.classList.add('lock-scroll');
+        }, 300);
       });
     }, 250);
 
@@ -105,7 +107,8 @@ export function togglePanel(header) {
     panel.classList.remove('open');
     header.classList.remove('open');
     body.classList.remove('open');
-    // document.body.classList.remove('lock-scroll');
+
+    if (wrapper) wrapper.classList.remove('lock-scroll'); // <-- NEW
 
     setTimeout(() => {
       const resetTarget = document.getElementById('mobile-focus-reset');
