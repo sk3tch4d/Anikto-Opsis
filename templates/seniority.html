@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Seniority Summary</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
-  <script src="/static/js/scripts.js" type="module"></script>
-  <script src="/static/js/seniority.js" defer></script>
+  <script src="{{ url_for('static', filename='js/scripts.js') }}" type="module"></script>
 </head>
 <body>
   <h1 id="typed-header"><span id="typed-text" data-title="Seniority Summary"></span></h1>
+
+  <!-- Inject parsed data for JS -->
+  <script>
+    window.seniorityData = {{ table | tojson }};
+  </script>
 
   <div id="panel-wrapper">
     <div id="panel-container">
@@ -21,7 +25,7 @@
         <div class="panel-header open" onclick="togglePanel(this)">Search</div>
         <div class="panel-body">
           <input id="seniority-search" class="input full-width" placeholder="Enter name..." />
-          <button onclick="doSenioritySearch()" class="button full-width" style="margin-top: 0.5rem;">Search</button>
+          <button id="seniority-search-button" class="button full-width" style="margin-top: 0.5rem;">Search</button>
           <div id="seniority-results" style="margin-top: 1rem;"></div>
         </div>
       </div>
@@ -60,10 +64,5 @@
 
     </div> <!-- END panel-container -->
   </div> <!-- END panel-wrapper -->
-  
-  <script>
-    window.seniorityData = {{ table | tojson }};
-  </script>
-  
 </body>
 </html>
