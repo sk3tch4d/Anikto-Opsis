@@ -13,12 +13,11 @@ export function initSenioritySearch() {
 // ==============================
 // NORMALIZATION HELPER
 // ==============================
-
 function normalize(str) {
   return String(str || "")
     .toLowerCase()
-    .replace(/[-_]/g, " ")   // treat hyphens and underscores as spaces
-    .replace(/\s+/g, " ")    // collapse multiple spaces
+    .replace(/[-_]/g, " ")      // turn hyphens/underscores into spaces
+    .replace(/\s+/g, " ")       // collapse multiple spaces
     .trim();
 }
 
@@ -29,7 +28,8 @@ function normalize(str) {
 function doSenioritySearch() {
   const input = document.getElementById("seniority-search");
   const resultsDiv = document.getElementById("seniority-results");
-  const query = input.value.trim();
+  const rawQuery = input.value.trim();
+  const query = normalize(rawQuery);
 
   if (!query) {
     resultsDiv.innerHTML = "<p>Please enter a name, position, or keyword to search.</p>";
@@ -38,10 +38,9 @@ function doSenioritySearch() {
 
   const data = window.seniorityData || [];
 
-  // Match if any value in the row contains the normalized query
   const matches = data.filter(row =>
     Object.values(row).some(val =>
-      normalize(val).includes(normalize(query))
+      normalize(val).includes(query)
     )
   );
 
@@ -61,8 +60,8 @@ function doSenioritySearch() {
     const position = row["Unnamed: 2"] || "";
     const status = row["Unnamed: 3"] || "";
     const years = parseFloat(row["Unnamed: 4"] || 0);
-    const emoji = status.toLowerCase().includes("full") ? "🟢" :
-                  status.toLowerCase().includes("part") ? "🟡" : "⚪";
+    const emoji = normalize(status).includes("full") ? "🟢" :
+                  normalize(status).includes("part") ? "🟡" : "⚪";
 
     html += "<li style='margin-bottom: 1.5em;'>";
     html += `<strong>${first} ${last}</strong><br>`;
