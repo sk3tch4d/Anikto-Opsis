@@ -47,12 +47,12 @@ export function togglePanel(header) {
         const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
 
-        // Lock scroll AFTER scrolling completes
+        // Delay scroll lock to avoid layout shift
         setTimeout(() => {
           requestAnimationFrame(() => {
         document.body.classList.add('lock-scroll');
           });
-        }, 400); // (safe range: 350–450ms)
+        }, 700);
       });
     }, 250);
 
