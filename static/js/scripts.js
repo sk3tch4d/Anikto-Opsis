@@ -18,7 +18,7 @@ import {
   initJsonUploadForm,
   initFileUploadDisplay
 } from './admin.js';
-// ----- Seniority -----
+// ----- Seniority (Lazy)
 import { initSenioritySearch } from './seniority.js';
 
 
