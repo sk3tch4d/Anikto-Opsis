@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seniority Summary</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
+  <script src="/static/js/scripts.js" type="module"></script>
+  <script src="/static/js/seniority.js" defer></script>
+</head>
+<body>
+  <h1 id="typed-header"><span id="typed-text" data-title="Seniority Summary"></span></h1>
+
+  <div id="panel-wrapper">
+    <div id="panel-container">
+
+      <!-- ============================= -->
+      <!-- PANEL: SEARCH -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="search-panel">
+        <div class="panel-header open" onclick="togglePanel(this)">Search</div>
+        <div class="panel-body">
+          <input id="seniority-search" class="input full-width" placeholder="Enter name..." />
+          <button onclick="doSenioritySearch()" class="button full-width" style="margin-top: 0.5rem;">Search</button>
+          <div id="seniority-results" style="margin-top: 1rem;"></div>
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: COMPARE -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="compare-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Compare (Coming Soon)</div>
+        <div class="panel-body">
+          <input class="input full-width" placeholder="Enter first name..." />
+          <input class="input full-width" placeholder="Enter second name..." style="margin-top: 0.5rem;" />
+          <button class="button full-width" style="margin-top: 0.5rem;" disabled>Compare</button>
+          <p style="margin-top: 1rem; text-align: center;">This feature is under construction.</p>
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: DOWNLOADS -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="downloads">
+        <div class="panel-header" onclick="togglePanel(this)">Downloads (Coming Soon)</div>
+        <div class="panel-body">
+          <p style="text-align: center;">Download options for cleaned or enhanced Excel files will appear here.</p>
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: RETURN -->
+      <!-- ============================= -->
+      <div class="panel panel-animate">
+        <form action="{{ url_for('index') }}" method="get">
+          <button type="submit" class="button full-width">Upload Another</button>
+        </form>
+      </div>
+
+    </div> <!-- END panel-container -->
+  </div> <!-- END panel-wrapper -->
+</body>
+</html>
