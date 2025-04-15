@@ -20,12 +20,9 @@ export function initSenioritySearch() {
   input.addEventListener("blur", () => {
     setTimeout(() => {
       button.style.display = "none";
-    }, 100); // delay so button clicks still register
+    }, 100);
   });
 
-  // ==============================
-  // EVENTS: Button click or Enter key
-  // ==============================
   button.addEventListener("click", () => {
     doSenioritySearch();
     input.blur();
@@ -40,9 +37,11 @@ export function initSenioritySearch() {
   });
 
   // ==============================
-  // Auto-render full list on load
+  // Auto-filter on load with predefined string
   // ==============================
-  renderResults(window.seniorityData || []);
+  const defaultFilter = "Supply Assistant";
+  input.value = defaultFilter;
+  doSenioritySearch();
 }
 
 
@@ -52,8 +51,8 @@ export function initSenioritySearch() {
 function normalize(str) {
   return String(str || "")
     .toLowerCase()
-    .replace(/[-_]/g, " ")      // hyphens/underscores to spaces
-    .replace(/\s+/g, " ")       // collapse spaces
+    .replace(/[-_]/g, " ")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
@@ -68,7 +67,7 @@ function doSenioritySearch() {
   const data = window.seniorityData || [];
 
   if (!query) {
-    renderResults(data);
+    renderResults([]);
     return;
   }
 
@@ -114,7 +113,5 @@ function renderResults(matches) {
 
   html += "</ul>";
   resultsDiv.innerHTML = html;
-
-  // Reset scroll position
   resultsDiv.scrollTop = 0;
 }
