@@ -54,12 +54,11 @@ export function togglePanel(header) {
           (target.closest('#working-date') || target.closest('.custom-date-display'));
 
         // === Exclude based on tag type
-        const isInteractive = ['BUTTON', 'INPUT', 'SELECT', 'A']
-          .includes(target.tagName);
+        const isInteractive = ['BUTTON', 'INPUT', 'SELECT', 'A'].includes(target.tagName);
 
         // === Exclude based on class
         const isIgnoredClass = target.closest('.downloads') || target.closest('.file-action');
-        
+
         if (!isInsideHeader && !isDateInput && !isInteractive && !isIgnoredClass) {
           panel.classList.remove('open');
           header.classList.remove('open');
@@ -69,6 +68,35 @@ export function togglePanel(header) {
       };
 
       body.addEventListener('click', closePanelOnTouch);
+
+      // ==============================
+      // Auto-close when pulling down at scrollTop = 0 (touch only)
+      // ==============================
+      let startY = null;
+
+      body.addEventListener('touchstart', (e) => {
+        if (body.scrollTop === 0) {
+          startY = e.touches[0].clientY;
+        }
+      }, { passive: true });
+
+      body.addEventListener('touchmove', (e) => {
+        if (startY !== null) {
+          const currentY = e.touches[0].clientY;
+          const deltaY = currentY - startY;
+
+          if (deltaY > 40 && body.scrollTop === 0) {
+            panel.classList.remove('open');
+            header.classList.remove('open');
+            body.classList.remove('open');
+            startY = null;
+          }
+        }
+      }, { passive: true });
+
+      body.addEventListener('touchend', () => {
+        startY = null;
+      });
     }
   }
 
