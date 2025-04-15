@@ -46,7 +46,7 @@
             <ul>
               {% for swap in stats.swaps %}
                 <li style="margin-bottom: 1em;">
-                  {{ shift_icons.get(swap.type, '❔') }} {{ swap.start }} – {{ swap.end }} <strong>{{ swap.shift }}</strong><br>
+                  {{ shift_icons.get(swap.type, '❔') }}  {{ swap.start }} – {{ swap.end }} <strong>({{ swap.shift|replace("d","") }})</strong><br>
                   <em>{{ swap.reason }}</em><br>
                   {{ swap.org_employee }} → {{ swap.cov_employee }}<br>
                   {{ swap.date }}
