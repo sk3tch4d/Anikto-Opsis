@@ -121,9 +121,9 @@
   display: none; /* Remove Bar: Chromium Based */
 }
 /* Lock while scroll enabled */
-body.lock-scroll {
+#panel-wrapper.lock-scroll {
   overflow: hidden;
-  height: 100%;
+  height: 100vh;
   touch-action: none;
 }
 
