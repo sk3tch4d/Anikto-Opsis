@@ -11,12 +11,25 @@ export function initSenioritySearch() {
 
 
 // ==============================
+// NORMALIZATION HELPER
+// ==============================
+
+function normalize(str) {
+  return String(str || "")
+    .toLowerCase()
+    .replace(/[-_]/g, " ")   // treat hyphens and underscores as spaces
+    .replace(/\s+/g, " ")    // collapse multiple spaces
+    .trim();
+}
+
+
+// ==============================
 // SEARCH FUNCTIONALITY
 // ==============================
 function doSenioritySearch() {
   const input = document.getElementById("seniority-search");
   const resultsDiv = document.getElementById("seniority-results");
-  const query = input.value.trim().toLowerCase();
+  const query = input.value.trim();
 
   if (!query) {
     resultsDiv.innerHTML = "<p>Please enter a name, position, or keyword to search.</p>";
@@ -25,10 +38,10 @@ function doSenioritySearch() {
 
   const data = window.seniorityData || [];
 
-  // Match if any value in the row contains the query
+  // Match if any value in the row contains the normalized query
   const matches = data.filter(row =>
     Object.values(row).some(val =>
-      String(val).toLowerCase().includes(query)
+      normalize(val).includes(normalize(query))
     )
   );
 
@@ -40,8 +53,7 @@ function doSenioritySearch() {
   // ==============================
   // Render Results
   // ==============================
-  let html = "<div class='scrollable-panel' style='max-height: 50vh; overflow-y: auto;'>";
-  html += "<ul style='list-style: none; padding-left: 0;'>";
+  let html = "<ul style='list-style: none; padding-left: 0;'>";
 
   matches.forEach(row => {
     const first = row["Unnamed: 1"] || "";
@@ -60,6 +72,6 @@ function doSenioritySearch() {
     html += "</li>";
   });
 
-  html += "</ul></div>";
+  html += "</ul>";
   resultsDiv.innerHTML = html;
 }
