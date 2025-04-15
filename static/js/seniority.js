@@ -1,23 +1,19 @@
 // ==============================
 // SENIORITY.JS — Client-side Lookup Tool
 // ==============================
-// This handles live searching of uploaded seniority XLSX data
-// Displays matching names and their record line in styled format
-// ==============================
 
-
-// ==============================
-// INIT ON LOAD
-// ==============================
-document.addEventListener("DOMContentLoaded", () => {
-  window.seniorityData = window.seniorityData || [];
-});
-
+export function initSenioritySearch() {
+  const button = document.querySelector("button[onclick='doSenioritySearch()']");
+  if (button) {
+    button.removeAttribute("onclick");
+    button.addEventListener("click", doSenioritySearch);
+  }
+}
 
 // ==============================
 // SEARCH FUNCTIONALITY
 // ==============================
-async function doSenioritySearch() {
+function doSenioritySearch() {
   const input = document.getElementById("seniority-search");
   const resultsDiv = document.getElementById("seniority-results");
   const query = input.value.trim().toLowerCase();
@@ -39,9 +35,6 @@ async function doSenioritySearch() {
     return;
   }
 
-  // ==============================
-  // Render Results
-  // ==============================
   let html = "<ul style='list-style: none; padding-left: 0;'>";
   matches.forEach(row => {
     html += "<li style='margin-bottom: 1em;'>";
