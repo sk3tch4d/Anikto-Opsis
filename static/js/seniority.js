@@ -26,12 +26,9 @@ function doSenioritySearch() {
   const data = window.seniorityData || [];
 
   const matches = data.filter(row => {
-    const nameParts = [
-      row["Unnamed: 1"],
-      row["Unnamed: 0"] || row["CUPE Combined Seniority List"]
-    ].filter(Boolean);
-
-    const fullName = nameParts.join(" ").toLowerCase();
+    const first = row["Unnamed: 1"] || "";
+    const last = row["CUPE Combined Seniority List"] || "";
+    const fullName = `${first} ${last}`.toLowerCase();
     return fullName.includes(query);
   });
 
@@ -46,18 +43,18 @@ function doSenioritySearch() {
   let html = "<ul style='list-style: none; padding-left: 0;'>";
 
   matches.forEach(row => {
-    const firstName = row["Unnamed: 1"] || "";
-    const lastName = row["Unnamed: 0"] || row["CUPE Combined Seniority List"] || "";
-    const status = row["Unnamed: 3"] || "";
+    const first = row["Unnamed: 1"] || "";
+    const last = row["CUPE Combined Seniority List"] || "";
     const position = row["Unnamed: 2"] || "";
-    const years = parseFloat(row["Limited Seniority Years"] || 0);
+    const status = row["Unnamed: 3"] || "";
+    const years = parseFloat(row["Unnamed: 4"] || 0);
     const hours = Math.round(years * 1950 * 100) / 100;
 
     html += "<li style='margin-bottom: 1em;'>";
-    html += `<strong>${firstName} ${lastName}</strong><br>`;
+    html += `<strong>${first} ${last}</strong><br>`;
     html += `${status}<br>`;
     html += `<em>${position}</em><br>`;
-    html += `<strong>${hours}</strong> hrs &nbsp; <span style="font-size: 0.9em;">(${years} years)</span>`;
+    html += `${years.toFixed(2)} Years - (${hours.toFixed(2)} Hrs)`;
     html += "</li>";
   });
 
