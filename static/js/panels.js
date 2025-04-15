@@ -49,8 +49,10 @@ export function togglePanel(header) {
 
         // Lock scroll AFTER scrolling completes
         setTimeout(() => {
-          document.body.classList.add('lock-scroll');
-        }, 300);
+          requestAnimationFrame(() => {
+        document.body.classList.add('lock-scroll');
+          });
+        }, 400); // (safe range: 350–450ms)
       });
     }, 250);
 
