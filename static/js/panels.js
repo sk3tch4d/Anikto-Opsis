@@ -46,11 +46,6 @@ export function togglePanel(header) {
         const yOffset = -14;
         const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
-
-     //  Lock scroll AFTER scrolling completes
-     //  setTimeout(() => {
-       //  document.body.classList.add('lock-scroll');
-       //}, 300);
       });
     }, 250);
 
@@ -72,10 +67,14 @@ export function togglePanel(header) {
 
       body.addEventListener('click', closePanelOnTouch);
 
-      // Pull-to-close when at top
+      // ==============================
+      // Touch scroll close (smart scroll-aware)
+      // ==============================
       let startY = null;
+      const scrollable = body.querySelector('.scrollable-fill') || body;
+
       body.addEventListener('touchstart', (e) => {
-        if (body.scrollTop === 0) {
+        if (scrollable.scrollTop === 0) {
           startY = e.touches[0].clientY;
         }
       }, { passive: true });
@@ -85,7 +84,7 @@ export function togglePanel(header) {
           const currentY = e.touches[0].clientY;
           const deltaY = currentY - startY;
 
-          if (deltaY > 40 && body.scrollTop === 0) {
+          if (deltaY > 40 && scrollable.scrollTop === 0) {
             closePanel();
             startY = null;
           }
@@ -105,7 +104,6 @@ export function togglePanel(header) {
     panel.classList.remove('open');
     header.classList.remove('open');
     body.classList.remove('open');
-    // document.body.classList.remove('lock-scroll');
 
     setTimeout(() => {
       const resetTarget = document.getElementById('mobile-focus-reset');
