@@ -47,12 +47,10 @@ export function togglePanel(header) {
         const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: 'smooth' });
 
-        // Delay scroll lock to avoid layout shift
-        setTimeout(() => {
-          requestAnimationFrame(() => {
-        document.body.classList.add('lock-scroll');
-          });
-        }, 700);
+     //  Lock scroll AFTER scrolling completes
+     //  setTimeout(() => {
+       //  document.body.classList.add('lock-scroll');
+       //}, 300);
       });
     }, 250);
 
@@ -107,7 +105,7 @@ export function togglePanel(header) {
     panel.classList.remove('open');
     header.classList.remove('open');
     body.classList.remove('open');
-    document.body.classList.remove('lock-scroll');
+    // document.body.classList.remove('lock-scroll');
 
     setTimeout(() => {
       const resetTarget = document.getElementById('mobile-focus-reset');
