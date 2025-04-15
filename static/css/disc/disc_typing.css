@@ -1,4 +1,5 @@
 #typed-header {
+  margin: 1rem auto;
   font-size: 2.0rem;
   font-weight: 800;
   letter-spacing: 1px;
@@ -12,6 +13,11 @@
   animation: gradientShift 12s ease infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+#typed-header span {
+  display: inline-block;
+  font-size: 2rem;
+  font-weight: bold;
 }
 #typed-header::after {
   content: "|";
