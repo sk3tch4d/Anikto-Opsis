@@ -30,6 +30,7 @@ export function togglePanel(header) {
     header.classList.remove('bounce');
     void header.offsetWidth;
     header.classList.add('bounce');
+    document.body.classList.add('lock-scroll');
 
     setTimeout(() => {
       requestAnimationFrame(() => {
@@ -89,6 +90,7 @@ export function togglePanel(header) {
             panel.classList.remove('open');
             header.classList.remove('open');
             body.classList.remove('open');
+            document.body.classList.remove('lock-scroll');
             startY = null;
           }
         }
