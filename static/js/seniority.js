@@ -59,6 +59,17 @@ function normalize(str) {
 
 
 // ==============================
+// STATUS ICON HELPER
+// ==============================
+function getSeniorityEmoji(status, department) {
+  if ((department || "").toLowerCase().includes("hold")) return "🔴";
+  if ((status || "").toLowerCase().includes("full")) return "🟢";
+  if ((status || "").toLowerCase().includes("part")) return "🟡";
+  return "⚪";
+}
+
+
+// ==============================
 // SEARCH FUNCTIONALITY
 // ==============================
 function doSenioritySearch() {
@@ -124,8 +135,8 @@ function handleComparison() {
     const position = row["Unnamed: 2"] || "";
     const status = row["Unnamed: 3"] || "";
     const years = parseFloat(row["Unnamed: 4"] || 0);
-    const emoji = status.toLowerCase().includes("full") ? "🟢" :
-                  status.toLowerCase().includes("part") ? "🟡" : "⚪";
+    const department = row["Unnamed: 5"] || "";
+    const emoji = getSeniorityEmoji(status, department);
 
     return `
       <li style="margin-bottom: 1.5em;">
@@ -151,12 +162,11 @@ function handleComparison() {
       ${renderListItem(match2)}
     </ul>
     <ul style="list-style: none; padding-left: 0; margin-top: 1.5rem;">
-      <li><p style="text-align: center"><strong>Difference:</strong></p></li>
-      <li><p style="text-align: center">Years: ${deltaYears.toFixed(2)}</p></li>
-      <li><p style="text-align: center">Months: ${totalMonths.toFixed(1)}</p></li>
-      <li><p style="text-align: center">Weeks: ${totalWeeks.toFixed(1)}</p></li>
-      <li><p style="text-align: center">Days: ${totalDays.toFixed(0)}</p></li>
-      <li><p style="text-align: center">Hours: ${totalHours.toFixed(0)}</p></li>
+      <li><p style="text-align: center"><strong>Years:</strong> ${deltaYears.toFixed(2)}</p></li>
+      <li><p style="text-align: center"><strong>Months:</strong> ${totalMonths.toFixed(1)}</p></li>
+      <li><p style="text-align: center"><strong>Weeks:</strong> ${totalWeeks.toFixed(1)}</p></li>
+      <li><p style="text-align: center"><strong>Days:</strong> ${totalDays.toFixed(0)}</p></li>
+      <li><p style="text-align: center"><strong>Hours:</strong> ${totalHours.toFixed(0)}</p></li>
     </ul>
   `;
 }
@@ -229,8 +239,8 @@ function renderResults(matches) {
     const position = row["Unnamed: 2"] || "";
     const status = row["Unnamed: 3"] || "";
     const years = parseFloat(row["Unnamed: 4"] || 0);
-    const emoji = status.toLowerCase().includes("full") ? "🟢" :
-                  status.toLowerCase().includes("part") ? "🟡" : "⚪";
+    const department = row["Unnamed: 5"] || "";
+    const emoji = getSeniorityEmoji(status, department);
 
     html += "<li style='margin-bottom: 1.5em;'>";
     html += `<strong>${first} ${last}</strong><br>`;
