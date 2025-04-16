@@ -68,6 +68,7 @@ function doSenioritySearch() {
 
   if (!query) {
     renderResults([]);
+    populateStats([]); // clear stats if no results
     return;
   }
 
@@ -78,6 +79,7 @@ function doSenioritySearch() {
   );
 
   renderResults(matches);
+  populateStats(matches);
 }
 
 
@@ -86,7 +88,10 @@ function doSenioritySearch() {
 // ==============================
 function populateStats(data) {
   const statsDiv = document.getElementById("seniority-stats");
-  if (!statsDiv || !data || !data.length) return;
+  if (!statsDiv || !data || !data.length) {
+    statsDiv.innerHTML = "<p>No data available.</p>";
+    return;
+  }
 
   let total = 0;
   let fullTime = 0;
