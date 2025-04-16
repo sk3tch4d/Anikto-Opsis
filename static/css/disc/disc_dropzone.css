@@ -73,7 +73,7 @@ input[type="file"] {
   }
   50% {
     box-shadow: 
-      0 0 22px rgba(114, 137, 218, 0.3), 
+      0 0 24px rgba(114, 137, 218, 0.3), 
       inset 0 0 16px rgba(114, 137, 218, 0.2);
   }
   100% {
