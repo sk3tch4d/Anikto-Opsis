@@ -70,7 +70,7 @@ input[type="file"] {
     box-shadow: 0 0 10px rgba(114, 137, 218, 0.1);
   }
   50% {
-    box-shadow: 0 0 16px rgba(114, 137, 218, 0.3);
+    box-shadow: 0 0 18px rgba(114, 137, 218, 0.3);
   }
   100% {
     box-shadow: 0 0 10px rgba(114, 137, 218, 0.1);
