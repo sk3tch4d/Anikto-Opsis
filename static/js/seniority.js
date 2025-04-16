@@ -163,11 +163,11 @@ function handleComparison() {
       ${renderListItem(match2)}
     </ul>
     <ul style="list-style: none; padding-left: 0; margin-top: 1.5rem;">
-      <li><p style="text-align: center"><strong>Years:</strong> ${deltaYears.toFixed(2)}</p></li>
-      <li><p style="text-align: center"><strong>Months:</strong> ${totalMonths.toFixed(1)}</p></li>
-      <li><p style="text-align: center"><strong>Weeks:</strong> ${totalWeeks.toFixed(1)}</p></li>
-      <li><p style="text-align: center"><strong>Days:</strong> ${totalDays.toFixed(0)}</p></li>
-      <li><p style="text-align: center"><strong>Hours:</strong> ${totalHours.toFixed(0)}</p></li>
+      <li><p style="text-align: center"><strong>Years:</strong> ${deltaYears.toFixed(2)}</p><br>
+      <p style="text-align: center"><strong>Months:</strong> ${totalMonths.toFixed(1)}</p><br>
+      <p style="text-align: center"><strong>Weeks:</strong> ${totalWeeks.toFixed(1)}</p><br>
+      <p style="text-align: center"><strong>Days:</strong> ${totalDays.toFixed(0)}</p><br>
+      <p style="text-align: center"><strong>Hours:</strong> ${totalHours.toFixed(0)}</p></li>
     </ul>
   `;
 }
