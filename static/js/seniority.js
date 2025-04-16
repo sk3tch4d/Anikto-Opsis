@@ -62,11 +62,12 @@ function normalize(str) {
 // STATUS ICON HELPER
 // ==============================
 function getSeniorityEmoji(status, department) {
-  if (department.includes("hold")) return "🔴";
-  if ((status || "").toLowerCase().includes("full")) return "🟢";
-  if ((status || "").toLowerCase().includes("part")) return "🟡";
+  if ((department || "").includes("HOLD")) return "🔴";
+  if ((status || "").includes("Full")) return "🟢";
+  if ((status || "").includes("Part")) return "🟡";
   return "⚪";
 }
+
 
 
 // ==============================
