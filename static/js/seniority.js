@@ -15,6 +15,7 @@ export function initSenioritySearch() {
 
   input.addEventListener("focus", () => {
     button.style.display = "block";
+    input.value = "";  // Auto-clear
   });
 
   input.addEventListener("blur", () => {
