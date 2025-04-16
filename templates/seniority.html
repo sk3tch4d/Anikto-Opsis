@@ -41,7 +41,7 @@
           </ul>
         </div>
       </div>
-
+      
       <!-- ============================= -->
       <!-- PANEL: COMPARE -->
       <!-- ============================= -->
@@ -54,12 +54,15 @@
           <div id="compare-results" style="margin-top: 1rem;"></div>
         </div>
       </div>
-      <!-- Datalist for autocomplete -->
+      <!-- ============================= -->
+      <!-- DATALIST FOR AUTOCOMPLETE     -->
+      <!-- ============================= -->
       <datalist id="name-options">
         {% for row in table %}
-          <option value="{{ row['Unnamed: 1'] }} {{ row['CUPE Combined Seniority List'] }}">
+          <option value="{{ row['First Name'] }} {{ row['Last Name'] }}">
         {% endfor %}
       </datalist>
+
 
 
 
