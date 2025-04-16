@@ -89,7 +89,7 @@ function doSenioritySearch() {
 function populateStats(data) {
   const statsDiv = document.getElementById("seniority-stats");
   if (!statsDiv || !data || !data.length) {
-    statsDiv.innerHTML = "<p>No data available.</p>";
+    statsDiv.innerHTML = "<p style='text-align: center;'>No data available.</p>";
     return;
   }
 
@@ -118,12 +118,14 @@ function populateStats(data) {
   const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
 
   statsDiv.innerHTML = `
-    <strong>Total Employees:</strong> ${total}<br>
-    <strong>Full-Time:</strong> ${fullTime}<br>
-    <strong>Part-Time:</strong> ${partTime}<br>
-    <strong>Average Seniority:</strong> ${avgYears} Years<br>
-    <strong>Top Senior:</strong> ${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years<br>
-    <strong>Total Combined:</strong> ${totalYears.toFixed(2)} Years
+    <ul style="list-style: none; padding-left: 0;">
+      <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
+      <li><p style="text-align: center"><strong>Full-Time:</strong> ${fullTime}</p></li>
+      <li><p style="text-align: center"><strong>Part-Time:</strong> ${partTime}</p></li>
+      <li><p style="text-align: center"><strong>Average Seniority:</strong> ${avgYears} Years</p></li>
+      <li><p style="text-align: center"><strong>Top Senior:</strong> ${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</p></li>
+      <li><p style="text-align: center"><strong>Total Combined:</strong> ${totalYears.toFixed(2)} Years</p></li>
+    </ul>
   `;
 }
 
