@@ -9,6 +9,8 @@ with open("static/emp_all.json", "r") as f:
 
 def clean_reason_text(reason_raw):
     r = reason_raw.lower()
+    if "swap" in r:
+        return "Shift Swap"
     if "sick" in r:
         return "Sick Leave"
     if "vacation" in r:
@@ -21,6 +23,12 @@ def clean_reason_text(reason_raw):
         return "Leave of Absence"
     if "covering vacant" in r:
         return "Covering Vacant"
+    if "orientation" in r:
+        return "Orientation"
+    if "adjustm" in r:
+        return "Schedule Adjustment"
+    if "banked stat" in r:
+        return "Banked Stat"
     return "Other"
 
 def extract_relief_name(line):
