@@ -157,7 +157,7 @@ body.lock-scroll {
 .seniority-panel-content {
   display: flex;
   flex-direction: column;
-  max-height: 82vh;
+  max-height: 80vh;
 }
 
 .search-controls {
