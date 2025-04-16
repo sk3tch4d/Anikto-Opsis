@@ -23,14 +23,10 @@
       <!-- ============================= -->
       <div class="panel panel-animate" id="search-panel">
         <div class="panel-header" onclick="togglePanel(this)">Search</div>
-        <div class="panel-body">
-          <div class="seniority-panel-content">
-            <div class="search-controls">
-              <input id="seniority-search" class="input full-width" placeholder="Enter name..." />
-              <button id="seniority-search-button" class="button full-width" style="margin-top: 0.5rem;">Search</button>
-            </div>
-            <div id="seniority-results" class="scrollable-fill"></div>
-          </div>
+        <div class="panel-body scrollable-panel">
+          <input id="seniority-search" class="input full-width" placeholder="Enter name..." />
+          <button id="seniority-search-button" class="button full-width" style="margin-top: 0.5rem;">Search</button>
+          <div id="seniority-results" style="margin-top: 1rem;"></div>
         </div>
       </div>
 
@@ -53,10 +49,13 @@
       <div class="panel panel-animate" id="stats-panel">
         <div class="panel-header" onclick="togglePanel(this)">Stats</div>
         <div class="panel-body">
-          <div id="seniority-stats" style="line-height: 1.8;">
-            <strong>Total PT:</strong> ...<br>
-            <strong>Total FT:</strong> ...<br>
-          </div>
+          <ul style="list-style: none; padding-left: 0;">
+            <li>
+              <div id="seniority-stats" style="line-height: 1.8; text-align: center;">
+                <!-- JS-populated stats go here -->
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
 
