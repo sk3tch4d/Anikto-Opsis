@@ -67,13 +67,19 @@ input[type="file"] {
 /* ------ PULSE ------ */
 @keyframes pulse-glow {
   0% {
-    box-shadow: 0 0 10px rgba(114, 137, 218, 0.1);
+    box-shadow: 
+      0 0 10px rgba(114, 137, 218, 0.1), 
+      inset 0 0 6px rgba(114, 137, 218, 0.1);
   }
   50% {
-    box-shadow: 0 0 18px rgba(114, 137, 218, 0.3);
+    box-shadow: 
+      0 0 20px rgba(114, 137, 218, 0.3), 
+      inset 0 0 14px rgba(114, 137, 218, 0.2);
   }
   100% {
-    box-shadow: 0 0 10px rgba(114, 137, 218, 0.1);
+    box-shadow: 
+      0 0 10px rgba(114, 137, 218, 0.1), 
+      inset 0 0 6px rgba(114, 137, 218, 0.1);
   }
 }
 
