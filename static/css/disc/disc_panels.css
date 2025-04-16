@@ -159,24 +159,21 @@ body.lock-scroll {
   flex-direction: column;
   max-height: 80vh;
 }
-
 .search-controls {
   flex: 0 0 auto;
 }
-
 /* Fixed .scrollable-fill logic */
 .scrollable-fill {
   flex: 1 1 auto;
   overflow-y: auto;
   margin-top: 1rem;
   padding: 1em;
-  padding-right: 0.5rem;  /* Space for scrollbar */
+/*  padding-right: 0.5rem;  Space for scrollbar */
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
 .scrollable-fill::-webkit-scrollbar {
   display: none;
 }
