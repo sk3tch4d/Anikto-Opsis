@@ -11,13 +11,15 @@ import pandas as pd
 # LOAD EXCEL FILE
 # ==============================
 def load_seniority_file(path):
-    df = pd.read_excel(path, sheet_name=0)
+    # Use header=3 to pick row 4 as header (0-indexed)
+    df = pd.read_excel(path, sheet_name=0, header=3)
     df.columns = [col.strip() for col in df.columns]
+    df = df.dropna(how="all")  # Remove empty rows at bottom
     return df
 
 
 # ==============================
-# BASIC NAME LOOKUP
+# BASIC NAME LOOKUP (fuzzy search)
 # ==============================
 def lookup_seniority(df, query):
     query = query.lower()
@@ -25,7 +27,7 @@ def lookup_seniority(df, query):
 
 
 # ==============================
-# FILTER BY FIELD MATCHES
+# FILTER BY FIELD MATCHES (case-insensitive)
 # ==============================
 def filter_seniority(df, filters):
     result = df.copy()
@@ -36,10 +38,8 @@ def filter_seniority(df, filters):
 
 
 # ==============================
-# (DEPRECATED) API REGISTRATION
-# ==============================
-# Only needed if API-based lookup is enabled
-# Not used in the new version which directly renders seniority.html
+# API ROUTE REGISTRATION (Deprecated)
+# Only needed if API-based search is exposed
 # ==============================
 def register_seniority_routes(app, file_path):
     df = load_seniority_file(file_path)
@@ -49,11 +49,11 @@ def register_seniority_routes(app, file_path):
         from flask import request, jsonify
         name = request.args.get("q", "")
         filters = {
-            "Classification": request.args.get("class"),
+            "Position": request.args.get("position"),
+            "Status": request.args.get("status"),
             "Department": request.args.get("dept"),
-            "Status": request.args.get("status")
         }
         filtered = filter_seniority(df, filters)
         if name:
             filtered = lookup_seniority(filtered, name)
-        return filtered.to_dict(orient="records")
+        return jsonify(filtered.to_dict(orient="records"))
