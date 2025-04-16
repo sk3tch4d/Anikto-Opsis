@@ -50,12 +50,10 @@
       <div class="panel panel-animate" id="compare-panel">
         <div class="panel-header" onclick="togglePanel(this)">Compare</div>
         <div class="panel-body">
-          <input id="compare-input-1" list="name-options" class="input full-width" placeholder="Select first person..." />
-          <input id="compare-input-2" list="name-options" class="input full-width" placeholder="Select second person..." style="margin-top: 0.5rem;" />
+          <input id="compare-input-1" list="name-options" class="input full-width" placeholder="Select first person..." autocomplete="on" />
+          <input id="compare-input-2" list="name-options" class="input full-width" placeholder="Select second person..." style="margin-top: 0.5rem;" autocomplete="on" />
           <button id="compare-button" class="button full-width" style="margin-top: 0.5rem;">Compare</button>
-          <ul style="list-style: none; padding-left: 0;">
-            <div id="compare-results" style="margin-top: 1rem;"></div>
-          </ul>
+          <div id="compare-results" style="margin-top: 1rem;"></div>
         </div>
       </div>
       <!-- Datalist for autocomplete -->
@@ -64,6 +62,7 @@
           <option value="{{ row['Unnamed: 1'] }} {{ row['CUPE Combined Seniority List'] }}">
         {% endfor %}
       </datalist>
+
 
 
       <!-- ============================= -->
