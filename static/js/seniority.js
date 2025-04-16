@@ -61,10 +61,10 @@ function normalize(str) {
 // ==============================
 // STATUS ICON HELPER
 // ==============================
-function getSeniorityEmoji(status, department) {
+function getSeniorityEmoji(status, position) {
+  if ((position || "").includes("HOLD")) return "🔴";
   if ((status || "").includes("Full")) return "🟢";
   if ((status || "").includes("Part")) return "🟡";
-  if ((department || "").includes("HOLD")) return "🔴";
   return "⚪";
 }
 
@@ -117,11 +117,11 @@ function handleComparison() {
   }
 
   const match1 = data.find(row =>
-    normalize(`${row["Unnamed: 1"]} ${row["CUPE Combined Seniority List"]}`).includes(input1)
+    normalize(`${row["First Name"]} ${row["Last Name"]}`).includes(input1)
   );
 
   const match2 = data.find(row =>
-    normalize(`${row["Unnamed: 1"]} ${row["CUPE Combined Seniority List"]}`).includes(input2)
+    normalize(`${row["First Name"]} ${row["Last Name"]}`).includes(input2)
   );
 
   if (!match1 || !match2) {
@@ -130,13 +130,12 @@ function handleComparison() {
   }
 
   const renderListItem = (row) => {
-    const first = row["Unnamed: 1"] || "";
-    const last = row["CUPE Combined Seniority List"] || "";
-    const position = row["Unnamed: 2"] || "";
-    const status = row["Unnamed: 3"] || "";
-    const years = parseFloat(row["Unnamed: 4"] || 0);
-    const department = row["Unnamed: 5"] || "";
-    const emoji = getSeniorityEmoji(status, department);
+    const first = row["First Name"] || "";
+    const last = row["Last Name"] || "";
+    const position = row["Position"] || "";
+    const status = row["Status"] || "";
+    const years = parseFloat(row["Limited Seniority Years"] || 0);
+    const emoji = getSeniorityEmoji(status, position);
 
     return `
       <li style="margin-bottom: 1.5em;">
@@ -148,8 +147,8 @@ function handleComparison() {
     `;
   };
 
-  const y1 = parseFloat(match1["Unnamed: 4"] || 0);
-  const y2 = parseFloat(match2["Unnamed: 4"] || 0);
+  const y1 = parseFloat(match1["Limited Seniority Years"] || 0);
+  const y2 = parseFloat(match2["Limited Seniority Years"] || 0);
   const deltaYears = Math.abs(y1 - y2);
   const totalHours = deltaYears * 365.25 * 24;
   const totalDays = deltaYears * 365.25;
@@ -162,11 +161,13 @@ function handleComparison() {
       ${renderListItem(match2)}
     </ul>
     <ul style="list-style: none; padding-left: 0; margin-top: 1.5rem;">
-      <li><p style="text-align: center"><strong>Years:</strong> ${deltaYears.toFixed(2)}</p><br>
-      <p style="text-align: center"><strong>Months:</strong> ${totalMonths.toFixed(1)}</p><br>
-      <p style="text-align: center"><strong>Weeks:</strong> ${totalWeeks.toFixed(1)}</p><br>
-      <p style="text-align: center"><strong>Days:</strong> ${totalDays.toFixed(0)}</p><br>
-      <p style="text-align: center"><strong>Hours:</strong> ${totalHours.toFixed(0)}</p></li>
+      <li>
+        <p style="text-align: left"><strong>Years:</strong> ${deltaYears.toFixed(2)}</p>
+        <p style="text-align: left"><strong>Months:</strong> ${totalMonths.toFixed(1)}</p>
+        <p style="text-align: left"><strong>Weeks:</strong> ${totalWeeks.toFixed(1)}</p>
+        <p style="text-align: left"><strong>Days:</strong> ${totalDays.toFixed(0)}</p>
+        <p style="text-align: left"><strong>Hours:</strong> ${totalHours.toFixed(0)}</p>
+      </li>
     </ul>
   `;
 }
@@ -189,9 +190,9 @@ function populateStats(data) {
   let mostSenior = { name: "", years: 0 };
 
   data.forEach(row => {
-    const status = (row["Unnamed: 3"] || "").toLowerCase();
-    const years = parseFloat(row["Unnamed: 4"] || 0);
-    const name = `${row["Unnamed: 1"] || ""} ${row["CUPE Combined Seniority List"] || ""}`.trim();
+    const status = (row["Status"] || "").toLowerCase();
+    const years = parseFloat(row["Limited Seniority Years"] || 0);
+    const name = `${row["First Name"] || ""} ${row["Last Name"] || ""}`.trim();
 
     if (status.includes("full")) fullTime++;
     if (status.includes("part")) partTime++;
@@ -219,7 +220,6 @@ function populateStats(data) {
 }
 
 
-
 // ==============================
 // RENDER RESULTS
 // ==============================
@@ -234,13 +234,12 @@ function renderResults(matches) {
   let html = "<ul style='list-style: none; padding-left: 0;'>";
 
   matches.forEach(row => {
-    const first = row["Unnamed: 1"] || "";
-    const last = row["CUPE Combined Seniority List"] || "";
-    const position = row["Unnamed: 2"] || "";
-    const status = row["Unnamed: 3"] || "";
-    const years = parseFloat(row["Unnamed: 4"] || 0);
-    const department = row["Unnamed: 5"] || "";
-    const emoji = getSeniorityEmoji(status, department);
+    const first = row["First Name"] || "";
+    const last = row["Last Name"] || "";
+    const position = row["Position"] || "";
+    const status = row["Status"] || "";
+    const years = parseFloat(row["Limited Seniority Years"] || 0);
+    const emoji = getSeniorityEmoji(status, position);
 
     html += "<li style='margin-bottom: 1.5em;'>";
     html += `<strong>${first} ${last}</strong><br>`;
