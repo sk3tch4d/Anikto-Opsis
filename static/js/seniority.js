@@ -146,11 +146,11 @@ function handleComparison() {
   const totalMonths = deltaYears * 12;
 
   resultsDiv.innerHTML = `
-    <ul style="list-style: none; padding-left: 0; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+    <ul style="list-style: none; padding-left: 0;">
       ${renderListItem(match1)}
       ${renderListItem(match2)}
     </ul>
-    <ul style="list-style: none; padding-left: 0; margin-top: 2rem;">
+    <ul style="list-style: none; padding-left: 0; margin-top: 1.5rem;">
       <li><p style="text-align: center"><strong>Difference:</strong></p></li>
       <li><p style="text-align: center">Years: ${deltaYears.toFixed(2)}</p></li>
       <li><p style="text-align: center">Months: ${totalMonths.toFixed(1)}</p></li>
