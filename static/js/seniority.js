@@ -118,17 +118,15 @@ function populateStats(data) {
   const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
 
   statsDiv.innerHTML = `
-    <ul style="list-style: none; padding-left: 0;">
-      <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
-      <li><p style="text-align: center"><strong>Full-Time:</strong> ${fullTime}</p></li>
-      <li><p style="text-align: center"><strong>Part-Time:</strong> ${partTime}</p></li>
-      <li><p style="text-align: center"><strong>Average Seniority:</strong> ${avgYears} Years</p></li>
-      <li><p style="text-align: center"><strong>Top Senior:</strong> ${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</p></li>
-      <li><p style="text-align: center"><strong>Total Combined:</strong> ${totalYears.toFixed(2)} Years</p></li>
-    </ul>
-  `;
-}
-
+  <ul style="list-style: none; padding-left: 0;">
+    <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
+    <li><p style="text-align: center"><strong>Full-Time:</strong> ${fullTime}</p></li>
+    <li><p style="text-align: center"><strong>Part-Time:</strong> ${partTime}</p></li>
+    <li><p style="text-align: center"><strong>Average Seniority:</strong> ${avgYears} Years</p></li>
+    <li><p style="text-align: center"><strong>Top Senior:</strong> ${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</p></li>
+    <li><p style="text-align: center"><strong>Total Combined:</strong> ${totalYears.toFixed(2)} Years</p></li>
+  </ul>
+`;
 
 // ==============================
 // RENDER RESULTS
