@@ -68,7 +68,7 @@ function doSenioritySearch() {
 
   if (!query) {
     renderResults([]);
-    populateStats([]); // clear stats if no results
+    populateStats([]);
     return;
   }
 
