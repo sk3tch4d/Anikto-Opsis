@@ -48,14 +48,21 @@
       <!-- PANEL: COMPARE -->
       <!-- ============================= -->
       <div class="panel panel-animate" id="compare-panel">
-        <div class="panel-header" onclick="togglePanel(this)">Compare (Coming Soon)</div>
+        <div class="panel-header" onclick="togglePanel(this)">Compare</div>
         <div class="panel-body">
-          <input class="input full-width" placeholder="Enter first name..." />
-          <input class="input full-width" placeholder="Enter second name..." style="margin-top: 0.5rem;" />
-          <button class="button full-width" style="margin-top: 0.5rem;" disabled>Compare</button>
-          <p style="margin-top: 1rem; text-align: center;">This feature is under construction.</p>
+          <input id="compare-input-1" list="name-options" class="input full-width" placeholder="Select first person..." />
+          <input id="compare-input-2" list="name-options" class="input full-width" placeholder="Select second person..." style="margin-top: 0.5rem;" />
+          <button id="compare-button" class="button full-width" style="margin-top: 0.5rem;">Compare</button>
+          <div id="compare-results" style="margin-top: 1rem;"></div>
         </div>
       </div>
+      <!-- Datalist for autocomplete -->
+      <datalist id="name-options">
+        {% for row in table %}
+          <option value="{{ row['Unnamed: 1'] }} {{ row['CUPE Combined Seniority List'] }}">
+        {% endfor %}
+      </datalist>
+
 
       <!-- ============================= -->
       <!-- PANEL: DOWNLOADS -->
