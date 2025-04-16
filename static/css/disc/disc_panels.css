@@ -1,8 +1,12 @@
+/* ============================= */
+/* PANEL CONTAINER + HEADER     */
+/* ============================= */
 .panel {
   margin-top: 1rem;
   width: 100%;
   max-width: 500px;
 }
+
 .panel-header {
   background-color: #2f3237;
   padding: 0.65rem 1rem;
@@ -14,18 +18,26 @@
   text-align: center;
   transition: background 0.2s ease, color 0.2s ease;
 }
+
 .panel.open > .panel-header {
   background-color: #525760;
   color: #ffffff;
   border-radius: 8px 8px 0 0;
 }
+
 .panel-header:hover {
   background-color: #3a3d42;
   animation: panel-bounce 0.4s cubic-bezier(0.25, 1.5, 0.5, 1);
 }
+
 .panel-header:focus {
   outline: none;
 }
+
+
+/* ============================= */
+/* PANEL BODY / TOGGLE BEHAVIOR */
+/* ============================= */
 .panel-body {
   background-color: #2f3136;
   max-height: 0;
@@ -33,6 +45,7 @@
   padding: 0;
   transition: max-height 0.2s ease, padding 0.2s ease;
 }
+
 .panel-body.open {
   border-top: 1px solid #232529;
   border-bottom: 1px solid #232529;
@@ -40,17 +53,17 @@
   padding: 1rem;
   border-radius: 0 0 8px 8px;
 }
+
 .panel.open {
   box-shadow: 0 0 0 2px rgba(20, 20, 25, 0.3);
   border-radius: 8px;
   transition: box-shadow 0.3s ease;
 }
-.panel-body:not(.open) .downloads .file-action {
-  margin: 0.4rem 0;
-  opacity: 0.6;
-}
 
-/* -- Panel Label - Checkbox Elements --*/
+
+/* ============================= */
+/* PANEL LABELS (e.g., checkboxes) */
+/* ============================= */
 .panel-body label {
   display: flex;
   align-items: center;
@@ -65,19 +78,22 @@
   color: #ccc;
   transition: background 0.2s ease;
 }
+
 .panel-body label:hover {
   background: #2a2d33;
 }
 
 
-/* Override Panel for Upload Display */
+/* ============================= */
+/* UPLOAD PANEL VARIANT          */
+/* ============================= */
 .index-upload {
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
 }
-/* Match uploaded file buttons in panels */
+
 .panel-body .file-action.uploaded {
   background-color: #26282c;
   padding: 0.4rem 0.8rem;
@@ -92,23 +108,25 @@
   width: 100%;
   box-sizing: border-box;
 }
-/* Optional hover */
+
 .panel-body .file-action.uploaded:hover {
   background-color: #32353a;
 }
 
 
-/* Default State: Panel closed */
+/* ============================= */
+/* PANEL: SCROLLABLE (LEGACY)    */
+/* ============================= */
 .scrollable-panel {
   max-height: 0;
   opacity: 0;
   overflow: hidden;
   padding: 0 1em;
   transition: max-height 0.3s ease, opacity 0.3s ease;
-  -ms-overflow-style: none;  /* Remove Bar: IE and Edge */
-  scrollbar-width: none;     /* Remove Bar: Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-/* Panel Open — Content scrollable */
+
 .panel.open .scrollable-panel {
   max-height: 82vh;
   opacity: 1;
@@ -117,45 +135,62 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
 }
+
 .scrollable-panel::-webkit-scrollbar {
-  display: none; /* Remove Bar: Chromium Based */
+  display: none;
 }
-/* Lock while scroll enabled */
+
+
+/* ============================= */
+/* BODY LOCK WHEN PANEL OPEN     */
+/* ============================= */
 body.lock-scroll {
   overflow: hidden;
   height: 100%;
   touch-action: none;
 }
 
-/* Seniority List Edit */
+
+/* ============================= */
+/* SENIORITY PANEL LAYOUT        */
+/* ============================= */
 .seniority-panel-content {
   display: flex;
   flex-direction: column;
   max-height: 82vh;
 }
+
+.search-controls {
+  flex: 0 0 auto;
+}
+
+/* Fixed .scrollable-fill logic */
 .scrollable-fill {
   flex: 1 1 auto;
   overflow-y: auto;
   margin-top: 1rem;
-  padding-right: 0.5rem;
+  padding: 1em;
+  padding-right: 0.5rem;  /* Space for scrollbar */
+  box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: none;  /* IE/Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-.search-controls {
-  flex: 0 0 auto;
-}
+
 .scrollable-fill::-webkit-scrollbar {
   display: none;
 }
 
 
-/* Slide-In Animation */
+/* ============================= */
+/* ANIMATION: PANEL SLIDE-IN     */
+/* ============================= */
 .panel-animate {
   opacity: 0;
   transform: translateY(-40px);
   animation: slideInTop 0.6s ease-out forwards;
 }
+
 #panel-container .panel:nth-child(1) { animation-delay: 0.1s; }
 #panel-container .panel:nth-child(2) { animation-delay: 0.2s; }
 #panel-container .panel:nth-child(3) { animation-delay: 0.3s; }
@@ -163,6 +198,7 @@ body.lock-scroll {
 #panel-container .panel:nth-child(5) { animation-delay: 0.5s; }
 #panel-container .panel:nth-child(6) { animation-delay: 0.6s; }
 #panel-container .panel:nth-child(7) { animation-delay: 0.7s; }
+
 @keyframes slideInTop {
   to {
     opacity: 1;
@@ -170,13 +206,16 @@ body.lock-scroll {
   }
 }
 
-/* Bounce Animation */
+
+/* ============================= */
+/* ANIMATION: HEADER BOUNCE      */
+/* ============================= */
 @keyframes hover-bounce {
   0%   { transform: scale(1); }
   50%  { transform: scale(1.06); }
   100% { transform: scale(1); }
 }
-/* On click (triggered manually by JS) */
+
 .panel-header.bounce {
   animation: hover-bounce 0.4s cubic-bezier(0.25, 1.5, 0.5, 1);
 }
