@@ -145,48 +145,73 @@ function handleComparison() {
 // ==============================
 // STATS PANEL POPULATION
 // ==============================
-function populateStats(data) {
-  const statsDiv = document.getElementById("seniority-stats");
-  if (!statsDiv || !data || !data.length) {
-    statsDiv.innerHTML = "<p style='text-align: center;'>No data available.</p>";
+function handleComparison() {
+  const input1 = normalize(document.getElementById("compare-input-1").value.trim());
+  const input2 = normalize(document.getElementById("compare-input-2").value.trim());
+  const resultsDiv = document.getElementById("compare-results");
+  const data = window.seniorityData || [];
+
+  if (!input1 || !input2) {
+    resultsDiv.innerHTML = "<p>Please enter two names to compare.</p>";
     return;
   }
 
-  let total = 0;
-  let fullTime = 0;
-  let partTime = 0;
-  let totalYears = 0;
-  let mostSenior = { name: "", years: 0 };
+  const match1 = data.find(row =>
+    normalize(`${row["Unnamed: 1"]} ${row["CUPE Combined Seniority List"]}`).includes(input1)
+  );
 
-  data.forEach(row => {
-    const status = (row["Unnamed: 3"] || "").toLowerCase();
+  const match2 = data.find(row =>
+    normalize(`${row["Unnamed: 1"]} ${row["CUPE Combined Seniority List"]}`).includes(input2)
+  );
+
+  if (!match1 || !match2) {
+    resultsDiv.innerHTML = "<p>One or both entries not found.</p>";
+    return;
+  }
+
+  const renderListItem = (row) => {
+    const first = row["Unnamed: 1"] || "";
+    const last = row["CUPE Combined Seniority List"] || "";
+    const position = row["Unnamed: 2"] || "";
+    const status = row["Unnamed: 3"] || "";
     const years = parseFloat(row["Unnamed: 4"] || 0);
-    const name = `${row["Unnamed: 1"] || ""} ${row["CUPE Combined Seniority List"] || ""}`.trim();
+    const emoji = status.toLowerCase().includes("full") ? "🟢" :
+                  status.toLowerCase().includes("part") ? "🟡" : "⚪";
 
-    if (status.includes("full")) fullTime++;
-    if (status.includes("part")) partTime++;
+    return `
+      <li style="margin-bottom: 1.5em;">
+        <strong>${first} ${last}</strong><br>
+        ${emoji} ${status}<br>
+        <em>${position}</em><br>
+        ${years.toFixed(2)} Years
+      </li>
+    `;
+  };
 
-    total++;
-    totalYears += years;
+  const y1 = parseFloat(match1["Unnamed: 4"] || 0);
+  const y2 = parseFloat(match2["Unnamed: 4"] || 0);
+  const deltaYears = Math.abs(y1 - y2);
+  const totalHours = deltaYears * 365.25 * 24;
+  const totalDays = deltaYears * 365.25;
+  const totalWeeks = totalDays / 7;
+  const totalMonths = deltaYears * 12;
 
-    if (years > mostSenior.years) {
-      mostSenior = { name, years };
-    }
-  });
-
-  const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
-
-  statsDiv.innerHTML = `
-    <ul style="list-style: none; padding-left: 0;">
-      <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
-      <li><p style="text-align: center"><strong>Full-Time:</strong> ${fullTime}</p></li>
-      <li><p style="text-align: center"><strong>Part-Time:</strong> ${partTime}</p></li>
-      <li><p style="text-align: center"><strong>Average Seniority:</strong> ${avgYears} Years</p></li>
-      <li><p style="text-align: center"><strong>Top Senior:</strong> ${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</p></li>
-      <li><p style="text-align: center"><strong>Total Combined:</strong> ${totalYears.toFixed(2)} Years</p></li>
+  resultsDiv.innerHTML = `
+    <ul style="list-style: none; padding-left: 0; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+      ${renderListItem(match1)}
+      ${renderListItem(match2)}
+    </ul>
+    <ul style="list-style: none; padding-left: 0; margin-top: 2rem;">
+      <li><p style="text-align: center"><strong>Difference:</strong></p></li>
+      <li><p style="text-align: center">Years: ${deltaYears.toFixed(2)} </p></li>
+      <li><p style="text-align: center">Months: ${totalMonths.toFixed(1)}</p></li>
+      <li><p style="text-align: center">Weeks: ${totalWeeks.toFixed(1)}</p></li>
+      <li><p style="text-align: center">Days: ${totalDays.toFixed(0)}</p></li>
+      <li><p style="text-align: center">Hours ${totalHours.toFixed(0)}</p></li>
     </ul>
   `;
 }
+
 
 
 // ==============================
