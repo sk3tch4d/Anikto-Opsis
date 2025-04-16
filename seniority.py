@@ -11,10 +11,9 @@ import pandas as pd
 # LOAD EXCEL FILE
 # ==============================
 def load_seniority_file(path):
-    # Use header=3 to pick row 4 as header (0-indexed)
     df = pd.read_excel(path, sheet_name=0, header=3)
-    df.columns = [col.strip() for col in df.columns]
-    df = df.dropna(how="all")  # Remove empty rows at bottom
+    df.columns = [col.strip() if isinstance(col, str) else col for col in df.columns]
+    df = df.dropna(how="all")  # Remove blank rows
     return df
 
 
