@@ -248,7 +248,7 @@ function populateGlobalStats() {
     const position = row["Position"] || "";
     const status = (row["Status"] || "").toLowerCase();
     const years = parseFloat(row["Years"] || 0);
-    const on_hold = parsString(row["Position"] || "HOLD");
+    /*const on_hold = parsString(row["Position"] || "HOLD");*/
 
     const dept = position.split("-")[0].trim();
     if (dept) departments.add(dept);
