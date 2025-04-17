@@ -12,8 +12,21 @@
     <span id="typed-text" data-title="ARG Summary"></span>
   </h1>
   <div id="panel-wrapper"> 
-    {% set shift_icons = {'Day': '☀️', 'Evening': '🌇', 'Night': '🌙'} %}
-    {% set reason_icons = {'Shift Swap': '🔄', 'Sick Leave': '🩼', 'Covering Vacant': '🪪', 'Schedule Adjustment': '🪛', 'Vacation': '🌴', 'Stat Holiday': '⭐', 'Leave of Absence': '🪁', 'Other': '❔'} %}
+    {% set shift_icons = {
+      'Day':     '☀️', 
+      'Evening': '🌇', 
+      'Night':   '🌙'
+    } %}
+    {% set reason_icons = {
+      'Shift Swap'         : '🔄',
+      'Sick Leave'         : '🩼',
+      'Covering Vacant'    : '🪪',
+      'Schedule Adjustment': '🪛',
+      'Vacation'           : '🌴',
+      'Stat Holiday'       : '⭐',
+      'Leave of Absence'   : '🪁',
+      'Other'              : '❔'
+    } %}
     <button id="mobile-focus-reset" style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;" tabindex="-1" aria-hidden="true"></button>
 
     <!-- ======== PANEL CONTAINER ======== -->
