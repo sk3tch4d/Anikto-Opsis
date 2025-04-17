@@ -54,6 +54,18 @@ function normalize(str) {
 
 
 // ==============================
+// OPEN PANEL BY ID
+// ==============================
+function openPanelById(panelId) {
+  const panel = document.getElementById(panelId);
+  const header = panel?.querySelector(".panel-header");
+  if (panel && header && !panel.classList.contains("open")) {
+    header.click(); // triggers togglePanel
+  }
+}
+
+
+// ==============================
 // SEARCH
 // ==============================
 function doSenioritySearch() {
@@ -75,6 +87,20 @@ function doSenioritySearch() {
 
   renderResults(matches);
   populateStats(matches);
+}
+
+
+// ==============================
+// TRIGGER SEARCH
+// ==============================
+function triggerSearch(query) {
+  const input = document.getElementById("seniority-search");
+  const searchPanel = document.getElementById("search-panel");
+  if (!input) return;
+
+  input.value = query;
+  openPanelById("search-panel"); // custom helper
+  doSenioritySearch();
 }
 
 
@@ -242,13 +268,13 @@ function populateGlobalStats() {
   statsDiv.innerHTML = `
     <ul style="list-style: none; padding-left: 0;">
       <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
-      <li><p style="text-align: center"><strong>Full-Time:</strong> ${fullTime}</p></li>
-      <li><p style="text-align: center"><strong>Part-Time:</strong> ${partTime}</p></li>
+      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('Full-Time')"><strong>Full-Time:</strong> ${fullTime}</p></li>
+      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('Part-Time')"><strong>Part-Time:</strong> ${partTime}</p></li>
       <li><p style="text-align: center"><strong>Departments:</strong> ${departments.size}</p></li>
-      <li><p style="text-align: center"><strong>10+ Years:</strong> ${tenPlus}</p></li>
-      <li><p style="text-align: center"><strong>20+ Years:</strong> ${twentyPlus}</p></li>
-      <li><p style="text-align: center"><strong>30+ Years:</strong> ${thirtyPlus}</p></li>
-      <li><p style="text-align: center"><strong>40+ Years:</strong> ${fortyPlus}</p></li>
+      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('10+')"><strong>10+ Years:</strong> ${tenPlus}</p></li>
+      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('20+')"><strong>20+ Years:</strong> ${twentyPlus}</p></li>
+      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('30+')"><strong>30+ Years:</strong> ${thirtyPlus}</p></li>
+      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('40+')"><strong>40+ Years:</strong> ${fortyPlus}</p></li>
       <li><p style="text-align: center"><strong>Average:</strong> ${avgYears} Years</p></li>
     </ul>
   `;
