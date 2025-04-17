@@ -62,11 +62,12 @@ function normalize(str) {
 // STATUS ICON HELPER
 // ==============================
 function getSeniorityEmoji(status, position) {
-  if ((position || "").includes("HOLD")) return "🔴";
-  if ((status || "").includes("Full")) return "🟢";
-  if ((status || "").includes("Part")) return "🟡";
+  if ((position || "").toUpperCase().includes("HOLD")) return "🔴";
+  if ((status || "").toLowerCase().includes("full")) return "🟢";
+  if ((status || "").toLowerCase().includes("part")) return "🟡";
   return "⚪";
 }
+
 
 
 // ==============================
@@ -134,7 +135,7 @@ function handleComparison() {
     const last = row["Last Name"] || "";
     const position = row["Position"] || "";
     const status = row["Status"] || "";
-    const years = parseFloat(row["Limited Seniority Years"] || 0);
+    const years = parseFloat(row["Years"] || 0);
     const emoji = getSeniorityEmoji(status, position);
 
     return `
@@ -238,8 +239,9 @@ function renderResults(matches) {
     const last = row["Last Name"] || "";
     const position = row["Position"] || "";
     const status = row["Status"] || "";
-    const years = parseFloat(row["Limited Seniority Years"] || 0);
+    const years = parseFloat(row["Years"] || 0);
     const emoji = getSeniorityEmoji(status, position);
+
 
     html += "<li style='margin-bottom: 1.5em;'>";
     html += `<strong>${first} ${last}</strong><br>`;
