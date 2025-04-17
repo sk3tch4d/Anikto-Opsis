@@ -245,7 +245,8 @@ function populateGlobalStats() {
     if (years >= 40) fortyPlus++;
   });
 
-  const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
+  totalYears = parseFloat(totalYears.toFixed(2));
+  const avgYears = total > 0 ? parseFloat((totalYears / total).toFixed(2)) : 0;
 
   statsDiv.innerHTML = `
     <ul style="list-style: none; padding-left: 0;">
