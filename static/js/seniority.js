@@ -328,7 +328,7 @@ function populatePositionList() {
 
   data.forEach(row => {
     const raw = row["Position"] || "";
-    const base = raw.split("-")[0].trim();
+    const base = raw.split("-")[0].replace(/\b(PT|FT|CAS)\b/gi, "").trim();
     if (!base) return;
     if (!positionMap[base]) positionMap[base] = 0;
     positionMap[base]++;
