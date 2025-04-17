@@ -11,7 +11,7 @@ import pandas as pd
 # LOAD EXCEL FILE
 # ==============================
 def load_seniority_file(path):
-    df = pd.read_excel(path, sheet_name=0, header=3)
+    df = pd.read_excel(path, sheet_name=0, header=2)
     df.columns = [str(col).strip() for col in df.columns]
     df = df.dropna(how="all")
 
