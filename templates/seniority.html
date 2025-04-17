@@ -30,10 +30,10 @@
 
   
       <!-- ============================= -->
-      <!-- PANEL: STATS -->
+      <!-- PANEL: SEARCH STATS -->
       <!-- ============================= -->
       <div class="panel panel-animate" id="stats-panel">
-        <div class="panel-header" onclick="togglePanel(this)">Stats</div>
+        <div class="panel-header" onclick="togglePanel(this)">Search Stats</div>
         <div class="panel-body">
           <ul style="list-style: none; padding-left: 0;">
               <div id="seniority-stats" style="line-height: 1.8; text-align: center;">
@@ -66,6 +66,21 @@
           <option value="{{ row['First Name'] }} {{ row['Last Name'] }}">
         {% endfor %}
       </datalist>
+
+
+      <!-- ============================= -->
+      <!-- PANEL: GLOBAL STATS -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="stats-global-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Statistics</div>
+        <div class="panel-body">
+          <ul style="list-style: none; padding-left: 0;">
+            <div id="seniority-stats-global" style="line-height: 1.8; text-align: center;">
+              <!-- JS will fill this -->
+            </div>
+          </ul>
+        </div>
+      </div>
 
       
       <!-- ============================= -->
