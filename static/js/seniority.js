@@ -120,7 +120,7 @@ function doSenioritySearch() {
   if (!query) {
     renderResults([]);
     populateStats([]);
-    window.currentSearchResults = matches;
+    window.currentSearchResults = [];
     return;
   }
 
@@ -138,6 +138,7 @@ function doSenioritySearch() {
 
   renderResults(matches);
   populateStats(matches);
+  window.currentSearchResults = matches;  // <-- proper assignment here
 }
 
 
