@@ -11,16 +11,22 @@ import pandas as pd
 # LOAD EXCEL FILE
 # ==============================
 def load_seniority_file(path):
-    # Load data using the correct header row (row 4 = index 3)
     df = pd.read_excel(path, sheet_name=0, header=3)
-
-    # Ensure all column headers are strings (avoid float-type headers like 3.0)
     df.columns = [str(col).strip() for col in df.columns]
-
-    # Drop fully empty rows
     df = df.dropna(how="all")
 
+    # Explicit column normalization
+    rename_map = {
+        "First Name": "First Name",
+        "Last Name": "Last Name",
+        "Position": "Position",
+        "Status": "Status",
+        "Limited Seniority Years": "Years"
+    }
+
+    df = df.rename(columns={k: v for k, v in rename_map.items() if k in df.columns})
     return df
+
 
 
 # ==============================
