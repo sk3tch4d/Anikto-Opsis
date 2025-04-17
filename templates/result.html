@@ -13,6 +13,7 @@
   </h1>
   <div id="panel-wrapper"> 
     {% set shift_icons = {'Day': '☀️', 'Evening': '🌇', 'Night': '🌙'} %}
+    {% set reason_icons = {'Shift Swap': '🔄', 'Sick Leave': '🩼', 'Vacant': '🪪', 'Vacation': '🌴', 'Stat Holiday': '⭐', 'Leave of Absence': '🪁', 'Other': '❔'} %}
     <button id="mobile-focus-reset" style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;" tabindex="-1" aria-hidden="true"></button>
 
     <!-- ======== PANEL CONTAINER ======== -->
@@ -46,7 +47,7 @@
             <ul>
               {% for swap in stats.swaps %}
                 <li style="margin-bottom: 1em;">
-                  {{ shift_icons.get(swap.type, '❔') }}  <strong><em>{{ swap.reason }}</em> ({{ swap.shift|replace("d","") }})</strong><br>
+                  {{ shift_icons.get(swap.type, '❔') }}  <strong>{{ reason_icons.get(swap.reason, '❔') }} <em>{{ swap.reason }}</em> ({{ swap.shift|replace("d","") }})</strong><br>
                   {{ swap.start }} – {{ swap.end }}<br>
                   {{ swap.org_employee }} → {{ swap.cov_employee }}<br>
                   {{ swap.date }}
