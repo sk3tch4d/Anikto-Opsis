@@ -120,6 +120,7 @@ function doSenioritySearch() {
   if (!query) {
     renderResults([]);
     populateStats([]);
+    window.currentSearchResults = matches;
     return;
   }
 
