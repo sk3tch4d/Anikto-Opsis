@@ -107,8 +107,19 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function handleComparison() {
-  const input1 = normalize(document.getElementById("compare-input-1").value.trim());
-  const input2 = normalize(document.getElementById("compare-input-2").value.trim());
+  const isMob = isMobile();
+  const input1 = normalize(
+    (isMob
+      ? document.getElementById("compare-select-1").value
+      : document.getElementById("compare-input-1").value
+    ).trim()
+  );
+  const input2 = normalize(
+    (isMob
+      ? document.getElementById("compare-select-2").value
+      : document.getElementById("compare-input-2").value
+    ).trim()
+  );
   const resultsDiv = document.getElementById("compare-results");
   const data = window.seniorityData || [];
 
@@ -254,4 +265,36 @@ function renderResults(matches) {
   html += "</ul>";
   resultsDiv.innerHTML = html;
   resultsDiv.scrollTop = 0;
+}
+
+
+
+// ==============================
+// FIX MOBILE DROP LIST
+// ==============================
+function isMobile() {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+function populateMobileSelects(data) {
+  const select1 = document.getElementById("compare-select-1");
+  const select2 = document.getElementById("compare-select-2");
+  const input1 = document.getElementById("compare-input-1");
+  const input2 = document.getElementById("compare-input-2");
+
+  if (!isMobile()) return;
+
+  // Hide inputs, show selects
+  input1.style.display = "none";
+  input2.style.display = "none";
+  select1.style.display = "block";
+  select2.style.display = "block";
+
+  const options = data.map(row => {
+    const name = `${row["First Name"]} ${row["Last Name"]}`;
+    return `<option value="${name}">${name}</option>`;
+  });
+
+  select1.innerHTML = `<option value="">Select first person</option>` + options.join("");
+  select2.innerHTML = `<option value="">Select second person</option>` + options.join("");
 }
