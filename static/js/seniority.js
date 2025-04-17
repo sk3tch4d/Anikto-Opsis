@@ -2,30 +2,37 @@
 // SENIORITY.JS — Client-side Lookup Tool
 // ==============================
 
+// ==============================
+// INIT LOGIC
+// ==============================
 export function initSenioritySearch() {
   const input = document.getElementById("seniority-search");
   const button = document.getElementById("seniority-search-button");
-
   if (!input || !button) return;
 
+  // Hide search button by default
   button.style.display = "none";
 
+  // Show on focus
   input.addEventListener("focus", () => {
     button.style.display = "block";
-    input.value = ""; // Auto-clear
+    input.value = "";
   });
 
+  // Hide on blur
   input.addEventListener("blur", () => {
     setTimeout(() => {
       button.style.display = "none";
     }, 100);
   });
 
+  // Button click
   button.addEventListener("click", () => {
     doSenioritySearch();
     input.blur();
   });
 
+  // Enter key press
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -34,15 +41,15 @@ export function initSenioritySearch() {
     }
   });
 
+  // Default filter and global stats
   input.value = "Supply Assistant";
   doSenioritySearch();
-
   populateGlobalStats();
 }
 
 
 // ==============================
-// NORMALIZATION
+// NORMALIZATION HELPERS
 // ==============================
 function normalize(str) {
   return String(str || "")
@@ -52,39 +59,53 @@ function normalize(str) {
     .trim();
 }
 
+function isMobile() {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
 
 // ==============================
-// OPEN PANEL BY ID
+// PANEL TOGGLING
 // ==============================
 function openPanelById(panelId) {
   const panel = document.getElementById(panelId);
   const header = panel?.querySelector(".panel-header");
   if (panel && header && !panel.classList.contains("open")) {
-    header.click(); // triggers togglePanel
+    header.click();
   }
 }
 
 
 // ==============================
-// SEARCH FROM STATS
+// SEARCH FROM GLOBAL STATS
 // ==============================
-function searchFromStat(keyword) {
+function searchFromStat(query) {
   const input = document.getElementById("seniority-search");
-  const button = document.getElementById("seniority-search-button");
-  if (!input || !button) return;
+  const data = window.seniorityData || [];
+  let matches = [];
 
-  input.value = keyword;
+  // Handle special format: Years>=30
+  if (query.startsWith("Years>=")) {
+    const threshold = parseFloat(query.split(">=")[1]);
+    matches = data.filter(row => parseFloat(row["Years"] || 0) >= threshold);
+    input.value = `${threshold}+`;
+  } else {
+    matches = data.filter(row =>
+      Object.values(row).some(val =>
+        normalize(val).includes(normalize(query))
+      )
+    );
+    input.value = query;
+  }
+
+  renderResults(matches);
+  populateStats(matches);
   openPanelById("search-panel");
-
-  // Slight delay to ensure the panel opens before search
-  setTimeout(() => {
-    button.click();
-  }, 200);
 }
 
 
 // ==============================
-// SEARCH
+// MAIN SEARCH FUNCTION
 // ==============================
 function doSenioritySearch() {
   const input = document.getElementById("seniority-search");
@@ -99,13 +120,9 @@ function doSenioritySearch() {
   }
 
   let matches;
-
-  // Handle numeric filtering (e.g., 30+ years)
   if (!isNaN(queryRaw)) {
     const minYears = parseFloat(queryRaw);
-    matches = data.filter(row =>
-      parseFloat(row["Years"] || 0) >= minYears
-    );
+    matches = data.filter(row => parseFloat(row["Years"] || 0) >= minYears);
   } else {
     matches = data.filter(row =>
       Object.values(row).some(val =>
@@ -116,20 +133,6 @@ function doSenioritySearch() {
 
   renderResults(matches);
   populateStats(matches);
-}
-
-
-// ==============================
-// TRIGGER SEARCH
-// ==============================
-function triggerSearch(query) {
-  const input = document.getElementById("seniority-search");
-  const searchPanel = document.getElementById("search-panel");
-  if (!input) return;
-
-  input.value = query;
-  openPanelById("search-panel"); // custom helper
-  doSenioritySearch();
 }
 
 
@@ -157,7 +160,6 @@ function handleComparison() {
   const match1 = data.find(row =>
     normalize(`${row["First Name"]} ${row["Last Name"]}`).includes(input1)
   );
-
   const match2 = data.find(row =>
     normalize(`${row["First Name"]} ${row["Last Name"]}`).includes(input2)
   );
@@ -199,20 +201,71 @@ function handleComparison() {
       ${renderListItem(match2)}
     </ul>
     <ul style="list-style: none; padding-left: 0; margin-top: 1.5rem;">
-      <li>
-        <p style="text-align: left"><strong>Years:</strong> ${deltaYears.toFixed(2)}</p>
-        <p style="text-align: left"><strong>Months:</strong> ${totalMonths.toFixed(1)}</p>
-        <p style="text-align: left"><strong>Weeks:</strong> ${totalWeeks.toFixed(1)}</p>
-        <p style="text-align: left"><strong>Days:</strong> ${totalDays.toFixed(0)}</p>
-        <p style="text-align: left"><strong>Hours:</strong> ${totalHours.toFixed(0)}</p>
-      </li>
+      <li><p><strong>Years:</strong> ${deltaYears.toFixed(2)}</p></li>
+      <li><p><strong>Months:</strong> ${totalMonths.toFixed(1)}</p></li>
+      <li><p><strong>Weeks:</strong> ${totalWeeks.toFixed(1)}</p></li>
+      <li><p><strong>Days:</strong> ${totalDays.toFixed(0)}</p></li>
+      <li><p><strong>Hours:</strong> ${totalHours.toFixed(0)}</p></li>
     </ul>
   `;
 }
 
 
 // ==============================
-// SEARCH STATS
+// GLOBAL STATS (ALL ENTRIES)
+// ==============================
+function populateGlobalStats() {
+  const statsDiv = document.getElementById("seniority-stats-global");
+  const data = window.seniorityData || [];
+  if (!statsDiv || !data.length) return;
+
+  let total = 0;
+  let totalYears = 0;
+  let fullTime = 0;
+  let partTime = 0;
+  let tenPlus = 0, twentyPlus = 0, thirtyPlus = 0, fortyPlus = 0;
+  const departments = new Set();
+
+  data.forEach(row => {
+    const position = row["Position"] || "";
+    const status = (row["Status"] || "").toLowerCase();
+    const years = parseFloat(row["Years"] || 0);
+
+    const dept = position.split("-")[0].trim();
+    if (dept) departments.add(dept);
+
+    if (status.includes("full")) fullTime++;
+    if (status.includes("part")) partTime++;
+
+    total++;
+    totalYears += years;
+    if (years >= 10) tenPlus++;
+    if (years >= 20) twentyPlus++;
+    if (years >= 30) thirtyPlus++;
+    if (years >= 40) fortyPlus++;
+  });
+
+  const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
+
+  statsDiv.innerHTML = `
+    <ul style="list-style: none; padding-left: 0;">
+      <li><p><strong>Total Departments:</strong> ${departments.size}</p></li>
+      <li><p><strong>Total Employees:</strong> ${total}</p></li>
+      <li><p class="clickable-stat" onclick="searchFromStat('Full-Time')"><strong>Total Full-Time:</strong> ${fullTime}</p></li>
+      <li><p class="clickable-stat" onclick="searchFromStat('Part-Time')"><strong>Total Part-Time:</strong> ${partTime}</p></li>
+      <li><p class="clickable-stat" onclick="searchFromStat('Years>=10')"><strong>10+ Years:</strong> ${tenPlus}</p></li>
+      <li><p class="clickable-stat" onclick="searchFromStat('Years>=20')"><strong>20+ Years:</strong> ${twentyPlus}</p></li>
+      <li><p class="clickable-stat" onclick="searchFromStat('Years>=30')"><strong>30+ Years:</strong> ${thirtyPlus}</p></li>
+      <li><p class="clickable-stat" onclick="searchFromStat('Years>=40')"><strong>40+ Years:</strong> ${fortyPlus}</p></li>
+      <li><p><strong>Average Years:</strong> ${avgYears}</p></li>
+      <li><p><strong>Total Combined:</strong> ${totalYears}</p></li>
+    </ul>
+  `;
+}
+
+
+// ==============================
+// FILTERED SEARCH STATS
 // ==============================
 function populateStats(data) {
   const statsDiv = document.getElementById("seniority-stats");
@@ -259,61 +312,7 @@ function populateStats(data) {
 
 
 // ==============================
-// GLOBAL STATS
-// =============================
-function populateGlobalStats() {
-  const statsDiv = document.getElementById("seniority-stats-global");
-  const data = window.seniorityData || [];
-  if (!statsDiv || !data.length) return;
-
-  let total = 0;
-  let totalYears = 0;
-  let fullTime = 0;
-  let partTime = 0;
-  let tenPlus = 0, twentyPlus = 0, thirtyPlus = 0, fortyPlus = 0;
-  const departments = new Set();
-
-  data.forEach(row => {
-    const position = row["Position"] || "";
-    const status = (row["Status"] || "").toLowerCase();
-    const years = parseFloat(row["Years"] || 0);
-    /*const on_hold = parsString(row["Position"] || "HOLD");*/
-
-    const dept = position.split("-")[0].trim();
-    if (dept) departments.add(dept);
-
-    if (status.includes("full")) fullTime++;
-    if (status.includes("part")) partTime++;
-
-    total++;
-    totalYears += years;
-    if (years >= 10) tenPlus++;
-    if (years >= 20) twentyPlus++;
-    if (years >= 30) thirtyPlus++;
-    if (years >= 40) fortyPlus++;
-  });
-
-  const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
-
-  statsDiv.innerHTML = `
-    <ul style="list-style: none; padding-left: 0;">
-      <li><p style="text-align: center"><strong>Total Departments:</strong> ${departments.size}</p></li>
-      <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
-      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('Full-Time')"><strong>Total Full-Time:</strong> ${fullTime}</p></li>
-      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('Part-Time')"><strong>Total Part-Time:</strong> ${partTime}</p></li>
-      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('10+')"><strong>Employees with 10+ Years:</strong> ${tenPlus}</p></li>
-      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('20+')"><strong>Employees with 20+ Years:</strong> ${twentyPlus}</p></li>
-      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('30+')"><strong>Employees with 30+ Years:</strong> ${thirtyPlus}</p></li>
-      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('40')"><strong>Employees with 40+ Years:</strong> ${fortyPlus}</p></li>
-      <li><p style="text-align: center"><strong>Average Years:</strong> ${avgYears}</p></li>
-      <li><p style="text-align: center"><strong>Total Combined Years:</strong> ${totalYears}</p></li>
-    </ul>
-  `;
-}
-
-
-// ==============================
-// RENDER RESULTS
+// RESULTS RENDERER
 // ==============================
 function renderResults(matches) {
   const resultsDiv = document.getElementById("seniority-results");
@@ -337,7 +336,7 @@ function renderResults(matches) {
     html += `${emoji} ${status}<br>`;
     html += `<em>${position}</em><br>`;
     html += `${years.toFixed(2)} Years`;
-    html += "</li>";
+    html += "</li>`;
   });
 
   html += "</ul>";
@@ -347,7 +346,7 @@ function renderResults(matches) {
 
 
 // ==============================
-// STATUS ICON LOGIC
+// EMOJI STATUS HELPER
 // ==============================
 function getSeniorityEmoji(status, position) {
   if ((position || "").toUpperCase().includes("HOLD")) return "🔴";
@@ -358,7 +357,7 @@ function getSeniorityEmoji(status, position) {
 
 
 // ==============================
-// DATALIST COMPATIBILITY FIX (Mobile)
+// DATALIST FIX (Mobile Compatibility)
 // ==============================
 window.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
