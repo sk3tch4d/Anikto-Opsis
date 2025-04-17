@@ -7,6 +7,12 @@ import json
 with open("static/emp_all.json", "r") as f:
     EMP_ALL = json.load(f)
 
+def normalize_name(name):
+    parts = [p.strip() for p in name.split(",")]
+    if len(parts) == 2:
+        return f"{parts[1]} {parts[0]}"
+    return name.strip()
+    
 def clean_reason_text(reason_raw):
     r = reason_raw.lower()
     if "swap" in r:
@@ -108,8 +114,8 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
             day_type = scheduled_row["DayType"].values[0]
 
             all_swaps.append({
-                "org_employee": org_name,
-                "cov_employee": coverer,
+                "org_employee": normalize_name(org_name),
+                "cov_employee": normalize_name(coverer),
                 "start": start,
                 "end": end,
                 "date": str(file_date),
@@ -141,7 +147,7 @@ def parse_exceptions_section(text, schedule_df, file_name, file_date):
             used_coverers.add(name)
             all_swaps.append({
                 "org_employee": "Vacant",
-                "cov_employee": name,
+                "cov_employee": normalize_name(name),
                 "start": start,
                 "end": end,
                 "date": str(file_date),
