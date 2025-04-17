@@ -180,6 +180,19 @@ body.lock-scroll {
 
 
 /* ============================= */
+/* CLICKABLE-STATS               */
+/* ============================= */
+.panel-body .clickable-stat {
+  color: #7289da !important;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.panel-body .clickable-stat:hover {
+  color: #a3b3f0 !important;
+}
+
+
+/* ============================= */
 /* ANIMATION: PANEL SLIDE-IN     */
 /* ============================= */
 .panel-animate {
