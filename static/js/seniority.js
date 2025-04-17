@@ -324,11 +324,26 @@ function populatePositionList() {
   const data = window.seniorityData || [];
   if (!container || !data.length) return;
 
+  const abbreviations = {
+    "RPN": "Reg. Practical Nurse",
+    "PCA": "Patient Care Assistant",
+    "EA": "Environmental Assistant",
+    // Add more as needed
+  };
+
   const positionMap = {};
 
   data.forEach(row => {
     const raw = row["Position"] || "";
-    const base = raw.split("-")[0].replace(/\b(PT|FT|CAS)\b/gi, "").trim();
+    let base = raw.split("-")[0]
+      .replace(/\b(PT|FT|CAS)\b/gi, "") // Remove trailing employment type
+      .trim();
+
+    // Standardize abbreviations
+    if (abbreviations[base.toUpperCase()]) {
+      base = abbreviations[base.toUpperCase()];
+    }
+
     if (!base) return;
     if (!positionMap[base]) positionMap[base] = 0;
     positionMap[base]++;
