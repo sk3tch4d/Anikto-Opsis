@@ -36,7 +36,6 @@ export function initSenioritySearch() {
 
   input.value = "Supply Assistant";
   doSenioritySearch();
-  populateMobileSelects(window.seniorityData || []);
 }
 
 
@@ -51,8 +50,15 @@ function normalize(str) {
     .trim();
 }
 
-function isMobile() {
-  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+// ==============================
+// STATUS ICON LOGIC
+// ==============================
+function getSeniorityEmoji(status, position) {
+  if ((position || "").toUpperCase().includes("HOLD")) return "🔴";
+  if ((status || "").toLowerCase().includes("full")) return "🟢";
+  if ((status || "").toLowerCase().includes("part")) return "🟡";
+  return "⚪";
 }
 
 
@@ -92,19 +98,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function handleComparison() {
-  const isMob = isMobile();
-  const input1 = normalize(
-    (isMob
-      ? document.getElementById("compare-select-1").value
-      : document.getElementById("compare-input-1").value
-    ).trim()
-  );
-  const input2 = normalize(
-    (isMob
-      ? document.getElementById("compare-select-2").value
-      : document.getElementById("compare-input-2").value
-    ).trim()
-  );
+  const input1 = normalize(document.getElementById("compare-input-1").value.trim());
+  const input2 = normalize(document.getElementById("compare-input-2").value.trim());
   const resultsDiv = document.getElementById("compare-results");
   const data = window.seniorityData || [];
 
@@ -248,42 +243,4 @@ function renderResults(matches) {
   html += "</ul>";
   resultsDiv.innerHTML = html;
   resultsDiv.scrollTop = 0;
-}
-
-
-// ==============================
-// MOBILE SELECT DROPDOWNS
-// ==============================
-function populateMobileSelects(data) {
-  const select1 = document.getElementById("compare-select-1");
-  const select2 = document.getElementById("compare-select-2");
-  const input1 = document.getElementById("compare-input-1");
-  const input2 = document.getElementById("compare-input-2");
-
-  if (!select1 || !select2 || !input1 || !input2) return;
-  if (!isMobile()) return;
-
-  input1.style.display = "none";
-  input2.style.display = "none";
-  select1.style.display = "block";
-  select2.style.display = "block";
-
-  const options = data.map(row => {
-    const name = `${row["First Name"] || ""} ${row["Last Name"] || ""}`.trim();
-    return `<option value="${name}">${name}</option>`;
-  });
-
-  select1.innerHTML = `<option value="">Select first person</option>` + options.join("");
-  select2.innerHTML = `<option value="">Select second person</option>` + options.join("");
-}
-
-
-// ==============================
-// STATUS ICON LOGIC
-// ==============================
-function getSeniorityEmoji(status, position) {
-  if ((position || "").toUpperCase().includes("HOLD")) return "🔴";
-  if ((status || "").toLowerCase().includes("full")) return "🟢";
-  if ((status || "").toLowerCase().includes("part")) return "🟡";
-  return "⚪";
 }
