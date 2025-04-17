@@ -336,7 +336,7 @@ function renderResults(matches) {
     html += `${emoji} ${status}<br>`;
     html += `<em>${position}</em><br>`;
     html += `${years.toFixed(2)} Years`;
-    html += "</li>`;
+    html += "</li>";
   });
 
   html += "</ul>";
