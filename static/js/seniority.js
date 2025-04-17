@@ -69,6 +69,7 @@ function getSeniorityEmoji(status, position) {
 }
 
 
+
 // ==============================
 // SEARCH FUNCTIONALITY
 // ==============================
@@ -134,7 +135,7 @@ function handleComparison() {
     const last = row["Last Name"] || "";
     const position = row["Position"] || "";
     const status = row["Status"] || "";
-    const years = parseFloat(row["Limited Seniority Years"] || 0);
+    const years = parseFloat(row["Years"] || 0);
     const emoji = getSeniorityEmoji(status, position);
 
     return `
@@ -147,8 +148,8 @@ function handleComparison() {
     `;
   };
 
-  const y1 = parseFloat(match1["Limited Seniority Years"] || 0);
-  const y2 = parseFloat(match2["Limited Seniority Years"] || 0);
+  const y1 = parseFloat(match1["Years"] || 0);
+  const y2 = parseFloat(match2["Years"] || 0);
   const deltaYears = Math.abs(y1 - y2);
   const totalHours = deltaYears * 365.25 * 24;
   const totalDays = deltaYears * 365.25;
@@ -191,7 +192,7 @@ function populateStats(data) {
 
   data.forEach(row => {
     const status = (row["Status"] || "").toLowerCase();
-    const years = parseFloat(row["Limited Seniority Years"] || 0);
+    const years = parseFloat(row["Years"] || 0);
     const name = `${row["First Name"] || ""} ${row["Last Name"] || ""}`.trim();
 
     if (status.includes("full")) fullTime++;
@@ -238,15 +239,16 @@ function renderResults(matches) {
     const last = row["Last Name"] || "";
     const position = row["Position"] || "";
     const status = row["Status"] || "";
-    const years = parseFloat(row["Limited Seniority Years"] || 0);
+    const years = parseFloat(row["Years"] || 0);
     const emoji = getSeniorityEmoji(status, position);
+
 
     html += "<li style='margin-bottom: 1.5em;'>";
     html += `<strong>${first} ${last}</strong><br>`;
     html += `${emoji} ${status}<br>`;
     html += `<em>${position}</em><br>`;
     html += `${years.toFixed(2)} Years`;
-    html += "</li>`;
+    html += "</li>";
   });
 
   html += "</ul>";
