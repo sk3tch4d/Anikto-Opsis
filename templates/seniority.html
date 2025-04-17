@@ -44,46 +44,46 @@
       </div>
 
       
-<!-- ============================= -->
-<!-- PANEL: COMPARE -->
-<!-- ============================= -->
-<div class="panel panel-animate" id="compare-panel">
-  <div class="panel-header" onclick="togglePanel(this)">Compare</div>
-  <div class="panel-body">
-
-    <!-- Desktop input -->
-    <input id="compare-input-1" list="name-options" class="input full-width" placeholder="Select first person..." autocomplete="on" />
-
-    <!-- Mobile fallback -->
-    <select id="compare-select-1" class="input full-width" style="margin-top: 0.5rem;">
-      <option disabled selected>Select first person...</option>
-      {% for row in table %}
-        <option value="{{ row['First Name'] }} {{ row['Last Name'] }}">
-      {% endfor %}
-    </select>
-
-    <!-- Desktop input -->
-    <input id="compare-input-2" list="name-options" class="input full-width" placeholder="Select second person..." style="margin-top: 0.5rem;" autocomplete="on" />
-
-    <!-- Mobile fallback -->
-    <select id="compare-select-2" class="input full-width" style="margin-top: 0.5rem;">
-      <option disabled selected>Select second person...</option>
-      {% for row in table %}
-        <option value="{{ row['First Name'] }} {{ row['Last Name'] }}">
-      {% endfor %}
-    </select>
-
-    <button id="compare-button" class="button full-width" style="margin-top: 0.5rem;">Compare</button>
-    <div id="compare-results" style="margin-top: 1rem;"></div>
-  </div>
-</div>
-
-<!-- Datalist for desktop autocomplete -->
-<datalist id="name-options">
-  {% for row in table %}
-    <option value="{{ row['First Name'] }} {{ row['Last Name'] }}">
-  {% endfor %}
-</datalist>
+      <!-- ============================= -->
+      <!-- PANEL: COMPARE -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="compare-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Compare</div>
+        <div class="panel-body">
+      
+          <!-- Desktop input -->
+          <input id="compare-input-1" list="name-options" class="input full-width" placeholder="Select first person..." autocomplete="on" />
+      
+          <!-- Mobile fallback -->
+          <select id="compare-select-1" class="input full-width" style="margin-top: 0.5rem;">
+            <option disabled selected>Select first person...</option>
+            {% for row in table %}
+              <option value="{{ row['First Name'] }} {{ row['Last Name'] }}">
+            {% endfor %}
+          </select>
+      
+          <!-- Desktop input -->
+          <input id="compare-input-2" list="name-options" class="input full-width" placeholder="Select second person..." style="margin-top: 0.5rem;" autocomplete="on" />
+      
+          <!-- Mobile fallback -->
+          <select id="compare-select-2" class="input full-width" style="margin-top: 0.5rem;">
+            <option disabled selected>Select second person...</option>
+            {% for row in table %}
+              <option value="{{ row['First Name'] }} {{ row['Last Name'] }}">
+            {% endfor %}
+          </select>
+      
+          <button id="compare-button" class="button full-width" style="margin-top: 0.5rem;">Compare</button>
+          <div id="compare-results" style="margin-top: 1rem;"></div>
+        </div>
+      </div>
+      
+      <!-- Datalist for desktop autocomplete -->
+      <datalist id="name-options">
+        {% for row in table %}
+          <option value="{{ row['First Name'] }} {{ row['Last Name'] }}">
+        {% endfor %}
+      </datalist>
 
       
       <!-- ============================= -->
