@@ -358,6 +358,34 @@ function populatePositionList() {
 
 
 // ==============================
+// DOWNLOAD SEARCH
+// ==============================
+function downloadSearch() {
+  const results = window.currentSearchResults || [];
+  if (!results.length) {
+    alert("No search results to download.");
+    return;
+  }
+
+  // Prepare data and headers
+  const headers = ["First Name", "Last Name", "Status", "Position", "Years"];
+  const rows = results.map(row => ({
+    "First Name": row["First Name"] || "",
+    "Last Name": row["Last Name"] || "",
+    "Status": row["Status"] || "",
+    "Position": row["Position"] || "",
+    "Years": row["Years"] || ""
+  }));
+
+  // Convert to sheet and trigger download
+  const worksheet = XLSX.utils.json_to_sheet(rows, { header: headers });
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
+  XLSX.writeFile(workbook, "Search_Results.xlsx");
+}
+
+
+// ==============================
 // RESULTS RENDERER
 // ==============================
 function renderResults(matches) {
