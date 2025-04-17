@@ -52,17 +52,6 @@ function normalize(str) {
 
 
 // ==============================
-// STATUS ICON LOGIC
-// ==============================
-function getSeniorityEmoji(status, position) {
-  if ((position || "").toUpperCase().includes("HOLD")) return "🔴";
-  if ((status || "").toLowerCase().includes("full")) return "🟢";
-  if ((status || "").toLowerCase().includes("part")) return "🟡";
-  return "⚪";
-}
-
-
-// ==============================
 // SEARCH
 // ==============================
 function doSenioritySearch() {
@@ -244,3 +233,30 @@ function renderResults(matches) {
   resultsDiv.innerHTML = html;
   resultsDiv.scrollTop = 0;
 }
+
+
+// ==============================
+// STATUS ICON LOGIC
+// ==============================
+function getSeniorityEmoji(status, position) {
+  if ((position || "").toUpperCase().includes("HOLD")) return "🔴";
+  if ((status || "").toLowerCase().includes("full")) return "🟢";
+  if ((status || "").toLowerCase().includes("part")) return "🟡";
+  return "⚪";
+}
+
+
+// ==============================
+// DATALIST COMPATIBILITY FIX (Mobile)
+// ==============================
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    const datalist = document.getElementById("name-options");
+    if (datalist && datalist.options.length === 0 && window.seniorityData) {
+      datalist.innerHTML = window.seniorityData.map(row => {
+        const name = `${row["First Name"]} ${row["Last Name"]}`;
+        return `<option value="${name}">`;
+      }).join("");
+    }
+  }, 300);
+});
