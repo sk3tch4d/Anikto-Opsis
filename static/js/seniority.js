@@ -44,7 +44,11 @@ export function initSenioritySearch() {
   // Default filter and global stats
   input.value = "Supply Assistant";
   doSenioritySearch();
+
+  // Global Stats
   populateGlobalStats();
+  // Positions
+  populatePositionList();
 }
 
 
