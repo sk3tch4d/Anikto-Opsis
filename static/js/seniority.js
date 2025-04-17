@@ -357,7 +357,7 @@ function getSeniorityEmoji(status, position) {
 
 
 // ==============================
-// DATALIST FIX (Mobile Compatibility)
+// DATALIST FIX (Mobile)
 // ==============================
 window.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
@@ -370,3 +370,10 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }, 300);
 });
+
+
+
+// ==============================
+// GLOBAL EXPORTS FOR INLINE CALLS
+// ==============================
+window.searchFromStat = searchFromStat;
