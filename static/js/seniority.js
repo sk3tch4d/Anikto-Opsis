@@ -313,6 +313,50 @@ function populateStats(data) {
 
 
 // ==============================
+// POSITIONS PANEL
+// ==============================
+function populatePositionList() {
+  const input = document.getElementById("position-search");
+  const listDiv = document.getElementById("position-list");
+  const data = window.seniorityData || [];
+  if (!input || !listDiv || !data.length) return;
+
+  const positionMap = new Map();
+
+  data.forEach(row => {
+    const raw = row["Position"] || "";
+    const clean = raw.split("-")[0].trim();
+    if (!positionMap.has(clean)) positionMap.set(clean, 0);
+    positionMap.set(clean, positionMap.get(clean) + 1);
+  });
+
+  const allPositions = Array.from(positionMap.entries())
+    .sort((a, b) => b[1] - a[1]); // Sort by count desc
+
+  // Render
+  const renderList = (positions) => {
+    listDiv.innerHTML = positions.map(([pos, count]) => `
+      <p class="clickable-stat" style="text-align: center;" onclick="searchFromStat('${pos}')">
+        <strong>${pos}:</strong> ${count}
+      </p>
+    `).join("");
+  };
+
+  // Initial render
+  renderList(allPositions);
+
+  // Filter on input
+  input.addEventListener("input", () => {
+    const q = normalize(input.value);
+    const filtered = allPositions.filter(([pos]) =>
+      normalize(pos).includes(q)
+    );
+    renderList(filtered);
+  });
+}
+
+
+// ==============================
 // RESULTS RENDERER
 // ==============================
 function renderResults(matches) {
