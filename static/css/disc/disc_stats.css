@@ -1,0 +1,9 @@
+.clickable-stat {
+  color: #7289da;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.clickable-stat:hover {
+  color: #a3b3f0;
+}
