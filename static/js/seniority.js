@@ -66,6 +66,24 @@ function openPanelById(panelId) {
 
 
 // ==============================
+// SEARCH FROM STATS
+// ==============================
+function searchFromStat(keyword) {
+  const input = document.getElementById("seniority-search");
+  const button = document.getElementById("seniority-search-button");
+  if (!input || !button) return;
+
+  input.value = keyword;
+  openPanelById("search-panel");
+
+  // Slight delay to ensure the panel opens before search
+  setTimeout(() => {
+    button.click();
+  }, 200);
+}
+
+
+// ==============================
 // SEARCH
 // ==============================
 function doSenioritySearch() {
