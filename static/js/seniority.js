@@ -88,7 +88,8 @@ function searchFromStat(keyword) {
 // ==============================
 function doSenioritySearch() {
   const input = document.getElementById("seniority-search");
-  const query = normalize(input.value.trim());
+  const queryRaw = input.value.trim();
+  const query = normalize(queryRaw);
   const data = window.seniorityData || [];
 
   if (!query) {
@@ -97,11 +98,21 @@ function doSenioritySearch() {
     return;
   }
 
-  const matches = data.filter(row =>
-    Object.values(row).some(val =>
-      normalize(val).includes(query)
-    )
-  );
+  let matches;
+
+  // Handle numeric filtering (e.g., 30+ years)
+  if (!isNaN(queryRaw)) {
+    const minYears = parseFloat(queryRaw);
+    matches = data.filter(row =>
+      parseFloat(row["Years"] || 0) >= minYears
+    );
+  } else {
+    matches = data.filter(row =>
+      Object.values(row).some(val =>
+        normalize(val).includes(query)
+      )
+    );
+  }
 
   renderResults(matches);
   populateStats(matches);
