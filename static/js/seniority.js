@@ -8,14 +8,11 @@ export function initSenioritySearch() {
 
   if (!input || !button) return;
 
-  // ==============================
-  // UI: Button visibility logic
-  // ==============================
   button.style.display = "none";
 
   input.addEventListener("focus", () => {
     button.style.display = "block";
-    input.value = "";  // Auto-clear
+    input.value = ""; // Auto-clear
   });
 
   input.addEventListener("blur", () => {
@@ -37,17 +34,14 @@ export function initSenioritySearch() {
     }
   });
 
-  // ==============================
-  // Auto-filter on load with predefined string
-  // ==============================
-  const defaultFilter = "Supply Assistant";
-  input.value = defaultFilter;
+  input.value = "Supply Assistant";
   doSenioritySearch();
+  populateMobileSelects(window.seniorityData || []);
 }
 
 
 // ==============================
-// NORMALIZATION HELPER
+// NORMALIZATION
 // ==============================
 function normalize(str) {
   return String(str || "")
@@ -57,26 +51,17 @@ function normalize(str) {
     .trim();
 }
 
-
-// ==============================
-// STATUS ICON HELPER
-// ==============================
-function getSeniorityEmoji(status, position) {
-  if ((position || "").toUpperCase().includes("HOLD")) return "🔴";
-  if ((status || "").toLowerCase().includes("full")) return "🟢";
-  if ((status || "").toLowerCase().includes("part")) return "🟡";
-  return "⚪";
+function isMobile() {
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
 
-
 // ==============================
-// SEARCH FUNCTIONALITY
+// SEARCH
 // ==============================
 function doSenioritySearch() {
   const input = document.getElementById("seniority-search");
   const query = normalize(input.value.trim());
-
   const data = window.seniorityData || [];
 
   if (!query) {
@@ -186,7 +171,7 @@ function handleComparison() {
 
 
 // ==============================
-// STATS PANEL POPULATION
+// STATS
 // ==============================
 function populateStats(data) {
   const statsDiv = document.getElementById("seniority-stats");
@@ -237,7 +222,6 @@ function populateStats(data) {
 // ==============================
 function renderResults(matches) {
   const resultsDiv = document.getElementById("seniority-results");
-
   if (!matches || matches.length === 0) {
     resultsDiv.innerHTML = "<p>No matching entries found.</p>";
     return;
@@ -253,7 +237,6 @@ function renderResults(matches) {
     const years = parseFloat(row["Years"] || 0);
     const emoji = getSeniorityEmoji(status, position);
 
-
     html += "<li style='margin-bottom: 1.5em;'>";
     html += `<strong>${first} ${last}</strong><br>`;
     html += `${emoji} ${status}<br>`;
@@ -268,33 +251,39 @@ function renderResults(matches) {
 }
 
 
-
 // ==============================
-// FIX MOBILE DROP LIST
+// MOBILE SELECT DROPDOWNS
 // ==============================
-function isMobile() {
-  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-}
-
 function populateMobileSelects(data) {
   const select1 = document.getElementById("compare-select-1");
   const select2 = document.getElementById("compare-select-2");
   const input1 = document.getElementById("compare-input-1");
   const input2 = document.getElementById("compare-input-2");
 
+  if (!select1 || !select2 || !input1 || !input2) return;
   if (!isMobile()) return;
 
-  // Hide inputs, show selects
   input1.style.display = "none";
   input2.style.display = "none";
   select1.style.display = "block";
   select2.style.display = "block";
 
   const options = data.map(row => {
-    const name = `${row["First Name"]} ${row["Last Name"]}`;
+    const name = `${row["First Name"] || ""} ${row["Last Name"] || ""}`.trim();
     return `<option value="${name}">${name}</option>`;
   });
 
   select1.innerHTML = `<option value="">Select first person</option>` + options.join("");
   select2.innerHTML = `<option value="">Select second person</option>` + options.join("");
+}
+
+
+// ==============================
+// STATUS ICON LOGIC
+// ==============================
+function getSeniorityEmoji(status, position) {
+  if ((position || "").toUpperCase().includes("HOLD")) return "🔴";
+  if ((status || "").toLowerCase().includes("full")) return "🟢";
+  if ((status || "").toLowerCase().includes("part")) return "🟡";
+  return "⚪";
 }
