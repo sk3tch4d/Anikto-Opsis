@@ -272,7 +272,6 @@ function populateGlobalStats() {
       <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
       <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('Full-Time')"><strong>Total Full-Time:</strong> ${fullTime}</p></li>
       <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('Part-Time')"><strong>Total Part-Time:</strong> ${partTime}</p></li>
-      <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('HOLD')"><strong>Total On-Hold:</strong> ${on_hold}</p></li>
       <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('10+')"><strong>Employees with 10+ Years:</strong> ${tenPlus}</p></li>
       <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('20+')"><strong>Employees with 20+ Years:</strong> ${twentyPlus}</p></li>
       <li><p style="text-align: center; cursor: pointer;" onclick="triggerSearch('30+')"><strong>Employees with 30+ Years:</strong> ${thirtyPlus}</p></li>
