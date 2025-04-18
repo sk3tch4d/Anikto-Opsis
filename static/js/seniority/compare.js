@@ -9,7 +9,7 @@ import { getSeniorityEmoji } from './emoji.js';
 // ==============================
 // INIT COMPARE HANDLER
 // ==============================
-export function initComparePanel() {
+export function initComparisonPanel() {
   const compareBtn = document.getElementById("compare-button");
   if (compareBtn) {
     compareBtn.addEventListener("click", handleComparison);
