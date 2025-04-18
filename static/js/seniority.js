@@ -379,12 +379,32 @@ function downloadSearch() {
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(rows, { header: headers });
+
+  // Style Header Row
+  headers.forEach((key, idx) => {
+    const cellRef = XLSX.utils.encode_cell({ r: 0, c: idx });
+    if (!worksheet[cellRef]) return;
+    worksheet[cellRef].s = {
+      font: { bold: true }
+    };
+  });
+
+  // Set Column Widths
+  worksheet["!cols"] = [
+    { wch: 16 },  // First Name
+    { wch: 16 },  // Last Name
+    { wch: 14 },  // Status
+    { wch: 35 },  // Position (wider)
+    { wch: 10 }   // Years
+  ];
+
+  // Freeze top row
+  worksheet["!freeze"] = { xSplit: 0, ySplit: 1 };
+
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
   XLSX.writeFile(workbook, "Search_Results.xlsx");
 }
-// Attach to button
-document.getElementById("download-search-button")?.addEventListener("click", downloadSearch);
 
 
 // ==============================
