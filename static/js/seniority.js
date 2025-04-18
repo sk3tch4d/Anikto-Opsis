@@ -380,31 +380,33 @@ function downloadSearch() {
 
   const worksheet = XLSX.utils.json_to_sheet(rows, { header: headers });
 
-  // Style Header Row
-  headers.forEach((key, idx) => {
-    const cellRef = XLSX.utils.encode_cell({ r: 0, c: idx });
-    if (!worksheet[cellRef]) return;
-    worksheet[cellRef].s = {
+  // BOLD HEADER
+  const range = XLSX.utils.decode_range(worksheet['!ref']);
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const cell_address = XLSX.utils.encode_cell({ r: 0, c: C });
+    if (!worksheet[cell_address]) continue;
+    worksheet[cell_address].s = {
       font: { bold: true }
     };
-  });
+  }
+  // FREEZE HEADER ROW
+  worksheet['!freeze'] = { xSplit: 0, ySplit: 1 };
 
-  // Set Column Widths
-  worksheet["!cols"] = [
-    { wch: 16 },  // First Name
-    { wch: 16 },  // Last Name
-    { wch: 14 },  // Status
-    { wch: 35 },  // Position (wider)
-    { wch: 10 }   // Years
+  // COLUMN WIDTHS
+  worksheet['!cols'] = [
+    { wch: 15 },  // First Name
+    { wch: 18 },  // Last Name
+    { wch: 10 },  // Status
+    { wch: 40 },  // Position
+    { wch: 8 }   // Years
   ];
-
-  // Freeze top row
-  worksheet["!freeze"] = { xSplit: 0, ySplit: 1 };
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
   XLSX.writeFile(workbook, "Search_Results.xlsx");
 }
+
+window.downloadSearch = downloadSearch;
 
 
 // ==============================
