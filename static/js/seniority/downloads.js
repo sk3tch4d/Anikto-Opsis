@@ -15,13 +15,13 @@ export function downloadSearch() {
     return;
   }
 
-  const headers = ["Years", "First Name", "Last Name", "Status", "Position"];
+  const headers = ["First Name", "Last Name", "Status", "Position", "Years"];
   const rows = results.map(row => [
-    row["Years"] || "",
     row["First Name"] || "",
     row["Last Name"] || "",
     row["Status"] || "",
-    row["Position"] || ""
+    row["Position"] || "",
+    row["Years"] || ""
   ]);
 
   const worksheet = XLSX.utils.aoa_to_sheet([
@@ -31,11 +31,11 @@ export function downloadSearch() {
   ]);
 
   worksheet['!cols'] = [
-    { wch: 9 },  // Years
-    { wch: 12 }, // First Name
-    { wch: 14 }, // Last Name
-    { wch: 10 }, // Status
-    { wch: 32 }  // Position
+    { wch: 16 }, // First Name
+    { wch: 16 }, // Last Name
+    { wch: 14 }, // Status
+    { wch: 30 }, // Position
+    { wch: 10 }  // Years
   ];
 
   const workbook = XLSX.utils.book_new();
