@@ -1,5 +1,5 @@
 // ==============================
-// STATUS.JS
+// EMOJI.JS
 // Status Icon Assignment Logic
 // ==============================
 
