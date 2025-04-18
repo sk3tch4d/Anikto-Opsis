@@ -1,9 +1,13 @@
 // ==============================
 // POSITIONS.JS
-// Positions Panel Logic
+// Position Breakdown + Searchable List
 // ==============================
 
-window.populatePositionList = function () {
+
+// ==============================
+// POPULATE POSITIONS PANEL
+// ==============================
+export function populatePositionList() {
   const container = document.getElementById("seniority-positions");
   const data = window.seniorityData || [];
   if (!container || !data.length) return;
@@ -12,7 +16,7 @@ window.populatePositionList = function () {
     "RPN": "Reg. Practical Nurse",
     "PCA": "Patient Care Assistant",
     "EA": "Environmental Assistant"
-    // Extend as needed
+    // Add more mappings as needed
   };
 
   const positionMap = {};
@@ -20,7 +24,7 @@ window.populatePositionList = function () {
   data.forEach(row => {
     const raw = row["Position"] || "";
     let base = raw.split("-")[0]
-      .replace(/\b(PT|FT|CAS)\b/gi, "") // Remove trailing job-type
+      .replace(/\b(PT|FT|CASUAL|CAS)\b/gi, "") // Remove employment suffixes
       .trim();
 
     if (abbreviations[base.toUpperCase()]) {
@@ -37,4 +41,4 @@ window.populatePositionList = function () {
   container.innerHTML = sorted.map(([pos, count]) => {
     return `<li><p class="clickable-stat" onclick="searchFromStat('${pos}')"><strong>${pos}:</strong> ${count}</p></li>`;
   }).join("");
-};
+}
