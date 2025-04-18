@@ -3,7 +3,7 @@
 // Core Search + Filter Utilities
 // ==============================
 import { renderResults } from './results.js';
-import { populdateStats } from '/.stats.js';
+import { populdateStats } from './stats.js';
   
 
 // ==============================
