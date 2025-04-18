@@ -18,8 +18,8 @@ import {
   initJsonUploadForm,
   initFileUploadDisplay
 } from './admin.js';
-// ----- Seniority (Lazy)
-import { initSenioritySearch } from './seniority.js';
+// ----- Seniority  -----
+import { initializeSeniorityApp } from './seniority/init.js';
 
 
 // ==============================
@@ -51,6 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector("#file-upload-group")) initFileUploadDisplay();
 
   // ----- Seniority -----
-  if (document.querySelector("#seniority-search")) initSenioritySearch();
+  if (document.querySelector("#seniority-search")) initializeSeniorityApp();
 
-});
+});  
