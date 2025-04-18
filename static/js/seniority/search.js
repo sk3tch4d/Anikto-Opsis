@@ -3,7 +3,8 @@
 // Core Search + Filter Utilities
 // ==============================
 import { renderResults } from './results.js';
-import { populateStats } from './stats.js';
+import { populateStats, populateGlobalStats } from './stats.js';
+import { populatePositionList } from './positions.js';
   
 
 // ==============================
