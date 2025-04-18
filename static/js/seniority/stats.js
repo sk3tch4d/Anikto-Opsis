@@ -1,8 +1,9 @@
 // ==============================
-// STATS
+// STATS.JS
+// Global + Filtered Statistics
 // ==============================
 
-import { normalize } from './search.js';
+import { searchFromStat } from './search.js';
 
 // ==============================
 // GLOBAL STATS (ALL ENTRIES)
