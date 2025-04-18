@@ -359,6 +359,9 @@ function populatePositionList() {
 }
 
 
+// ==============================
+// DOWNLOAD SEARCH - XLSX
+// ==============================
 function downloadSearch() {
   const results = window.currentSearchResults || [];
   if (!results.length) {
@@ -367,33 +370,33 @@ function downloadSearch() {
   }
 
   const headers = ["First Name", "Last Name", "Status", "Position", "Years"];
-  const rows = results.map(row => ({
-    "First Name": row["First Name"] || "",
-    "Last Name": row["Last Name"] || "",
-    "Status": row["Status"] || "",
-    "Position": row["Position"] || "",
-    "Years": row["Years"] || ""
-  }));
+  const rows = results.map(row => [
+    row["First Name"] || "",
+    row["Last Name"] || "",
+    row["Status"] || "",
+    row["Position"] || "",
+    row["Years"] || ""
+  ]);
 
-  const worksheet = XLSX.utils.json_to_sheet(rows, { header: headers });
-  
-  // Add blank row after headers
-  XLSX.utils.sheet_add_aoa(worksheet, [[]], { origin: -1 });
+  const worksheet = XLSX.utils.aoa_to_sheet([
+    headers,
+    [],         // <-- true blank row
+    ...rows
+  ]);
 
-  // Set column widths
   worksheet['!cols'] = [
     { wch: 16 },
-    { wch: 18 },
-    { wch: 10 },
+    { wch: 16 },
+    { wch: 14 },
     { wch: 30 },
-    { wch: 8 }
+    { wch: 10 }
   ];
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
   XLSX.writeFile(workbook, "Search_Results.xlsx");
 }
-// Event Listening for Button
+
 document.getElementById("download-search-button")?.addEventListener("click", downloadSearch);
 
 
