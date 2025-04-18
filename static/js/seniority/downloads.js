@@ -28,28 +28,27 @@ export function downloadSearch() {
   }
 
   const headers = ["Years", "First Name", "Last Name", "Status", "Position"];
-  const rows = results.map(row => ({
-    "Years": Math.round(row["Years"] || 0),
-    "First Name": row["First Name"] || "",
-    "Last Name": row["Last Name"] || "",
-    "Status": row["Status"] || "",
-    "Position": row["Position"] || ""
-  }));
-
-  // === Autofit column widths ===
-  const autoFitColumns = (data, headers) => {
-    return headers.map(header => {
-      const maxLength = Math.max(
-        header.length,
-        ...data.map(row => String(row[header] || "").length)
-      );
-      return { wch: maxLength + 1 };
-    });
-  };
-
-  const worksheet = XLSX.utils.json_to_sheet(rows, { header: headers });
-  worksheet["!cols"] = autoFitColumns(rows, headers);
-  worksheet["!rows"] = [{ hpt: 20 }]; // Only apply to header
+  const rows = results.map(row => [
+    Math.round(row["Years"] || 0),
+    row["First Name"] || "",
+    row["Last Name"] || "",
+    row["Status"] || "",
+    row["Position"] || ""
+  ]);
+  
+  const worksheet = XLSX.utils.aoa_to_sheet([
+    headers,
+    [], // Blank row for spacing
+    ...rows
+  ]);
+  
+  worksheet["!cols"] = headers.map((_, i) => {
+    const columnData = rows.map(r => String(r[i] || ""));
+    const maxLen = Math.max(headers[i].length, ...columnData.map(c => c.length));
+    return { wch: maxLen + 2 }; // +2 for breathing room
+  });
+  
+  worksheet["!rows"] = [{ hpt: 20 }]; // Row height for header
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
