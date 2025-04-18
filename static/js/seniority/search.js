@@ -4,7 +4,6 @@
 // ==============================
 import { renderResults } from './results.js';
 import { populdateStats } from '/.stats.js';
-import { openPanelById } from './panels.js';
   
 
 // ==============================
