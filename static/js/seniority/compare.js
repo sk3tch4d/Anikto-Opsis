@@ -1,6 +1,6 @@
 // ==============================
-// COMPARE.JS
-// Compare Two Selected Employees
+// COMPARISON.JS
+// Compare Two Employees Panel
 // ==============================
 
 window.initComparison = function () {
@@ -11,6 +11,7 @@ window.initComparison = function () {
 };
 
 function handleComparison() {
+  const normalize = window.normalize;
   const input1 = normalize(document.getElementById("compare-input-1").value.trim());
   const input2 = normalize(document.getElementById("compare-input-2").value.trim());
   const resultsDiv = document.getElementById("compare-results");
@@ -39,7 +40,7 @@ function handleComparison() {
     const position = row["Position"] || "";
     const status = row["Status"] || "";
     const years = parseFloat(row["Years"] || 0);
-    const emoji = getSeniorityEmoji(status, position);
+    const emoji = window.getSeniorityEmoji(status, position);
 
     return `
       <li style="margin-bottom: 1.5em;">
