@@ -1,8 +1,11 @@
 // ==============================
 // DATALIST.JS
-// Mobile Compatibility Fix
+// Fallback Mobile Compatibility
 // ==============================
 
+// ==============================
+// PATCH DATALIST ON LOAD
+// ==============================
 export function fixMobileDatalist() {
   window.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
