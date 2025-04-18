@@ -1,13 +1,13 @@
 // ==============================
-// COMPARE.JS
-// Employee Comparison Logic
+// COMPARISON.JS
+// Person-to-Person Comparison
 // ==============================
 
 import { normalize } from "./search.js";
 import { getSeniorityEmoji } from "./emoji.js";
 
 // ==============================
-// COMPARISON HANDLER
+// COMPARISON INIT
 // ==============================
 export function initComparisonPanel() {
   const compareBtn = document.getElementById("compare-button");
@@ -16,6 +16,10 @@ export function initComparisonPanel() {
   }
 }
 
+
+// ==============================
+// HANDLE COMPARISON
+// ==============================
 function handleComparison() {
   const input1 = normalize(document.getElementById("compare-input-1").value.trim());
   const input2 = normalize(document.getElementById("compare-input-2").value.trim());
@@ -30,7 +34,6 @@ function handleComparison() {
   const match1 = data.find(row =>
     normalize(`${row["First Name"]} ${row["Last Name"]}`).includes(input1)
   );
-
   const match2 = data.find(row =>
     normalize(`${row["First Name"]} ${row["Last Name"]}`).includes(input2)
   );
