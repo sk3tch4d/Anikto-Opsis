@@ -27,27 +27,28 @@ export function downloadSearch() {
   }
 
   const headers = ["Years", "First Name", "Last Name", "Status", "Position"];
-  const rows = results.map(row => [
-    row["Years"] || "",
-    row["First Name"] || "",
-    row["Last Name"] || "",
-    row["Status"] || "",
-    row["Position"] || ""
-  ]);
+  const rows = results.map(row => ({
+    "Years": Math.round(row["Years"] || 0),
+    "First Name": row["First Name"] || "",
+    "Last Name": row["Last Name"] || "",
+    "Status": row["Status"] || "",
+    "Position": row["Position"] || ""
+  }));
 
-  const worksheet = XLSX.utils.aoa_to_sheet([
-    headers,
-    [],         // Blank row under header
-    ...rows
-  ]);
+  // Inline column autofit function
+  const autoFitColumns = (data, headers) => {
+    return headers.map(header => {
+      const maxLength = Math.max(
+        header.length,
+        ...data.map(row => String(row[header] || "").length)
+      );
+      return { wch: maxLength + 1 };  // Add 1 char buffer
+    });
+  };
 
-  worksheet['!cols'] = [
-    { wch: 9 },  // Years
-    { wch: 12 }, // First Name
-    { wch: 14 }, // Last Name
-    { wch: 10 }, // Status
-    { wch: 32 }  // Position
-  ];
+  const worksheet = XLSX.utils.json_to_sheet(rows, { header: headers });
+  worksheet["!cols"] = autoFitColumns(rows, headers);
+  worksheet["!rows"] = [{ hpt: 20 }, {}, ...new Array(rows.length).fill({})]; // Header row height
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
