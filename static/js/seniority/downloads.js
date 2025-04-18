@@ -15,7 +15,7 @@ export function downloadSearch() {
     return;
   }
 
-  const headers = ["First Name", "Last Name", "Status", "Position", "Years"];
+  const headers = ["Years", "First Name", "Last Name", "Status", "Position"];
   const rows = results.map(row => [
     row["Years"] || "",
     row["First Name"] || "",
