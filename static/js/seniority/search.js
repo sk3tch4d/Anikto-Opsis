@@ -2,6 +2,51 @@
 // SEARCH.JS
 // Core Search + Filter Utilities
 // ==============================
+import { renderResults } from './results.js';
+import { populdateStats } from '/.stats.js';
+import { openPanelById } from './panels.js;
+  
+
+// ==============================
+// INIT LOGIC
+// ==============================
+export function initSenioritySearch() {
+  const input = document.getElementById("seniority-search");
+  const button = document.getElementById("seniority-search-button");
+  if (!input || !button) return;
+
+  // Setup behavior
+  button.style.display = "none";
+
+  input.addEventListener("focus", () => {
+    button.style.display = "block";
+    input.value = "";
+  });
+
+  input.addEventListener("blur", () => {
+    setTimeout(() => {
+      button.style.display = "none";
+    }, 100);
+  });
+
+  button.addEventListener("click", () => {
+    doSenioritySearch();
+    input.blur();
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      doSenioritySearch();
+      input.blur();
+    }
+  });
+
+  input.value = "Supply Assistant";
+  doSenioritySearch();
+  populateGlobalStats();
+  populatePositionList();
+}
 
 
 // ==============================
