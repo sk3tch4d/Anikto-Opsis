@@ -1,17 +1,22 @@
 // ==============================
-// COMPARISON.JS
-// Compare Two Employees Panel
+// COMPARE.JS
+// Employee Comparison Logic
 // ==============================
 
-window.initComparison = function () {
+import { normalize } from "./search.js";
+import { getSeniorityEmoji } from "./emoji.js";
+
+// ==============================
+// COMPARISON HANDLER
+// ==============================
+export function initComparisonPanel() {
   const compareBtn = document.getElementById("compare-button");
   if (compareBtn) {
     compareBtn.addEventListener("click", handleComparison);
   }
-};
+}
 
 function handleComparison() {
-  const normalize = window.normalize;
   const input1 = normalize(document.getElementById("compare-input-1").value.trim());
   const input2 = normalize(document.getElementById("compare-input-2").value.trim());
   const resultsDiv = document.getElementById("compare-results");
@@ -25,6 +30,7 @@ function handleComparison() {
   const match1 = data.find(row =>
     normalize(`${row["First Name"]} ${row["Last Name"]}`).includes(input1)
   );
+
   const match2 = data.find(row =>
     normalize(`${row["First Name"]} ${row["Last Name"]}`).includes(input2)
   );
@@ -40,7 +46,7 @@ function handleComparison() {
     const position = row["Position"] || "";
     const status = row["Status"] || "";
     const years = parseFloat(row["Years"] || 0);
-    const emoji = window.getSeniorityEmoji(status, position);
+    const emoji = getSeniorityEmoji(status, position);
 
     return `
       <li style="margin-bottom: 1.5em;">
