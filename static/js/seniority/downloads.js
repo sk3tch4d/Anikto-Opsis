@@ -27,28 +27,32 @@ export function downloadSearch() {
     return;
   }
 
+  // Define headers and row order
   const headers = ["Years", "First Name", "Last Name", "Status", "Position"];
-  const rows = results.map(row => [
+  const dataRows = results.map(row => [
     Math.round(row["Years"] || 0),
     row["First Name"] || "",
     row["Last Name"] || "",
     row["Status"] || "",
     row["Position"] || ""
   ]);
-  
+
+  // Prepare the worksheet
   const worksheet = XLSX.utils.aoa_to_sheet([
     headers,
-    [], // Blank row for spacing
-    ...rows
+    [], // Blank row after header
+    ...dataRows,
   ]);
-  
-  worksheet["!cols"] = headers.map((_, i) => {
-    const columnData = rows.map(r => String(r[i] || ""));
-    const maxLen = Math.max(headers[i].length, ...columnData.map(c => c.length));
-    return { wch: maxLen + 2 }; // +2 for breathing room
+
+  // Auto column widths with fallback
+  worksheet['!cols'] = headers.map((_, i) => {
+    const colData = dataRows.map(r => String(r[i] || ""));
+    const maxLen = Math.max(headers[i].length, ...colData.map(x => x.length));
+    return { wch: maxLen + 3 }; // +3 buffer for padding
   });
-  
-  worksheet["!rows"] = [{ hpt: 20 }]; // Row height for header
+
+  // Set header row height
+  worksheet['!rows'] = [{ hpt: 20 }];
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
