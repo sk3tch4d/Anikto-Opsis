@@ -3,6 +3,7 @@
 // Downloads for Search Results
 // ==============================
 
+import * as XLSX from "https://cdn.sheetjs.com/xlsx-latest/package/xlsx.mjs";
 
 // ==============================
 // DOWNLOADS XLSX
