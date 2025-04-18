@@ -27,7 +27,6 @@ export function downloadSearch() {
     return;
   }
 
-  // Define headers and row order
   const headers = ["Years", "First Name", "Last Name", "Status", "Position"];
   const dataRows = results.map(row => [
     Math.round(row["Years"] || 0),
@@ -37,22 +36,32 @@ export function downloadSearch() {
     row["Position"] || ""
   ]);
 
-  // Prepare the worksheet
   const worksheet = XLSX.utils.aoa_to_sheet([
     headers,
-    [], // Blank row after header
-    ...dataRows,
+    [], // Spacer row
+    ...dataRows
   ]);
 
-  // Auto column widths with fallback
+  // Auto column widths
   worksheet['!cols'] = headers.map((_, i) => {
     const colData = dataRows.map(r => String(r[i] || ""));
     const maxLen = Math.max(headers[i].length, ...colData.map(x => x.length));
-    return { wch: maxLen + 3 }; // +3 buffer for padding
+    return { wch: maxLen + 3 };
   });
 
-  // Set header row height
+  // Header row height
   worksheet['!rows'] = [{ hpt: 20 }];
+
+  // Center and bold headers
+  headers.forEach((_, i) => {
+    const ref = XLSX.utils.encode_cell({ r: 0, c: i });
+    if (worksheet[ref]) {
+      worksheet[ref].s = {
+        font: { bold: true },
+        alignment: { horizontal: "center", vertical: "center" }
+      };
+    }
+  });
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
