@@ -16,6 +16,7 @@ export function setupDownloadButton() {
   }
 }
 
+
 // ==============================
 // DOWNLOADS XLSX
 // ==============================
@@ -35,20 +36,20 @@ export function downloadSearch() {
     "Position": row["Position"] || ""
   }));
 
-  // Inline column autofit function
+  // === Autofit column widths ===
   const autoFitColumns = (data, headers) => {
     return headers.map(header => {
       const maxLength = Math.max(
         header.length,
         ...data.map(row => String(row[header] || "").length)
       );
-      return { wch: maxLength + 1 };  // Add 1 char buffer
+      return { wch: maxLength + 1 };
     });
   };
 
   const worksheet = XLSX.utils.json_to_sheet(rows, { header: headers });
   worksheet["!cols"] = autoFitColumns(rows, headers);
-  worksheet["!rows"] = [{ hpt: 20 }, {}, ...new Array(rows.length).fill({})]; // Header row height
+  worksheet["!rows"] = [{ hpt: 20 }]; // Only apply to header
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
