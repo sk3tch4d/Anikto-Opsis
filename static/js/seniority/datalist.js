@@ -1,12 +1,9 @@
 // ==============================
 // DATALIST.JS
-// Fallback Mobile Compatibility
+// Mobile Compatibility Fix
 // ==============================
 
-// ==============================
-// POPULATE DATALIST OPTIONS
-// ==============================
-export function patchDatalist() {
+export function fixMobileDatalist() {
   window.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       const datalist = document.getElementById("name-options");
