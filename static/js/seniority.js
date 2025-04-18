@@ -360,7 +360,7 @@ function populatePositionList() {
 
 
 // ==============================
-// DOWNLOAD SEARCH
+// DOWNLOAD SEARCH RESULTS
 // ==============================
 function downloadSearch() {
   const results = window.currentSearchResults || [];
@@ -369,7 +369,6 @@ function downloadSearch() {
     return;
   }
 
-  // Prepare data and headers
   const headers = ["First Name", "Last Name", "Status", "Position", "Years"];
   const rows = results.map(row => ({
     "First Name": row["First Name"] || "",
@@ -379,12 +378,13 @@ function downloadSearch() {
     "Years": row["Years"] || ""
   }));
 
-  // Convert to sheet and trigger download
   const worksheet = XLSX.utils.json_to_sheet(rows, { header: headers });
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
   XLSX.writeFile(workbook, "Search_Results.xlsx");
 }
+// Attach to button
+document.getElementById("download-search-button")?.addEventListener("click", downloadSearch);
 
 
 // ==============================
