@@ -362,7 +362,7 @@ function populatePositionList() {
 // ==============================
 // DOWNLOAD SEARCH RESULTS
 // ==============================
-function downloadSearch() {
+document.getElementById("download-search-button")?.addEventListener("click", () => {
   const results = window.currentSearchResults || [];
   if (!results.length) {
     alert("No search results to download.");
@@ -380,33 +380,29 @@ function downloadSearch() {
 
   const worksheet = XLSX.utils.json_to_sheet(rows, { header: headers });
 
-  // BOLD HEADER
-  const range = XLSX.utils.decode_range(worksheet['!ref']);
-  for (let C = range.s.c; C <= range.e.c; ++C) {
-    const cell_address = XLSX.utils.encode_cell({ r: 0, c: C });
-    if (!worksheet[cell_address]) continue;
-    worksheet[cell_address].s = {
-      font: { bold: true }
-    };
-  }
-  // FREEZE HEADER ROW
-  worksheet['!freeze'] = { xSplit: 0, ySplit: 1 };
+  // Freeze top row
+  worksheet["!freeze"] = { xSplit: 0, ySplit: 1 };
 
-  // COLUMN WIDTHS
-  worksheet['!cols'] = [
-    { wch: 15 },  // First Name
-    { wch: 18 },  // Last Name
-    { wch: 10 },  // Status
-    { wch: 40 },  // Position
-    { wch: 8 }   // Years
+  // Set column widths
+  worksheet["!cols"] = [
+    { wch: 16 }, // First Name
+    { wch: 16 }, // Last Name
+    { wch: 12 }, // Status
+    { wch: 38 }, // Position
+    { wch: 10 }  // Years
   ];
+
+  // Bold headers
+  ["A1", "B1", "C1", "D1", "E1"].forEach(cell => {
+    if (worksheet[cell]) {
+      worksheet[cell].s = { font: { bold: true } };
+    }
+  });
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
   XLSX.writeFile(workbook, "Search_Results.xlsx");
-}
-
-window.downloadSearch = downloadSearch;
+});
 
 
 // ==============================
