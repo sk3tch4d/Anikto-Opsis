@@ -1,12 +1,12 @@
 // ==============================
 // RENDER.JS
-// Renders Matched Results List
+// Renders List Results
 // ==============================
 
-import { getSeniorityEmoji } from './utils.js';
+import { getSeniorityEmoji } from "./emoji.js";
 
 // ==============================
-// RESULTS RENDERER
+// RENDER MATCHED RESULTS
 // ==============================
 export function renderResults(matches) {
   const resultsDiv = document.getElementById("seniority-results");
