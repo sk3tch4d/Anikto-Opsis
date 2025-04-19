@@ -136,3 +136,9 @@ export function doSenioritySearch() {
   populateStats(matches);
   window.currentSearchResults = matches;
 }
+
+
+// ==============================
+// GLOBAL EXPORT FOR INLINE HTML CALLS
+// ==============================
+window.searchFromStat = searchFromStat;
