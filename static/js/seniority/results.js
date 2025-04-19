@@ -2,7 +2,6 @@
 // RESULTS.JS
 // Render Search Result Entries
 // ==============================
-
 import { getSeniorityEmoji } from './emoji.js';
 
 // ==============================
