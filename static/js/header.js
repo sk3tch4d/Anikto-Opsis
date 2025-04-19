@@ -3,32 +3,41 @@
 // ==============================
 export function initTypewriter() {
   const el = document.getElementById("typed-text");
-  if (!el || !el.dataset.title) return;
+  if (!el) return;
 
-  const titles = JSON.parse(el.dataset.title);
-  let index = 0;
-  let char = 0;
+  const raw = el.dataset.words || "Loading";
+  const words = raw.split("|");
+
+  let wordIndex = 0;
+  let charIndex = 0;
   let typing = true;
 
   function update() {
-    const current = titles[index];
-    el.textContent = typing
-      ? current.slice(0, char++)
-      : current.slice(0, --char);
-
-    if (typing && char > current.length) {
-      typing = false;
-      setTimeout(update, 10000);  // Pause when full word typed
-    } else if (!typing && char === 0) {
-      index = (index + 1) % titles.length;
-      typing = true;
-      setTimeout(update, 400);  // Pause before typing next
+    const word = words[wordIndex];
+    if (typing) {
+      el.textContent = word.slice(0, charIndex++);
+      if (charIndex > word.length) {
+        typing = false;
+        setTimeout(update, 10000); // Pause full word
+        return;
+      }
     } else {
-      setTimeout(update, typing ? 120 : 60); // Typing speed
+      el.textContent = word.slice(0, charIndex--);
+      if (charIndex === 0) {
+        typing = true;
+        wordIndex = (wordIndex + 1) % words.length;
+        setTimeout(update, 300); // Pause before next
+        return;
+      }
     }
+    setTimeout(update, 80);
   }
 
   update();
 }
 
-document.addEventListener("DOMContentLoaded", initTypewriter);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initTypewriter);
+} else {
+  initTypewriter();
+}
