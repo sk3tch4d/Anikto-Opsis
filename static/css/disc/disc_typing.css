@@ -1,4 +1,9 @@
+/* ==============================
+   TYPED HEADER ANIMATION STYLES
+   ============================== */
+
 #typed-header {
+  /* --- Layout & Font --- */
   margin: 1rem auto;
   font-size: 2.0rem;
   font-weight: 800;
@@ -8,17 +13,44 @@
   overflow: hidden;
   display: inline-block;
   position: relative;
+
+  /* --- Animated Gradient Text --- */
   background: linear-gradient(90deg, #4f60c9, #7289da, #4f60c9, #7683d5);
   background-size: 600% 600%;
   animation: gradientShift 12s ease infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
 #typed-header span {
+  /* --- Animated Text Content (Legacy fallback) --- */
   display: inline-block;
   font-size: 2rem;
   font-weight: bold;
 }
+
+
+/* ==============================
+   TYPED TEXT CONTAINER
+   ============================== */
+
+#typed-text {
+  display: inline-block;
+  min-width: 12ch;              /* Reserve space for full words */
+  min-height: 1.2em;            /* Prevent collapse before typing */
+  white-space: nowrap;
+  vertical-align: top;
+  font-weight: inherit;
+  font-size: inherit;
+  color: inherit;
+  position: relative;
+}
+
+
+/* ==============================
+   BLINKING CURSOR
+   ============================== */
+
 #typed-header::after {
   content: "|";
   position: absolute;
@@ -26,7 +58,19 @@
   animation: blink 0.7s infinite;
   color: #9ea7e1;
 }
+
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+
+/* ==============================
+   GRADIENT SHIFT BACKGROUND
+   ============================== */
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
