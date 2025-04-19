@@ -98,6 +98,9 @@ export function searchFromStat(query) {
     input.value = query;
   }
 
+  // Update stats list array
+  window.currentSearchResults = matches;
+  
   renderResults(matches);
   populateStats(matches);
   openPanelById("search-panel");
