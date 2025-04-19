@@ -5,27 +5,27 @@ export function initTypewriter() {
   const el = document.getElementById("typed-text");
   if (!el) return;
 
-  const raw = el.dataset.words || "Loading";
-  const words = raw.split("|");
+  const raw = el.dataset.title || "Loading..";
+  const titles = raw.split("|");
 
-  let wordIndex = 0;
+  let titleIndex = 0;
   let charIndex = 0;
   let typing = true;
 
   function update() {
-    const word = words[wordIndex];
+    const title = titles[titleIndex];
     if (typing) {
-      el.textContent = word.slice(0, charIndex++);
-      if (charIndex > word.length) {
+      el.textContent = title.slice(0, charIndex++);
+      if (charIndex > title.length) {
         typing = false;
-        setTimeout(update, 10000); // Pause full word
+        setTimeout(update, 10000); // Pause full title
         return;
       }
     } else {
-      el.textContent = word.slice(0, charIndex--);
+      el.textContent = title.slice(0, charIndex--);
       if (charIndex === 0) {
         typing = true;
-        wordIndex = (wordIndex + 1) % words.length;
+        titleIndex = (titleIndex + 1) % title.length;
         setTimeout(update, 300); // Pause before next
         return;
       }
