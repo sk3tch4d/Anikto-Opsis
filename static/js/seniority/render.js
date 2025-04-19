@@ -2,7 +2,6 @@
 // RENDER.JS
 // Renders List Results
 // ==============================
-
 import { getSeniorityEmoji } from "./emoji.js";
 
 // ==============================
