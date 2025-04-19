@@ -8,7 +8,7 @@
   <script src="{{ url_for('static', filename='js/scripts.js') }}" type="module"></script>
 </head>
 <body>
-  <h1 id="typed-header"><span id="typed-text" data-title='["Seniority Summary", "Anikto Opsis"]'></span></h1>
+  <h1 id="typed-header"><span id="typed-text" data-title="Seniority Summary|Anikto Opsis"></span></h1>
 
   <!-- Inject parsed data for JS -->
   <script>window.seniorityData = {{ table | tojson }};</script>
