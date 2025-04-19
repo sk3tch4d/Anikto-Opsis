@@ -100,7 +100,9 @@
       <div class="panel panel-animate" id="downloads">
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
         <div class="panel-body">
-          <button id="download-search-button" class="button full-width">Download Search</button>
+          <ul class="downloads">
+            <a href="{{ url_for('download', filename=file) }}" class="file-action" id="download-search-button">Download Search</a>
+          </ul>
         </div>
       </div>
 
