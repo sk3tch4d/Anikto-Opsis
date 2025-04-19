@@ -1,7 +1,7 @@
 // ==============================
 // (ROTATING) TYPEWRITER EFFECT
 // ==============================
-export function initTypewriter() {
+export function initTypewriterRotator() {
   const el = document.getElementById("typed-text");
   if (!el || !el.dataset.titles) return;
 
@@ -31,4 +31,4 @@ export function initTypewriter() {
   update();
 }
 
-document.addEventListener("DOMContentLoaded", initTypewriter);
+document.addEventListener("DOMContentLoaded", initTypewriterRotator);
