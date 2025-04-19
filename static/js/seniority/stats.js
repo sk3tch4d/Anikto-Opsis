@@ -99,7 +99,7 @@ export function populateStats(data) {
       <li><p style="text-align: center"><strong>Full-Time:</strong> ${fullTime}</p></li>
       <li><p style="text-align: center"><strong>Part-Time:</strong> ${partTime}</p></li>
       <li><p style="text-align: center"><strong>Average Seniority:</strong> ${avgYears} Years</p></li>
-      <li><p style="text-align: center"><strong>Top Senior:</strong> ${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</p></li>
+      <li><p style="text-align: center"><strong>Top Senior:</strong> ${mostSenior.name}</p></li>
       <li><p style="text-align: center"><strong>Total Combined:</strong> ${totalYears.toFixed(2)} Years</p></li>
     </ul>
   `;
