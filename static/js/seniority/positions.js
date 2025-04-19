@@ -2,7 +2,6 @@
 // POSITIONS.JS
 // Position List Panel Logic
 // ==============================
-
 import { searchFromStat, normalize } from './search.js';
 
 // ==============================
