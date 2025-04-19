@@ -137,7 +137,7 @@ export function refineSearchFromStat(filter) {
   } else {
     refined = current.filter(row =>
       Object.values(row).some(val =>
-        (val || "").toLowerCase().includes(filter.toLowerCase())
+        String(val || "").toLowerCase().includes(filter.toLowerCase())
       )
     );
   }
