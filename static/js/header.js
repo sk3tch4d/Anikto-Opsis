@@ -34,3 +34,9 @@ export function initTypewriter() {
 
   setTimeout(update, 500); // delay initial trigger (mobile-safe)
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    initTypewriter();
+  }, 300); // slight delay to ensure paint + dataset availability
+});
