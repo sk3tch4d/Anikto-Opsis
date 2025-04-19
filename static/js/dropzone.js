@@ -100,3 +100,54 @@ function setupDragAndDrop(dropZone, fileInput) {
     dropZone.classList.remove("active");
   });
 }
+
+
+// ==============================
+// GENERATE BUTTON TEXT + STATE
+// ==============================
+function updateGenerateButtonText() {
+  const fileInput = document.getElementById("file-input");
+  const generateBtn = document.getElementById("generate");
+  if (!generateBtn) return; // Guard clause: button not found
+
+  const uploadedFiles = fileInput?.files ? Array.from(fileInput.files) : [];
+  const existingCheckboxes = document.querySelectorAll('input[name="existing_pdfs"]:checked');
+  const existingFiles = Array.from(existingCheckboxes).map(cb => cb.value);
+
+  const fileNames = uploadedFiles.map(f => f.name.toLowerCase())
+    .concat(existingFiles.map(name => name.toLowerCase()));
+
+  // --- Early return if no files selected ---
+  if (fileNames.length === 0) {
+    generateBtn.textContent = "Generate";
+    generateBtn.disabled = true;
+    return;
+  }
+
+  // --- Update label based on file type ---
+  if (fileNames.some(name => name.endsWith(".xlsx"))) {
+    generateBtn.textContent = "Generate Seniority";
+  } else if (fileNames.some(name => name.endsWith(".pdf"))) {
+    generateBtn.textContent = "Generate ARG";
+  } else {
+    generateBtn.textContent = "Generate";
+  }
+
+  generateBtn.disabled = false;
+}
+
+// ==============================
+// BIND CHANGE EVENTS
+// ==============================
+document.addEventListener("DOMContentLoaded", () => {
+  const fileInput = document.getElementById("file-input");
+  fileInput?.addEventListener("change", updateGenerateButtonText);
+
+  const checkboxNodeList = document.querySelectorAll('input[name="existing_pdfs"]');
+  checkboxNodeList.forEach(cb => {
+    cb.addEventListener("change", updateGenerateButtonText);
+  });
+
+  // Run on initial load
+  updateGenerateButtonText();
+});
