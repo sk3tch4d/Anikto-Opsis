@@ -36,8 +36,6 @@ export function initTypewriter() {
   update();
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initTypewriter);
-} else {
-  initTypewriter();
-}
+document.addEventListener("DOMContentLoaded", () => {
+  requestAnimationFrame(() => initTypewriter());
+});
