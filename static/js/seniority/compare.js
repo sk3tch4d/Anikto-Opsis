@@ -2,7 +2,6 @@
 // COMPARE.JS
 // Comparison Panel Logic
 // ==============================
-
 import { normalize } from './search.js';
 import { getSeniorityEmoji } from './emoji.js';
 
