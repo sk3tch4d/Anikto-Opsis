@@ -3,7 +3,8 @@
 // Global + Filtered Statistics
 // ==============================
 
-import { searchFromStat } from './search.js';
+import { searchFromStat, openPanelById } from './search.js';
+import { renderResults } from './results.js';
 
 // ==============================
 // GLOBAL STATS (ALL ENTRIES)
@@ -76,7 +77,6 @@ export function populateStats(data) {
   let fullTime = 0;
   let partTime = 0;
   let casual = 0;
-
   let totalYears = 0;
   let mostSenior = { name: "", years: 0 };
 
@@ -102,12 +102,54 @@ export function populateStats(data) {
   statsDiv.innerHTML = `
     <ul style="list-style: none; padding-left: 0;">
       <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
-      <li><p style="text-align: center"><strong>Full-Time:</strong> ${fullTime}</p></li>
-      <li><p style="text-align: center"><strong>Part-Time:</strong> ${partTime}</p></li>
-      <li><p style="text-align: center"><strong>Casual:</strong> ${casual}</p></li>
+      <li><p style="text-align: center">
+        <span class="clickable-stat" onclick="refineSearchFromStat('Full-Time')">
+          <strong>Full-Time:</strong> ${fullTime}
+        </span></p></li>
+      <li><p style="text-align: center">
+        <span class="clickable-stat" onclick="refineSearchFromStat('Part-Time')">
+          <strong>Part-Time:</strong> ${partTime}
+        </span></p></li>
+      <li><p style="text-align: center">
+        <span class="clickable-stat" onclick="refineSearchFromStat('Casual')">
+          <strong>Casual:</strong> ${casual}
+        </span></p></li>
       <li><p style="text-align: center"><strong>Average Seniority:</strong> ${avgYears} Years</p></li>
-      <li><p style="text-align: center"><strong>Top Senior:</strong> ${mostSenior.name}</p></li>
+      <li><p style="text-align: center"><strong>Top Senior:</strong> ${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</p></li>
       <li><p style="text-align: center"><strong>Total Combined:</strong> ${totalYears.toFixed(2)} Years</p></li>
     </ul>
   `;
 }
+
+
+// ==============================
+// REFINE FILTERED RESULTS
+// ==============================
+export function refineSearchFromStat(filter) {
+  const current = window.currentSearchResults || [];
+  if (!current.length) return;
+
+  let refined;
+
+  if (filter.startsWith("Years>=")) {
+    const min = parseFloat(filter.split(">=")[1]);
+    refined = current.filter(row => parseFloat(row["Years"] || 0) >= min);
+  } else {
+    refined = current.filter(row =>
+      Object.values(row).some(val =>
+        (val || "").toLowerCase().includes(filter.toLowerCase())
+      )
+    );
+  }
+
+  window.currentSearchResults = refined;
+  renderResults(refined);
+  populateStats(refined);
+  openPanelById("search-panel");
+}
+
+
+// ==============================
+// GLOBAL EXPORT
+// ==============================
+window.refineSearchFromStat = refineSearchFromStat;
