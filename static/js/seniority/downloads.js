@@ -2,7 +2,6 @@
 // DOWNLOADS.JS
 // Basic XLSX Export (No Styling)
 // ==============================
-
 import * as XLSX from "https://cdn.sheetjs.com/xlsx-latest/package/xlsx.mjs";
 
 // ==============================
@@ -16,7 +15,7 @@ export function setupDownloadButton() {
 }
 
 // ==============================
-// BASIC EXPORT FUNCTION
+// DOWNLOAD XLSX WITH AUTOFIT
 // ==============================
 export function downloadSearch() {
   const results = window.currentSearchResults || [];
@@ -34,14 +33,23 @@ export function downloadSearch() {
     row["Position"] || ""
   ]);
 
-  const worksheet = XLSX.utils.aoa_to_sheet([
-  ["Years", "First Name", "Last Name", "Status", "Position"],
-  ...rows
-]);
+  // Create sheet
+  const worksheet = XLSX.utils.aoa_to_sheet([headers, ...rows]);
 
-worksheet["!rows"] = [{ hpt: 24 }]; // Increase header row height
+  // Autofit column widths based on max content + padding
+  worksheet["!cols"] = headers.map((header, i) => {
+    const maxLen = Math.max(
+      header.length,
+      ...rows.map(row => String(row[i] || "").length)
+    );
+    return { wch: maxLen + 2 }; // Add small padding
+  });
 
-const workbook = XLSX.utils.book_new();
-XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
-XLSX.writeFile(workbook, "Search_Results.xlsx");
+  // Increase header row height
+  worksheet["!rows"] = [{ hpt: 20 }];
+
+  // Create and download workbook
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
+  XLSX.writeFile(workbook, "Search_Results.xlsx");
 }
