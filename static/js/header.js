@@ -3,9 +3,9 @@
 // ==============================
 export function initTypewriter() {
   const el = document.getElementById("typed-text");
-  if (!el || !el.dataset.titles) return;
+  if (!el || !el.dataset.title) return;
 
-  const titles = JSON.parse(el.dataset.titles);
+  const titles = JSON.parse(el.dataset.title);
   let index = 0;
   let char = 0;
   let typing = true;
