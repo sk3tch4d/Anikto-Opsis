@@ -2,7 +2,6 @@
 // STATS.JS
 // Global + Filtered Statistics
 // ==============================
-
 import { searchFromStat, openPanelById } from './search.js';
 import { renderResults } from './results.js';
 
