@@ -31,4 +31,4 @@ export function initTypewriter() {
   update();
 }
 
-document.addEventListener("DOMContentLoaded", initTypewriterRotator);
+document.addEventListener("DOMContentLoaded", initTypewriter);
