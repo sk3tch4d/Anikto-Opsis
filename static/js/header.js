@@ -25,7 +25,7 @@ export function initTypewriter() {
       el.textContent = title.slice(0, charIndex--);
       if (charIndex === 0) {
         typing = true;
-        titleIndex = (titleIndex + 1) % title.length;
+        titleIndex = (titleIndex + 1) % titles.length;
         setTimeout(update, 300); // Pause before next
         return;
       }
