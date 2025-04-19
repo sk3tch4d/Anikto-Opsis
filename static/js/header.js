@@ -37,5 +37,16 @@ export function initTypewriter() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  requestAnimationFrame(() => initTypewriter());
+  const el = document.getElementById("typed-text");
+
+  // Wait until the element and its dataset is fully loaded
+  const waitUntilReady = () => {
+    if (el && el.dataset && el.dataset.title) {
+      initTypewriter();
+    } else {
+      setTimeout(waitUntilReady, 50); // Retry after short delay
+    }
+  };
+
+  waitUntilReady();
 });
