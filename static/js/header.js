@@ -18,13 +18,13 @@ export function initTypewriter() {
 
     if (typing && char > current.length) {
       typing = false;
-      setTimeout(update, 1200);  // Pause when full word typed
+      setTimeout(update, 10000);  // Pause when full word typed
     } else if (!typing && char === 0) {
       index = (index + 1) % titles.length;
       typing = true;
       setTimeout(update, 400);  // Pause before typing next
     } else {
-      setTimeout(update, typing ? 100 : 50); // Typing speed
+      setTimeout(update, typing ? 120 : 60); // Typing speed
     }
   }
 
