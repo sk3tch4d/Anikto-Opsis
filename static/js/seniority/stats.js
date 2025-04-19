@@ -17,6 +17,7 @@ export function populateGlobalStats() {
   let totalYears = 0;
   let fullTime = 0;
   let partTime = 0;
+  let casual = 0;  
   let tenPlus = 0, twentyPlus = 0, thirtyPlus = 0, fortyPlus = 0;
   const departments = new Set();
 
@@ -30,6 +31,7 @@ export function populateGlobalStats() {
 
     if (status.includes("full")) fullTime++;
     if (status.includes("part")) partTime++;
+    if (status.includes("casu")) casual++;
 
     total++;
     totalYears += years;
@@ -48,6 +50,7 @@ export function populateGlobalStats() {
       <li><p><strong>Total Employees:</strong> ${total}</p></li>
       <li><p class="clickable-stat" onclick="searchFromStat('Full-Time')"><strong>Total Full-Time:</strong> ${fullTime}</p></li>
       <li><p class="clickable-stat" onclick="searchFromStat('Part-Time')"><strong>Total Part-Time:</strong> ${partTime}</p></li>
+      <li><p class="clickable-stat" onclick="searchFromStat('Casual')"><strong>Total Casual:</strong> ${casual}</p></li>
       <li><p class="clickable-stat" onclick="searchFromStat('Years>=10')"><strong>10+ Years:</strong> ${tenPlus}</p></li>
       <li><p class="clickable-stat" onclick="searchFromStat('Years>=20')"><strong>20+ Years:</strong> ${twentyPlus}</p></li>
       <li><p class="clickable-stat" onclick="searchFromStat('Years>=30')"><strong>30+ Years:</strong> ${thirtyPlus}</p></li>
@@ -72,6 +75,8 @@ export function populateStats(data) {
   let total = 0;
   let fullTime = 0;
   let partTime = 0;
+  let casual = 0;
+
   let totalYears = 0;
   let mostSenior = { name: "", years: 0 };
 
@@ -82,6 +87,7 @@ export function populateStats(data) {
 
     if (status.includes("full")) fullTime++;
     if (status.includes("part")) partTime++;
+    if (status.includes("casu")) casual++;
 
     total++;
     totalYears += years;
@@ -98,6 +104,7 @@ export function populateStats(data) {
       <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
       <li><p style="text-align: center"><strong>Full-Time:</strong> ${fullTime}</p></li>
       <li><p style="text-align: center"><strong>Part-Time:</strong> ${partTime}</p></li>
+      <li><p style="text-align: center"><strong>Casual:</strong> ${casual}</p></li>
       <li><p style="text-align: center"><strong>Average Seniority:</strong> ${avgYears} Years</p></li>
       <li><p style="text-align: center"><strong>Top Senior:</strong> ${mostSenior.name}</p></li>
       <li><p style="text-align: center"><strong>Total Combined:</strong> ${totalYears.toFixed(2)} Years</p></li>
