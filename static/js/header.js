@@ -12,13 +12,14 @@ export function initTypewriter() {
   let charIndex = 0;
   let typing = true;
 
-  function update() {
+  function loop() {
     const title = titles[titleIndex];
+
     if (typing) {
       el.textContent = title.slice(0, charIndex++);
       if (charIndex > title.length) {
         typing = false;
-        setTimeout(update, 10000); // Pause full title
+        setTimeout(loop, 1500); // Short pause before deleting
         return;
       }
     } else {
@@ -26,27 +27,13 @@ export function initTypewriter() {
       if (charIndex === 0) {
         typing = true;
         titleIndex = (titleIndex + 1) % titles.length;
-        setTimeout(update, 300); // Pause before next
+        setTimeout(loop, 300); // Short pause before typing next
         return;
       }
     }
-    setTimeout(update, 80);
+
+    setTimeout(loop, 70);
   }
 
-  update();
+  loop();
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const el = document.getElementById("typed-text");
-
-  // Wait until the element and its dataset is fully loaded
-  const waitUntilReady = () => {
-    if (el && el.dataset && el.dataset.title) {
-      initTypewriter();
-    } else {
-      setTimeout(waitUntilReady, 50); // Retry after short delay
-    }
-  };
-
-  waitUntilReady();
-});
