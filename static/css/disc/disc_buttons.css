@@ -24,6 +24,13 @@
   max-width: 500px;
   box-sizing: border-box;
 }
+
+/* Button Disabled */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .label-button {
   display: block;
   width: 100%;
