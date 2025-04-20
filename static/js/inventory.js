@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // MAIN SEARCH FUNCTION
   // ==============================
   function doSearch() {
-    const term = searchInput.value.trim();
+    const term = searchInput.value.trim().toLowerCase();
     const usl = uslFilter.value;
     const sort = sortBy?.value || "QTY";
 
