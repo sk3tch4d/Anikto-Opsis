@@ -12,45 +12,63 @@
     <span id="typed-text" data-title="Inventory Catalog|Anikto Opsis"></span>
   </h1>
 
-    <!-- ======== PANEL CONTAINER ======== -->
+  <!-- Inject parsed data for JS -->
+  <script>window.seniorityData = {{ table | tojson }};</script>
+
+  <div id="panel-wrapper">
     <div id="panel-container">
 
-      <!-- ======== STATS ======== -->
-      <div class="panel panel-animate" id="stats">
+      <!-- ============================= -->
+      <!-- PANEL: INVENTORY SEARCH -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="search-panel">
         <div class="panel-header" onclick="togglePanel(this)">Search Catalog</div>
+        <div class="panel-body scrollable-panel">
+          <input id="inventory-search" class="input full-width" placeholder="Search..." />
+          <button id="inventory-search-button" class="button full-width" style="margin-top: 0.5rem;">Search</button>
+          <div id="inventory-results" style="margin-top: 1rem;"></div>
+        </div>
+      </div>
+
+  
+      <!-- ============================= -->
+      <!-- PANEL: SEARCH STATS -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="stats-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Statistics</div>
         <div class="panel-body">
           <ul style="list-style: none; padding-left: 0;">
+              <div id="inventory-stats" style="line-height: 1.8; text-align: center;">
+                <!-- JS-populated -->
+              </div>
           </ul>
         </div>
       </div>
 
-      <!-- ======== STATS ======== -->
-      <div class="panel panel-animate" id="stats">
-        <div class="panel-header" onclick="togglePanel(this)">Stats</div>
-        <div class="panel-body">
-          <ul style="list-style: none; padding-left: 0;">
-          </ul>
-        </div>
-      </div>
 
-      <!-- ======== DOWNLOADS ======== -->
+      <!-- ============================= -->
+      <!-- PANEL: DOWNLOADS -->
+      <!-- ============================= -->
       <div class="panel panel-animate" id="downloads">
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
         <div class="panel-body">
-            <ul class="downloads">
-            </ul>
+          <ul class="downloads">
+            <a class="file-action" id="download-search-button">Download Search</a>
+          </ul>
         </div>
       </div>
 
-      <!-- ======== SUBMIT ======== -->
+
+      <!-- ============================= -->
+      <!-- PANEL: RETURN -->
+      <!-- ============================= -->
       <div class="panel panel-animate">
         <form action="{{ url_for('index') }}" method="get">
           <button type="submit" class="button full-width">Process Another</button>
         </form>
       </div>
 
-    </div> <!-- END #panel-container -->
-
-  </div> <!-- END #panel-wrapper -->
+    </div> <!-- END panel-container -->
+  </div> <!-- END panel-wrapper -->
 </body>
 </html>
