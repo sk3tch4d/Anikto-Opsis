@@ -26,6 +26,38 @@ export function initSeniorityFilters() {
 
 
 // ==============================
+// POPULATE POSITION OPTIONS
+// ==============================
+function populatePositionOptions() {
+  const select = document.getElementById("sen-position-filter");
+  const data = window.originalSearchResults || [];
+  if (!select || !data.length) return;
+
+  const seen = new Set();
+  const positions = [];
+
+  data.forEach(row => {
+    const raw = row["Position"] || "";
+    const clean = raw.split("-")[0].replace(/\b(PT|FT|CAS|CASUAL)\b/gi, "").trim();
+    const label = clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
+
+    if (clean && !seen.has(label)) {
+      seen.add(label);
+      positions.push(label);
+    }
+  });
+
+  positions.sort((a, b) => a.localeCompare(b));
+
+  // Reset + add default
+  select.innerHTML = `<option value="any">Any</option>` +
+    positions.map(pos =>
+      `<option value="${pos.toLowerCase()}">${pos}</option>`
+    ).join("");
+}
+
+
+// ==============================
 // APPLY FILTER LOGIC
 // ==============================
 function applyFilters() {
