@@ -13,12 +13,6 @@
   overflow: hidden;
   display: inline-block;
   position: relative;
-
-  background: linear-gradient(90deg, #4f60c9, #7289da, #4f60c9, #7683d5);
-  background-size: 600% 600%;
-  animation: gradientShift 12s ease infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 #typed-header span {
@@ -30,7 +24,7 @@
 
 
 /* ==============================
-   TYPED TEXT CONTAINER
+   TYPED TEXT DEFAULT (NO STYLING)
    ============================== */
 
 #typed-text {
@@ -42,8 +36,14 @@
   font-weight: inherit;
   font-size: inherit;
   position: relative;
+}
 
-  /* --- Gradient Text Effect (Duplcated for Chrome element) --- */
+
+/* ==============================
+   TYPED TEXT (INSIDE HEADER ONLY)
+   ============================== */
+
+#typed-header #typed-text {
   background: linear-gradient(90deg, #4f60c9, #7289da, #4f60c9, #7683d5);
   background-size: 600% 600%;
   animation: gradientShift 12s ease infinite;
