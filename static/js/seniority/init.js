@@ -12,13 +12,14 @@ import { populateStats, populateGlobalStats } from './stats.js';
 import { populatePositionList } from "./positions.js";
 import { setupDownloadButton } from "./downloads.js";
 import { fixMobileDatalist } from "./datalist.js";
-
+import { initSeniorityFilters } from "./filters.js";
 
 // ==============================
 // EXPORT 
 // ==============================
 export function initializeSeniorityApp() {
   initSenioritySearch();
+  initSeniorityFilters();
   initComparisonPanel();
   populateGlobalStats();
   populatePositionList();
