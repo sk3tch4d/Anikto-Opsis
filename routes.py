@@ -112,7 +112,7 @@ def register_routes(app):
             return render_template("seniority.html", table=seniority_df.to_dict(orient="records"), filename=seniority_filename)
 
         output_files, stats = process_report(pdf_files)
-        return render_template("result.html", outputs=[os.path.basename(f) for f in output_files], stats=stats)
+        return render_template("arg.html", outputs=[os.path.basename(f) for f in output_files], stats=stats)
 
     # ==============================
     # GET: Export shift records as CSV
