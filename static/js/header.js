@@ -6,37 +6,39 @@ export function initTypewriter() {
   if (!el) return;
 
   const raw = el.dataset.title || "Loading..";
-  const titles = raw.split("|").map(t => t.trim()).filter(Boolean);
-
+  const titles = raw.split("|");
   let titleIndex = 0;
   let charIndex = 0;
   let typing = true;
 
-  function update() {
+  function step() {
     const title = titles[titleIndex];
     if (!title) return;
 
-    el.textContent = typing
-      ? title.slice(0, charIndex++)
-      : title.slice(0, charIndex--);
-
-    if (typing && charIndex > title.length) {
-      typing = false;
-      setTimeout(update, 1200); // pause after typing
-    } else if (!typing && charIndex < 0) {
-      typing = true;
-      titleIndex = (titleIndex + 1) % titles.length;
-      setTimeout(update, 300); // pause before next title
+    if (typing) {
+      el.textContent = title.slice(0, charIndex++);
+      if (charIndex > title.length) {
+        typing = false;
+        setTimeout(() => requestAnimationFrame(step), 1000);
+        return;
+      }
     } else {
-      setTimeout(update, 75); // typing speed
+      el.textContent = title.slice(0, charIndex--);
+      if (charIndex < 0) {
+        typing = true;
+        titleIndex = (titleIndex + 1) % titles.length;
+        setTimeout(() => requestAnimationFrame(step), 300);
+        return;
+      }
     }
+
+    requestAnimationFrame(step);
   }
 
-  setTimeout(update, 500); // delay initial trigger (mobile-safe)
+  // Final trigger — after paint
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      requestAnimationFrame(step);
+    }, 200);
+  });
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    initTypewriter();
-  }, 300); // slight delay to ensure paint + dataset availability
-});
