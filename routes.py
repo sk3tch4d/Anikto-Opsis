@@ -31,6 +31,7 @@ from datetime import datetime
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
 MAX_PDFS = 30
+INVENTORY_DF = None
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -48,9 +49,6 @@ def register_routes(app):
     # ==============================
     # INVENTORY API
     # ==============================
-    if INVENTORY_DF is None:
-        return jsonify({"error": "Inventory data not loaded."}), 400
-
     @app.route("/inventory-usls")
     def inventory_usls():
         usls = sorted(INVENTORY_DF["USL"].dropna().unique().tolist())
