@@ -53,7 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (item.Old) html += `<b>Old:</b> ${item.Old}<br>`;
             html += `<b>Description:</b> ${item.Description}<br>`;
             html += `<b>Location:</b> ${item.USL} - ${item.Bin}<br>`;
-            html += `<b>Quantity:</b> ${item.QTY} / ${item.UOM}<br>`;
+            html += `<b>Quantity:</b> ${item.QTY}<br>`;
+            html += `<b>Quantity:</b> ${item.Cost} / ${item.UOM}<br>`;
+            html += `<b>Cost Center:</b> ${item.Cost_Center}<br>`;
             if (item.Group) html += `<b>Group:</b> ${item.Group}`;
     
             li.innerHTML = html;
