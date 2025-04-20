@@ -13,7 +13,8 @@ export function populatePositionList() {
   if (!container || !data.length) return;
 
   const abbreviations = {
-    "RPN": "Reg. Practical Nurse",
+    "RPN": "Registered Practical Nurse",
+    "Reg P": "Registered Practical Nurse",
     "PCA": "Patient Care Assistant",
     "EA": "Environmental Assistant",
     // Add more mappings here
@@ -26,7 +27,8 @@ export function populatePositionList() {
 
     let base = raw
       .split("-")[0]
-      .replace(/\b(PT|FT|CASUAL|CAS)\b/gi, "") // Strip employment types
+      .replace(/\b(PT|FT|CASUAL|CAS|HOLD|g.|)\b/gi, "") // Strip employment types / Remove Problem Chars
+      .reokace(
       .trim();
 
     // Convert abbreviation to full form
