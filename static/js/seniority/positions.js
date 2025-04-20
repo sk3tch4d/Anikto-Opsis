@@ -3,7 +3,7 @@
 // Position List Panel Logic
 // ==============================
 import { searchFromStat, normalize } from './search.js';
-import posAdjustments from './pos_adjust.json' assert { type: 'json' };
+import posAdjustments from '/static/pos_adjust.json' assert { type: 'json' };
 
 // ==============================
 // INIT POSITION PANEL
