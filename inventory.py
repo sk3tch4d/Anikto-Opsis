@@ -39,11 +39,15 @@ def search_inventory(df, term, usl):
         if term.isdigit():
             df = df[df[["Num", "Old"]].astype(str).apply(
                 lambda row: any(term in str(cell) for cell in row), axis=1)]
-        else:
-            excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
-            search_cols = [col for col in df.columns if col not in excluded]
-            df = df[df[search_cols].astype(str).apply(
-                lambda row: row.str.lower().str.contains(term).any(), axis=1)]
+            if term:
+                # Sanitize excluded fields
+                excluded = {"QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"}
+                search_cols = [col for col in df.columns if col not in excluded and df[col].dtype == object]
+        
+                # Use safe lowercase match
+                term = term.lower()
+                df = df[df[search_cols].apply(lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1)]
+
 
     return df[[
         "Num", "Old", "Bin", "Description", "USL",
