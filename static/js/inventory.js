@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let html = `<b>${item.Old ? "Number" : "Stores Number"}:</b> ${item.Num}<br>`;
             if (item.Old) html += `<b>Old:</b> ${item.Old}<br>`;
             html += `<b>Description:</b> ${item.Description}<br>`;
-            html += `<b>Location:</b> ${item.USL}<br>`;
+            html += `<b>Location:</b> ${item.USL} - ${item.BIN}<br>`;
             html += `<b>Quantity:</b> ${item.QTY} /${item.UOM}`;
     
             li.innerHTML = html;
