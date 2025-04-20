@@ -43,18 +43,19 @@ input[type="date"]:focus {
 }
 
 select.input {
+  background-color: #1e1f26;
+  border: 1px solid #2c2f3a;
+  color: #d6d6d6;
   height: 2.4rem;
   padding: 0 0.75rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: white;
-  color: #333;
-  appearance: none; /* Remove default dropdown arrow */
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%237289da' stroke-width='2'/%3E%3C/svg%3E");
+  border-radius: 6px;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='14' height='8' viewBox='0 0 14 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 7L13 1' stroke='%237289da' stroke-width='2'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
-  background-size: 1rem;
+  background-size: 0.75rem;
 }
 
 .date-wrapper {
