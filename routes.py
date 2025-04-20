@@ -67,18 +67,19 @@ def register_routes(app):
         if usl != "Any":
             df = df[df["USL"].str.lower() == usl.lower()]
     
-        search_cols = ["Num", "Old", "Description", "USL", "Bin", "Group"]
         if term:
             if term.isdigit():
-                df = df[df["Num"].astype(str).str.startswith(term)]
+                df = df[df["Num"].astype(str).str.contains(term)]
             else:
-                df = df[df[search_cols].apply(
-                    lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1
-                )]
+                #df = df[df.apply(lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1)]
+                excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
+                search_cols = [col for col in df.columns if col not in excluded]
+                df = df[df[search_cols].apply(lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1)]
 
+    
         df = df.sort_values(by="QTY", ascending=False).head(100)
     
-        return jsonify(df[["Num", "Old", "Bin", "Description", "USL", "QTY", "UOM", "Group"]].to_dict(orient="records"))
+        return jsonify(df[["Num", "Old", "Bin", "Description", "USL", "QTY", "UOM", "Cost", "Group", "Cost_Center"]].to_dict(orient="records"))
 
     # ==============================
     # GET: Render index upload page
