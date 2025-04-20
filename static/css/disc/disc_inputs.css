@@ -67,7 +67,7 @@ select.input.full-width:focus {
 
 
 .input.sort-button {
-  width: 2.5rem;
+  width: 2.6rem;
   text-align: center;
   padding: 0.6rem 0;
   font-size: 1.2rem;
@@ -81,7 +81,13 @@ select.input.full-width:focus {
   color: #aaa;
   cursor: pointer;
   user-select: none;
+  transition: border 0.2s ease-in-out;
 }
+.input.sort-button:focus {
+  outline: none;
+  border-color: #5c7aff;
+}
+
 
 
 
