@@ -5,6 +5,17 @@
 
 
 // ==============================
+// HELPERS: HIGHLIGHT MATCHED
+// ==============================
+function highlightMatch(text, term) {
+  if (!term) return text;
+  const safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // escape special chars
+  const regex = new RegExp(`(${safeTerm})`, "ig");
+  return text.replace(regex, `<span class="highlight">$1</span>`);
+}
+
+
+// ==============================
 // INIT INVENTORY SEARCH PANEL
 // ==============================
 document.addEventListener("DOMContentLoaded", () => {
