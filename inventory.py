@@ -49,6 +49,7 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
                 lambda row: row.str.lower().str.contains(term).any(), axis=1
             )]
 
+
     # Validate sort column
     valid_sort_fields = {"QTY", "USL", "Num", "Cost"}
     if sort not in valid_sort_fields:
