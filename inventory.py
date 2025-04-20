@@ -32,11 +32,11 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
 
     term = term.strip().lower()
 
-    # Filter by USL
+    # ✅ Filter by USL
     if usl != "Any":
         df = df[df["USL"].astype(str).str.lower() == usl.lower()]
 
-    # Filter by term
+    # ✅ Apply search
     if term:
         if term.isdigit():
             df = df[df[["Num", "Old"]].astype(str).apply(
@@ -45,23 +45,25 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
         else:
             excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
             search_cols = [col for col in df.columns if col not in excluded]
-            df = df[df[search_cols].astype(str).apply(
-                lambda row: row.str.lower().str.contains(term).any(), axis=1
-            )]
 
+            print(f"Searching {len(df)} rows across: {search_cols} for term: {term}")
 
-    # Validate sort column
+            def row_matches(row):
+                return any(term in str(row[col]).lower() for col in search_cols)
+
+            df = df[df.apply(row_matches, axis=1)]
+
+    # ✅ Validate sort field
     valid_sort_fields = {"QTY", "USL", "Num", "Cost"}
     if sort not in valid_sort_fields:
         sort = "QTY"
 
-    # Validate direction
-    ascending = True if direction == "asc" else False
-
-    # Sort and limit
-    df = df.sort_values(by=sort, ascending=ascending).head(100)
+    # ✅ Sort
+    ascending = (direction == "asc")
+    if sort in df.columns:
+        df = df.sort_values(by=sort, ascending=ascending)
 
     return df[[
         "Num", "Old", "Bin", "Description", "USL",
         "QTY", "UOM", "Cost", "Group", "Cost_Center"
-    ]].to_dict(orient="records")
+    ]].head(100).to_dict(orient="records")
