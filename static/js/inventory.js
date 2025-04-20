@@ -8,10 +8,10 @@
 // HELPERS: HIGHLIGHT MATCHED
 // ==============================
 function highlightMatch(text, term) {
-  if (!term) return text;
+  if (!text || !term) return text || "";
   const safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // escape special chars
   const regex = new RegExp(`(${safeTerm})`, "ig");
-  return text.replace(regex, `<span class="highlight">$1</span>`);
+  return text.toString().replace(regex, `<span class="highlight">$1</span>`);
 }
 
 
@@ -52,7 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // ✅ Hide loading spinner
         document.getElementById("loading").style.display = "none";
 
-        if (data.length === 0) {
+        if (!Array.isArray(data) || data.length === 0) {
+          noResults.innerText = "No results found.";
           noResults.style.display = "block";
           return;
         }
@@ -73,8 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
           resultsList.appendChild(li);
         });
       })
-      .catch(() => {
+      .catch(err => {
+        console.error("Search error:", err);
         document.getElementById("loading").style.display = "none";
+        noResults.innerText = "Error retrieving results.";
         noResults.style.display = "block";
       });
   }
