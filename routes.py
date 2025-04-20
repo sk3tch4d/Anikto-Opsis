@@ -71,7 +71,11 @@ def register_routes(app):
             if term.isdigit():
                 df = df[df["Num"].astype(str).str.contains(term)]
             else:
-                df = df[df.apply(lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1)]
+                #df = df[df.apply(lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1)]
+                excluded = ["QTY", "UOM"]
+                search_cols = [col for col in df.columns if col not in excluded]
+                df = df[df[search_cols].apply(lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1)]
+
     
         df = df.sort_values(by="QTY", ascending=False).head(100)
     
