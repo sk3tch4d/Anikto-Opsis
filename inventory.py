@@ -68,7 +68,3 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
         "Num", "Old", "Bin", "Description", "USL",
         "QTY", "UOM", "Cost", "Group", "Cost_Center"
     ]].head(100).to_dict(orient="records")
-
-        "Num", "Old", "Bin", "Description", "USL",
-        "QTY", "UOM", "Cost", "Group", "Cost_Center"
-    ]].to_dict(orient="records")
