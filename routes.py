@@ -111,21 +111,33 @@ def register_routes(app):
                 if not os.path.exists(save_path):
                     file.save(save_path)
                 pdf_files.append(save_path)
-
+            
             elif ext == ".xlsx":
                 fname_lower = file.filename.lower()
+            
                 if all(keyword in fname_lower for keyword in ["cupe", "seniority", "list"]):
+                    # CUPE Seniority logic (already in your file)
                     match = re.search(r"(\d{4}-\d{2}-\d{2})", file.filename)
                     date_str = match.group(1) if match else datetime.now().strftime("%Y-%m-%d")
                     new_filename = f"CUPE-SL-{date_str}.xlsx"
-
+            
                     save_path = os.path.join("/tmp", new_filename)
                     file.save(save_path)
                     seniority_df = load_seniority_file(save_path)
                     seniority_filename = new_filename
                     app.logger.info(f"[SENIORITY] Loaded: {save_path}")
+            
+                elif "inventory" in fname_lower:
+                    save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
+                    file.save(save_path)
+                    from inventory import load_inventory_data
+                    global INVENTORY_DF
+                    INVENTORY_DF = load_inventory_data(path=save_path)
+                    app.logger.info(f"[INVENTORY] Reloaded from: {save_path}")
+            
                 else:
-                    app.logger.warning(f"[SKIPPED] Invalid seniority file: {file.filename}")
+                    app.logger.warning(f"[SKIPPED] Invalid Excel file: {file.filename}")
+
 
         for fname in existing_files:
             if fname.endswith(".pdf"):
