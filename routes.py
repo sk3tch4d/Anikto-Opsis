@@ -51,6 +51,9 @@ def register_routes(app):
     # ==============================
     @app.route("/inventory-usls")
     def inventory_usls():
+        global INVENTORY_DF
+        if INVENTORY_DF is None:
+            return jsonify({"error": "Inventory not loaded."}), 400
         usls = sorted(INVENTORY_DF["USL"].dropna().unique().tolist())
         return jsonify(usls)
 
@@ -69,17 +72,14 @@ def register_routes(app):
     
         if term:
             if term.isdigit():
-                #df = df[df["Num", "Old"].astype(str).str.contains(term)]
                 df = df[df[["Num", "Old"]].astype(str).apply(
                     lambda row: term in row.tolist(), axis=1
                 )]
             else:
-                #df = df[df.apply(lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1)]
                 excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
                 search_cols = [col for col in df.columns if col not in excluded]
                 df = df[df[search_cols].apply(lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1)]
 
-    
         df = df.sort_values(by="QTY", ascending=False).head(100)
     
         return jsonify(df[["Num", "Old", "Bin", "Description", "USL", "QTY", "UOM", "Cost", "Group", "Cost_Center"]].to_dict(orient="records"))
@@ -129,7 +129,6 @@ def register_routes(app):
                 fname_lower = file.filename.lower()
             
                 if all(keyword in fname_lower for keyword in ["cupe", "seniority", "list"]):
-                    # CUPE Seniority logic (already in your file)
                     match = re.search(r"(\d{4}-\d{2}-\d{2})", file.filename)
                     date_str = match.group(1) if match else datetime.now().strftime("%Y-%m-%d")
                     new_filename = f"CUPE-SL-{date_str}.xlsx"
@@ -159,7 +158,7 @@ def register_routes(app):
                     pdf_files.append(existing_path)
         
         if not pdf_files and seniority_df is None:
-            if 'INVENTORY_DF' in globals():
+            if INVENTORY_DF is not None:
                 return render_template("inventory.html", table=[])
             return render_template("index.html", error="No valid files selected or uploaded.")
         
@@ -168,7 +167,6 @@ def register_routes(app):
         
         output_files, stats = process_report(pdf_files)
         return render_template("arg.html", outputs=[os.path.basename(f) for f in output_files], stats=stats)
-
 
     # ==============================
     # GET: Export shift records as CSV
@@ -242,9 +240,7 @@ def register_routes(app):
     # ==============================
     @app.route("/61617")
     def inventory():
-        #return render_template("inventory.html")
-        table = get_table_data_or_none()  # hypothetical function
-        return render_template("inventory.html", table=table or [])
+        return render_template("inventory.html", table=[])
 
     # ==============================
     # GET: Quick database count check
