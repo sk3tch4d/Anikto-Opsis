@@ -13,6 +13,12 @@
   overflow: hidden;
   display: inline-block;
   position: relative;
+
+  background: linear-gradient(90deg, #4f60c9, #7289da, #4f60c9, #7683d5);
+  background-size: 600% 600%;
+  animation: gradientShift 12s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 #typed-header span {
@@ -37,7 +43,7 @@
   font-size: inherit;
   position: relative;
 
-  /* --- Gradient Text Effect (Must be here for Chrome) --- */
+  /* --- Gradient Text Effect (Duplcated for Chrome element) --- */
   background: linear-gradient(90deg, #4f60c9, #7289da, #4f60c9, #7683d5);
   background-size: 600% 600%;
   animation: gradientShift 12s ease infinite;
