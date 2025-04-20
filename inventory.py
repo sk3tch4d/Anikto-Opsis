@@ -1,12 +1,12 @@
-// ==============================
-// INVENTORY.PY
-// Process Inventory Dateset
-// ==============================
+# ==============================
+# INVENTORY LOADER
+# ==============================
 import pandas as pd
 
-// ==============================
-// INIT INVENTORY PROCESSING
-// ==============================
+
+# ==============================
+# INIT INVENTORY PROCESSING
+# ==============================
 import pandas as pd
 
 def load_inventory_data(path="Stores_Inventory_V7.7.xlsx"):
