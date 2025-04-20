@@ -22,13 +22,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("inventory-search");
   const uslFilter = document.getElementById("usl-filter");
   const sortBy = document.getElementById("sort-by");
-  const sortDirInput = document.getElementById("sort-direction");
+  const sortDirButton = document.getElementById("sort-direction");
   const resultsList = document.getElementById("inventory-results");
   const noResults = document.getElementById("no-results");
 
   let sortDirection = "desc";
 
-  // Fetch USLs for dropdown
+  // Fetch USLs
   fetch("/inventory-usls")
     .then(res => res.json())
     .then(usls => {
@@ -40,23 +40,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-  // Sort direction toggle button
-  sortDirInput.addEventListener("click", () => {
+  // Toggle sort direction
+  sortDirButton.addEventListener("click", () => {
     sortDirection = sortDirection === "desc" ? "asc" : "desc";
-    sortDirInput.textContent = sortDirection === "desc" ? "↓" : "↑";
+    sortDirButton.textContent = sortDirection === "desc" ? "↓" : "↑";
     doSearch();
   });
 
-  // Debounced search
-  let debounceTimeout;
-  searchInput.addEventListener("input", () => {
-    clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(doSearch, 250);
-  });
-
-  // Trigger search on filters
-  uslFilter.addEventListener("change", doSearch);
-  sortBy.addEventListener("change", doSearch);
 
   // ==============================
   // MAIN SEARCH FUNCTION
@@ -64,18 +54,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function doSearch() {
     const term = searchInput.value.trim();
     const usl = uslFilter.value;
-    const sort = sortBy.value;
+    const sort = sortBy?.value || "QTY";
 
     document.getElementById("loading").style.display = "block";
     resultsList.innerHTML = "";
     noResults.style.display = "none";
 
-    fetch(`/inventory-search?term=${encodeURIComponent(term)}&usl=${encodeURIComponent(usl)}&sort=${sort}&dir=${sortDirection}`)
+    fetch(`/inventory-search?term=${encodeURIComponent(term)}&usl=${encodeURIComponent(usl)}&sort=${encodeURIComponent(sort)}&dir=${encodeURIComponent(sortDirection)}`)
       .then(res => res.json())
       .then(data => {
         document.getElementById("loading").style.display = "none";
 
-        if (!Array.isArray(data) || data.length === 0) {
+        if (!data || data.length === 0) {
           noResults.style.display = "block";
           return;
         }
@@ -84,13 +74,36 @@ document.addEventListener("DOMContentLoaded", () => {
           const li = document.createElement("li");
 
           let html = `<b>${item.Old ? "Number" : "Stores Number"}:</b> ${highlightMatch(item.Num, term)}<br>`;
-          if (item.Old) html += `<b>Old:</b> ${highlightMatch(item.Old, term)}<br>`;
-          html += `<b>Description:</b> ${highlightMatch(item.Description, term)}<br>`;
-          html += `<b>Location:</b> ${highlightMatch(item.USL, term)} - ${highlightMatch(item.Bin, term)}<br>`;
-          html += `<b>Quantity:</b> ${item.QTY}<br>`;
-          html += `<b>Cost:</b> ${item.Cost} / ${highlightMatch(item.UOM, term)}<br>`;
-          if (item.Cost_Center) html += `<b>Cost Center:</b> ${highlightMatch(item.Cost_Center, term)}<br>`;
-          if (item.Group) html += `<b>Group:</b> ${highlightMatch(item.Group, term)}`;
+
+          if (item.Old?.trim()) {
+            html += `<b>Old:</b> ${highlightMatch(item.Old, term)}<br>`;
+          }
+          
+          if (item.Description?.trim()) {
+            html += `<b>Description:</b> ${highlightMatch(item.Description, term)}<br>`;
+          }
+          
+          if (item.USL?.trim() || item.Bin?.trim()) {
+            html += `<b>Location:</b>`;
+            if (item.USL?.trim()) html += ` ${highlightMatch(item.USL, term)}`;
+            if (item.Bin?.trim()) html += ` - ${highlightMatch(item.Bin, term)}`;
+            html += `<br>`;
+          }
+          
+          if (item.QTY || item.UOM?.trim()) {
+            html += `<b>Quantity:</b> ${item.QTY}`;
+            if (item.UOM?.trim()) html += ` / ${highlightMatch(item.UOM, term)}`;
+            html += `<br>`;
+          }
+          
+          if (item.Cost !== undefined && item.Cost !== null && item.Cost !== "") {
+            html += `<b>Cost:</b> ${item.Cost}<br>`;
+          }
+          
+          if (item.Group?.trim()) {
+            html += `<b>Group:</b> ${highlightMatch(item.Group, term)}`;
+          }
+
 
           li.innerHTML = html;
           resultsList.appendChild(li);
@@ -102,6 +115,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // Initial search to load something
-  doSearch();
+  searchInput.addEventListener("input", () => {
+    clearTimeout(window._searchDebounce);
+    window._searchDebounce = setTimeout(doSearch, 200);
+  });
+
+  uslFilter.addEventListener("change", doSearch);
+  if (sortBy) sortBy.addEventListener("change", doSearch);
 });
+
