@@ -182,6 +182,13 @@ def register_routes(app):
         return render_template("panel.html")
 
     # ==============================
+    # GET: Panel placeholder endpoint
+    # ==============================
+    @app.route("/61617")
+    def panel():
+        return render_template("inventory.html")
+
+    # ==============================
     # GET: Quick database count check
     # ==============================
     @app.route("/dbcheck")
