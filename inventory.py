@@ -46,15 +46,12 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
         else:
             excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
             search_cols = [col for col in df.columns if col not in excluded]
-
-            print(f"Searching {len(df)} rows across: {search_cols} for term: {term}")
-
-            def row_matches(row):
+            def row_contains_term(row):
                 return any(term in str(row[col]).lower() for col in search_cols)
+        
+            df = df[df.apply(row_contains_term, axis=1)]
 
-            df = df[df.apply(row_matches, axis=1)]
-
-            print(f"[DEBUG] {len(df)} rows after filtering term='{term}' and usl='{usl}'")
+            #print(f"[DEBUG] {len(df)} rows after filtering term='{term}' and usl='{usl}'")
 
     # ✅ Validate sort field
     valid_sort_fields = {"QTY", "USL", "Num", "Cost"}
