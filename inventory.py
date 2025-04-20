@@ -1,16 +1,44 @@
 # ==============================
-# INVENTORY LOADER
+# INVENTORY HANDLERS
 # ==============================
-import pandas as pd
 
-
-# ==============================
-# INIT INVENTORY PROCESSING
-# ==============================
 import pandas as pd
 
 def load_inventory_data(path="Stores_Inventory_V7.7.xlsx"):
     df = pd.read_excel(path).fillna("")
     df.columns = [c.strip() for c in df.columns]
     return df
-    
+
+def get_inventory_usls(df):
+    if df is None:
+        return {"error": "Inventory not loaded."}, 400
+    usls = sorted(df["USL"].dropna().unique().tolist())
+    return usls
+
+def search_inventory(df, term, usl):
+    if df is None:
+        return []
+
+    term = term.strip().lower()
+
+    if usl != "Any":
+        df = df[df["USL"].astype(str).str.lower() == usl.lower()]
+
+    if term:
+        if term.isdigit():
+            df = df[df[["Num", "Old"]].astype(str).apply(
+                lambda row: any(term in str(cell) for cell in row), axis=1
+            )]
+        else:
+            excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
+            search_cols = [col for col in df.columns if col not in excluded]
+            df = df[df[search_cols].astype(str).apply(
+                lambda row: row.str.lower().str.contains(term).any(), axis=1
+            )]
+
+    df = df.sort_values(by="QTY", ascending=False).head(100)
+
+    return df[[
+        "Num", "Old", "Bin", "Description", "USL",
+        "QTY", "UOM", "Cost", "Group", "Cost_Center"
+    ]].to_dict(orient="records")
