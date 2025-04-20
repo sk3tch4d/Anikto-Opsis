@@ -10,7 +10,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("inventory-search");
   const uslFilter = document.getElementById("usl-filter");
-  const resultsList = document.getElementById("results-list");
+  const resultsList = document.getElementById("inventory-results");
   const noResults = document.getElementById("no-results");
 
   // Fetch USLs for dropdown
