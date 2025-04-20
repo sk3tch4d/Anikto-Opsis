@@ -26,6 +26,9 @@ def get_inventory_usls(df):
 # ==============================
 # SEARCH INVENTORY
 # ==============================
+# ==============================
+# SEARCH INVENTORY
+# ==============================
 def search_inventory(df, term, usl, sort="QTY", direction="desc"):
     if df is None:
         return []
@@ -36,7 +39,6 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
     if usl != "Any":
         df = df[df["USL"].astype(str).str.strip().str.upper() == usl.strip().upper()]
 
-
     # ✅ Apply search
     if term:
         if term.isdigit():
@@ -44,14 +46,14 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
                 lambda row: any(term in str(cell) for cell in row), axis=1
             )]
         else:
-            excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
-            search_cols = [col for col in df.columns if col not in excluded]
-            def row_contains_term(row):
-                return any(term in str(row[col]).lower() for col in search_cols)
-        
-            df = df[df.apply(row_contains_term, axis=1)]
+            excluded = {"QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"}
+            search_cols = [col for col in df.columns if col not in excluded and df[col].dtype == object]
 
-            #print(f"[DEBUG] {len(df)} rows after filtering term='{term}' and usl='{usl}'")
+            # Ensure everything is a string and lowercase for matching
+            df = df[df[search_cols].apply(
+                lambda row: any(term in str(val).lower() for val in row if pd.notna(val)),
+                axis=1
+            )]
 
     # ✅ Validate sort field
     valid_sort_fields = {"QTY", "USL", "Num", "Cost"}
@@ -67,3 +69,4 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
         "Num", "Old", "Bin", "Description", "USL",
         "QTY", "UOM", "Cost", "Group", "Cost_Center"
     ]].head(100).to_dict(orient="records")
+
