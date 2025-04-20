@@ -26,8 +26,14 @@
           <select id="usl-filter" class="input full-width" style="margin-top: 0.5rem;">
             <option value="Any">Any Location</option>
           </select>
-          <div id="inventory-results" style="margin-top: 1rem;"></div>
-          <p id="no-results" class="error-text" style="display: none; text-align: center; margin-top: 1rem;">No results found.</p>
+          <!-- LOADING SPINNER -->
+          <div id="loading">
+            <div class="spinner"></div>
+          </div>
+          <ul id="inventory-results" style="margin-top: 1rem;"></ul>
+          <p id="no-results" class="error-text" style="display: none; text-align: center; margin-top: 1rem;">
+            No results found.
+          </p>
         </div>
       </div>
 
