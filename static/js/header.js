@@ -1,5 +1,5 @@
 // ==============================
-// (ROTATING) TYPEWRITER EFFECT
+// SIMPLE TYPEWRITER EFFECT
 // ==============================
 export function initTypewriter() {
   const el = document.getElementById("typed-text");
@@ -15,7 +15,5 @@ export function initTypewriter() {
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(type, 100);
-  });
+  setTimeout(type, 100);
 }
