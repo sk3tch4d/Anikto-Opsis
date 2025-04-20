@@ -29,14 +29,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const term = searchInput.value.trim();
       const usl = uslFilter.value;
     
-      document.getElementById("inventory-loading").style.display = "block";
+      // 🔄 Show loading spinner
+      document.getElementById("loading").style.display = "block";
+    
       resultsList.innerHTML = "";
       noResults.style.display = "none";
     
       fetch(`/inventory-search?term=${encodeURIComponent(term)}&usl=${encodeURIComponent(usl)}`)
         .then(res => res.json())
         .then(data => {
-          document.getElementById("inventory-loading").style.display = "none";
+          // ✅ Hide loading spinner
+          document.getElementById("loading").style.display = "none";
     
           if (data.length === 0) {
             noResults.style.display = "block";
@@ -57,10 +60,11 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         })
         .catch(() => {
-          document.getElementById("inventory-loading").style.display = "none";
+          document.getElementById("loading").style.display = "none";
           noResults.style.display = "block";
         });
     }
+
 
   searchInput.addEventListener("input", doSearch);
   uslFilter.addEventListener("change", doSearch);
