@@ -144,15 +144,18 @@ def register_routes(app):
                 existing_path = os.path.join(UPLOAD_FOLDER, fname)
                 if os.path.exists(existing_path):
                     pdf_files.append(existing_path)
-
+        
         if not pdf_files and seniority_df is None:
+            if 'INVENTORY_DF' in globals():
+                return render_template("inventory.html", table=[])
             return render_template("index.html", error="No valid files selected or uploaded.")
-
+        
         if seniority_df is not None and not pdf_files:
             return render_template("seniority.html", table=seniority_df.to_dict(orient="records"), filename=seniority_filename)
-
+        
         output_files, stats = process_report(pdf_files)
         return render_template("arg.html", outputs=[os.path.basename(f) for f in output_files], stats=stats)
+
 
     # ==============================
     # GET: Export shift records as CSV
