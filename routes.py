@@ -58,6 +58,10 @@ def register_routes(app):
 
     @app.route("/inventory-search")
     def inventory_search():
+        global INVENTORY_DF
+        if "INVENTORY_DF" not in globals():
+            return jsonify({"error": "No inventory loaded yet."}), 400
+
         term = request.args.get("term", "").strip().lower()
         usl = request.args.get("usl", "Any")
 
@@ -92,7 +96,7 @@ def register_routes(app):
         return render_template("index.html", recent_pdfs=recent_pdfs)
 
     # ==============================
-    # POST: Handle PDF and XLSX uploads
+    # POST: HANDLE FILE UPLOADS
     # ==============================
     @app.route("/", methods=["POST"])
     def process_index():
@@ -127,7 +131,7 @@ def register_routes(app):
                     seniority_df = load_seniority_file(save_path)
                     seniority_filename = new_filename
                     app.logger.info(f"[SENIORITY] Loaded: {save_path}")
-            
+        
                 elif "inventory" in fname_lower:
                     save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
                     file.save(save_path)
