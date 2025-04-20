@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Catalog</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
+  <script src="/static/js/scripts.js" type="module"></script>
+</head>
+<body>
+  <h1 id="typed-header">
+    <span id="typed-text" data-title="Inventory Catalog|Anikto Opsis"></span>
+  </h1>
+
+    <!-- ======== PANEL CONTAINER ======== -->
+    <div id="panel-container">
+
+      <!-- ======== STATS ======== -->
+      <div class="panel panel-animate" id="stats">
+        <div class="panel-header" onclick="togglePanel(this)">Search Catalog</div>
+        <div class="panel-body">
+          <ul style="list-style: none; padding-left: 0;">
+          </ul>
+        </div>
+      </div>
+
+      <!-- ======== STATS ======== -->
+      <div class="panel panel-animate" id="stats">
+        <div class="panel-header" onclick="togglePanel(this)">Stats</div>
+        <div class="panel-body">
+          <ul style="list-style: none; padding-left: 0;">
+          </ul>
+        </div>
+      </div>
+
+      <!-- ======== DOWNLOADS ======== -->
+      <div class="panel panel-animate" id="downloads">
+        <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
+        <div class="panel-body">
+            <ul class="downloads">
+            </ul>
+        </div>
+      </div>
+
+      <!-- ======== SUBMIT ======== -->
+      <div class="panel panel-animate">
+        <form action="{{ url_for('index') }}" method="get">
+          <button type="submit" class="button full-width">Process Another</button>
+        </form>
+      </div>
+
+    </div> <!-- END #panel-container -->
+
+  </div> <!-- END #panel-wrapper -->
+</body>
+</html>
