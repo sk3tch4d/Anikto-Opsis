@@ -3,6 +3,7 @@
 // Position List Panel Logic
 // ==============================
 import { searchFromStat, normalize } from './search.js';
+import posAdjustments from './pos_adjust.json' assert { type: 'json' };
 
 // ==============================
 // INIT POSITION PANEL
@@ -12,14 +13,6 @@ export function populatePositionList() {
   const data = window.seniorityData || [];
   if (!container || !data.length) return;
 
-  const abbreviations = {
-    "RPN": "Registered Practical Nurse",
-    "PCA": "Patient Care Assistant",
-    "EA": "Environmental Assistant",
-    "Asst": "Assistant",
-    // Add more mappings here
-  };
-
   const positionMap = {};
 
   data.forEach(row => {
@@ -27,16 +20,21 @@ export function populatePositionList() {
 
     let base = raw
       .split("-")[0]
-      .replace(/\b(PT|FT|CASUAL|CAS|HOLD|)\b/gi, "") // Strip employment types / Remove Problem Chars
-      .replace("Reg P", "Registered P") // Modify Problem Names
-      .replace("Reg. P", "Registered P") // Modify Problem Names
-      .replace("Enviro Serv", "Environmental") // Modify Problem Names
+      .replace(/\b(PT|FT|CASUAL|CAS|HOLD|)\b/gi, "")
       .trim();
 
-    // Convert abbreviation to full form
+    // Apply any replacements from JSON (case-insensitive matching)
+    for (const [key, value] of Object.entries(posAdjustments)) {
+      const pattern = new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+      if (pattern.test(base)) {
+        base = base.replace(pattern, value);
+      }
+    }
+
+    // Convert abbreviation to full form if exact match after cleanup
     const upper = base.toUpperCase();
-    if (abbreviations[upper]) {
-      base = abbreviations[upper];
+    if (posAdjustments[upper]) {
+      base = posAdjustments[upper];
     }
 
     if (!base) return;
