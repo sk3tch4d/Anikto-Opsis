@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("inventory-search");
   const uslFilter = document.getElementById("usl-filter");
   const sortBy = document.getElementById("sort-by");
-  const sortDirButton = document.getElementById("sort-dir");
+  const sortDirInput = document.getElementById("sort-direction");
   const resultsList = document.getElementById("inventory-results");
   const noResults = document.getElementById("no-results");
 
@@ -41,13 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   // Toggle sort direction
-  let sortDirection = "desc";
-  const sortDirInput = document.getElementById("sort-direction");
   sortDirInput.addEventListener("click", () => {
     sortDirection = sortDirection === "desc" ? "asc" : "desc";
     sortDirInput.value = sortDirection === "desc" ? "↓" : "↑";
     doSearch();
   });
+});
+
 
 
   function doSearch() {
