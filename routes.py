@@ -186,7 +186,10 @@ def register_routes(app):
     # ==============================
     @app.route("/61617")
     def inventory():
-        return render_template("inventory.html")
+        #return render_template("inventory.html")
+        table = get_table_data_or_none()  # hypothetical function
+        return render_template("inventory.html", table=table or [])
+
 
     # ==============================
     # GET: Quick database count check
