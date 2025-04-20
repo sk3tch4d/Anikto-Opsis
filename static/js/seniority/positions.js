@@ -16,6 +16,7 @@ export function populatePositionList() {
     "RPN": "Registered Practical Nurse",
     "PCA": "Patient Care Assistant",
     "EA": "Environmental Assistant",
+    "Asst": "Assistant",
     // Add more mappings here
   };
 
@@ -29,6 +30,7 @@ export function populatePositionList() {
       .replace(/\b(PT|FT|CASUAL|CAS|HOLD|)\b/gi, "") // Strip employment types / Remove Problem Chars
       .replace("Reg P", "Registered P") // Modify Problem Names
       .replace("Reg. P", "Registered P") // Modify Problem Names
+      .replace("Enviro Serv", "Environmental") // Modify Problem Names
       .trim();
 
     // Convert abbreviation to full form
