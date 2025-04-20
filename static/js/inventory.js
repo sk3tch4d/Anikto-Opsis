@@ -99,6 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
           if (item.Cost !== undefined && item.Cost !== null && item.Cost !== "") {
             html += `<b>Cost:</b> ${item.Cost}<br>`;
           }
+
+          if (item.Cost_Center?.trim()) {
+            html += `<b>Cost Center:</b> ${highlightMatch(item.Cost_Center, term)}<br>`;
+          }
           
           if (item.Group?.trim()) {
             html += `<b>Group:</b> ${highlightMatch(item.Group, term)}`;
