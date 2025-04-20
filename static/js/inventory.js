@@ -60,14 +60,14 @@ document.addEventListener("DOMContentLoaded", () => {
           data.forEach(item => {
             const li = document.createElement("li");
     
-            let html = `<b>${item.Old ? "Number" : "Stores Number"}:</b> ${item.Num}<br>`;
-            if (item.Old) html += `<b>Old:</b> ${item.Old}<br>`;
-            html += `<b>Description:</b> ${item.Description}<br>`;
-            html += `<b>Location:</b> ${item.USL} - ${item.Bin}<br>`;
+            let html = `<b>${item.Old ? "Number" : "Stores Number"}:</b> ${highlightMatch(item.Num, term)}<br>`;
+            if (item.Old) html += `<b>Old:</b> ${highlightMatch(item.Old, term)}<br>`;
+            html += `<b>Description:</b> ${highlightMatch(item.Description, term)}<br>`;
+            html += `<b>Location:</b> ${highlightMatch(item.USL, term)} - ${highlightMatch(item.Bin, term)}<br>`;
             html += `<b>Quantity:</b> ${item.QTY}<br>`;
-            html += `<b>Quantity:</b> ${item.Cost} / ${item.UOM}<br>`;
-            if (item.Cost_Center) html += `<b>Cost Center:</b> ${item.Cost_Center}<br>`;
-            if (item.Group) html += `<b>Group:</b> ${item.Group}`;
+            html += `<b>Cost:</b> ${item.Cost} / ${highlightMatch(item.UOM, term)}<br>`;
+            if (item.Cost_Center) html += `<b>Cost Center:</b> ${highlightMatch(item.Cost_Center, term)}<br>`;
+            if (item.Group) html += `<b>Group:</b> ${highlightMatch(item.Group, term)}`;
     
             li.innerHTML = html;
             resultsList.appendChild(li);
