@@ -147,6 +147,7 @@ export function doSenioritySearch() {
 
   renderResults(matches);
   populateStats(matches);
+  window.originalSearchResults = matches;
   window.currentSearchResults = matches;
 }
 
