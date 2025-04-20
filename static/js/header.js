@@ -26,7 +26,7 @@ export function initTypewriter() {
       typing = true;
       setTimeout(typeLoop, 500);
     } else {
-      setTimeout(typeLoop, typing ? 100 : 40);
+      setTimeout(typeLoop, typing ? 80 : 30);
     }
   }
 
