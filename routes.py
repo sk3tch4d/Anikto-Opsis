@@ -185,7 +185,7 @@ def register_routes(app):
     # GET: Panel placeholder endpoint
     # ==============================
     @app.route("/61617")
-    def panel():
+    def inventory():
         return render_template("inventory.html")
 
     # ==============================
