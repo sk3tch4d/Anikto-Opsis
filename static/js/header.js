@@ -20,13 +20,13 @@ export function initTypewriter() {
 
     if (typing && charIndex > word.length) {
       typing = false;
-      setTimeout(typeLoop, 1000);
+      setTimeout(typeLoop, 4000);
     } else if (!typing && charIndex === 0) {
       wordIndex = (wordIndex + 1) % words.length;
       typing = true;
-      setTimeout(typeLoop, 400);
+      setTimeout(typeLoop, 500);
     } else {
-      setTimeout(typeLoop, typing ? 100 : 50);
+      setTimeout(typeLoop, typing ? 120 : 60);
     }
   }
 
