@@ -60,8 +60,11 @@ def register_routes(app):
         global INVENTORY_DF
         term = request.args.get("term", "")
         usl = request.args.get("usl", "Any")
-        results = search_inventory(INVENTORY_DF, term, usl)
+        sort = request.args.get("sort", "QTY")
+        direction = request.args.get("dir", "desc")
+        results = search_inventory(INVENTORY_DF, term, usl, sort, direction)
         return jsonify(results)
+
 
     # ==============================
     # GET: Render index upload page
