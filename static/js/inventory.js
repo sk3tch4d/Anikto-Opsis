@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
         data.forEach(item => {
           const li = document.createElement("li");
 
-          let html = `<b>${item.Old ? "Number" : "Stores Number"}:</b> ${highlightMatch(item.Num, term)}<br>`;
+          let html = `<b>${item.Old ? "Number" : "Stores Number"}:</b> ${highlightMatch(String(item.Num ?? ""), term)}<br>`;
 
           if (item.Old?.trim()) {
             html += `<b>Old:</b> ${highlightMatch(item.Old, term)}<br>`;
