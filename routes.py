@@ -11,10 +11,9 @@
 import os
 import re
 from flask import (
-    Flask,
-    request, 
-    render_template, 
-    jsonify, 
+    request,
+    render_template,
+    jsonify,
     send_file,
 )
 from dataman import (
@@ -26,7 +25,7 @@ from dataman import (
 from report import process_report, get_working_on_date
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
-from inventory import load_inventory_data
+from inventory import load_inventory_data, get_inventory_usls, search_inventory
 from datetime import datetime
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
@@ -40,7 +39,6 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # ==============================
 def register_routes(app):
 
-    # Reformat name from "Last, First" to "First Last"
     @app.template_filter("reorder_name")
     def reorder_name(value):
         parts = value.split(", ")
@@ -52,42 +50,18 @@ def register_routes(app):
     @app.route("/inventory-usls")
     def inventory_usls():
         global INVENTORY_DF
-        if INVENTORY_DF is None:
-            return jsonify({"error": "Inventory not loaded."}), 400
-        usls = sorted(INVENTORY_DF["USL"].dropna().unique().tolist())
-        return jsonify(usls)
+        result = get_inventory_usls(INVENTORY_DF)
+        if isinstance(result, tuple):
+            return jsonify(result[0]), result[1]
+        return jsonify(result)
 
     @app.route("/inventory-search")
     def inventory_search():
         global INVENTORY_DF
-        if INVENTORY_DF is None:
-            return jsonify({"error": "Inventory not loaded."}), 400
-
-        term = request.args.get("term", "").strip().lower()
+        term = request.args.get("term", "")
         usl = request.args.get("usl", "Any")
-
-        df = INVENTORY_DF
-        if usl != "Any":
-            df = df[df["USL"].str.lower() == usl.lower()]
-
-        if term:
-            if term.isdigit():
-                df = df[df[["Num", "Old"]].astype(str).apply(
-                    lambda row: any(term in str(cell) for cell in row), axis=1
-                )]
-            else:
-                excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
-                search_cols = [col for col in df.columns if col not in excluded]
-                df = df[df[search_cols].apply(
-                    lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1
-                )]
-
-        df = df.sort_values(by="QTY", ascending=False).head(100)
-
-        return jsonify(df[[
-            "Num", "Old", "Bin", "Description", "USL",
-            "QTY", "UOM", "Cost", "Group", "Cost_Center"
-        ]].to_dict(orient="records"))
+        results = search_inventory(INVENTORY_DF, term, usl)
+        return jsonify(results)
 
     # ==============================
     # GET: Render index upload page
@@ -109,7 +83,7 @@ def register_routes(app):
         return render_template("index.html", recent_pdfs=recent_pdfs)
 
     # ==============================
-    # POST: HANDLE FILE UPLOADS
+    # POST: Handle file uploads
     # ==============================
     @app.route("/", methods=["POST"])
     def process_index():
@@ -122,6 +96,7 @@ def register_routes(app):
 
         for file in uploaded_files:
             ext = os.path.splitext(file.filename)[1].lower()
+            fname_lower = file.filename.lower()
 
             if ext == ".pdf":
                 filename = file.filename
@@ -131,8 +106,6 @@ def register_routes(app):
                 pdf_files.append(save_path)
 
             elif ext == ".xlsx":
-                fname_lower = file.filename.lower()
-
                 if all(keyword in fname_lower for keyword in ["cupe", "seniority", "list"]):
                     match = re.search(r"(\d{4}-\d{2}-\d{2})", file.filename)
                     date_str = match.group(1) if match else datetime.now().strftime("%Y-%m-%d")
@@ -147,7 +120,6 @@ def register_routes(app):
                 elif "inventory" in fname_lower:
                     save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
                     file.save(save_path)
-                    from inventory import load_inventory_data
                     global INVENTORY_DF
                     INVENTORY_DF = load_inventory_data(path=save_path)
                     app.logger.info(f"[INVENTORY] Reloaded from: {save_path}")
@@ -173,37 +145,26 @@ def register_routes(app):
         return render_template("arg.html", outputs=[os.path.basename(f) for f in output_files], stats=stats)
 
     # ==============================
-    # GET: Export shift records as CSV
+    # Export Routes
     # ==============================
     @app.route("/export/shifts.csv")
     def handle_export_csv():
         return export_shifts_csv()
 
-    # ==============================
-    # GET: Export shift records as JSON
-    # ==============================
     @app.route("/export/shifts.json")
     def handle_export_json():
         return export_shifts_json()
 
-    # ==============================
-    # POST: Import shift records from JSON
-    # ==============================
     @app.route("/import/shifts", methods=["POST"])
     def handle_import_json():
-        print("[INFO] /import/shifts called")
         return import_shifts_from_json()
 
-    # ==============================
-    # POST: Import shift records from CSV
-    # ==============================
     @app.route("/import/shifts.csv", methods=["POST"])
     def handle_import_csv():
-        print("[INFO] /import/shifts.csv called")
         return import_shifts_from_csv()
 
     # ==============================
-    # GET: Working employees on specific date
+    # Working Date API
     # ==============================
     @app.route("/api/working_on_date")
     def working_on_date():
@@ -222,7 +183,7 @@ def register_routes(app):
         return jsonify(result)
 
     # ==============================
-    # GET: Download processed file
+    # Download Route
     # ==============================
     @app.route("/download/<filename>")
     def download(filename):
@@ -233,21 +194,18 @@ def register_routes(app):
             return "File not found", 404
 
     # ==============================
-    # GET: Panel placeholder endpoint
+    # Panel Routes
     # ==============================
     @app.route("/1902")
     def panel():
         return render_template("panel.html")
 
-    # ==============================
-    # GET: Panel placeholder endpoint
-    # ==============================
     @app.route("/61617")
     def inventory():
         return render_template("inventory.html", table=[])
 
     # ==============================
-    # GET: Quick database count check
+    # DB Check
     # ==============================
     @app.route("/dbcheck")
     def dbcheck():
