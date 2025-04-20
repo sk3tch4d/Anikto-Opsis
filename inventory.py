@@ -34,7 +34,8 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
 
     # ✅ Filter by USL
     if usl != "Any":
-        df = df[df["USL"].astype(str).str.lower() == usl.lower()]
+        df = df[df["USL"].astype(str).str.strip().str.upper() == usl.strip().upper()]
+
 
     # ✅ Apply search
     if term:
@@ -52,6 +53,8 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
                 return any(term in str(row[col]).lower() for col in search_cols)
 
             df = df[df.apply(row_matches, axis=1)]
+
+            print(f"[DEBUG] {len(df)} rows after filtering term='{term}' and usl='{usl}'")
 
     # ✅ Validate sort field
     valid_sort_fields = {"QTY", "USL", "Num", "Cost"}
