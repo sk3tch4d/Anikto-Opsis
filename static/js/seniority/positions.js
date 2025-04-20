@@ -27,8 +27,8 @@ export function populatePositionList() {
     let base = raw
       .split("-")[0]
       .replace(/\b(PT|FT|CASUAL|CAS|HOLD|)\b/gi, "") // Strip employment types / Remove Problem Chars
-      .replace(/\b("Reg P")\b/gi, "Registered P") // Modify Problem Names
-      .replace(/\b("Reg. P")\b/gi, "Registered P") // Modify Problem Names
+      .replace("Reg P", "Registered P") // Modify Problem Names
+      .replace("Reg. P", "Registered P") // Modify Problem Names
       .trim();
 
     // Convert abbreviation to full form
