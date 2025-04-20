@@ -4,3 +4,12 @@
   .button { padding: 0.6rem; }
   li { padding: 0.6rem; }
 }
+
+/* Used in Inventory */
+.highlight {
+  background-color: #7289da44;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 0 2px;
+  border-radius: 2px;
+}
