@@ -69,7 +69,10 @@ def register_routes(app):
     
         if term:
             if term.isdigit():
-                df = df[df["Num", "Old"].astype(str).str.contains(term)]
+                #df = df[df["Num", "Old"].astype(str).str.contains(term)]
+                df = df[df[["Num", "Old"]].astype(str).apply(
+                    lambda row: term in row.tolist(), axis=1
+                )]
             else:
                 #df = df[df.apply(lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1)]
                 excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
