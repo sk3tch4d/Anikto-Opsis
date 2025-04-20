@@ -25,34 +25,42 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-  function doSearch() {
-    const term = searchInput.value.trim();
-    const usl = uslFilter.value;
-
-    fetch(`/inventory-search?term=${encodeURIComponent(term)}&usl=${encodeURIComponent(usl)}`)
-      .then(res => res.json())
-      .then(data => {
-        resultsList.innerHTML = "";
-        if (data.length === 0) {
+    function doSearch() {
+      const term = searchInput.value.trim();
+      const usl = uslFilter.value;
+    
+      document.getElementById("inventory-loading").style.display = "block";
+      resultsList.innerHTML = "";
+      noResults.style.display = "none";
+    
+      fetch(`/inventory-search?term=${encodeURIComponent(term)}&usl=${encodeURIComponent(usl)}`)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("inventory-loading").style.display = "none";
+    
+          if (data.length === 0) {
+            noResults.style.display = "block";
+            return;
+          }
+    
+          data.forEach(item => {
+            const li = document.createElement("li");
+    
+            let html = `<b>${item.Old ? "Number" : "Stores Number"}:</b> ${item.Num}<br>`;
+            if (item.Old) html += `<b>Old:</b> ${item.Old}<br>`;
+            html += `<b>Description:</b> ${item.Description}<br>`;
+            html += `<b>Location:</b> ${item.USL}<br>`;
+            html += `<b>Quantity:</b> ${item.QTY} /${item.UOM}`;
+    
+            li.innerHTML = html;
+            resultsList.appendChild(li);
+          });
+        })
+        .catch(() => {
+          document.getElementById("inventory-loading").style.display = "none";
           noResults.style.display = "block";
-          return;
-        }
-        noResults.style.display = "none";
-
-        data.forEach(item => {
-          const li = document.createElement("li");
-
-          let html = `<b>${item.Old ? "Number" : "Stores Number"}:</b> ${item.Num}<br>`;
-          if (item.Old) html += `<b>Old:</b> ${item.Old}<br>`;
-          html += `<b>Description:</b> ${item.Description}<br>`;
-          html += `<b>Location:</b> ${item.USL}<br>`;
-          html += `<b>Quantity:</b> ${item.QTY} /${item.UOM}`;
-
-          li.innerHTML = html;
-          resultsList.appendChild(li);
         });
-      });
-  }
+    }
 
   searchInput.addEventListener("input", doSearch);
   uslFilter.addEventListener("change", doSearch);
