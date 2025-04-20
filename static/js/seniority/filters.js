@@ -53,3 +53,15 @@ function applyFilters() {
   renderResults(filtered);
   populateStats(filtered);
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.getElementById("filter-toggle-btn");
+  const container = document.getElementById("filter-container");
+
+  if (!toggleBtn || !container) return;
+
+  toggleBtn.addEventListener("click", () => {
+    container.classList.toggle("visible");
+  });
+});
