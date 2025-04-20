@@ -11,6 +11,7 @@
 import os
 import re
 from flask import (
+    Flask,
     request, 
     render_template, 
     jsonify, 
@@ -25,6 +26,7 @@ from dataman import (
 from report import process_report, get_working_on_date
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
+from inventory import load_inventory_data
 from datetime import datetime
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
@@ -42,6 +44,32 @@ def register_routes(app):
     def reorder_name(value):
         parts = value.split(", ")
         return f"{parts[1]} {parts[0]}" if len(parts) == 2 else value
+
+    # ==============================
+    # INVENTORY SETUP & API
+    # ==============================
+    INVENTORY_DF = load_inventory_data()
+    
+    @app.route("/inventory-usls")
+    def inventory_usls():
+        usls = sorted(INVENTORY_DF["USL"].dropna().unique().tolist())
+        return jsonify(usls)
+
+    @app.route("/inventory-search")
+    def inventory_search():
+        term = request.args.get("term", "").strip().lower()
+        usl = request.args.get("usl", "Any")
+
+        df = INVENTORY_DF
+        if usl != "Any":
+            df = df[df["USL"].str.lower() == usl.lower()]
+
+        if term:
+            df = df[df.apply(lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1)]
+
+        df = df.sort_values(by="QTY", ascending=False).head(100)
+
+        return jsonify(df[["Num", "Old", "Description", "USL", "QTY", "UOM"]].to_dict(orient="records"))
 
     # ==============================
     # GET: Render index upload page
@@ -189,7 +217,6 @@ def register_routes(app):
         #return render_template("inventory.html")
         table = get_table_data_or_none()  # hypothetical function
         return render_template("inventory.html", table=table or [])
-
 
     # ==============================
     # GET: Quick database count check
