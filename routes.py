@@ -46,10 +46,11 @@ def register_routes(app):
         return f"{parts[1]} {parts[0]}" if len(parts) == 2 else value
 
     # ==============================
-    # INVENTORY SETUP & API
+    # INVENTORY API
     # ==============================
-    INVENTORY_DF = load_inventory_data()
-    
+    if INVENTORY_DF is None:
+        return jsonify({"error": "Inventory data not loaded."}), 400
+
     @app.route("/inventory-usls")
     def inventory_usls():
         usls = sorted(INVENTORY_DF["USL"].dropna().unique().tolist())
