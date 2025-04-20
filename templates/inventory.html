@@ -6,14 +6,12 @@
   <title>Inventory Catalog</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
   <script src="/static/js/scripts.js" type="module"></script>
+  <script defer src="/static/js/inventory.js"></script>
 </head>
 <body>
   <h1 id="typed-header">
     <span id="typed-text" data-title="Inventory Catalog|Anikto Opsis"></span>
   </h1>
-
-  <!-- Inject parsed data for JS -->
-  <script>window.seniorityData = {{ table | tojson }};</script>
 
   <div id="panel-wrapper">
     <div id="panel-container">
@@ -25,12 +23,14 @@
         <div class="panel-header" onclick="togglePanel(this)">Search Catalog</div>
         <div class="panel-body scrollable-panel">
           <input id="inventory-search" class="input full-width" placeholder="Search..." />
-          <button id="inventory-search-button" class="button full-width" style="margin-top: 0.5rem;">Search</button>
+          <select id="usl-filter" class="input full-width" style="margin-top: 0.5rem;">
+            <option value="Any">Any Location</option>
+          </select>
           <div id="inventory-results" style="margin-top: 1rem;"></div>
+          <p id="no-results" class="error-text" style="display: none; text-align: center; margin-top: 1rem;">No results found.</p>
         </div>
       </div>
 
-  
       <!-- ============================= -->
       <!-- PANEL: SEARCH STATS -->
       <!-- ============================= -->
@@ -38,13 +38,12 @@
         <div class="panel-header" onclick="togglePanel(this)">Statistics</div>
         <div class="panel-body">
           <ul style="list-style: none; padding-left: 0;">
-              <div id="inventory-stats" style="line-height: 1.8; text-align: center;">
-                <!-- JS-populated -->
-              </div>
+            <div id="inventory-stats" style="line-height: 1.8; text-align: center;">
+              <!-- JS-populated -->
+            </div>
           </ul>
         </div>
       </div>
-
 
       <!-- ============================= -->
       <!-- PANEL: DOWNLOADS -->
@@ -57,7 +56,6 @@
           </ul>
         </div>
       </div>
-
 
       <!-- ============================= -->
       <!-- PANEL: RETURN -->
