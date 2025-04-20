@@ -40,24 +40,33 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-  // Toggle sort direction
+  // Sort direction toggle button
   sortDirInput.addEventListener("click", () => {
     sortDirection = sortDirection === "desc" ? "asc" : "desc";
-    sortDirInput.value = sortDirection === "desc" ? "↓" : "↑";
+    sortDirInput.textContent = sortDirection === "desc" ? "↓" : "↑";
     doSearch();
   });
-});
 
+  // Debounced search
+  let debounceTimeout;
+  searchInput.addEventListener("input", () => {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(doSearch, 250);
+  });
 
+  // Trigger search on filters
+  uslFilter.addEventListener("change", doSearch);
+  sortBy.addEventListener("change", doSearch);
 
+  // ==============================
+  // MAIN SEARCH FUNCTION
+  // ==============================
   function doSearch() {
     const term = searchInput.value.trim();
     const usl = uslFilter.value;
     const sort = sortBy.value;
 
-    // 🔄 Show loading spinner
     document.getElementById("loading").style.display = "block";
-
     resultsList.innerHTML = "";
     noResults.style.display = "none";
 
@@ -66,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(data => {
         document.getElementById("loading").style.display = "none";
 
-        if (data.length === 0) {
+        if (!Array.isArray(data) || data.length === 0) {
           noResults.style.display = "block";
           return;
         }
@@ -93,14 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // Debounced search
-  let debounceTimeout;
-  searchInput.addEventListener("input", () => {
-    clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(doSearch, 250);
-  });
-
-  // Immediate search on filter change
-  uslFilter.addEventListener("change", doSearch);
-  sortBy.addEventListener("change", doSearch);
+  // Initial search to load something
+  doSearch();
 });
