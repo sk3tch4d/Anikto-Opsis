@@ -75,7 +75,7 @@ def register_routes(app):
     
         df = df.sort_values(by="QTY", ascending=False).head(100)
     
-        return jsonify(df[["Num", "Old", "Bin", "Description", "USL", "QTY", "UOM"]].to_dict(orient="records"))
+        return jsonify(df[["Num", "Old", "Bin", "Description", "USL", "QTY", "UOM", "Group"]].to_dict(orient="records"))
 
     # ==============================
     # GET: Render index upload page
