@@ -57,21 +57,24 @@ def register_routes(app):
     @app.route("/inventory-search")
     def inventory_search():
         global INVENTORY_DF
-        if "INVENTORY_DF" not in globals():
-            return jsonify({"error": "No inventory loaded yet."}), 400
-
+        if INVENTORY_DF is None:
+            return jsonify({"error": "Inventory not loaded."}), 400
+    
         term = request.args.get("term", "").strip().lower()
         usl = request.args.get("usl", "Any")
-
+    
         df = INVENTORY_DF
         if usl != "Any":
             df = df[df["USL"].str.lower() == usl.lower()]
-
+    
         if term:
-            df = df[df.apply(lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1)]
-
+            if term.isdigit():
+                df = df[df["Num"].astype(str).str.contains(term)]
+            else:
+                df = df[df.apply(lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1)]
+    
         df = df.sort_values(by="QTY", ascending=False).head(100)
-
+    
         return jsonify(df[["Num", "Old", "Description", "USL", "QTY", "UOM"]].to_dict(orient="records"))
 
     # ==============================
