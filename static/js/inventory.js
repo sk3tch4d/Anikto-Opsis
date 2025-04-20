@@ -36,50 +36,56 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    function doSearch() {
-      const term = searchInput.value.trim();
-      const usl = uslFilter.value;
-    
-      // 🔄 Show loading spinner
-      document.getElementById("loading").style.display = "block";
-    
-      resultsList.innerHTML = "";
-      noResults.style.display = "none";
-    
-      fetch(`/inventory-search?term=${encodeURIComponent(term)}&usl=${encodeURIComponent(usl)}`)
-        .then(res => res.json())
-        .then(data => {
-          // ✅ Hide loading spinner
-          document.getElementById("loading").style.display = "none";
-    
-          if (data.length === 0) {
-            noResults.style.display = "block";
-            return;
-          }
-    
-          data.forEach(item => {
-            const li = document.createElement("li");
-    
-            let html = `<b>${item.Old ? "Number" : "Stores Number"}:</b> ${highlightMatch(item.Num, term)}<br>`;
-            if (item.Old) html += `<b>Old:</b> ${highlightMatch(item.Old, term)}<br>`;
-            html += `<b>Description:</b> ${highlightMatch(item.Description, term)}<br>`;
-            html += `<b>Location:</b> ${highlightMatch(item.USL, term)} - ${highlightMatch(item.Bin, term)}<br>`;
-            html += `<b>Quantity:</b> ${item.QTY}<br>`;
-            html += `<b>Cost:</b> ${item.Cost} / ${highlightMatch(item.UOM, term)}<br>`;
-            if (item.Cost_Center) html += `<b>Cost Center:</b> ${highlightMatch(item.Cost_Center, term)}<br>`;
-            if (item.Group) html += `<b>Group:</b> ${highlightMatch(item.Group, term)}`;
-    
-            li.innerHTML = html;
-            resultsList.appendChild(li);
-          });
-        })
-        .catch(() => {
-          document.getElementById("loading").style.display = "none";
+  function doSearch() {
+    const term = searchInput.value.trim();
+    const usl = uslFilter.value;
+
+    // 🔄 Show loading spinner
+    document.getElementById("loading").style.display = "block";
+
+    resultsList.innerHTML = "";
+    noResults.style.display = "none";
+
+    fetch(`/inventory-search?term=${encodeURIComponent(term)}&usl=${encodeURIComponent(usl)}`)
+      .then(res => res.json())
+      .then(data => {
+        // ✅ Hide loading spinner
+        document.getElementById("loading").style.display = "none";
+
+        if (data.length === 0) {
           noResults.style.display = "block";
+          return;
+        }
+
+        data.forEach(item => {
+          const li = document.createElement("li");
+
+          let html = `<b>${item.Old ? "Number" : "Stores Number"}:</b> ${highlightMatch(item.Num, term)}<br>`;
+          if (item.Old) html += `<b>Old:</b> ${highlightMatch(item.Old, term)}<br>`;
+          html += `<b>Description:</b> ${highlightMatch(item.Description, term)}<br>`;
+          html += `<b>Location:</b> ${highlightMatch(item.USL, term)} - ${highlightMatch(item.Bin, term)}<br>`;
+          html += `<b>Quantity:</b> ${item.QTY}<br>`;
+          html += `<b>Cost:</b> ${item.Cost} / ${highlightMatch(item.UOM, term)}<br>`;
+          if (item.Cost_Center) html += `<b>Cost Center:</b> ${highlightMatch(item.Cost_Center, term)}<br>`;
+          if (item.Group) html += `<b>Group:</b> ${highlightMatch(item.Group, term)}`;
+
+          li.innerHTML = html;
+          resultsList.appendChild(li);
         });
-    }
+      })
+      .catch(() => {
+        document.getElementById("loading").style.display = "none";
+        noResults.style.display = "block";
+      });
+  }
 
+  // ✅ Debounced search input
+  let debounceTimeout;
+  searchInput.addEventListener("input", () => {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(doSearch, 250);
+  });
 
-  searchInput.addEventListener("input", doSearch);
+  // ✅ Immediate search on dropdown change
   uslFilter.addEventListener("change", doSearch);
 });
