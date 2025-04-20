@@ -13,17 +13,10 @@
   overflow: hidden;
   display: inline-block;
   position: relative;
-
-  /* --- Animated Gradient Text --- */
-  background: linear-gradient(90deg, #4f60c9, #7289da, #4f60c9, #7683d5);
-  background-size: 600% 600%;
-  animation: gradientShift 12s ease infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 #typed-header span {
-  /* --- Animated Text Content (Legacy fallback) --- */
+  /* --- Animated Text Content --- */
   display: inline-block;
   font-size: 2rem;
   font-weight: bold;
@@ -36,13 +29,20 @@
 
 #typed-text {
   display: inline-block;
-  min-width: 12ch;              /* Reserve space for full words */
-  min-height: 1.2em;            /* Prevent collapse before typing */
+  min-width: 12ch;
+  min-height: 1.2em;
   white-space: nowrap;
   vertical-align: top;
   font-weight: inherit;
   font-size: inherit;
   position: relative;
+
+  /* --- Gradient Text Effect (Must be here for Chrome) --- */
+  background: linear-gradient(90deg, #4f60c9, #7289da, #4f60c9, #7683d5);
+  background-size: 600% 600%;
+  animation: gradientShift 12s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 
@@ -60,7 +60,7 @@
 
 @keyframes blink {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  50%      { opacity: 0; }
 }
 
 
