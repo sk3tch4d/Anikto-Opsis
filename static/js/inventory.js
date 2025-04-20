@@ -41,11 +41,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   // Toggle sort direction
-  sortDirButton.addEventListener("click", () => {
+  let sortDirection = "desc";
+  const sortDirInput = document.getElementById("sort-direction");
+  sortDirInput.addEventListener("click", () => {
     sortDirection = sortDirection === "desc" ? "asc" : "desc";
-    sortDirButton.textContent = sortDirection === "desc" ? "↓" : "↑";
+    sortDirInput.value = sortDirection === "desc" ? "↓" : "↑";
     doSearch();
   });
+
 
   function doSearch() {
     const term = searchInput.value.trim();
