@@ -8,10 +8,10 @@
 // HELPERS: HIGHLIGHT MATCHED
 // ==============================
 function highlightMatch(text, term) {
-  if (!text || !term) return text || "";
-  const safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // escape special chars
+  if (!term) return text;
+  const safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const regex = new RegExp(`(${safeTerm})`, "ig");
-  return text.toString().replace(regex, `<span class="highlight">$1</span>`);
+  return text.replace(regex, `<span class="highlight">$1</span>`);
 }
 
 
@@ -21,8 +21,12 @@ function highlightMatch(text, term) {
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("inventory-search");
   const uslFilter = document.getElementById("usl-filter");
+  const sortBy = document.getElementById("sort-by");
+  const sortDirButton = document.getElementById("sort-dir");
   const resultsList = document.getElementById("inventory-results");
   const noResults = document.getElementById("no-results");
+
+  let sortDirection = "desc";
 
   // Fetch USLs for dropdown
   fetch("/inventory-usls")
@@ -36,9 +40,17 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
+  // Toggle sort direction
+  sortDirButton.addEventListener("click", () => {
+    sortDirection = sortDirection === "desc" ? "asc" : "desc";
+    sortDirButton.textContent = sortDirection === "desc" ? "↓" : "↑";
+    doSearch();
+  });
+
   function doSearch() {
     const term = searchInput.value.trim();
     const usl = uslFilter.value;
+    const sort = sortBy.value;
 
     // 🔄 Show loading spinner
     document.getElementById("loading").style.display = "block";
@@ -46,14 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
     resultsList.innerHTML = "";
     noResults.style.display = "none";
 
-    fetch(`/inventory-search?term=${encodeURIComponent(term)}&usl=${encodeURIComponent(usl)}`)
+    fetch(`/inventory-search?term=${encodeURIComponent(term)}&usl=${encodeURIComponent(usl)}&sort=${sort}&dir=${sortDirection}`)
       .then(res => res.json())
       .then(data => {
-        // ✅ Hide loading spinner
         document.getElementById("loading").style.display = "none";
 
-        if (!Array.isArray(data) || data.length === 0) {
-          noResults.innerText = "No results found.";
+        if (data.length === 0) {
           noResults.style.display = "block";
           return;
         }
@@ -74,21 +84,20 @@ document.addEventListener("DOMContentLoaded", () => {
           resultsList.appendChild(li);
         });
       })
-      .catch(err => {
-        console.error("Search error:", err);
+      .catch(() => {
         document.getElementById("loading").style.display = "none";
-        noResults.innerText = "Error retrieving results.";
         noResults.style.display = "block";
       });
   }
 
-  // ✅ Debounced search input
+  // Debounced search
   let debounceTimeout;
   searchInput.addEventListener("input", () => {
     clearTimeout(debounceTimeout);
     debounceTimeout = setTimeout(doSearch, 250);
   });
 
-  // ✅ Immediate search on dropdown change
+  // Immediate search on filter change
   uslFilter.addEventListener("change", doSearch);
+  sortBy.addEventListener("change", doSearch);
 });
