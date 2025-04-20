@@ -9,11 +9,11 @@ import { populateStats } from './stats.js';
 // ==============================
 // INIT FILTERS PANEL
 // ==============================
-export function initFilters() {
-  const minSlider = document.getElementById("years-min");
-  const maxSlider = document.getElementById("years-max");
-  const statusSelect = document.getElementById("status-filter");
-  const positionSelect = document.getElementById("position-filter");
+export function initSeniorityFilters() {
+  const minSlider = document.getElementById("sen-years-min");
+  const maxSlider = document.getElementById("sen-years-max");
+  const statusSelect = document.getElementById("sen-status-filter");
+  const positionSelect = document.getElementById("sen-position-filter");
 
   if (!minSlider || !maxSlider || !statusSelect || !positionSelect) return;
 
@@ -32,10 +32,10 @@ function applyFilters() {
   const data = window.originalSearchResults || [];
   if (!data.length) return;
 
-  const min = parseFloat(document.getElementById("years-min")?.value) || 0;
-  const max = parseFloat(document.getElementById("years-max")?.value) || 50;
-  const status = document.getElementById("status-filter")?.value?.toLowerCase() || "any";
-  const position = document.getElementById("position-filter")?.value?.toLowerCase() || "any";
+  const min = parseFloat(document.getElementById("sen-years-min")?.value) || 0;
+  const max = parseFloat(document.getElementById("sen-years-max")?.value) || 50;
+  const status = document.getElementById("sen-status-filter")?.value?.toLowerCase() || "any";
+  const position = document.getElementById("sen-position-filter")?.value?.toLowerCase() || "any";
 
   const filtered = data.filter(row => {
     const y = parseFloat(row["Years"] || 0);
