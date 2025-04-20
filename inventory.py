@@ -50,10 +50,11 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
             search_cols = [col for col in df.columns if col not in excluded and df[col].dtype == object]
 
             # Ensure everything is a string and lowercase for matching
-            df = df[df[search_cols].apply(
-                lambda row: any(term in str(val).lower() for val in row if pd.notna(val)),
+            df = df[df.astype(str).apply(
+                lambda row: any(term in val.lower() for val in row),
                 axis=1
             )]
+
 
     # ✅ Validate sort field
     valid_sort_fields = {"QTY", "USL", "Num", "Cost"}
