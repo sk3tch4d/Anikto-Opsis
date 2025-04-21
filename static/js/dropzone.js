@@ -1,13 +1,29 @@
 // ==============================
-// DROPZONE MODULE //
-// File Input
-// Drag-drop
-// Form Transitions
+// DROPZONE MODULE
+// File Input, Drag-drop, Transitions, Button Text
 // ==============================
+
+import { displayRandomQuote } from './quotes.js';
+
+// ==============================
+// CONFIGURATION
+// ==============================
+const DEBUG_MODE = false;
+
+// ==============================
+// FILE TYPE MATCHERS
+// ==============================
+const CATALOG_REGEX = /(catalog|inventory|cat[_-]?v[\d.]+)\.(xlsx|db)$/i;
+const ARG_REGEX = /(arg|flowsheet).*\.(pdf)$/i;
+const SENIORITY_REGEX = /(cupe).*seniority.*(list)?.*\.xlsx$/i;
+
+const isCatalogFile = name => CATALOG_REGEX.test(name);
+const isArgFile = name => ARG_REGEX.test(name);
+const isSeniorityFile = name => SENIORITY_REGEX.test(name);
 
 
 // ==============================
-// INIT FUNCTION
+// INIT DROPZONE
 // ==============================
 export function initDropzone() {
   const dropZone = document.getElementById("drop-zone");
@@ -19,23 +35,22 @@ export function initDropzone() {
   setupDragAndDrop(dropZone, fileInput);
 }
 
+
 // ==============================
 // FORM SUBMISSION BEHAVIOR
-// ==============================
-import { displayRandomQuote } from './quotes.js';
 // ==============================
 function setupFormBehavior() {
   const form = document.querySelector("form");
   if (!form) return;
 
-  form.addEventListener("submit", function () {
+  form.addEventListener("submit", () => {
     const uploadForm = document.getElementById("upload-form");
     const loading = document.getElementById("loading");
 
     if (uploadForm) uploadForm.style.display = "none";
     if (loading) loading.style.display = "block";
 
-    displayRandomQuote(); // ✅ this handles quote logic properly
+    displayRandomQuote();
   });
 }
 
@@ -53,29 +68,27 @@ function setupFileInput(fileInput, fileList) {
   fileInput.addEventListener("change", () => {
     if (fileInput.files.length === 0) return;
 
-    // Hide the dropzone
     if (dropZone) dropZone.style.display = "none";
-
-    // Clear previous file list
     fileList.innerHTML = "";
 
-    // Display selected file name
     const file = fileInput.files[0];
     const li = document.createElement("li");
     const link = document.createElement("a");
+
     link.className = "file-action uploaded";
     link.href = "#";
     link.textContent = file.name;
+
     li.appendChild(link);
     fileList.appendChild(li);
 
-    // Reopen file selector on filename click
     link.addEventListener("click", (e) => {
       e.preventDefault();
       fileInput.click();
     });
   });
 }
+
 
 // ==============================
 // DRAG & DROP SUPPORT
@@ -117,9 +130,8 @@ function updateGenerateButtonText() {
   const fileNames = uploadedFiles.map(f => f.name.toLowerCase())
     .concat(existingFiles.map(name => name.toLowerCase()));
 
-  const DEBUG_MODE = false;
   if (DEBUG_MODE) {
-    console.log("Detected files:", fileNames);
+    console.log("[DEBUG] Selected files:", fileNames);
   }
 
   if (fileNames.length === 0) {
@@ -128,24 +140,22 @@ function updateGenerateButtonText() {
     return;
   }
 
-  // Regex Matchers
-  const isCatalogFile = name => /^(catalog|inventory|cat[_-]?v[\d.]+)\.(xlsx|db)$/i.test(name);
-  const isArgFile = name => /arg/i.test(name) || /flowsheet/i.test(name);
-  const isSeniorityFile = name => /cupe.*seniority.*(list)?\.xlsx/i.test(name);
-
   if (fileNames.some(isCatalogFile)) {
     generateBtn.textContent = "Generate Catalog";
+    if (DEBUG_MODE) console.log("[DEBUG] Catalog file matched");
   } else if (fileNames.some(isSeniorityFile)) {
     generateBtn.textContent = "Generate Seniority Summary";
+    if (DEBUG_MODE) console.log("[DEBUG] Seniority file matched");
   } else if (fileNames.some(isArgFile)) {
     generateBtn.textContent = "Generate ARG Summary";
+    if (DEBUG_MODE) console.log("[DEBUG] ARG file matched");
   } else {
     generateBtn.textContent = "Generate";
+    if (DEBUG_MODE) console.log("[DEBUG] Unknown file type. Default label used.");
   }
 
   generateBtn.disabled = false;
 }
-
 
 
 // ==============================
@@ -155,11 +165,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const fileInput = document.getElementById("file-input");
   fileInput?.addEventListener("change", updateGenerateButtonText);
 
-  const checkboxNodeList = document.querySelectorAll('input[name="existing_pdfs"]');
-  checkboxNodeList.forEach(cb => {
+  const checkboxes = document.querySelectorAll('input[name="existing_pdfs"]');
+  checkboxes.forEach(cb => {
     cb.addEventListener("change", updateGenerateButtonText);
   });
 
-  // Run on initial load
   updateGenerateButtonText();
 });
