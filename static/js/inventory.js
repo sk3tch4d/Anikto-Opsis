@@ -88,12 +88,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         data.forEach(item => {
           const li = document.createElement("li");
-
-          let html = `<b>${item.Old ? "Number" : "Stores Number"}:</b> ${highlightMatch(String(item.Num ?? ""), term)}<br>`;
-
-          if (item.Old?.trim()) {
-            html += `<b>Old:</b> ${highlightMatch(item.Old, term)}<br>`;
+          const numStr = String(item.Num ?? "");
+          const oldStr = String(item.Old ?? "");
+          const numMatch = numStr.toLowerCase().includes(term);
+          const oldMatch = oldStr.toLowerCase().includes(term);
+          
+          if (numMatch || (!numMatch && !oldMatch)) {
+            html += `<b>Number:</b> ${highlightMatch(numStr, term)}`;
+            if (oldStr) html += ` &nbsp;&nbsp; <b>Old:</b> ${highlightMatch(oldStr, term)}`;
+          } else if (oldMatch) {
+            html += `<b>Old Number:</b> ${highlightMatch(oldStr, term)}`;
+            if (numStr) html += ` &nbsp;&nbsp; <b>New:</b> (${highlightMatch(numStr, term)})`;
           }
+          html += `<br>`;
           
           if (item.Description?.trim()) {
             html += `<b>Description:</b> ${highlightMatch(item.Description, term)}<br>`;
@@ -108,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
           
           if (item.QTY || item.UOM?.trim()) {
             html += `<b>Quantity: </b> ~${item.QTY}`;
+            html += `<br>`;
           }
           
           if (item.Cost !== undefined && item.Cost !== null && item.Cost !== "") {
