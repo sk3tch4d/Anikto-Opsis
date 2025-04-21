@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector("#working-date")) initScheduleUI();
 
   // ----- Admin -----
-  if (document.querySelector("#admin-login")) initAdminLogin();
+  if (document.querySelector("#adpw")) initAdminLogin();
   if (document.querySelector("#json-upload")) initJsonUploadForm();
   if (document.querySelector("#file-upload-group")) initFileUploadDisplay();
 
