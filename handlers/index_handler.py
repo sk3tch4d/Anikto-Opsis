@@ -5,17 +5,20 @@
 import os
 import re
 import config
-from config import UPLOAD_FOLDER, MAX_PDFS
+from config import (
+    UPLOAD_FOLDER,
+    MAX_PDFS,
+    DEBUG_MODE,
+    INVENTORY_DF,
+    CATALOG_REGEX,
+    SENIORITY_REGEX
+)
 from datetime import datetime
 from flask import request, render_template, current_app as app
 from inventory import load_inventory_data
 from seniority import load_seniority_file
 from report import process_report
 
-# ==============================
-# DEBUG TOGGLE
-# ==============================
-DEBUG_MODE = True
 
 # ==============================
 # MAIN ENTRYPOINT: Index Upload Handler
@@ -49,7 +52,7 @@ def process_index_upload():
         elif ext in [".xlsx", ".db"]:
 
             # === Detect Seniority Uploads
-            if ext == ".xlsx" and all(k in fname_lower for k in ["cupe", "seniority", "list"]):
+            if ext == ".xlsx" and re.search(SENIORITY_REGEX, fname_lower):
                 match = re.search(r"(\d{4}-\d{2}-\d{2})", fname_lower)
                 date_str = match.group(1) if match else datetime.now().strftime("%Y-%m-%d")
                 new_filename = f"CUPE-SL-{date_str}.xlsx"
@@ -71,7 +74,7 @@ def process_index_upload():
                     app.logger.info(f"[INVENTORY] Reloaded from: {save_path}")
 
             # === Detect Catalog Uploads
-            elif re.match(r"^(catalog|inventory|cat[_-]?v[\d.]+)\.(xlsx|db)$", fname_lower, re.IGNORECASE):
+            elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
                 save_path = os.path.join("/tmp", file.filename)
                 file.save(save_path)
                 if DEBUG_MODE:
@@ -102,19 +105,16 @@ def process_index_upload():
     has_pdfs = bool(pdf_files)
     has_seniority = seniority_df is not None
 
-    # === No Valid Uploads
     if not has_pdfs and not has_seniority and not has_inventory:
         if DEBUG_MODE:
             app.logger.info("[ROUTING] No valid files found. Returning index with error.")
         return render_template("index.html", error="No valid files selected or uploaded.")
 
-    # === Inventory Only
     if has_inventory and not has_pdfs and not has_seniority:
         if DEBUG_MODE:
             app.logger.info("[ROUTING] Inventory file detected. Showing inventory panel.")
         return render_template("inventory.html", table=[])
 
-    # === Seniority Only
     if has_seniority and not has_pdfs:
         if DEBUG_MODE:
             app.logger.info(f"[ROUTING] Seniority file loaded: {seniority_filename}")
@@ -124,7 +124,6 @@ def process_index_upload():
             filename=seniority_filename
         )
 
-    # === PDFs Only
     if has_pdfs and not has_seniority:
         if DEBUG_MODE:
             app.logger.info(f"[ROUTING] Processing {len(pdf_files)} PDF(s).")
@@ -135,7 +134,6 @@ def process_index_upload():
             stats=stats
         )
 
-    # === Mixed: PDFs + Seniority
     if DEBUG_MODE:
         app.logger.info(f"[ROUTING] PDFs and seniority detected. Prioritizing seniority view.")
     return render_template(
