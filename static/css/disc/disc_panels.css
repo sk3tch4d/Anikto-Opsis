@@ -1,12 +1,22 @@
 /* ============================= */
-/* PANEL CONTAINER + HEADER     */
+/* DISC PANELS                   */
+/* ============================= */
+
+
+/* ============================= */
+/* PANEL                         */
 /* ============================= */
 .panel {
   margin-top: 1rem;
   width: 100%;
   max-width: 500px;
+  min-width: 320px;
+  box-sizing: border-box;
 }
 
+/* ============================= */
+/* PANEL HEADER                  */
+/* ============================= */
 .panel-header {
   background-color: #2f3237;
   padding: 0.65rem 1rem;
@@ -191,6 +201,16 @@ body.lock-scroll {
   color: #a3b3f0 !important;
 }
 
+
+/* ============================= */
+/* PANEL CONTAINER               */
+/* ============================= 
+#panel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+*/
 
 /* ============================= */
 /* ANIMATION: PANEL SLIDE-IN     */
