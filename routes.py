@@ -10,6 +10,7 @@
 
 import os
 import re
+import config
 from flask import (
     request,
     render_template,
@@ -22,7 +23,6 @@ from dataman import (
     import_shifts_from_json,
     import_shifts_from_csv,
 )
-from config import INVENTORY_DF
 from report import get_working_on_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
@@ -48,7 +48,7 @@ def register_routes(app):
     # ==============================
     @app.route("/inventory-usls")
     def inventory_usls():
-        result = get_inventory_usls(INVENTORY_DF)
+        result = get_inventory_usls(config.INVENTORY_DF)
         if isinstance(result, tuple):
             return jsonify(result[0]), result[1]
         return jsonify(result)
@@ -59,7 +59,7 @@ def register_routes(app):
         usl = request.args.get("usl", "Any")
         sort = request.args.get("sort", "QTY")
         direction = request.args.get("dir", "desc")
-        results = search_inventory(INVENTORY_DF, term, usl, sort, direction)
+        results = search_inventory(config.INVENTORY_DF, term, usl, sort, direction)
         return jsonify(results)
 
 
