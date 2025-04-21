@@ -3,10 +3,6 @@
 // ==============================
 
 import { collapseAllPanels } from './panels.js';
-
-// ==============================
-// GLOBAL DEBUG TOGGLE
-// ==============================
 //const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 const DEBUG_MODE = true;
 if (DEBUG_MODE) console.log("[DEBUG] Admin Module Loaded");
@@ -25,11 +21,8 @@ export function initAdminLogin() {
     return;
   }
 
-  if (DEBUG_MODE) console.log("[DEBUG] Initializing admin login panel.");
-
   collapseAllPanels({ excludeSelector: "#login-panel" });
 
-  // Handle Enter key
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       if (DEBUG_MODE) console.log("[DEBUG] Enter key detected in password input.");
@@ -37,8 +30,7 @@ export function initAdminLogin() {
     }
   });
 
-  // Global login function
-  window.chpw = function () {
+  function chpw() {
     const value = input.value;
     const correct = "getElementById";
 
@@ -52,8 +44,9 @@ export function initAdminLogin() {
       errorMsg.style.display = "block";
       if (DEBUG_MODE) console.warn("[DEBUG] Incorrect password entered.");
     }
-  };
+  }
 }
+
 
 // ==============================
 // CUSTOM JSON UPLOAD FORM
