@@ -91,13 +91,13 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           
           if (item.QTY || item.UOM?.trim()) {
-            html += `<b>Quantity:</b> ${item.QTY}`;
-            if (item.UOM?.trim()) html += ` / ${highlightMatch(item.UOM, term)}`;
-            html += `<br>`;
+            html += `<b>Quantity: </b> ~${item.QTY}`;
           }
           
           if (item.Cost !== undefined && item.Cost !== null && item.Cost !== "") {
             html += `<b>Cost:</b> ${item.Cost}<br>`;
+            if (item.UOM?.trim()) html += ` / ${highlightMatch(item.UOM, term)}`;
+            html += `<br>`;
           }
 
           if (item.Cost_Center?.trim()) {
