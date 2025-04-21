@@ -2,10 +2,8 @@
 // PANELS MODULE
 // ==============================
 
+import { isDebugMode } from './debugging.js';
 
-// ==============================
-// NON-CLOSABLE PANEL IDS
-// ==============================
 const nonClosablePanels = [
   "downloads",
   "search-panel",
@@ -138,8 +136,11 @@ export function collapseAllPanels({ excludeSelector = null } = {}) {
   document.querySelectorAll('.panel-body').forEach(body => {
     const panel = body.closest('.panel');
 
-    // Skip collapse if it matches any exclusion selector
     if (exclusions.some(sel => panel?.matches(sel))) return;
+
+    if (isDebugMode()) {
+      console.log(`[DEBUG] Collapsing panel: ${panel?.id}`);
+    }
 
     body.classList.remove('open');
     panel?.classList.remove('open');
