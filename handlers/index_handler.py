@@ -1,14 +1,12 @@
 import os
 import re
-import config
+from config import UPLOAD_FOLDER, MAX_PDFS
 from datetime import datetime
 from flask import request, render_template, current_app as app
 from inventory import load_inventory_data
 from seniority import load_seniority_file
 from report import process_report
 
-UPLOAD_FOLDER = "/tmp"
-MAX_PDFS = 10
 
 def process_index_upload():
     config.INVENTORY_DF = load_inventory_data(path=save_path)
