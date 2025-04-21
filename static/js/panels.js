@@ -2,7 +2,7 @@
 // PANELS MODULE
 // ==============================
 
-import { isDebugMode } from './debugging.js';
+import { initDebugToggle } from './debugging.js';
 
 const nonClosablePanels = [
   "downloads",
