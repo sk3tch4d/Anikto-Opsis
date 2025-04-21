@@ -21,7 +21,7 @@ function highlightMatch(text, term) {
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("inventory-search");
   const uslFilter = document.getElementById("usl-filter");
-  const sortBy = document.getElementById("sort-by");
+  const sortBy = document.getElementById("sort-by") || { value: "QTY" };
   const sortDirButton = document.getElementById("sort-direction");
   const resultsList = document.getElementById("inventory-results");
   const noResults = document.getElementById("no-results");
@@ -30,15 +30,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Fetch USLs
   fetch("/inventory-usls")
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) {
+        console.error("USL fetch failed:", res.status, res.statusText);
+        return null;
+      }
+      return res.json();
+    })
     .then(usls => {
+      if (!Array.isArray(usls)) {
+        console.warn("USL response not array:", usls);
+        return;
+      }
+  
+      console.log("USLS Response:", usls);
       usls.sort().forEach(usl => {
         const opt = document.createElement("option");
         opt.value = usl;
         opt.textContent = usl;
         uslFilter.appendChild(opt);
       });
+    })
+    .catch(err => {
+      console.error("USL fetch error:", err);
     });
+
 
   // Toggle sort direction
   sortDirButton.addEventListener("click", () => {
@@ -54,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function doSearch() {
     const term = searchInput.value.trim().toLowerCase();
     const usl = uslFilter.value;
-    const sort = sortBy?.value || "QTY";
+    const sort = sortBy.value;
 
     document.getElementById("loading").style.display = "block";
     resultsList.innerHTML = "";
