@@ -45,12 +45,20 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
         try:
             if term.isdigit():
                 before = len(df)
-                df = df[df[["Num", "Old"]].astype(str).apply(
-                    lambda row: any(term in str(cell) for cell in row), axis=1
-                )]
+
+                primary = df[df["Num"].astype(str).str.contains(term)]
+                if not primary.empty:
+                    df = primary
+                    source = "Num"
+                else:
+                    fallback = df[df["Old"].astype(str).str.contains(term)]
+                    df = fallback
+                    source = "Old (fallback)"
+            
                 after = len(df)
                 if DEBUG:
-                    print(f"[DEBUG] Numeric term filter '{term}' applied: {before} → {after} rows")
+                    print(f"[DEBUG] Numeric term '{term}' matched in {source}: {before} → {after} rows")
+
             else:
                 excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
                 search_cols = [col for col in df.columns if col not in excluded]
