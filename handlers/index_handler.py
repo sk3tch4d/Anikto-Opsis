@@ -4,7 +4,7 @@ from datetime import datetime
 from flask import request, render_template, current_app as app
 from inventory import load_inventory_data
 from seniority import load_seniority_file
-from generate import process_report
+from report import process_report
 
 UPLOAD_FOLDER = "/tmp"
 MAX_PDFS = 10
