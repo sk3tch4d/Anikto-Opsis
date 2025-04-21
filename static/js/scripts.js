@@ -38,7 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Panels -----
   if (document.querySelector(".panel")) {
     window.togglePanel = togglePanel;
-    collapseAllPanels();
+    collapseAllPanels({
+      excludeSelector: "#login-panel"
+    });
   }
 
   // ----- Dropzone -----
