@@ -12,4 +12,7 @@ export function initDebugToggle() {
     localStorage.setItem("DEBUG_MODE", debugToggle.checked);
     alert(`Debug Mode ${debugToggle.checked ? "enabled" : "disabled"}. Reload a page to apply.`);
   });
+
+  // Log current state after initialization
+  console.log(`[DEBUG] Debug Mode is currently ${enabled ? "ENABLED" : "DISABLED"}`);
 }
