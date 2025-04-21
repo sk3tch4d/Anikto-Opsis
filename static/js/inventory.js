@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
             if (numMatch || (!numMatch && !oldMatch)) {
               html += `<b>Number:</b> ${highlightMatch(numStr, term)}`;
-              if (oldStr) html += ` &nbsp;&nbsp; <b>Old:</b> ${highlightMatch(oldStr, term)}`;
+              if (oldStr) html += ` &nbsp;&nbsp; <b>Old:</b> (${highlightMatch(oldStr, term)})`;
             } else if (oldMatch) {
               html += `<b>Old Number:</b> ${highlightMatch(oldStr, term)}`;
               if (numStr) html += ` &nbsp;&nbsp; <b>New:</b> (${highlightMatch(numStr, term)})`;
@@ -123,6 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
           if (item.QTY || item.UOM?.trim()) {
             html += `<b>Quantity: </b> ~${item.QTY}`;
+            html += `<br>`;
           }
   
           if (item.Cost !== undefined && item.Cost !== null && item.Cost !== "") {
