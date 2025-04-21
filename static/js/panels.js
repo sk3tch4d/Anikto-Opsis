@@ -2,8 +2,15 @@
 // PANELS MODULE
 // ==============================
 
-import panelConfig from './panel_config.json' assert { type: 'json' };
-const nonClosablePanels = panelConfig.nonClosablePanels;
+
+// ==============================
+// NON-CLOSABLE PANEL IDS
+// ==============================
+const nonClosablePanels = [
+  "downloads",
+  "search-panel",
+  "inventory-panel"
+];
 
 // ==============================
 // GLOBAL PANEL TOGGLE FUNCTION
