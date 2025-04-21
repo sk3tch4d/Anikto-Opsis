@@ -22,7 +22,7 @@ from dataman import (
     import_shifts_from_json,
     import_shifts_from_csv,
 )
-from report import process_report, get_working_on_date
+from report import get_working_on_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
 from inventory import load_inventory_data, get_inventory_usls, search_inventory
@@ -65,11 +65,16 @@ def register_routes(app):
 
 
     # ==============================
-    # GET: Render index upload page
+    # GET/POST INDEX FILE HANDLING
     # ==============================
+    @app.route("/", methods=["GET"])
+    def index():
+        return render_template("index.html")
+    
     @app.route("/", methods=["POST"])
     def post_index():
         return process_index_upload()
+
 
     # ==============================
     # Export Routes
