@@ -68,7 +68,7 @@ def process_index_upload():
 
     # ✅ Routing logic
     if not pdf_files and seniority_df is None:
-        if INVENTORY_DF is not None:
+        if config.INVENTORY_DF is not None:
             return render_template("inventory.html", table=[])
         return render_template("index.html", error="No valid files selected or uploaded.")
 
