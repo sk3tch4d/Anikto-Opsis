@@ -98,46 +98,46 @@ document.addEventListener("DOMContentLoaded", () => {
             const oldMatch = oldStr.toLowerCase().includes(term);
   
             if (numMatch || (!numMatch && !oldMatch)) {
-              html += `<b>Number:</b> ${highlightMatch(numStr, term)}`;
-              if (oldStr) html += ` &nbsp;&nbsp; <b>Old:</b> (${highlightMatch(oldStr, term)})`;
+              html += `<span class="tag-label">Number:</b> ${highlightMatch(numStr, term)}`;
+              if (oldStr) html += ` &nbsp;&nbsp; <span class="tag-label">Old:</span> (${highlightMatch(oldStr, term)})`;
             } else if (oldMatch) {
-              html += `<b>Old Number:</b> ${highlightMatch(oldStr, term)}`;
-              if (numStr) html += ` &nbsp;&nbsp; <b>New:</b> (${highlightMatch(numStr, term)})`;
+              html += `<span class="tag-label">Old Number:</b> ${highlightMatch(oldStr, term)}`;
+              if (numStr) html += ` &nbsp;&nbsp; <span class="tag-label">New:</span> (${highlightMatch(numStr, term)})`;
             }
           } else {
-            html += `<b>Number:</b> ${numStr}`;
-            if (oldStr) html += ` &nbsp;&nbsp; <b>Old:</b> ${oldStr}`;
+            html += `<span class="tag-label">Number:</span> ${numStr}`;
+            if (oldStr) html += ` &nbsp;&nbsp; <span class="tag-label">Old:</span> ${oldStr}`;
           }
           html += `<br>`;
   
           if (item.Description?.trim()) {
-            html += `<b>Description:</b> ${highlightMatch(item.Description, term)}<br>`;
+            html += `<span class="tag-label">Description:</span> ${highlightMatch(item.Description, term)}<br>`;
           }
   
           if (item.USL?.trim() || item.Bin?.trim()) {
-            html += `<b>Location:</b>`;
+            html += `<span class="tag-label">Location:</span>`;
             if (item.USL?.trim()) html += ` ${highlightMatch(item.USL, term)}`;
             if (item.Bin?.trim()) html += ` - ${highlightMatch(item.Bin, term)}`;
             html += `<br>`;
           }
   
           if (item.QTY || item.UOM?.trim()) {
-            html += `<b>Quantity: </b> ~${item.QTY}`;
+            html += `<span class="tag-label">Quantity: </span> ~${item.QTY}`;
             html += `<br>`;
           }
   
           if (item.Cost !== undefined && item.Cost !== null && item.Cost !== "") {
-            html += `<b>Cost:</b> ${item.Cost}`;
+            html += `<span class="tag-label">Cost:</span> ${item.Cost}`;
             if (item.UOM?.trim()) html += ` / ${highlightMatch(item.UOM, term)}`;
             html += `<br>`;
           }
   
           if (item.Cost_Center?.trim()) {
-            html += `<b>Cost Center:</b> ${highlightMatch(item.Cost_Center, term)}<br>`;
+            html += `<span class="tag-label">Cost Center:</span> ${highlightMatch(item.Cost_Center, term)}<br>`;
           }
   
           if (item.Group?.trim()) {
-            html += `<b>Group:</b> ${highlightMatch(item.Group, term)}`;
+            html += `<span class="tag-label">Group:</span> ${highlightMatch(item.Group, term)}`;
           }
   
           li.innerHTML = html;
