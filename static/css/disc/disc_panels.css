@@ -8,9 +8,7 @@
 /* ============================= */
 .panel {
   margin-top: 1rem;
-  width: 100%;
-  max-width: 500px;
-  min-width: 320px;
+  width: clamp(320px, 90vw, 500px);
   box-sizing: border-box;
 }
 
