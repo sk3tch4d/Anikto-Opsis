@@ -22,6 +22,7 @@ from dataman import (
     import_shifts_from_json,
     import_shifts_from_csv,
 )
+from config import INVENTORY_DF
 from report import get_working_on_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
@@ -47,7 +48,6 @@ def register_routes(app):
     # ==============================
     @app.route("/inventory-usls")
     def inventory_usls():
-        global INVENTORY_DF
         result = get_inventory_usls(INVENTORY_DF)
         if isinstance(result, tuple):
             return jsonify(result[0]), result[1]
@@ -55,7 +55,6 @@ def register_routes(app):
 
     @app.route("/inventory-search")
     def inventory_search():
-        global INVENTORY_DF
         term = request.args.get("term", "")
         usl = request.args.get("usl", "Any")
         sort = request.args.get("sort", "QTY")
