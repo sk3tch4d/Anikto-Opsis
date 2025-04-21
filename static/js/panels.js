@@ -116,11 +116,22 @@ export function togglePanel(header) {
 
 // ==============================
 // COLLAPSE ALL PANELS
-// Optional: Exclude container by selector
+// Optional: Exclude container(s) by selector(s)
 // ==============================
 export function collapseAllPanels({ excludeSelector = null } = {}) {
+  const exclusions = Array.isArray(excludeSelector)
+    ? excludeSelector
+    : excludeSelector
+    ? [excludeSelector]
+    : [];
+
   document.querySelectorAll('.panel-body').forEach(body => {
-    if (excludeSelector && body.closest(excludeSelector)) return;
+    const panel = body.closest('.panel');
+
+    // Skip collapse if it matches any exclusion selector
+    if (exclusions.some(sel => panel?.matches(sel))) return;
+
     body.classList.remove('open');
+    panel?.classList.remove('open');
   });
 }
