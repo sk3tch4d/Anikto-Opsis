@@ -129,7 +129,7 @@ function updateGenerateButtonText() {
   }
 
   // Regex Matchers
-  const isCatalogFile = name => /^cat[_-]?v[\d.]+\.(xlsx|db)$/i.test(name);
+  const isCatalogFile = name => /^(catalog|inventory|cat[_-]?v[\d.]+)\.(xlsx|db)$/i.test(name);
   const isArgFile = name => /arg/i.test(name) || /flowsheet/i.test(name);
   const isSeniorityFile = name => /cupe.*seniority.*(list)?\.xlsx/i.test(name);
 
