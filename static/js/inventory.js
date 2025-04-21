@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
   
           if (item.Cost !== undefined && item.Cost !== null && item.Cost !== "") {
-            html += `<b>Cost:</b> ${item.Cost}<br>`;
+            html += `<b>Cost:</b> ${item.Cost}`;
             if (item.UOM?.trim()) html += ` / ${highlightMatch(item.UOM, term)}`;
             html += `<br>`;
           }
