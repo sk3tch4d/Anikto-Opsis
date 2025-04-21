@@ -117,6 +117,14 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("loading").style.display = "none";
         noResults.style.display = "block";
       });
+
+      // Restore scroll position on load
+      const savedScroll = localStorage.getItem("inventoryScrollTop");
+      if (savedScroll) {
+        setTimeout(() => {
+          window.scrollTo(0, parseInt(savedScroll));
+        }, 50);
+      }
   }
 
   searchInput.addEventListener("input", () => {
@@ -124,7 +132,13 @@ document.addEventListener("DOMContentLoaded", () => {
     window._searchDebounce = setTimeout(doSearch, 200);
   });
 
-  uslFilter.addEventListener("change", doSearch);
+uslFilter.addEventListener("change", doSearch);
   if (sortBy) sortBy.addEventListener("change", doSearch);
+  // Trigger initial search on load
+  doSearch();
 });
 
+// Save scroll position before page unload
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("inventoryScrollTop", window.scrollY);
+});
