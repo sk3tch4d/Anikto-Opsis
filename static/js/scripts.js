@@ -38,9 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Panels -----
   if (document.querySelector(".panel")) {
     window.togglePanel = togglePanel;
-    collapseAllPanels({
-      excludeSelector: ["#inventory-panel", "#search-panel"]
-    });
+    collapseAllPanels();
   }
 
   // ----- Dropzone -----
