@@ -124,14 +124,21 @@ function updateGenerateButtonText() {
     return;
   }
 
+  function isCatalogFile(name) {
+    return /^cat_v\d+\.(xlsx|db)$/i.test(name);
+  }
+
   // --- Update label based on file type ---
-  if (fileNames.some(name => name.endsWith(".xlsx"))) {
-    generateBtn.textContent = "Generate Seniority";
+  if (fileNames.some(isCatalogFile)) {
+    generateBtn.textContent = "Generate Catalog";
+  } else if (fileNames.some(name => name.endsWith(".xlsx"))) {
+    generateBtn.textContent = "Generate Seniority Summary";
   } else if (fileNames.some(name => name.endsWith(".pdf"))) {
-    generateBtn.textContent = "Generate ARG";
+    generateBtn.textContent = "Generate ARG Summary";
   } else {
     generateBtn.textContent = "Generate";
   }
+
 
   generateBtn.disabled = false;
 }
