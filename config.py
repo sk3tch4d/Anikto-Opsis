@@ -1,0 +1,2 @@
+
+INVENTORY_DF = None
