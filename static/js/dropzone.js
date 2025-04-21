@@ -105,10 +105,6 @@ function setupDragAndDrop(dropZone, fileInput) {
 // ==============================
 // GENERATE BUTTON TEXT + STATE
 // ==============================
-function isCatalogFile(name) {
-  return /^cat[_-]?v\d+\.(xlsx|db)$/i.test(name);
-}
-
 function updateGenerateButtonText() {
   const fileInput = document.getElementById("file-input");
   const generateBtn = document.getElementById("generate");
@@ -127,8 +123,9 @@ function updateGenerateButtonText() {
     return;
   }
 
-  console.log("Files:", fileNames);
-  console.log("Catalog match?", fileNames.some(isCatalogFile));
+  function isCatalogFile(name) {
+    return /^cat[_-]?v\d+\.(xlsx|db)$/i.test(name);
+  }
 
   if (fileNames.some(isCatalogFile)) {
     generateBtn.textContent = "Generate Catalog";
