@@ -2,6 +2,9 @@
 // PANELS MODULE
 // ==============================
 
+import panelConfig from './panel_config.json' assert { type: 'json' };
+const nonClosablePanels = panelConfig.nonClosablePanels;
+
 // ==============================
 // GLOBAL PANEL TOGGLE FUNCTION
 // ==============================
@@ -50,7 +53,7 @@ export function togglePanel(header) {
     }, 250);
 
     // Auto-close on tap inside body
-    if (panelId !== 'downloads') {
+    if (!nonClosablePanels.includes(panelId)) {
       const closePanelOnTouch = (event) => {
         const target = event.target;
         const isInsideHeader = header.contains(target);
