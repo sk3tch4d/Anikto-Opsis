@@ -11,38 +11,39 @@ if (DEBUG_MODE) console.log("[DEBUG] Admin Module Loaded");
 // ADMIN GATE
 // ==============================
 export function initAdminLogin() {
+  const form = document.getElementById("admin-login-form");
   const input = document.getElementById("adpw");
   const errorMsg = document.getElementById("login-error");
   const loginPanel = document.getElementById("login-panel");
   const adminPanels = document.getElementById("admin-panels");
 
-  if (!input || !errorMsg || !loginPanel || !adminPanels) {
-    if (DEBUG_MODE) console.warn("[DEBUG] Missing one or more admin login elements.");
+  if (!form || !input || !errorMsg || !loginPanel || !adminPanels) {
+    if (DEBUG_MODE) console.warn("[DEBUG] Missing admin login element(s).");
     return;
   }
 
+  if (DEBUG_MODE) console.log("[DEBUG] Admin login initialized.");
   collapseAllPanels({ excludeSelector: "#login-panel" });
 
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      if (DEBUG_MODE) console.log("[DEBUG] Enter key detected in password input.");
-      chpw();
-    }
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (DEBUG_MODE) console.log("[DEBUG] Login form submitted.");
+    attemptLogin();
   });
 
-  function chpw() {
-    const value = input.value;
+  function attemptLogin() {
+    const value = input.value.trim();
     const correct = "getElementById";
 
-    if (DEBUG_MODE) console.log(`[DEBUG] Attempted password: "${value}"`);
+    if (DEBUG_MODE) console.log(`[DEBUG] Password entered: "${value}"`);
 
     if (value === correct) {
       loginPanel.style.display = "none";
       adminPanels.style.display = "block";
-      if (DEBUG_MODE) console.log("[DEBUG] Login successful. Admin panels revealed.");
+      if (DEBUG_MODE) console.log("[DEBUG] Login successful. Admin panel shown.");
     } else {
       errorMsg.style.display = "block";
-      if (DEBUG_MODE) console.warn("[DEBUG] Incorrect password entered.");
+      if (DEBUG_MODE) console.warn("[DEBUG] Incorrect password.");
     }
   }
 }
