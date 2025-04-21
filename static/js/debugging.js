@@ -11,7 +11,7 @@ export function initDebugToggle() {
   toggleSwitch.addEventListener("change", () => {
     localStorage.setItem("DEBUG_MODE", toggleSwitch.checked);
     console.log(`[DEBUG] Debug Mode ${toggleSwitch.checked ? "Enabled" : "Disabled"}`);
-    alert(`Debug Mode ${toggleSwitch.checked ? "enabled" : "disabled"}. Reload a page to apply.`);
+    //alert(`Debug Mode ${toggleSwitch.checked ? "enabled" : "disabled"}. Reload a page to apply.`);
   });
 
   console.log(`[DEBUG] Debug Mode is currently ${enabled ? "ENABLED" : "DISABLED"}`);
