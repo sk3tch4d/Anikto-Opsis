@@ -138,7 +138,7 @@ export function collapseAllPanels({ excludeSelector = null } = {}) {
 
     if (exclusions.some(sel => panel?.matches(sel))) return;
 
-    if (isDebugMode()) {
+    if (initDebugToggle()) {
       console.log(`[DEBUG] Collapsing panel: ${panel?.id}`);
     }
 
