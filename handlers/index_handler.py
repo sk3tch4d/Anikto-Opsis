@@ -1,6 +1,7 @@
 import os
 import re
-from config import UPLOAD_FOLDER, MAX_PDFS, INVENTORY_DF
+import config
+from config import UPLOAD_FOLDER, MAX_PDFS
 from datetime import datetime
 from flask import request, render_template, current_app as app
 from inventory import load_inventory_data
