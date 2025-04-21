@@ -27,11 +27,9 @@ from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
 from inventory import load_inventory_data, get_inventory_usls, search_inventory
 from datetime import datetime
+from handlers.index_handler import process_index_upload
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
-MAX_PDFS = 30
-INVENTORY_DF = None
-
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # ==============================
@@ -69,83 +67,9 @@ def register_routes(app):
     # ==============================
     # GET: Render index upload page
     # ==============================
-    @app.route("/")
-    def index():
-        def format_pdf_display_name(filename):
-            match = re.search(r'(\d{4}-\d{2}-\d{2})', filename)
-            date_str = match.group(1) if match else "Unknown"
-            return f"ARG_{date_str}.pdf", filename
-
-        recent_pdfs_raw = sorted(
-            [f for f in os.listdir(UPLOAD_FOLDER) if f.endswith(".pdf")],
-            key=lambda f: os.path.getmtime(os.path.join(UPLOAD_FOLDER, f)),
-            reverse=True
-        )[:MAX_PDFS]
-
-        recent_pdfs = [format_pdf_display_name(f) for f in recent_pdfs_raw]
-        return render_template("index.html", recent_pdfs=recent_pdfs)
-
-    # ==============================
-    # POST: Handle file uploads
-    # ==============================
     @app.route("/", methods=["POST"])
-    def process_index():
-        uploaded_files = request.files.getlist("uploads")
-        existing_files = request.form.getlist("existing_pdfs")
-
-        pdf_files = []
-        seniority_df = None
-        seniority_filename = None
-
-        for file in uploaded_files:
-            ext = os.path.splitext(file.filename)[1].lower()
-            fname_lower = file.filename.lower()
-
-            if ext == ".pdf":
-                filename = file.filename
-                save_path = os.path.join(UPLOAD_FOLDER, filename)
-                if not os.path.exists(save_path):
-                    file.save(save_path)
-                pdf_files.append(save_path)
-
-            elif ext == ".xlsx":
-                if all(keyword in fname_lower for keyword in ["cupe", "seniority", "list"]):
-                    match = re.search(r"(\d{4}-\d{2}-\d{2})", file.filename)
-                    date_str = match.group(1) if match else datetime.now().strftime("%Y-%m-%d")
-                    new_filename = f"CUPE-SL-{date_str}.xlsx"
-
-                    save_path = os.path.join("/tmp", new_filename)
-                    file.save(save_path)
-                    seniority_df = load_seniority_file(save_path)
-                    seniority_filename = new_filename
-                    app.logger.info(f"[SENIORITY] Loaded: {save_path}")
-
-                elif "inventory" in fname_lower:
-                    save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
-                    file.save(save_path)
-                    global INVENTORY_DF
-                    INVENTORY_DF = load_inventory_data(path=save_path)
-                    app.logger.info(f"[INVENTORY] Reloaded from: {save_path}")
-
-                else:
-                    app.logger.warning(f"[SKIPPED] Invalid Excel file: {file.filename}")
-
-        for fname in existing_files:
-            if fname.endswith(".pdf"):
-                existing_path = os.path.join(UPLOAD_FOLDER, fname)
-                if os.path.exists(existing_path):
-                    pdf_files.append(existing_path)
-
-        if not pdf_files and seniority_df is None:
-            if INVENTORY_DF is not None:
-                return render_template("inventory.html", table=[])
-            return render_template("index.html", error="No valid files selected or uploaded.")
-
-        if seniority_df is not None and not pdf_files:
-            return render_template("seniority.html", table=seniority_df.to_dict(orient="records"), filename=seniority_filename)
-
-        output_files, stats = process_report(pdf_files)
-        return render_template("arg.html", outputs=[os.path.basename(f) for f in output_files], stats=stats)
+    def post_index():
+        return process_index_upload()
 
     # ==============================
     # Export Routes
