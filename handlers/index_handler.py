@@ -43,8 +43,8 @@ def process_index_upload():
             elif ext == ".xlsx" and "inventory" in fname_lower:
                 save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
                 file.save(save_path)
-                global INVENTORY_DF
-                INVENTORY_DF = load_inventory_data(path=save_path)
+                from inventory import load_inventory_data
+                config.INVENTORY_DF = load_inventory_data(path=save_path)
                 app.logger.info(f"[INVENTORY] Reloaded from: {save_path}")
 
             elif re.match(r"^cat_v\d+\.(xlsx|db)$", fname_lower):
