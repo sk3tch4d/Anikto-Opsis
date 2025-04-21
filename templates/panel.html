@@ -67,9 +67,21 @@
     <div class="panel">
       <div class="panel-header" onclick="togglePanel(this)">Developer Tools</div>
       <div class="panel-body">
-        <p>Placeholder for logs, manual PDF parse, etc.</p>
+        <ul class="settings-list">
+          <li class="toggle-setting">
+            <span>Debug Mode</span>
+            <label class="switch">
+              <input type="checkbox" id="debug-toggle">
+              <span class="slider"></span>
+            </label>
+          </li>
+        </ul>
+        <p style="font-size: 0.9rem; color: #888; margin-top: 0.5rem;">
+          Setting is saved in <code>localStorage</code> and applies across pages.
+        </p>
       </div>
     </div>
+
 
     <!-- Back to Main -->
     <div class="panel">
