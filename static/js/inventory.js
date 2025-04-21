@@ -71,68 +71,74 @@ document.addEventListener("DOMContentLoaded", () => {
     const term = searchInput.value.trim().toLowerCase();
     const usl = uslFilter.value;
     const sort = sortBy.value;
-
+  
     document.getElementById("loading").style.display = "block";
     resultsList.innerHTML = "";
     noResults.style.display = "none";
-
+  
     fetch(`/inventory-search?term=${encodeURIComponent(term)}&usl=${encodeURIComponent(usl)}&sort=${encodeURIComponent(sort)}&dir=${encodeURIComponent(sortDirection)}`)
       .then(res => res.json())
       .then(data => {
         document.getElementById("loading").style.display = "none";
-
+  
         if (!data || data.length === 0) {
           noResults.style.display = "block";
           return;
         }
-
+  
         data.forEach(item => {
           const li = document.createElement("li");
+          let html = "";
+  
           const numStr = String(item.Num ?? "");
           const oldStr = String(item.Old ?? "");
-          const numMatch = numStr.toLowerCase().includes(term);
-          const oldMatch = oldStr.toLowerCase().includes(term);
-          
-          if (numMatch || (!numMatch && !oldMatch)) {
-            html += `<b>Number:</b> ${highlightMatch(numStr, term)}`;
-            if (oldStr) html += ` &nbsp;&nbsp; <b>Old:</b> ${highlightMatch(oldStr, term)}`;
-          } else if (oldMatch) {
-            html += `<b>Old Number:</b> ${highlightMatch(oldStr, term)}`;
-            if (numStr) html += ` &nbsp;&nbsp; <b>New:</b> (${highlightMatch(numStr, term)})`;
+  
+          if (term) {
+            const numMatch = numStr.toLowerCase().includes(term);
+            const oldMatch = oldStr.toLowerCase().includes(term);
+  
+            if (numMatch || (!numMatch && !oldMatch)) {
+              html += `<b>Number:</b> ${highlightMatch(numStr, term)}`;
+              if (oldStr) html += ` &nbsp;&nbsp; <b>Old:</b> ${highlightMatch(oldStr, term)}`;
+            } else if (oldMatch) {
+              html += `<b>Old Number:</b> ${highlightMatch(oldStr, term)}`;
+              if (numStr) html += ` &nbsp;&nbsp; <b>New:</b> (${highlightMatch(numStr, term)})`;
+            }
+          } else {
+            html += `<b>Number:</b> ${numStr}`;
+            if (oldStr) html += ` &nbsp;&nbsp; <b>Old:</b> ${oldStr}`;
           }
           html += `<br>`;
-          
+  
           if (item.Description?.trim()) {
             html += `<b>Description:</b> ${highlightMatch(item.Description, term)}<br>`;
           }
-          
+  
           if (item.USL?.trim() || item.Bin?.trim()) {
             html += `<b>Location:</b>`;
             if (item.USL?.trim()) html += ` ${highlightMatch(item.USL, term)}`;
             if (item.Bin?.trim()) html += ` - ${highlightMatch(item.Bin, term)}`;
             html += `<br>`;
           }
-          
+  
           if (item.QTY || item.UOM?.trim()) {
             html += `<b>Quantity: </b> ~${item.QTY}`;
-            html += `<br>`;
           }
-          
+  
           if (item.Cost !== undefined && item.Cost !== null && item.Cost !== "") {
             html += `<b>Cost:</b> ${item.Cost}<br>`;
             if (item.UOM?.trim()) html += ` / ${highlightMatch(item.UOM, term)}`;
             html += `<br>`;
           }
-
+  
           if (item.Cost_Center?.trim()) {
             html += `<b>Cost Center:</b> ${highlightMatch(item.Cost_Center, term)}<br>`;
           }
-          
+  
           if (item.Group?.trim()) {
             html += `<b>Group:</b> ${highlightMatch(item.Group, term)}`;
           }
-
-
+  
           li.innerHTML = html;
           resultsList.appendChild(li);
         });
@@ -141,15 +147,16 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("loading").style.display = "none";
         noResults.style.display = "block";
       });
-
-      // Restore scroll position on load
-      const savedScroll = localStorage.getItem("inventoryScrollTop");
-      if (savedScroll) {
-        setTimeout(() => {
-          window.scrollTo(0, parseInt(savedScroll));
-        }, 50);
-      }
+  
+    // Restore scroll position on load
+    const savedScroll = localStorage.getItem("inventoryScrollTop");
+    if (savedScroll) {
+      setTimeout(() => {
+        window.scrollTo(0, parseInt(savedScroll));
+      }, 50);
+    }
   }
+
 
   searchInput.addEventListener("input", () => {
     clearTimeout(window._searchDebounce);
