@@ -13,8 +13,6 @@ export function initDebugToggle() {
     console.log(`[DEBUG] Debug Mode ${toggleSwitch.checked ? "Enabled" : "Disabled"}`);
     alert(`Debug Mode ${toggleSwitch.checked ? "enabled" : "disabled"}. Reload a page to apply.`);
   });
-}
 
-  // Log current state after initialization
   console.log(`[DEBUG] Debug Mode is currently ${enabled ? "ENABLED" : "DISABLED"}`);
 }
