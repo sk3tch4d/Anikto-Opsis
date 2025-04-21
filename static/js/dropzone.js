@@ -13,13 +13,14 @@ const DEBUG_MODE = false;
 // ==============================
 // FILE TYPE MATCHERS
 // ==============================
-const CATALOG_REGEX = /(catalog|inventory|cat[_-]?v[\d.]+)\.(xlsx|db)$/i;
-const ARG_REGEX = /(arg|flowsheet).*\.(pdf)$/i;
+const CATALOG_REGEX = /(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$/i;
+const ARG_REGEX = /(arg|flowsheet).*?\.(pdf)$/i;
 const SENIORITY_REGEX = /(cupe).*seniority.*(list)?.*\.xlsx$/i;
 
 const isCatalogFile = name => CATALOG_REGEX.test(name);
 const isArgFile = name => ARG_REGEX.test(name);
 const isSeniorityFile = name => SENIORITY_REGEX.test(name);
+const isValidFile = name => /\.(pdf|xlsx|db)$/i.test(name);
 
 
 // ==============================
@@ -127,11 +128,19 @@ function updateGenerateButtonText() {
   const existingCheckboxes = document.querySelectorAll('input[name="existing_pdfs"]:checked');
   const existingFiles = Array.from(existingCheckboxes).map(cb => cb.value);
 
-  const fileNames = uploadedFiles.map(f => f.name.toLowerCase())
-    .concat(existingFiles.map(name => name.toLowerCase()));
+  const allFiles = uploadedFiles.map(f => f.name.trim())
+    .concat(existingFiles.map(name => name.trim()));
+
+  const fileNames = allFiles
+    .map(name => name.toLowerCase())
+    .filter(isValidFile);
 
   if (DEBUG_MODE) {
-    console.log("[DEBUG] Selected files:", fileNames);
+    console.log("[DEBUG] Selected valid files:", fileNames);
+    const invalid = allFiles.filter(name => !isValidFile(name));
+    if (invalid.length) {
+      console.warn("[DEBUG] Invalid file types excluded:", invalid);
+    }
   }
 
   if (fileNames.length === 0) {
@@ -140,18 +149,22 @@ function updateGenerateButtonText() {
     return;
   }
 
-  if (fileNames.some(isCatalogFile)) {
-    generateBtn.textContent = "Generate Catalog";
-    if (DEBUG_MODE) console.log("[DEBUG] Catalog file matched");
-  } else if (fileNames.some(isSeniorityFile)) {
-    generateBtn.textContent = "Generate Seniority Summary";
-    if (DEBUG_MODE) console.log("[DEBUG] Seniority file matched");
-  } else if (fileNames.some(isArgFile)) {
-    generateBtn.textContent = "Generate ARG Summary";
-    if (DEBUG_MODE) console.log("[DEBUG] ARG file matched");
-  } else {
-    generateBtn.textContent = "Generate";
-    if (DEBUG_MODE) console.log("[DEBUG] Unknown file type. Default label used.");
+  // Declarative matching
+  const typeMatchers = [
+    { label: "Generate Catalog", match: isCatalogFile },
+    { label: "Generate Seniority Summary", match: isSeniorityFile },
+    { label: "Generate ARG Summary", match: isArgFile }
+  ];
+
+  const match = typeMatchers.find(t => fileNames.some(t.match));
+  generateBtn.textContent = match ? match.label : "Generate";
+
+  if (DEBUG_MODE) {
+    if (match) {
+      console.log(`[DEBUG] Matched: ${match.label}`);
+    } else {
+      console.log("[DEBUG] No file type matched.");
+    }
   }
 
   generateBtn.disabled = false;
