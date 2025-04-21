@@ -117,21 +117,27 @@ function updateGenerateButtonText() {
   const fileNames = uploadedFiles.map(f => f.name.toLowerCase())
     .concat(existingFiles.map(name => name.toLowerCase()));
 
+  const DEBUG_MODE = false;
+  if (DEBUG_MODE) {
+    console.log("Detected files:", fileNames);
+  }
+
   if (fileNames.length === 0) {
     generateBtn.textContent = "Generate";
     generateBtn.disabled = true;
     return;
   }
 
-  function isCatalogFile(name) {
-    return /^cat[_-]?v\d+\.(xlsx|db)$/i.test(name);
-  }
+  // Regex Matchers
+  const isCatalogFile = name => /^cat[_-]?v[\d.]+\.(xlsx|db)$/i.test(name);
+  const isArgFile = name => /arg/i.test(name) || /flowsheet/i.test(name);
+  const isSeniorityFile = name => /cupe.*seniority.*(list)?\.xlsx/i.test(name);
 
   if (fileNames.some(isCatalogFile)) {
     generateBtn.textContent = "Generate Catalog";
-  } else if (fileNames.some(name => name.endsWith(".xlsx"))) {
+  } else if (fileNames.some(isSeniorityFile)) {
     generateBtn.textContent = "Generate Seniority Summary";
-  } else if (fileNames.some(name => name.endsWith(".pdf"))) {
+  } else if (fileNames.some(isArgFile)) {
     generateBtn.textContent = "Generate ARG Summary";
   } else {
     generateBtn.textContent = "Generate";
@@ -139,6 +145,7 @@ function updateGenerateButtonText() {
 
   generateBtn.disabled = false;
 }
+
 
 
 // ==============================
