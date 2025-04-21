@@ -2,6 +2,8 @@
 // IMPORTS
 // ==============================
 
+// ----- Debugging -----
+import { initDebugToggle } from './debugging.js';
 // ----- Header -----
 import { initTypewriter } from './header.js';
 // ----- Panels -----
@@ -26,6 +28,9 @@ import { initializeSeniorityApp } from './seniority/init.js';
 // DOM-READY INITIALIZATION
 // ==============================
 document.addEventListener("DOMContentLoaded", () => {
+
+  // ----- Debug Toggle -----
+  if (document.querySelector("#debug-toggle")) initDebugToggle();
 
   // ----- Header -----
   if (document.querySelector("#typed-header")) initTypewriter();
@@ -53,4 +58,4 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Seniority -----
   if (document.querySelector("#seniority-search")) initializeSeniorityApp();
 
-});  
+});
