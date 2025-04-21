@@ -1,20 +1,19 @@
 # ==============================
-# INDEX HANDLER: Upload & Routing Logic
+# INDEX HANDLER: Upload & Routing Logic (Declarative Matcher System)
 # ==============================
 
 import os
 import re
+from datetime import datetime
+from flask import request, render_template, current_app as app
 import config
 from config import (
     UPLOAD_FOLDER,
     MAX_PDFS,
     DEBUG_MODE,
-    INVENTORY_DF,
     CATALOG_REGEX,
     SENIORITY_REGEX
 )
-from datetime import datetime
-from flask import request, render_template, current_app as app
 from inventory import load_inventory_data
 from seniority import load_seniority_file
 from report import process_report
@@ -33,13 +32,67 @@ def process_index_upload():
     has_inventory = False
 
     # ==============================
-    # FILE DETECTION + SAVING
+    # MATCHER HANDLERS
+    # ==============================
+    def handle_seniority(file, fname_lower):
+        nonlocal seniority_df, seniority_filename
+        match = re.search(r"(\d{4}-\d{2}-\d{2})", fname_lower)
+        date_str = match.group(1) if match else datetime.now().strftime("%Y-%m-%d")
+        new_filename = f"CUPE-SL-{date_str}.xlsx"
+        save_path = os.path.join("/tmp", new_filename)
+        file.save(save_path)
+        seniority_df = load_seniority_file(save_path)
+        seniority_filename = new_filename
+        if DEBUG_MODE:
+            app.logger.info(f"[SENIORITY] Loaded: {save_path}")
+
+    def handle_inventory(file, fname_lower):
+        nonlocal has_inventory
+        save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
+        file.save(save_path)
+        config.INVENTORY_DF = load_inventory_data(path=save_path)
+        has_inventory = True
+        if DEBUG_MODE:
+            app.logger.info(f"[INVENTORY] Reloaded from: {save_path}")
+
+    def handle_catalog(file, fname_lower):
+        save_path = os.path.join("/tmp", file.filename)
+        file.save(save_path)
+        if DEBUG_MODE:
+            app.logger.info(f"[CATALOG] Uploaded: {save_path}")
+
+    # ==============================
+    # FILE TYPE MATCHERS
+    # ==============================
+    MATCHERS = [
+        {
+            "type": "seniority",
+            "regex": SENIORITY_REGEX,
+            "ext": ".xlsx",
+            "handler": handle_seniority
+        },
+        {
+            "type": "inventory",
+            "match_fn": lambda fname: "inventory" in fname,
+            "ext": ".xlsx",
+            "handler": handle_inventory
+        },
+        {
+            "type": "catalog",
+            "regex": CATALOG_REGEX,
+            "exts": [".xlsx", ".db"],
+            "handler": handle_catalog
+        }
+    ]
+
+    # ==============================
+    # PROCESS UPLOADED FILES
     # ==============================
     for file in uploaded_files:
         ext = os.path.splitext(file.filename)[1].lower()
         fname_lower = file.filename.lower()
 
-        # ✅ Handle PDFs
+        # === Handle PDFs Directly
         if ext == ".pdf":
             save_path = os.path.join(UPLOAD_FOLDER, file.filename)
             if not os.path.exists(save_path):
@@ -47,51 +100,28 @@ def process_index_upload():
             pdf_files.append(save_path)
             if DEBUG_MODE:
                 app.logger.info(f"[PDF] Saved: {save_path}")
+            continue
 
-        # ✅ Handle Excel / DB Uploads
-        elif ext in [".xlsx", ".db"]:
+        # === Match Against Defined Handlers
+        matched = False
+        for matcher in MATCHERS:
+            if "ext" in matcher and ext != matcher["ext"]:
+                continue
+            if "exts" in matcher and ext not in matcher["exts"]:
+                continue
+            if "regex" in matcher and not re.search(matcher["regex"], fname_lower):
+                continue
+            if "match_fn" in matcher and not matcher["match_fn"](fname_lower):
+                continue
+            matcher["handler"](file, fname_lower)
+            matched = True
+            break
 
-            # === Detect Seniority Uploads
-            if ext == ".xlsx" and re.search(SENIORITY_REGEX, fname_lower):
-                match = re.search(r"(\d{4}-\d{2}-\d{2})", fname_lower)
-                date_str = match.group(1) if match else datetime.now().strftime("%Y-%m-%d")
-                new_filename = f"CUPE-SL-{date_str}.xlsx"
-
-                save_path = os.path.join("/tmp", new_filename)
-                file.save(save_path)
-                seniority_df = load_seniority_file(save_path)
-                seniority_filename = new_filename
-                if DEBUG_MODE:
-                    app.logger.info(f"[SENIORITY] Loaded: {save_path}")
-
-            # === Detect Inventory Uploads
-            elif ext == ".xlsx" and "inventory" in fname_lower:
-                save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
-                file.save(save_path)
-                config.INVENTORY_DF = load_inventory_data(path=save_path)
-                has_inventory = True
-                if DEBUG_MODE:
-                    app.logger.info(f"[INVENTORY] Reloaded from: {save_path}")
-
-            # === Detect Catalog Uploads
-            elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
-                save_path = os.path.join("/tmp", file.filename)
-                file.save(save_path)
-                if DEBUG_MODE:
-                    app.logger.info(f"[CATALOG] Uploaded: {save_path}")
-
-            # === Unknown Upload Type
-            else:
-                if DEBUG_MODE:
-                    app.logger.warning(f"[SKIPPED] Unknown or unsupported file: {file.filename}")
-
-        # ✅ Unrecognized File Type
-        else:
-            if DEBUG_MODE:
-                app.logger.warning(f"[SKIPPED] Unrecognized file extension: {file.filename}")
+        if not matched and DEBUG_MODE:
+            app.logger.warning(f"[SKIPPED] Unknown or unsupported file: {file.filename}")
 
     # ==============================
-    # ADD EXISTING CHECKED PDFs
+    # APPEND EXISTING CHECKED PDFs
     # ==============================
     for fname in existing_files:
         if fname.endswith(".pdf"):
@@ -100,7 +130,7 @@ def process_index_upload():
                 pdf_files.append(path)
 
     # ==============================
-    # ROUTING LOGIC (View Dispatch)
+    # ROUTING DECISIONS
     # ==============================
     has_pdfs = bool(pdf_files)
     has_seniority = seniority_df is not None
@@ -135,7 +165,7 @@ def process_index_upload():
         )
 
     if DEBUG_MODE:
-        app.logger.info(f"[ROUTING] PDFs and seniority detected. Prioritizing seniority view.")
+        app.logger.info("[ROUTING] PDFs and seniority detected. Prioritizing seniority view.")
     return render_template(
         "seniority.html",
         table=seniority_df.to_dict(orient="records"),
