@@ -98,10 +98,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const oldMatch = oldStr.toLowerCase().includes(term);
   
             if (numMatch || (!numMatch && !oldMatch)) {
-              html += `<span class="tag-label">Number:</b> ${highlightMatch(numStr, term)}`;
+              html += `<span class="tag-label">Number:</span> ${highlightMatch(numStr, term)}`;
               if (oldStr) html += ` &nbsp;&nbsp; <span class="tag-label">Old:</span> (${highlightMatch(oldStr, term)})`;
             } else if (oldMatch) {
-              html += `<span class="tag-label">Old Number:</b> ${highlightMatch(oldStr, term)}`;
+              html += `<span class="tag-label">Old Number:</span> ${highlightMatch(oldStr, term)}`;
               if (numStr) html += ` &nbsp;&nbsp; <span class="tag-label">New:</span> (${highlightMatch(numStr, term)})`;
             }
           } else {
