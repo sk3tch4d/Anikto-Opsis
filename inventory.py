@@ -47,7 +47,7 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
                 before = len(df)
                 df = df[df[["Num", "Old"]].astype(str).apply(
                     lambda row: any(term in str(cell) for cell in row), axis=1
-                )
+                )]
                 after = len(df)
                 if DEBUG:
                     print(f"[DEBUG] Numeric term filter '{term}' applied: {before} → {after} rows")
