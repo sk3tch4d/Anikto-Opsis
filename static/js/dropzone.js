@@ -105,10 +105,14 @@ function setupDragAndDrop(dropZone, fileInput) {
 // ==============================
 // GENERATE BUTTON TEXT + STATE
 // ==============================
+function isCatalogFile(name) {
+  return /^cat[_-]?v\d+\.(xlsx|db)$/i.test(name);
+}
+
 function updateGenerateButtonText() {
   const fileInput = document.getElementById("file-input");
   const generateBtn = document.getElementById("generate");
-  if (!generateBtn) return; // Guard clause: button not found
+  if (!generateBtn) return;
 
   const uploadedFiles = fileInput?.files ? Array.from(fileInput.files) : [];
   const existingCheckboxes = document.querySelectorAll('input[name="existing_pdfs"]:checked');
@@ -117,18 +121,15 @@ function updateGenerateButtonText() {
   const fileNames = uploadedFiles.map(f => f.name.toLowerCase())
     .concat(existingFiles.map(name => name.toLowerCase()));
 
-  // --- Early return if no files selected ---
   if (fileNames.length === 0) {
     generateBtn.textContent = "Generate";
     generateBtn.disabled = true;
     return;
   }
 
-  function isCatalogFile(name) {
-    return /^cat_v\d+\.(xlsx|db)$/i.test(name);
-  }
+  console.log("Files:", fileNames);
+  console.log("Catalog match?", fileNames.some(isCatalogFile));
 
-  // --- Update label based on file type ---
   if (fileNames.some(isCatalogFile)) {
     generateBtn.textContent = "Generate Catalog";
   } else if (fileNames.some(name => name.endsWith(".xlsx"))) {
@@ -139,9 +140,9 @@ function updateGenerateButtonText() {
     generateBtn.textContent = "Generate";
   }
 
-
   generateBtn.disabled = false;
 }
+
 
 // ==============================
 // BIND CHANGE EVENTS
