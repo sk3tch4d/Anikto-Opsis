@@ -1,5 +1,6 @@
 import os
 import re
+import config
 from datetime import datetime
 from flask import request, render_template, current_app as app
 from inventory import load_inventory_data
@@ -8,9 +9,9 @@ from report import process_report
 
 UPLOAD_FOLDER = "/tmp"
 MAX_PDFS = 10
-INVENTORY_DF = None  # imported elsewhere as global
 
 def process_index_upload():
+    config.INVENTORY_DF = load_inventory_data(path=save_path)
     uploaded_files = request.files.getlist("uploads")
     existing_files = request.form.getlist("existing_pdfs")
 
