@@ -15,9 +15,10 @@
   <div id="login-panel" class="panel open" style="max-width: 400px; margin: 2rem auto;">
     <div class="panel-header">Access Panel</div>
     <div class="panel-body open">
-      <input type="password" id="adpw" class="input full-width" placeholder="••••••••" 
-             onkeydown="if(event.key === 'Enter') chpw()" />
-      <button onclick="chpw()" class="button full-width">Login</button>
+      <form id="admin-login-form">
+        <input type="password" id="adpw" class="input full-width" placeholder="••••••••" />
+        <button id="admin-login" class="button full-width" type="submit">Login</button>
+      </form>  
       <p id="login-error" class="error-text" style="display: none;">Incorrect password. Try again.</p>
     </div>
   </div>
