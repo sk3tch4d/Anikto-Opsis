@@ -42,9 +42,20 @@ export function populateInventoryStats(results) {
   liUnique.innerHTML = `<strong>Unique Items:</strong> ${uniqueNums.length}`;
   statsBox.appendChild(liUnique);
 
-  const liFound = document.createElement("li");
-  liFound.innerHTML = `<strong>Found:</strong> ${uniqueNums.join(", ")}`;
-  statsBox.appendChild(liFound);
+  const liMatches = document.createElement("li");
+  liMatches.innerHTML = `<strong>Matches:</strong> `;
+  
+  uniqueNums.forEach(num => {
+    const span = document.createElement("span");
+    span.className = "clickable-stat";
+    span.setAttribute("data-value", num);
+    span.textContent = num;
+    span.style.marginRight = "6px"; // Spacing
+    liMatches.appendChild(span);
+  });
+  
+  statsBox.appendChild(liMatches);
+
 
   // ==============================
   // PER-ITEM DETAIL BLOCKS
