@@ -14,6 +14,8 @@ import { initDropzone } from './dropzone.js';
 import { initQuotes } from './quotes.js';
 // ----- Schedule -----
 import { initScheduleUI } from './schedule.js';
+// ----- Search-Utils -----
+import { setupParseStats, searchFromStat } from './search-utils.js';
 // ----- Admin -----
 import {
   initAdminLogin,
