@@ -34,7 +34,14 @@ function populateInventoryStats(results) {
   statsBox.innerHTML = "";
   const uniqueNums = [...new Set(results.map(item => item.Num))];
 
+  const searchInput = document.getElementById("inventory-search");
+  const currentSearch = searchInput?.value.trim() || "(None)";
+
   // Summary Stats
+  const liResults = document.createElement("li");
+  liSearch.innerHTML = `<strong>Current Search:</strong> ${currentSearch}`;
+  statsBox.appendChild(liResults);
+  
   const liResults = document.createElement("li");
   liResults.innerHTML = `<strong>Results:</strong> ${results.length}`;
   statsBox.appendChild(liResults);
