@@ -17,3 +17,14 @@ export function setupParseStats(selector, inputId, attribute = "data-value") {
     });
   });
 }
+
+// ==============================
+// TRIGGER SEARCH FROM STAT
+// ==============================
+export function searchFromStat(inputId, value) {
+  const input = document.getElementById(inputId);
+  if (input) {
+    input.value = value;
+    input.dispatchEvent(new Event("input"));
+  }
+}
