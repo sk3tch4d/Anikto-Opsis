@@ -109,7 +109,7 @@ def process_index_upload():
                 continue
             if "exts" in matcher and ext not in matcher["exts"]:
                 continue
-            if "regex" in matcher and not re.search(matcher["regex"], fname_lower):
+            if "regex" in matcher and not re.search(matcher["regex"], fname_lower, re.IGNORECASE):
                 continue
             if "match_fn" in matcher and not matcher["match_fn"](fname_lower):
                 continue
