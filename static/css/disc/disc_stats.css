@@ -23,6 +23,7 @@
 /* ============================= */
 .clickable-match-container {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 8px;
   line-height: 1.6;
