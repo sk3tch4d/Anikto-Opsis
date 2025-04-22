@@ -7,7 +7,7 @@
 // GLOBAL DEBUG TOGGLE
 // ==============================
 const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
-import { setupParseStats } from "./parse-search.js";
+import { setupParseStats } from "./search-utils.js";
 
 // ==============================
 // HELPERS: HIGHLIGHT MATCHED
