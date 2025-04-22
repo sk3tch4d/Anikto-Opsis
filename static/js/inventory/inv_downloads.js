@@ -25,17 +25,17 @@ export function downloadInventorySearch() {
     return;
   }
 
-  const headers = ["Num", "Old", "Description", "QTY", "UOM", "USL", "Bin", "Cost", "Cost_Center", "Group"];
+  const headers = ["Number", "USL", "Bin", "Quantity", "Description", "Cost Center", "Cost", "UOM", "Old", "Group"];
   const rows = results.map(row => [
     row["Num"] || "",
-    row["Old"] || "",
-    row["Description"] || "",
-    row["QTY"] || "",
-    row["UOM"] || "",
     row["USL"] || "",
     row["Bin"] || "",
-    row["Cost"] || "",
+    row["QTY"] || "",
+    row["Description"] || "",
     row["Cost_Center"] || "",
+    row["Cost"] || "",
+    row["UOM"] || "",
+    row["Old"] || "",
     row["Group"] || ""
   ]);
 
