@@ -31,7 +31,7 @@ export function populateInventoryStats(results) {
   const uniqueNums = [...new Set(results.map(item => item.Num))];
 
   const liSearch = document.createElement("li");
-  liSearch.innerHTML = `<strong>Current Search:</strong> ${currentSearch}`;
+  liSearch.innerHTML = `<strong>Current Search:</strong> <em>${currentSearch}</em>`;
   statsBox.appendChild(liSearch);
 
   const liResults = document.createElement("li");
