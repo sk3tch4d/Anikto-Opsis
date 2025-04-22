@@ -5,6 +5,7 @@
 import { renderResults } from './results.js';
 import { populateStats, populateGlobalStats } from './stats.js';
 import { populatePositionList } from './positions.js';
+import { openPanelById } from '../panels.js';
   
 
 // ==============================
