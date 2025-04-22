@@ -177,10 +177,6 @@ export function initializeInventoryApp() {
   if (sortBy) sortBy.addEventListener("change", doSearch);
 
   doSearch();
-  
-  if (document.getElementById("download-inventory-button")) {
-    setupInventoryDownloadButton();
-  }
 
   // ==============================
   // SCROLL POSITION PERSISTENCE
