@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        populateInventoryStats(results);
+        populateInventoryStats(data);
 
         data.forEach(item => {
           const li = document.createElement("li");
