@@ -7,7 +7,7 @@ import { initDebugToggle } from './debugging.js';
 const nonClosablePanels = [
   "downloads",
   "search-panel",
-  "inventory-panel"
+  "inventory-panel",
   "scheduled-panel"
 ];
 
