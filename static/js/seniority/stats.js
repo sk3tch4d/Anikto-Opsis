@@ -106,7 +106,6 @@ export function populateStats(data) {
   
   statsDiv.innerHTML = `
     <ul style="list-style: none; padding-left: 0;">
-      <li><p style="text-align: center"><strong>Search Term:</strong> ${currentQuery}</p></li>
       <li><p style="text-align: center"><strong>Filtered by:</strong> <em>${currentQuery}</em></p></li>
       <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
       <li><p style="text-align: center">
