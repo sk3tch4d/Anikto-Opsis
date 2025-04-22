@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Seniority Summary</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
-  <script src="{{ url_for('static', filename='js/scripts.js') }}" type="module"></script>
 </head>
 <body>
   <h1 id="typed-header"><span id="typed-text" data-title="Seniority Summary|Anikto Opsis"></span></h1>
@@ -118,5 +117,6 @@
 
     </div> <!-- END panel-container -->
   </div> <!-- END panel-wrapper -->
+  <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=1) }}"></script>
 </body>
 </html>
