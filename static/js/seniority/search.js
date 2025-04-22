@@ -91,43 +91,75 @@ export function searchFromGlobalStat(query) {
 function parseSeniorityQuery(query, data) {
   const normalized = query.toLowerCase().trim();
 
+  // Match year conditions
   const eqMatch = normalized.match(/(?:^=|years\s*[:=])\s*(\d+)/);
   const gteMatch = normalized.match(/(?:^>=|years\s*>=)\s*(\d+)/);
   const lteMatch = normalized.match(/(?:^<=|years\s*<=|under|max)\s*(\d+)/);
-  const plusMatch = normalized.match(/^(\d+)\+$/); // support "10+"
-  const minusMatch = normalized.match(/^(\d+)-$/); // support "10-"
+  const plusMatch = normalized.match(/^(\d+)\+$/);           // "10+"
+  const minusMatch = normalized.match(/^(\d+)-$/);           // "10-"
+  const rangeMatch = normalized.match(/(\d+)\s*-\s*(\d+)/);  // "10-20"
+  const shorthandMatch = normalized.match(/(\d+)(\+|-)/);    // e.g. "assistant 10+"
 
   const exactYears = eqMatch ? parseFloat(eqMatch[1]) : null;
-  const minYears = gteMatch ? parseFloat(gteMatch[1]) : plusMatch ? parseFloat(plusMatch[1]) : null;
-  const maxYears = lteMatch ? parseFloat(lteMatch[1]) : minusMatch ? parseFloat(minusMatch[1]) : null;
 
-  // Extract keywords (ignore numeric expressions)
-  const keywords = normalized
-    .replace(/(?:^=|>=|<=|\+|-|under|max|years\s*[:=<>]*\s*\d+)/g, "")
-    .split(/\s+/)
-    .filter(Boolean);
+  const minYears = rangeMatch
+    ? parseFloat(rangeMatch[1])
+    : gteMatch
+    ? parseFloat(gteMatch[1])
+    : plusMatch
+    ? parseFloat(plusMatch[1])
+    : shorthandMatch?.[2] === '+'
+    ? parseFloat(shorthandMatch[1])
+    : null;
+
+  const maxYears = rangeMatch
+    ? parseFloat(rangeMatch[2])
+    : lteMatch
+    ? parseFloat(lteMatch[1])
+    : minusMatch
+    ? parseFloat(minusMatch[1])
+    : shorthandMatch?.[2] === '-'
+    ? parseFloat(shorthandMatch[1])
+    : null;
+
+  // Build OR keyword groups
+  const keywordGroups = normalized
+    .replace(/\b(?:=|>=|<=)?\s*\d+\+?\-?\b/g, "")
+    .replace(/years\s*[:=<>]*\s*\d+/g, "")
+    .replace(/\b(under|max)\s*\d+/g, "")
+    .replace(/\d+\s*-\s*\d+/g, "") // remove ranges
+    .split(/\s*\bor\b\s*/i)
+    .map(group =>
+      group
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+    )
+    .filter(g => g.length);
 
   return data.filter(row => {
     const years = parseFloat(row["Years"] || 0);
-    const status = String(row["Status"] || "").toLowerCase();
-    const position = String(row["Position"] || "").toLowerCase();
+    const text = `${row.Status} ${row.Position}`.toLowerCase();
 
     let match = true;
 
+    // Numeric filtering
     if (exactYears !== null) match = match && years === exactYears;
     if (minYears !== null) match = match && years >= minYears;
     if (maxYears !== null) match = match && years <= maxYears;
 
-    for (const keyword of keywords) {
-      if (!status.includes(keyword) && !position.includes(keyword)) {
-        match = false;
-        break;
-      }
+    // OR-based keyword matching
+    if (keywordGroups.length) {
+      const orMatch = keywordGroups.some(group =>
+        group.every(word => text.includes(word))
+      );
+      if (!orMatch) match = false;
     }
 
     return match;
   });
 }
+
 
 
 
