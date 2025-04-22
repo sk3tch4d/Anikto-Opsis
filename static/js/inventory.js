@@ -7,7 +7,7 @@
 // GLOBAL DEBUG TOGGLE
 // ==============================
 const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
-
+import { setupParseStats } from "./parse-search.js";
 
 // ==============================
 // HELPERS: HIGHLIGHT MATCHED
@@ -48,11 +48,20 @@ function populateInventoryStats(results) {
     if (matching.length === 0) return;
 
     const base = matching[0];
+    const old = base.Old?.trim() ? ` (Old: ${base.Old})` : "";
+    const cost = base.Cost !== undefined ? base.Cost : "N/A";
+    const uom = base.UOM ?? "";
+    const topMatch = matching.reduce((a, b) => a.QTY > b.QTY ? a : b);
+
     const li = document.createElement("li");
+    li.classList.add("clickable-stat");
+    li.setAttribute("data-value", base.Num);  // Enable stat search
+
     li.innerHTML = `
-      <strong>${num}:</strong> ${base.Description} (${base.UOM})<br>
-      Price: ${base.Price} | Cost Center: ${base["Cost Center"]}<br>
-      <strong>Top Qty:</strong> ${Math.max(...matching.map(m => m.QTY))}<br>
+      <strong>Stores Number:</strong> ${base.Num}${old}<br>
+      <strong>Description:</strong> ${base.Description}<br>
+      <strong>Cost:</strong> ${cost} / ${uom}<br>
+      <strong>Top Quantity:</strong> ${topMatch.USL} - ${topMatch.QTY}<br>
       <strong>Top 3 USLs:</strong><br>
       ${matching
         .sort((a, b) => b.QTY - a.QTY)
@@ -60,8 +69,10 @@ function populateInventoryStats(results) {
         .map(m => `- ${m.USL} (${m.QTY})`)
         .join("<br>")}
     `;
+
     statsBox.appendChild(li);
   });
+  setupParseStats(".clickable-stat", "inventory-search", "data-value");
 }
 
 // ==============================
