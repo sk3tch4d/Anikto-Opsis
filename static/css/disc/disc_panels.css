@@ -8,7 +8,7 @@
 /* ============================= */
 .panel {
   margin-top: 1rem;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
   width: clamp(320px, 90vw, 500px);
   box-sizing: border-box;
 }
