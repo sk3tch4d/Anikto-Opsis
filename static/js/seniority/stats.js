@@ -3,7 +3,6 @@
 // Global + Filtered Statistics
 // ==============================
 
-import { openPanelById } from '../panels.js';
 import { setupParseStats, searchFromStat } from "../search-utils.js";
 import { renderResults } from './results.js';
 
@@ -150,7 +149,6 @@ export function refineSearchFromStat(filter) {
   window.currentSearchResults = refined;
   renderResults(refined);
   populateStats(refined);
-  openPanelById("seniority-search-panel");
 }
 
 
