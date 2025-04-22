@@ -25,14 +25,12 @@
   max-width: 500px;
   box-sizing: border-box;
 }
-
 /* Button Disabled */
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
-.button-container form {
+.button-container {
   background: transparent;
   display: flex;
   justify-content: center;
