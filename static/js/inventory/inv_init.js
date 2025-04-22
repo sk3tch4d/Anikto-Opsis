@@ -5,7 +5,7 @@
 // ==============================
 
 import { populateInventoryStats } from "./inv_stats.js";
-import { setupInventoryDownloadButton } from "./inv_downloads.js";
+import { setupInventoryDownloadSearch } from "./inv_downloads.js";
 
 // ==============================
 // DEBUG TOGGLE
@@ -187,7 +187,7 @@ export function initializeInventoryApp() {
   // ==============================
   // DOWNLOAD BUTTON SETUP
   // ==============================
-  if (document.getElementById("inventory-search-button")) {
-    setupInventoryDownloadButton();
+  if (document.getElementById("inventory-search-download")) {
+    setupInventoryDownloadSearch();
   }
 }
