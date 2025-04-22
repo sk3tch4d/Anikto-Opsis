@@ -19,6 +19,51 @@ function highlightMatch(text, term) {
   return text.replace(regex, `<span class="highlight">$1</span>`);
 }
 
+
+// ==============================
+// POPULATE STATS PANEL (SEAECH)
+// ==============================
+function populateInventoryStats(results) {
+  const statsBox = document.getElementById("inventory-stats");
+  if (!statsBox) return;
+
+  statsBox.innerHTML = "";
+
+  const uniqueNums = [...new Set(results.map(item => item.Num))];
+
+  const liResults = document.createElement("li");
+  liResults.innerHTML = `<strong>Results:</strong> ${results.length}`;
+  statsBox.appendChild(liResults);
+
+  const liUnique = document.createElement("li");
+  liUnique.innerHTML = `<strong>Unique Items:</strong> ${uniqueNums.length}`;
+  statsBox.appendChild(liUnique);
+
+  const liFound = document.createElement("li");
+  liFound.innerHTML = `<strong>Found:</strong> ${uniqueNums.join(", ")}`;
+  statsBox.appendChild(liFound);
+
+  uniqueNums.forEach(num => {
+    const matching = results.filter(r => r.Num === num);
+    if (matching.length === 0) return;
+
+    const base = matching[0];
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <strong>${num}:</strong> ${base.Description} (${base.UOM})<br>
+      Price: ${base.Price} | Cost Center: ${base["Cost Center"]}<br>
+      <strong>Top Qty:</strong> ${Math.max(...matching.map(m => m.QTY))}<br>
+      <strong>Top 3 USLs:</strong><br>
+      ${matching
+        .sort((a, b) => b.QTY - a.QTY)
+        .slice(0, 3)
+        .map(m => `- ${m.USL} (${m.QTY})`)
+        .join("<br>")}
+    `;
+    statsBox.appendChild(li);
+  });
+}
+
 // ==============================
 // INIT INVENTORY SEARCH PANEL
 // ==============================
@@ -100,6 +145,8 @@ document.addEventListener("DOMContentLoaded", () => {
           noResults.style.display = "block";
           return;
         }
+
+        populateInventoryStats(results);
 
         data.forEach(item => {
           const li = document.createElement("li");
