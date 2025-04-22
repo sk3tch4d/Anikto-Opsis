@@ -1,7 +1,10 @@
 // ==============================
-// PARSE TO SEARCH MODULE
+// SHARED SEARCH UTILITIES
 // ==============================
 
+// ==============================
+// PARSE TO SEARCH MODULE
+// ==============================
 export function setupParseStats(selector, inputId, attribute = "data-value") {
   document.querySelectorAll(selector).forEach(elem => {
     elem.addEventListener("click", () => {
