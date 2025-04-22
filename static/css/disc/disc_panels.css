@@ -188,26 +188,6 @@ body.lock-scroll {
 
 
 /* ============================= */
-/* CLICKABLE-STATS               */
-/* ============================= */
-.panel-body .clickable-stat {
-  color: #7289da !important;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-.panel-body .clickable-stat:hover {
-  color: #a3b3f0 !important;
-}
-.clickable-stat-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  line-height: 1.6;
-  margin-top: 6px;
-}
-
-
-/* ============================= */
 /* ANIMATION: PANEL SLIDE-IN     */
 /* ============================= */
 .panel-animate {
