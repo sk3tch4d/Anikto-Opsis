@@ -32,6 +32,13 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.button-container form {
+  background: transparent;
+  display: flex;
+  justify-content: center;
+}
+
+
 .label-button {
   display: block;
   width: 100%;
