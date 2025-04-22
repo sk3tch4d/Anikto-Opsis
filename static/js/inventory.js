@@ -59,12 +59,15 @@ function populateInventoryStats(results) {
     const topMatch = matching.reduce((a, b) => a.QTY > b.QTY ? a : b);
 
     const li = document.createElement("li");
-    li.classList.add("clickable-stat");
-    li.setAttribute("data-value", base.Num);
 
-    li.innerHTML = `
-      <span class="clickable-stat-label"><strong>Stores Number:</strong> ${base.Num}${old}</span><br>
-      <strong>Description:</strong> ${base.Description}<br>
+    const clickableSpan = document.createElement("span");
+    clickableSpan.className = "clickable-stat";
+    clickableSpan.setAttribute("data-value", base.Num);
+    clickableSpan.innerHTML = `<strong>Stores Number:</strong> ${base.Num}${old}`;
+    
+    li.appendChild(clickableSpan);
+    li.innerHTML += `
+      <br><strong>Description:</strong> ${base.Description}<br>
       <strong>Cost:</strong> ${cost} / ${uom}<br>
       <strong>Top Quantity:</strong> ${topMatch.USL} - ${topMatch.QTY}<br>
       <strong>Top 3 USLs:</strong><br>
@@ -74,8 +77,9 @@ function populateInventoryStats(results) {
         .map(m => `&nbsp;&nbsp;- ${m.USL} (${m.QTY})`)
         .join("<br>")}
     `;
-
+    
     statsBox.appendChild(li);
+
   });
 
   setupParseStats(".clickable-stat", "inventory-search", "data-value");
