@@ -70,7 +70,6 @@ export function populateGlobalStats() {
 // ==============================
 export function populateStats(data) {
   const statsDiv = document.getElementById("seniority-stats");
-  const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
   const searchInput = document.getElementById("seniority-search");
   const currentQuery = searchInput?.value.trim() || "(None)";
   
@@ -102,10 +101,13 @@ export function populateStats(data) {
       mostSenior = { name, years };
     }
   });
+
+  const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
   
   statsDiv.innerHTML = `
     <ul style="list-style: none; padding-left: 0;">
       <li><p style="text-align: center"><strong>Search Term:</strong> ${currentQuery}</p></li>
+      <li><p style="text-align: center"><strong>Filtered by:</strong> <em>${currentQuery}</em></p></li>
       <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
       <li><p style="text-align: center">
         <span class="clickable-stat" data-name="Full-Time">
