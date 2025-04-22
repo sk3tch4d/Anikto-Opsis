@@ -81,6 +81,7 @@ export function initializeInventoryApp() {
         }
 
         populateInventoryStats(data);
+        window.inventorySearchResults = data;
 
         data.forEach(item => {
           const li = document.createElement("li");
@@ -176,6 +177,10 @@ export function initializeInventoryApp() {
   if (sortBy) sortBy.addEventListener("change", doSearch);
 
   doSearch();
+  
+  if (document.getElementById("download-inventory-button")) {
+    setupInventoryDownloadButton();
+  }
 
   // ==============================
   // SCROLL POSITION PERSISTENCE
