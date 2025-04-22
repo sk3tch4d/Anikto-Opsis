@@ -1,5 +1,5 @@
 // ==============================
-// IMPORTS
+// SCRIPTS.JS — APP BOOTSTRAP
 // ==============================
 
 // ----- Debugging -----
@@ -22,15 +22,15 @@ import {
   initJsonUploadForm,
   initFileUploadDisplay
 } from './admin.js';
-// ----- Seniority  -----
+// ----- Seniority -----
 import { initializeSeniorityApp } from './seniority/init.js';
-
+// ----- Inventory -----
+import { initializeInventoryApp } from './inventory.js';
 
 // ==============================
 // DOM-READY INITIALIZATION
 // ==============================
 document.addEventListener("DOMContentLoaded", () => {
-
   // ----- Debug Toggle -----
   if (document.querySelector("#debug-toggle")) initDebugToggle();
 
@@ -40,9 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Panels -----
   if (document.querySelector(".panel")) {
     window.togglePanel = togglePanel;
-    collapseAllPanels({
-      excludeSelector: "#login-panel"
-    });
+    collapseAllPanels({ excludeSelector: "#login-panel" });
   }
 
   // ----- Dropzone -----
@@ -62,4 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Seniority -----
   if (document.querySelector("#seniority-search")) initializeSeniorityApp();
 
+  // ----- Inventory -----
+  if (document.querySelector("#inventory-search")) initializeInventoryApp();
 });
