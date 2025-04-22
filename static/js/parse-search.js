@@ -2,7 +2,7 @@
 // PARSE TO SEARCH MODULE
 // ==============================
 
-export function setupClickableStats(selector, inputId, attribute = "data-name") {
+export function setupParseStats(selector, inputId, attribute = "data-value") {
   document.querySelectorAll(selector).forEach(elem => {
     elem.addEventListener("click", () => {
       const value = elem.getAttribute(attribute);
