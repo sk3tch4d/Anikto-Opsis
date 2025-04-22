@@ -4,13 +4,17 @@
 // ==============================
 
 // ==============================
-// GLOBAL DEBUG TOGGLE
+// IMPORTS
 // ==============================
-const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 import { setupParseStats } from "./search-utils.js";
 
 // ==============================
-// HELPERS: HIGHLIGHT MATCHED
+// DEBUG TOGGLE
+// ==============================
+const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
+
+// ==============================
+// HIGHLIGHT MATCH HELPER
 // ==============================
 function highlightMatch(text, term) {
   if (!term) return text;
@@ -19,19 +23,17 @@ function highlightMatch(text, term) {
   return text.replace(regex, `<span class="highlight">$1</span>`);
 }
 
-
 // ==============================
-// POPULATE STATS PANEL (SEAECH)
+// POPULATE STATS PANEL
 // ==============================
 function populateInventoryStats(results) {
   const statsBox = document.getElementById("inventory-stats");
   if (!statsBox) return;
 
   statsBox.innerHTML = "";
-
   const uniqueNums = [...new Set(results.map(item => item.Num))];
 
-  // Summary stats
+  // Summary Stats
   const liResults = document.createElement("li");
   liResults.innerHTML = `<strong>Results:</strong> ${results.length}`;
   statsBox.appendChild(liResults);
@@ -44,7 +46,7 @@ function populateInventoryStats(results) {
   liFound.innerHTML = `<strong>Found:</strong> ${uniqueNums.join(", ")}`;
   statsBox.appendChild(liFound);
 
-  // Detailed per-item stats
+  // Detailed Stats Per Item
   uniqueNums.forEach(num => {
     const matching = results.filter(r => r.Num === num);
     if (!matching.length) return;
@@ -75,40 +77,28 @@ function populateInventoryStats(results) {
     statsBox.appendChild(li);
   });
 
-  // Enable stat-click behavior
   setupParseStats(".clickable-stat", "inventory-search", "data-value");
 }
 
 // ==============================
-// INIT INVENTORY SEARCH PANEL
+// MAIN APP INITIALIZER
 // ==============================
-document.addEventListener("DOMContentLoaded", () => {
+export function initializeInventoryApp() {
   const searchInput = document.getElementById("inventory-search");
   const uslFilter = document.getElementById("usl-filter");
   const sortBy = document.getElementById("sort-by") || { value: "QTY" };
   const sortDirButton = document.getElementById("sort-direction");
   const resultsList = document.getElementById("inventory-results");
   const noResults = document.getElementById("no-results");
-
   let sortDirection = "desc";
 
-  // Fetch USLs
+  // ==============================
+  // FETCH USL FILTER OPTIONS
+  // ==============================
   fetch("/inventory-usls")
-    .then(res => {
-      if (!res.ok) {
-        if (DEBUG_MODE) console.error("USL fetch failed:", res.status, res.statusText);
-        return null;
-      }
-      return res.json();
-    })
+    .then(res => res.ok ? res.json() : null)
     .then(usls => {
-      if (!Array.isArray(usls)) {
-        if (DEBUG_MODE) console.warn("USL response not array:", usls);
-        return;
-      }
-
-      if (DEBUG_MODE) console.log("[DEBUG] USLS Response:", usls);
-
+      if (!Array.isArray(usls)) return;
       usls.sort().forEach(usl => {
         const opt = document.createElement("option");
         opt.value = usl;
@@ -116,11 +106,11 @@ document.addEventListener("DOMContentLoaded", () => {
         uslFilter.appendChild(opt);
       });
     })
-    .catch(err => {
-      if (DEBUG_MODE) console.error("USL fetch error:", err);
-    });
+    .catch(err => DEBUG_MODE && console.error("USL fetch error:", err));
 
-  // Toggle sort direction
+  // ==============================
+  // TOGGLE SORT DIRECTION
+  // ==============================
   sortDirButton.addEventListener("click", () => {
     sortDirection = sortDirection === "desc" ? "asc" : "desc";
     sortDirButton.textContent = sortDirection === "desc" ? "↓" : "↑";
@@ -135,14 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const usl = uslFilter.value;
     const sort = sortBy.value;
 
-    if (DEBUG_MODE) {
-      console.log(`[DEBUG] Search Triggered`);
-      console.log(`  • Term: "${term}"`);
-      console.log(`  • USL: "${usl}"`);
-      console.log(`  • Sort: "${sort}"`);
-      console.log(`  • Direction: "${sortDirection}"`);
-    }
-
     document.getElementById("loading").style.display = "block";
     resultsList.innerHTML = "";
     noResults.style.display = "none";
@@ -151,12 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.json())
       .then(data => {
         document.getElementById("loading").style.display = "none";
-
-        if (DEBUG_MODE) {
-          console.log(`[DEBUG] Search Results Received: ${data.length} item(s)`);
-        }
-
-        if (!data || data.length === 0) {
+        if (!data || !data.length) {
           noResults.style.display = "block";
           return;
         }
@@ -185,6 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
             html += `<span class="tag-label">Number:</span> ${numStr}`;
             if (oldStr) html += ` &nbsp;&nbsp; <span class="tag-label">Old:</span> ${oldStr}`;
           }
+
           html += `<br>`;
 
           if (item.Description?.trim()) {
@@ -218,29 +196,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
           li.innerHTML = html;
           resultsList.appendChild(li);
-
-          if (DEBUG_MODE) {
-            console.log(`[DEBUG] Rendered Item: ${item.Num}`);
-          }
         });
       })
       .catch(err => {
         document.getElementById("loading").style.display = "none";
         noResults.style.display = "block";
-        if (DEBUG_MODE) console.error("[DEBUG] Fetch Error:", err);
+        DEBUG_MODE && console.error("[DEBUG] Fetch Error:", err);
       });
 
-    // Restore scroll position on load
     const savedScroll = localStorage.getItem("inventoryScrollTop");
     if (savedScroll) {
       setTimeout(() => {
         window.scrollTo(0, parseInt(savedScroll));
-        if (DEBUG_MODE) console.log(`[DEBUG] Restored scroll position: ${savedScroll}px`);
+        DEBUG_MODE && console.log(`[DEBUG] Restored scroll position: ${savedScroll}px`);
       }, 50);
     }
   }
 
-  // Debounced input search
   searchInput.addEventListener("input", () => {
     clearTimeout(window._searchDebounce);
     window._searchDebounce = setTimeout(doSearch, 200);
@@ -248,12 +220,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   uslFilter.addEventListener("change", doSearch);
   if (sortBy) sortBy.addEventListener("change", doSearch);
-
-  // Trigger initial search on load
   doSearch();
-});
 
-// Save scroll position before page unload
-window.addEventListener("beforeunload", () => {
-  localStorage.setItem("inventoryScrollTop", window.scrollY);
-});
+  window.addEventListener("beforeunload", () => {
+    localStorage.setItem("inventoryScrollTop", window.scrollY);
+  });
+}
+
+// ==============================
+// EXPORTS
+// ==============================
+export { highlightMatch, populateInventoryStats };
