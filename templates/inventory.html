@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inventory Catalog</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
-  <script src="/static/js/scripts.js" type="module"></script>
-  <script defer src="/static/js/inventory.js"></script>
 </head>
 <body>
   <h1 id="typed-header">
@@ -89,5 +87,7 @@
 
     </div> <!-- END panel-container -->
   </div> <!-- END panel-wrapper -->
+  <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
+  <!--<script defer src="/static/js/inventory.js"></script>-->
 </body>
 </html>
