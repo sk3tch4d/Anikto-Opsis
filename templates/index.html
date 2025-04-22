@@ -6,7 +6,6 @@
   <meta name="color-scheme" content="dark light">
   <title>Anikto Opsis</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
-  <script src="/static/js/scripts.js" type="module" defer></script>
 </head>
 <body>
   <h1 id="typed-header"><span>Anikto Opsis</span></h1>
@@ -61,6 +60,6 @@
     <br>
     <p id="quote" style="font-style: italic;"></p>
   </div>
-  
+  <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
 </body>
 </html>
