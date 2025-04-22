@@ -23,7 +23,7 @@
   font-size: 0.95rem;
   font-weight: bold;
   color: #cccccc;
-  border-radius: 8px;
+  border-radius: 10px;
   text-align: center;
   transition: background 0.2s ease, color 0.2s ease;
 }
