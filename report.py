@@ -7,7 +7,7 @@ import re
 import pandas as pd
 from datetime import datetime, timedelta
 from collections import defaultdict
-from config import DEBUG_MODE
+from config import DEBUG_MODE, UPLOAD_FOLDER
 
 from argx import write_argx, make_pay_period_fn
 from heatmap import generate_heatmap_png
