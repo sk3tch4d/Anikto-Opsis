@@ -104,5 +104,5 @@ export function populateInventoryStats(results) {
   // ==============================
   // MAKE CLICKABLE
   // ==============================
-  setupParseStats(".clickable-stat", "inventory-search", "data-value");
+  setupParseStats(".clickable-stat, .clickable-match", "inventory-search", "data-value");
 }
