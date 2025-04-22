@@ -95,8 +95,10 @@ function parseSeniorityQuery(query, data) {
   const eqMatch = normalized.match(/(?:^=|years\s*[:=])\s*(\d+)/);
   const gteMatch = normalized.match(/(?:^>=|years\s*>=)\s*(\d+)/);
   const lteMatch = normalized.match(/(?:^<=|years\s*<=|under|max)\s*(\d+)/);
-  const plusMatch = normalized.match(/^(\d+)\+$/);           // "10+"
-  const minusMatch = normalized.match(/^(\d+)-$/);           // "10-"
+
+  const plusMatch = normalized.match(/(\d+)\+/);
+  const minusMatch = normalized.match(/(\d+)-/);
+  
   const rangeMatch = normalized.match(/(\d+)\s*-\s*(\d+)/);  // "10-20"
   const shorthandMatch = normalized.match(/(\d+)(\+|-)/);    // e.g. "assistant 10+"
 
@@ -124,7 +126,7 @@ function parseSeniorityQuery(query, data) {
 
   // Build OR keyword groups
   const keywordGroups = normalized
-    .replace(/\b(?:=|>=|<=)?\s*\d+\+?\-?\b/g, "")
+    .replace(/\b\d+[\+\-]?\b/g, "")
     .replace(/years\s*[:=<>]*\s*\d+/g, "")
     .replace(/\b(under|max)\s*\d+/g, "")
     .replace(/\d+\s*-\s*\d+/g, "") // remove ranges
