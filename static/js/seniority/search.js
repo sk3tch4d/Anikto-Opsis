@@ -162,8 +162,6 @@ function parseSeniorityQuery(query, data) {
 }
 
 
-
-
 // ==============================
 // MAIN SEARCH FUNCTION
 // ==============================
@@ -173,9 +171,10 @@ export function doSenioritySearch() {
   const data = window.seniorityData || [];
 
   if (!queryRaw) {
-    renderResults([]);
-    populateStats([]);
-    window.currentSearchResults = [];
+    renderResults(data);
+    populateStats(data);
+    window.originalSearchResults = data;
+    window.currentSearchResults = data;
     return;
   }
 
