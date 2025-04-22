@@ -5,7 +5,7 @@
 import { renderResults } from './results.js';
 import { populateStats, populateGlobalStats } from './stats.js';
 import { populatePositionList } from './positions.js';
-import { searchFromStat } from './search-utils.js'; // centralized function
+import { searchFromStat } from '../search-utils.js'; // centralized function
 
 
 // ==============================
