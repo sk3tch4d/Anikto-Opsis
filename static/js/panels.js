@@ -6,9 +6,9 @@ import { initDebugToggle } from './debugging.js';
 
 const nonClosablePanels = [
   "downloads",
-  "search-panel",
-  "inventory-panel",
-  "scheduled-panel"
+  "seniority-search-panel",
+  "inventory-search-panel",
+  "scheduled-search-panel"
 ];
 
 const nonClosableElements = [
