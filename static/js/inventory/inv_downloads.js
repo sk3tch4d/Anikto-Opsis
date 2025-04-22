@@ -19,7 +19,7 @@ export function setupInventoryDownloadSearch() {
 // DOWNLOAD INVENTORY SEARCH RESULTS
 // ==============================
 export function downloadInventorySearch() {
-  const results = window.currentSearchResults || [];
+  const results = window.inventorySearchResults || [];
   if (!results.length) {
     alert("No inventory results to download.");
     return;
