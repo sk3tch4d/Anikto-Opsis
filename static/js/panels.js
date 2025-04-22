@@ -21,6 +21,16 @@ const nonClosableElements = [
 ];
 
 // ==============================
+// OPEN PANEL (ID)
+// ==============================
+export function openPanelById(id) {
+  const panel = document.getElementById(id);
+  if (!panel) return;
+  panel.style.display = "block";
+  panel.scrollIntoView({ behavior: "smooth" });
+}
+
+// ==============================
 // GLOBAL PANEL TOGGLE FUNCTION
 // ==============================
 export function togglePanel(header) {
@@ -46,7 +56,7 @@ export function togglePanel(header) {
   }
 
   // ==============================
-  // Helper: OPEN PANEL
+  // HELPER: OPEN PANEL
   // ==============================
   function openPanel() {
     panel.classList.add('open');
