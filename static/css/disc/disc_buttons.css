@@ -3,8 +3,8 @@
   font-size: 1rem;
   font-weight: bold;
   padding: 0.72rem 1.2rem;
-  background-color: #40444b;
-  color: #fff;
+  background-color: #3b3e45;
+  color: #ccc;
   border: 1px solid #2f3136;
   border-radius: 8px;
   cursor: pointer;
@@ -18,7 +18,7 @@
   transform: translateY(-2px);
 }
 .button.full-width {
-  padding: 0.9rem;
+  padding: 0.85rem;
   font-size: 0.95rem;
   font-weight: bold;
   width: 100%;
