@@ -150,7 +150,7 @@ export function refineSearchFromStat(filter) {
   window.currentSearchResults = refined;
   renderResults(refined);
   populateStats(refined);
-  openPanelById("search-panel");
+  openPanelById("seniority-search-panel");
 }
 
 
