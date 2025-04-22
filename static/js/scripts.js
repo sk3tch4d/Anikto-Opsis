@@ -21,7 +21,7 @@ import { initAdminLogin, initJsonUploadForm, initFileUploadDisplay } from './adm
 // ----- Seniority -----
 import { initializeSeniorityApp } from './seniority/init.js';
 // ----- Inventory -----
-import { initializeInventoryApp } from './inventory.js';
+import { initializeInventoryApp } from './inventory/inv_init.js';
 
 // ==============================
 // DOM-READY INITIALIZATION
