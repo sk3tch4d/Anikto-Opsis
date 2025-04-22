@@ -21,13 +21,20 @@ const nonClosableElements = [
 ];
 
 // ==============================
-// OPEN PANEL (ID)
+// OPEN PANEL (panelID)
 // ==============================
-export function openPanelById(id) {
-  const panel = document.getElementById(id);
-  if (!panel) return;
-  panel.style.display = "block";
-  panel.scrollIntoView({ behavior: "smooth" });
+export function openPanelById(panelId) {
+  const panel = document.getElementById(panelId);
+  if (!panel) {
+    console.warn(`Panel not found: ${panelId}`);
+    return;
+  }
+  // Always collapse others first
+  collapseAllPanels();
+  // Always remove 'panel-closed' to show
+  panel.classList.remove("panel-closed");
+  // Optionally scroll into view
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 // ==============================
