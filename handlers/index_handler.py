@@ -109,8 +109,11 @@ def process_index_upload():
             matched = True
             break
 
-        if not matched and DEBUG_MODE:
+        if not matched
             app.logger.warning(f"[SKIPPED] Unknown or unsupported file: {file.filename}")
+            if DEBUG_MODE:
+                print(f"[DEBUG] No match found for: {file.filename}")
+
 
     # ==============================
     # ATTACH EXISTING PDFs
