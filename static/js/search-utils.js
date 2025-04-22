@@ -5,20 +5,6 @@
 import { openPanelById } from "./panels.js";
 
 // ==============================
-// PARSE TO SEARCH MODULE
-// ==============================
-export function setupParseStats(selector, inputId, attribute = "data-value") {
-  document.querySelectorAll(selector).forEach(elem => {
-    elem.addEventListener("click", () => {
-      const value = elem.getAttribute(attribute);
-      if (value) {
-        searchFromStat(inputId, value);
-      }
-    });
-  });
-}
-
-// ==============================
 // TRIGGER SEARCH FROM STAT
 // ==============================
 export function searchFromStat(inputId, value) {
@@ -30,4 +16,18 @@ export function searchFromStat(inputId, value) {
     const panelId = `${inputId}-panel`;
     openPanelById(panelId);
   }
+}
+
+// ==============================
+// PARSE TO SEARCH MODULE
+// ==============================
+export function setupParseStats(selector, inputId, attribute = "data-value") {
+  document.querySelectorAll(selector).forEach(elem => {
+    elem.addEventListener("click", () => {
+      const value = elem.getAttribute(attribute);
+      if (value) {
+        searchFromStat(inputId, value);
+      }
+    });
+  });
 }
