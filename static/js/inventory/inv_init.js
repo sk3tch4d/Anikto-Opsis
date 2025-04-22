@@ -5,6 +5,7 @@
 // ==============================
 
 import { populateInventoryStats } from "./inv_stats.js";
+import { setupInventoryDownloadButton } from "./inv_download.js";
 
 // ==============================
 // DEBUG TOGGLE
@@ -182,4 +183,11 @@ export function initializeInventoryApp() {
   window.addEventListener("beforeunload", () => {
     localStorage.setItem("inventoryScrollTop", window.scrollY);
   });
+
+  // ==============================
+  // DOWNLOAD BUTTON SETUP
+  // ==============================
+  if (document.getElementById("download-inventory-button")) {
+    setupInventoryDownloadButton();
+  }
 }
