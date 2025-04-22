@@ -2,7 +2,8 @@
 // POSITIONS.JS
 // Position List Panel Logic
 // ==============================
-import { searchFromStat, normalize } from './search.js';
+import { searchFromStat } from '../search-utils.js'; // centralized function
+import { normalize } from './search.js';
 
 // ==============================
 // INIT POSITION PANEL
@@ -22,7 +23,7 @@ export function populatePositionList() {
 
         let base = raw
           .split("-")[0]
-          .replace(/\b(PT|FT|CASUAL|CAS|HOLD|)\b/gi, "")
+          .replace(/\b(PT|FT|CASUAL|CAS|HOLD)\b/gi, "")
           .trim();
 
         // Apply replacements
@@ -31,16 +32,27 @@ export function populatePositionList() {
           base = base.replace(pattern, value);
         }
 
-        base = base.trim();
+        base = normalize(base);
         if (!base) return;
         positionMap[base] = (positionMap[base] || 0) + 1;
       });
 
-      const sorted = Object.entries(positionMap).sort((a, b) => b[1] - a[1]);
+      // Clear existing list
+      container.innerHTML = "";
 
-      container.innerHTML = sorted.map(([pos, count]) => {
-        return `<li><p class="clickable-stat" onclick="searchFromStat('${pos}')"><strong>${pos}:</strong> ${count}</p></li>`;
-      }).join("");
+      // Sort and build DOM elements
+      const sorted = Object.entries(positionMap).sort((a, b) => b[1] - a[1]);
+      sorted.forEach(([pos, count]) => {
+        const li = document.createElement("li");
+        const p = document.createElement("p");
+        p.className = "clickable-stat";
+        p.innerHTML = `<strong>${pos}:</strong> ${count}`;
+        p.addEventListener("click", () => {
+          searchFromStat("seniority-search", pos);
+        });
+        li.appendChild(p);
+        container.appendChild(li);
+      });
     })
     .catch(err => {
       console.error("Failed to load pos_adjust.json", err);
