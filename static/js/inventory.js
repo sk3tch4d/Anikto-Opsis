@@ -7,7 +7,7 @@
 // IMPORTS
 // ==============================
 import { setupParseStats } from "./search-utils.js";
-import { openPanelById } from "./panels.js';
+import { openPanelById } from "./panels.js";
 
 // ==============================
 // DEBUG TOGGLE
