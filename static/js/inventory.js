@@ -82,7 +82,7 @@ function populateInventoryStats(results) {
 
   document.querySelectorAll(".clickable-stat").forEach(elem => {
     elem.addEventListener("click", () => {
-      openPanelById("inventory-panel");
+      openPanelById("inventory-search-panel");
     });
   });
 }
