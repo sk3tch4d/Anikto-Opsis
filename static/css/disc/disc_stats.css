@@ -1,0 +1,44 @@
+/* ============================= */
+/* CLICKABLE-STATS               */
+/* ============================= */
+.panel-body .clickable-stat {
+  color: #7289da !important;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.panel-body .clickable-stat:hover {
+  color: #a3b3f0 !important;
+}
+.clickable-stat-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+/* ============================= */
+/* CLICKABLE-MATCH (for tags/pills) */
+/* ============================= */
+.clickable-match-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  line-height: 1.6;
+  margin-top: 6px;
+}
+
+.clickable-match {
+  color: #7289da;
+  cursor: pointer;
+  padding: 4px 10px;
+  background-color: #3a3f5c;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.clickable-match:hover {
+  background-color: #49538b;
+  color: #ffffff;
+}
