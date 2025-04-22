@@ -7,6 +7,7 @@
 // IMPORTS
 // ==============================
 import { setupParseStats } from "./search-utils.js";
+import { openPanelById } from "./panels.js';
 
 // ==============================
 // DEBUG TOGGLE
@@ -78,6 +79,12 @@ function populateInventoryStats(results) {
   });
 
   setupParseStats(".clickable-stat", "inventory-search", "data-value");
+
+  document.querySelectorAll(".clickable-stat").forEach(elem => {
+    elem.addEventListener("click", () => {
+      openPanelById("inventory-panel");
+    });
+  });
 }
 
 // ==============================
