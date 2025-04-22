@@ -198,17 +198,14 @@ body.lock-scroll {
 .panel-body .clickable-stat:hover {
   color: #a3b3f0 !important;
 }
-
-
-/* ============================= */
-/* PANEL CONTAINER               */
-/* ============================= 
-#panel-container {
+.clickable-stat-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  line-height: 1.6;
+  margin-top: 6px;
 }
-*/
+
 
 /* ============================= */
 /* ANIMATION: PANEL SLIDE-IN     */
