@@ -29,11 +29,21 @@ export function openPanelById(panelId) {
     console.warn(`Panel not found: ${panelId}`);
     return;
   }
+
+  const header = panel.querySelector('.panel-header');
+  const body = panel.querySelector('.panel-body');
+  
   // Always collapse others first
   collapseAllPanels();
+  
   // Always remove 'panel-closed' to show
   panel.classList.remove("panel-closed");
-  // Optionally scroll into view
+  
+  panel.classList.add("open");
+  header?.classList.add("open");
+  body?.classList.add("open");
+  
+   // Scroll into view
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
