@@ -91,18 +91,19 @@ export function searchFromGlobalStat(query) {
 function parseSeniorityQuery(query, data) {
   const normalized = query.toLowerCase().trim();
 
-  // Extract numeric filters
-  const exactYearsMatch = normalized.match(/years\s*:\s*(\d+)/);
-  const gteMatch = normalized.match(/(?:>=|\b)(\d+)\+?/);
-  const lteMatch = normalized.match(/(?:<=|-|under|max)\s*(\d+)/);
-
-  const exactYears = exactYearsMatch ? parseFloat(exactYearsMatch[1]) : null;
+  // Match specific filters
+  const eqMatch = normalized.match(/(?:years\s*=?|^=)\s*(\d+)/);
+  const gteMatch = normalized.match(/(?:years\s*>=|>=|\b)(\d+)\+?/);
+  const lteMatch = normalized.match(/(?:years\s*<=|<=|-|under|max)\s*(\d+)/);
+  
+  // Parse values
+  const exactYears = eqMatch ? parseFloat(eqMatch[1]) : null;
   const minYears = gteMatch ? parseFloat(gteMatch[1]) : null;
   const maxYears = lteMatch ? parseFloat(lteMatch[1]) : null;
 
   // Extract individual keywords
   const keywords = normalized
-    .replace(/(?:>=|\+|<=|under|max|years\s*:\s*\d+|\d+\+?)/g, "")
+    .replace(/(?:>=|<=|=|\+|under|max|years\s*[:=]?\s*\d+|\d+\+?)/g, "")
     .split(/\s+/)
     .filter(Boolean); // Remove empty strings
 
