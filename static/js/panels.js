@@ -8,6 +8,7 @@ const nonClosablePanels = [
   "downloads",
   "search-panel",
   "inventory-panel"
+  "scheduled-panel"
 ];
 
 const nonClosableElements = [
