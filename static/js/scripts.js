@@ -19,7 +19,7 @@ import { setupParseStats, searchFromStat } from './search-utils.js';
 // ----- Admin -----
 import { initAdminLogin, initJsonUploadForm, initFileUploadDisplay } from './admin.js';
 // ----- Seniority -----
-import { initializeSeniorityApp } from './seniority/init.js';
+import { initializeSeniorityApp } from './seniority/sen_init.js';
 // ----- Inventory -----
 import { initializeInventoryApp } from './inventory/inv_init.js';
 
