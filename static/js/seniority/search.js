@@ -76,18 +76,6 @@ export function isMobile() {
 
 
 // ==============================
-// PANEL TOGGLING
-// ==============================
-export function openPanelById(panelId) {
-  const panel = document.getElementById(panelId);
-  const header = panel?.querySelector(".panel-header");
-  if (panel && header && !panel.classList.contains("open")) {
-    header.click();
-  }
-}
-
-
-// ==============================
 // SEARCH FROM GLOBAL STATS
 // ==============================
 export function searchFromStat(query) {
