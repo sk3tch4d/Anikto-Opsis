@@ -70,6 +70,10 @@ export function populateGlobalStats() {
 // ==============================
 export function populateStats(data) {
   const statsDiv = document.getElementById("seniority-stats");
+  const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
+  const searchInput = document.getElementById("seniority-search");
+  const currentQuery = searchInput?.value.trim() || "(None)";
+  
   if (!statsDiv || !data || !data.length) {
     statsDiv.innerHTML = "<p style='text-align: center;'>No data available.</p>";
     return;
@@ -98,11 +102,10 @@ export function populateStats(data) {
       mostSenior = { name, years };
     }
   });
-
-  const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
-
+  
   statsDiv.innerHTML = `
     <ul style="list-style: none; padding-left: 0;">
+      <li><p style="text-align: center"><strong>Search Term:</strong> ${currentQuery}</p></li>
       <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
       <li><p style="text-align: center">
         <span class="clickable-stat" data-name="Full-Time">
@@ -121,6 +124,7 @@ export function populateStats(data) {
       <li><p style="text-align: center"><strong>Total Combined:</strong> ${totalYears.toFixed(2)} Years</p></li>
     </ul>
   `;
+
 
   setupParseStats(".clickable-stat", "seniority-search", "data-name");
 }
