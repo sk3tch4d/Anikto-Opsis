@@ -52,10 +52,10 @@ export function populateGlobalStats() {
       <li><p class="clickable-stat" data-name="Full-Time"><strong>Total Full-Time:</strong> ${fullTime}</p></li>
       <li><p class="clickable-stat" data-name="Part-Time"><strong>Total Part-Time:</strong> ${partTime}</p></li>
       <li><p class="clickable-stat" data-name="Casual"><strong>Total Casual:</strong> ${casual}</p></li>
-      <li><p class="clickable-stat" data-name="Years>=10"><strong>10+ Years:</strong> ${tenPlus}</p></li>
-      <li><p class="clickable-stat" data-name="Years>=20"><strong>20+ Years:</strong> ${twentyPlus}</p></li>
-      <li><p class="clickable-stat" data-name="Years>=30"><strong>30+ Years:</strong> ${thirtyPlus}</p></li>
-      <li><p class="clickable-stat" data-name="Years>=40"><strong>40+ Years:</strong> ${fortyPlus}</p></li>
+      <li><p class="clickable-stat" data-name="10+"><strong>10+ Years:</strong> ${tenPlus}</p></li>
+      <li><p class="clickable-stat" data-name="20+"><strong>20+ Years:</strong> ${twentyPlus}</p></li>
+      <li><p class="clickable-stat" data-name="30+"><strong>30+ Years:</strong> ${thirtyPlus}</p></li>
+      <li><p class="clickable-stat" data-name="40+"><strong>40+ Years:</strong> ${fortyPlus}</p></li>
       <li><p><strong>Average Years:</strong> ${avgYears}</p></li>
       <li><p><strong>Total Combined:</strong> ${totalYears}</p></li>
     </ul>
