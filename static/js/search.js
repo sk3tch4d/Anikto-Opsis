@@ -1,0 +1,16 @@
+// ==============================
+// PARSE TO SEARCH MODULE
+// ==============================
+
+export function setupParseStats(selector, inputId, attribute = "data-value") {
+  document.querySelectorAll(selector).forEach(elem => {
+    elem.addEventListener("click", () => {
+      const value = elem.getAttribute(attribute);
+      const input = document.getElementById(inputId);
+      if (input && value) {
+        input.value = value;
+        input.dispatchEvent(new Event("input"));
+      }
+    });
+  });
+}
