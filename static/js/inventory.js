@@ -31,6 +31,7 @@ function populateInventoryStats(results) {
 
   const uniqueNums = [...new Set(results.map(item => item.Num))];
 
+  // Summary stats
   const liResults = document.createElement("li");
   liResults.innerHTML = `<strong>Results:</strong> ${results.length}`;
   statsBox.appendChild(liResults);
@@ -43,9 +44,10 @@ function populateInventoryStats(results) {
   liFound.innerHTML = `<strong>Found:</strong> ${uniqueNums.join(", ")}`;
   statsBox.appendChild(liFound);
 
+  // Detailed per-item stats
   uniqueNums.forEach(num => {
     const matching = results.filter(r => r.Num === num);
-    if (matching.length === 0) return;
+    if (!matching.length) return;
 
     const base = matching[0];
     const old = base.Old?.trim() ? ` (Old: ${base.Old})` : "";
@@ -55,10 +57,10 @@ function populateInventoryStats(results) {
 
     const li = document.createElement("li");
     li.classList.add("clickable-stat");
-    li.setAttribute("data-value", base.Num);  // Enable stat search
+    li.setAttribute("data-value", base.Num);
 
     li.innerHTML = `
-      <strong>Stores Number:</strong> ${base.Num}${old}<br>
+      <span class="clickable-stat-label"><strong>Stores Number:</strong> ${base.Num}${old}</span><br>
       <strong>Description:</strong> ${base.Description}<br>
       <strong>Cost:</strong> ${cost} / ${uom}<br>
       <strong>Top Quantity:</strong> ${topMatch.USL} - ${topMatch.QTY}<br>
@@ -66,12 +68,14 @@ function populateInventoryStats(results) {
       ${matching
         .sort((a, b) => b.QTY - a.QTY)
         .slice(0, 3)
-        .map(m => `- ${m.USL} (${m.QTY})`)
+        .map(m => `&nbsp;&nbsp;- ${m.USL} (${m.QTY})`)
         .join("<br>")}
     `;
 
     statsBox.appendChild(li);
   });
+
+  // Enable stat-click behavior
   setupParseStats(".clickable-stat", "inventory-search", "data-value");
 }
 
