@@ -10,7 +10,8 @@
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 .button:hover {
   background-color: #50545b;
