@@ -10,6 +10,15 @@ const nonClosablePanels = [
   "inventory-panel"
 ];
 
+const nonClosableElements = [
+  "BUTTON",
+  "INPUT",
+  "SELECT",
+  "TEXTAREA",
+  "LABEL",
+  "A"
+];
+
 // ==============================
 // GLOBAL PANEL TOGGLE FUNCTION
 // ==============================
@@ -64,10 +73,12 @@ export function togglePanel(header) {
         const isInsideHeader = header.contains(target);
         const isDateInput = panelId === 'scheduled' &&
           (target.closest('#working-date') || target.closest('.custom-date-display'));
-        const isInteractive = ['BUTTON', 'INPUT', 'SELECT', 'A'].includes(target.tagName);
+        const isInteractive = nonClosableElements.includes(target.tagName);
         const isIgnoredClass = target.closest('.downloads') || target.closest('.file-action');
+        const isIgnoredElement = target.closest('[panel-ignore-close]');
 
-        if (!isInsideHeader && !isDateInput && !isInteractive && !isIgnoredClass) {
+
+        if (!isInsideHeader && !isDateInput && !isInteractive && !isIgnoredClass && !isIgnoredElement) {
           closePanel();
           body.removeEventListener('click', closePanelOnTouch);
         }
