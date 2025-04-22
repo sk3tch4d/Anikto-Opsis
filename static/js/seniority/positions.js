@@ -4,6 +4,7 @@
 // ==============================
 import { searchFromStat } from '../search-utils.js'; // centralized function
 import { normalize } from './search.js';
+import { toTitleCase } from './helpers.js';
 
 // ==============================
 // INIT POSITION PANEL
@@ -46,7 +47,8 @@ export function populatePositionList() {
         const li = document.createElement("li");
         const p = document.createElement("p");
         p.className = "clickable-stat";
-        p.innerHTML = `<strong>${pos}:</strong> ${count}`;
+        const titleCasePos = toTitleCase(pos);
+        p.innerHTML = `<strong>${titleCasePos}:</strong> ${count}`;
         p.addEventListener("click", () => {
           searchFromStat("seniority-search", pos);
         });
