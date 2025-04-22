@@ -3,7 +3,7 @@
 // Global + Filtered Statistics
 // ==============================
 
-import { openPanelById } from './panels.js';
+import { openPanelById } from '../panels.js';
 import { setupParseStats, searchFromStat } from "../search-utils.js";
 import { renderResults } from './results.js';
 
