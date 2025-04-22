@@ -9,7 +9,7 @@ import * as XLSX from "https://cdn.sheetjs.com/xlsx-latest/package/xlsx.mjs";
 // INIT DOWNLOAD BUTTON
 // ==============================
 export function setupInventoryDownloadButton() {
-  const btn = document.getElementById("download-inventory-button");
+  const btn = document.getElementById("inventory-search-download");
   if (btn) {
     btn.addEventListener("click", downloadInventorySearch);
   }
