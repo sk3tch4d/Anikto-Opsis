@@ -30,10 +30,11 @@ button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-.button-container {
-  background: transparent;
+.button-wrapper {
   display: flex;
   justify-content: center;
+  margin-top: 2rem;
+  overflow: hidden; 
 }
 
 
