@@ -59,13 +59,20 @@ function populateInventoryStats(results) {
     const topMatch = matching.reduce((a, b) => a.QTY > b.QTY ? a : b);
 
     const li = document.createElement("li");
-
-    const clickableSpan = document.createElement("span");
-    clickableSpan.className = "clickable-stat";
-    clickableSpan.setAttribute("data-value", base.Num);
-    clickableSpan.innerHTML = `<strong>Stores Number:</strong> ${base.Num}${old}`;
     
-    li.appendChild(clickableSpan);
+    // Label (non-clickable)
+    li.innerHTML = `<strong>Stores Number:</strong> `;
+    
+    // Clickable Number
+    const numberSpan = document.createElement("span");
+    numberSpan.className = "clickable-stat";
+    numberSpan.setAttribute("data-value", base.Num);
+    numberSpan.textContent = base.Num + old;
+    
+    // Append the number span right after the label
+    li.appendChild(numberSpan);
+    
+    // Add the rest of the item details
     li.innerHTML += `
       <br><strong>Description:</strong> ${base.Description}<br>
       <strong>Cost:</strong> ${cost} / ${uom}<br>
@@ -79,7 +86,6 @@ function populateInventoryStats(results) {
     `;
     
     statsBox.appendChild(li);
-
   });
 
   setupParseStats(".clickable-stat", "inventory-search", "data-value");
