@@ -19,4 +19,4 @@ VALID_EXTENSIONS = r"\.(pdf|xlsx|db)$"
 UPLOAD_FOLDER = "/tmp"
 MAX_PDFS = 30
 ALLOWED_UPLOAD_TYPES = ["pdf", "xlsx", "db"]
-DEBUG_MODE = False
+DEBUG_MODE = True
