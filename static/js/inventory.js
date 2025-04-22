@@ -76,15 +76,14 @@ function populateInventoryStats(results) {
     `;
 
     statsBox.appendChild(li);
+
+    li.addEventListener("click", () => {
+      openPanelById("inventory-search-panel");
+    });    
+
   });
 
   setupParseStats(".clickable-stat", "inventory-search", "data-value");
-
-  document.querySelectorAll(".clickable-stat").forEach(elem => {
-    elem.addEventListener("click", () => {
-      openPanelById("inventory-search-panel");
-    });
-  });
 }
 
 // ==============================
