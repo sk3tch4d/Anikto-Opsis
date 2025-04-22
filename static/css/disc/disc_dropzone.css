@@ -15,7 +15,7 @@
 
   cursor: pointer;
   text-align: center;
-  margin: 2rem auto 1.4rem;
+  margin: 2rem auto 3rem;
 
   animation: pulse-glow 3s ease-in-out infinite;
 }
