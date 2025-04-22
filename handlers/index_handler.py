@@ -105,17 +105,21 @@ def process_index_upload():
         # === Match Against Defined Handlers
         matched = False
         for matcher in MATCHERS:
-            if "ext" in matcher and ext != matcher["ext"]:
-                continue
-            if "exts" in matcher and ext not in matcher["exts"]:
-                continue
-            if "regex" in matcher and not re.search(matcher["regex"], fname_lower, re.IGNORECASE):
-                continue
-            if "match_fn" in matcher and not matcher["match_fn"](fname_lower):
-                continue
-            matcher["handler"](file, fname_lower)
-            matched = True
-            break
+            for matcher in MATCHERS:
+                if "ext" in matcher and ext != matcher["ext"]:
+                    continue
+                if "exts" in matcher and ext not in matcher["exts"]:
+                    continue
+                if "regex" in matcher and not re.search(matcher["regex"], fname_lower, re.IGNORECASE):
+                    continue
+                if "match_fn" in matcher and not matcher["match_fn"](fname_lower):
+                    continue
+            
+                if DEBUG_MODE:
+                    app.logger.info(f"[MATCHED] {file.filename} matched type '{matcher['type']}'")
+                matcher["handler"](file, fname_lower)
+                matched = True
+                break
 
         if not matched and DEBUG_MODE:
             app.logger.warning(f"[SKIPPED] Unknown or unsupported file: {file.filename}")
