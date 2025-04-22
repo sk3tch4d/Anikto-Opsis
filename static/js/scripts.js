@@ -7,7 +7,7 @@ import { initDebugToggle } from './debugging.js';
 // ----- Header -----
 import { initTypewriter } from './header.js';
 // ----- Panels -----
-import { togglePanel, collapseAllPanels } from './panels.js';
+import { togglePanel, collapseAllPanels, openPanelById } from './panels.js';
 // ----- Dropzone -----
 import { initDropzone } from './dropzone.js';
 // ----- Quotes -----
