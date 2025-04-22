@@ -5,8 +5,8 @@
 import { renderResults } from './results.js';
 import { populateStats, populateGlobalStats } from './stats.js';
 import { populatePositionList } from './positions.js';
-import { openPanelById } from '../panels.js';
-  
+import { searchFromStat } from './search-utils.js'; // centralized function
+
 
 // ==============================
 // INIT LOGIC
@@ -77,33 +77,59 @@ export function isMobile() {
 
 
 // ==============================
-// SEARCH FROM GLOBAL STATS
+// SEARCH TRIGGER FROM STATS
 // ==============================
-export function searchFromStat(query) {
-  const input = document.getElementById("seniority-search");
-  const data = window.seniorityData || [];
-  let matches = [];
-
-  if (query.startsWith("Years>=")) {
-    const threshold = parseFloat(query.split(">=")[1]);
-    matches = data.filter(row => parseFloat(row["Years"] || 0) >= threshold);
-    input.value = `${threshold}+`;
-  } else {
-    matches = data.filter(row =>
-      Object.values(row).some(val =>
-        normalize(val).includes(normalize(query))
-      )
-    );
-    input.value = query;
-  }
-
-  // Update stats list array
-  window.currentSearchResults = matches;
-  
-  renderResults(matches);
-  populateStats(matches);
-  openPanelById("search-panel");
+export function searchFromGlobalStat(query) {
+  // Delegate to smart input handler
+  searchFromStat("seniority-search", query);
 }
+
+
+// ==============================
+// SMART SEARCH - FUZZY MATCHING
+// ==============================
+function parseSeniorityQuery(query, data) {
+  const normalized = query.toLowerCase().trim();
+
+  // Extract numeric filters
+  const exactYearsMatch = normalized.match(/years\s*:\s*(\d+)/);
+  const gteMatch = normalized.match(/(?:>=|\b)(\d+)\+?/);
+  const lteMatch = normalized.match(/(?:<=|-|under|max)\s*(\d+)/);
+
+  const exactYears = exactYearsMatch ? parseFloat(exactYearsMatch[1]) : null;
+  const minYears = gteMatch ? parseFloat(gteMatch[1]) : null;
+  const maxYears = lteMatch ? parseFloat(lteMatch[1]) : null;
+
+  // Extract individual keywords
+  const keywords = normalized
+    .replace(/(?:>=|\+|<=|under|max|years\s*:\s*\d+|\d+\+?)/g, "")
+    .split(/\s+/)
+    .filter(Boolean); // Remove empty strings
+
+  return data.filter(row => {
+    const years = parseFloat(row["Years"] || 0);
+    const status = String(row["Status"] || "").toLowerCase();
+    const position = String(row["Position"] || "").toLowerCase();
+
+    let match = true;
+
+    // Years filtering
+    if (exactYears !== null) match = match && years === exactYears;
+    if (minYears !== null) match = match && years >= minYears;
+    if (maxYears !== null) match = match && years <= maxYears;
+
+    // Text keyword filtering
+    for (const keyword of keywords) {
+      if (!status.includes(keyword) && !position.includes(keyword)) {
+        match = false;
+        break;
+      }
+    }
+
+    return match;
+  });
+}
+
 
 
 // ==============================
@@ -112,27 +138,16 @@ export function searchFromStat(query) {
 export function doSenioritySearch() {
   const input = document.getElementById("seniority-search");
   const queryRaw = input.value.trim();
-  const query = normalize(queryRaw);
   const data = window.seniorityData || [];
 
-  if (!query) {
+  if (!queryRaw) {
     renderResults([]);
     populateStats([]);
     window.currentSearchResults = [];
     return;
   }
 
-  let matches;
-  if (!isNaN(queryRaw)) {
-    const minYears = parseFloat(queryRaw);
-    matches = data.filter(row => parseFloat(row["Years"] || 0) >= minYears);
-  } else {
-    matches = data.filter(row =>
-      Object.values(row).some(val =>
-        normalize(val).includes(query)
-      )
-    );
-  }
+  const matches = parseSeniorityQuery(queryRaw, data);
 
   renderResults(matches);
   populateStats(matches);
@@ -144,4 +159,4 @@ export function doSenioritySearch() {
 // ==============================
 // GLOBAL EXPORT FOR INLINE HTML CALLS
 // ==============================
-window.searchFromStat = searchFromStat;
+window.searchFromGlobalStat = searchFromGlobalStat;
