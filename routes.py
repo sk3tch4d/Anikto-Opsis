@@ -23,7 +23,7 @@ from dataman import (
     import_shifts_from_json,
     import_shifts_from_csv,
 )
-from report import get_working_on_date, process_report
+from report import get_working_on_date, get_shifts_for_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
 from inventory import load_inventory_data, get_inventory_usls, search_inventory
