@@ -43,6 +43,13 @@
   outline: none;
 }
 
+/* Remove box shadow from specific panels */
+.panel.no-shadow {
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
+}
+
 
 /* ============================= */
 /* PANEL BODY / TOGGLE BEHAVIOR */
