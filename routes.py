@@ -11,6 +11,7 @@
 import os
 import re
 import config
+from config import UPLOAD_FOLDER
 from flask import (
     request,
     render_template,
@@ -30,7 +31,6 @@ from inventory import load_inventory_data, get_inventory_usls, search_inventory
 from datetime import datetime
 from handlers.index_handler import process_index_upload
 
-UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # ==============================
