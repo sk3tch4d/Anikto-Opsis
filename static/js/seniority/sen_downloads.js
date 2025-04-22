@@ -7,7 +7,7 @@ import * as XLSX from "https://cdn.sheetjs.com/xlsx-latest/package/xlsx.mjs";
 // ==============================
 // INIT BUTTON
 // ==============================
-export function setupSeniorityDownloadButton() {
+export function setupSeniorityDownloadSearch() {
   const btn = document.getElementById("seniority-search-download");
   if (btn) {
     btn.addEventListener("click", downloadSearch);
