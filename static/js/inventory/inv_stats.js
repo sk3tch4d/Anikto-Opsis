@@ -35,16 +35,11 @@ export function populateInventoryStats(results) {
   statsBox.appendChild(liSearch);
 
   const liResults = document.createElement("li");
-  liResults.innerHTML = `<strong>Results:</strong> ${results.length}`;
+  liResults.innerHTML = `<strong>Results:</strong> ${results.length} <strong> Unique:</strong> ${uniqueNums.length}`;
   statsBox.appendChild(liResults);
-
-  const liUnique = document.createElement("li");
-  liUnique.innerHTML = `<strong>Unique Items:</strong> ${uniqueNums.length}`;
-  statsBox.appendChild(liUnique);
 
   const liMatches = document.createElement("li");
   liMatches.innerHTML = `<strong>Matches:</strong> `;
-
   const container = document.createElement("div");
   container.className = "clickable-match-container";
   
