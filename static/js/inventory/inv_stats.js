@@ -46,15 +46,14 @@ export function populateInventoryStats(results) {
   liMatches.innerHTML = `<strong>Matches:</strong> `;
 
   const container = document.createElement("div");
-  container.className = "clickable-stat-container";
+  container.className = "clickable-match-container";
   
   uniqueNums.forEach(num => {
     const span = document.createElement("span");
-    span.className = "clickable-stat";
+    span.className = "clickable-match";
     span.setAttribute("data-value", num);
     span.textContent = num;
-    span.style.marginRight = "6px"; // Spacing
-    container.appendChild(span);  
+    container.appendChild(span);
   });
   
   liMatches.appendChild(container);
