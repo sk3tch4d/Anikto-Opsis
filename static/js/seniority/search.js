@@ -91,22 +91,31 @@ export function searchFromGlobalStat(query) {
 function parseSeniorityQuery(query, data) {
   const normalized = query.toLowerCase().trim();
 
-  // Match specific filters
-  const eqMatch = normalized.match(/(?:years\s*=?|^=)\s*(\d+)/);
-  const gteMatch = normalized.match(/(?:years\s*>=|>=|\b)(\d+)\+?/);
-  const lteMatch = normalized.match(/(?:years\s*<=|<=|-|under|max)\s*(\d+)/);
-  
-  // Parse values
-  const exactYears = eqMatch ? parseFloat(eqMatch[1]) : null;
-  const minYears = gteMatch ? parseFloat(gteMatch[1]) : null;
-  const maxYears = lteMatch ? parseFloat(lteMatch[1]) : null;
+  // ===== Extract Year-Based Filters =====
+  const exactMatch = normalized.match(/(?:years\s*=?|^=)\s*(\d+)/);
+  const gteMatch = normalized.match(/(?:years\s*>=|>=)\s*(\d+)/);
+  const lteMatch = normalized.match(/(?:years\s*<=|<=|under|max)\s*(\d+)/);
+  const plusMatch = normalized.match(/(\d+)\s*\+/);
+  const betweenMatch = normalized.match(/(?:between)\s*(\d+)\s*(?:and|-)\s*(\d+)/);
 
-  // Extract individual keywords
+  let exactYears = exactMatch ? parseFloat(exactMatch[1]) : null;
+  let minYears = gteMatch ? parseFloat(gteMatch[1]) : plusMatch ? parseFloat(plusMatch[1]) : null;
+  let maxYears = lteMatch ? parseFloat(lteMatch[1]) : null;
+
+  // Range override (if "between" is used)
+  if (betweenMatch) {
+    minYears = parseFloat(betweenMatch[1]);
+    maxYears = parseFloat(betweenMatch[2]);
+    exactYears = null; // Don't combine with exact match
+  }
+
+  // ===== Extract Keywords (remove all filters first) =====
   const keywords = normalized
-    .replace(/(?:>=|<=|=|\+|under|max|years\s*[:=]?\s*\d+|\d+\+?)/g, "")
+    .replace(/(?:between\s*\d+\s*(?:and|-)\s*\d+)|(?:[<>]=?|=)?\s*\d+\+?|(?:years\s*[<>=:]?\s*\d+)|under|max/gi, "")
     .split(/\s+/)
-    .filter(Boolean); // Remove empty strings
+    .filter(Boolean);
 
+  // ===== Filter Dataset =====
   return data.filter(row => {
     const years = parseFloat(row["Years"] || 0);
     const status = String(row["Status"] || "").toLowerCase();
@@ -114,12 +123,10 @@ function parseSeniorityQuery(query, data) {
 
     let match = true;
 
-    // Years filtering
     if (exactYears !== null) match = match && years === exactYears;
     if (minYears !== null) match = match && years >= minYears;
     if (maxYears !== null) match = match && years <= maxYears;
 
-    // Text keyword filtering
     for (const keyword of keywords) {
       if (!status.includes(keyword) && !position.includes(keyword)) {
         match = false;
