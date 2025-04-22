@@ -4,7 +4,7 @@
 // ==============================
 
 import { openPanelById } from './panels.js';
-import { setupParseStats, searchFromStat } from "../parse-search.js";
+import { setupParseStats, searchFromStat } from "../search-utils.js";
 import { renderResults } from './results.js';
 
 // ==============================
