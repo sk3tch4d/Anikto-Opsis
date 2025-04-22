@@ -81,11 +81,7 @@
       <!-- PANEL: RETURN -->
       <!-- ============================= -->
       <div class="panel panel-animate">
-        <div class="button-wrapper">
-          <form action="{{ url_for('index') }}" method="get">
-            <button type="submit" class="button full-width">Process Another</button>
-          </form>
-        </div>
+        <button type="submit" class="button full-width" onclick="{{ url_for('index') }}">Process Another</button>
       </div>
 
     </div> <!-- END panel-container -->
