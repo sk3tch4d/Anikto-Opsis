@@ -91,31 +91,22 @@ export function searchFromGlobalStat(query) {
 function parseSeniorityQuery(query, data) {
   const normalized = query.toLowerCase().trim();
 
-  // ===== Extract Year-Based Filters =====
-  const exactMatch = normalized.match(/(?:years\s*=?|^=)\s*(\d+)/);
-  const gteMatch = normalized.match(/(?:years\s*>=|>=)\s*(\d+)/);
-  const lteMatch = normalized.match(/(?:years\s*<=|<=|under|max)\s*(\d+)/);
-  const plusMatch = normalized.match(/(\d+)\s*\+/);
-  const betweenMatch = normalized.match(/(?:between)\s*(\d+)\s*(?:and|-)\s*(\d+)/);
+  const eqMatch = normalized.match(/(?:^=|years\s*[:=])\s*(\d+)/);
+  const gteMatch = normalized.match(/(?:^>=|years\s*>=)\s*(\d+)/);
+  const lteMatch = normalized.match(/(?:^<=|years\s*<=|under|max)\s*(\d+)/);
+  const plusMatch = normalized.match(/^(\d+)\+$/); // support "10+"
+  const minusMatch = normalized.match(/^(\d+)-$/); // support "10-"
 
-  let exactYears = exactMatch ? parseFloat(exactMatch[1]) : null;
-  let minYears = gteMatch ? parseFloat(gteMatch[1]) : plusMatch ? parseFloat(plusMatch[1]) : null;
-  let maxYears = lteMatch ? parseFloat(lteMatch[1]) : null;
+  const exactYears = eqMatch ? parseFloat(eqMatch[1]) : null;
+  const minYears = gteMatch ? parseFloat(gteMatch[1]) : plusMatch ? parseFloat(plusMatch[1]) : null;
+  const maxYears = lteMatch ? parseFloat(lteMatch[1]) : minusMatch ? parseFloat(minusMatch[1]) : null;
 
-  // Range override (if "between" is used)
-  if (betweenMatch) {
-    minYears = parseFloat(betweenMatch[1]);
-    maxYears = parseFloat(betweenMatch[2]);
-    exactYears = null; // Don't combine with exact match
-  }
-
-  // ===== Extract Keywords (remove all filters first) =====
+  // Extract keywords (ignore numeric expressions)
   const keywords = normalized
-    .replace(/(?:between\s*\d+\s*(?:and|-)\s*\d+)|(?:[<>]=?|=)?\s*\d+\+?|(?:years\s*[<>=:]?\s*\d+)|under|max/gi, "")
+    .replace(/(?:^=|>=|<=|\+|-|under|max|years\s*[:=<>]*\s*\d+)/g, "")
     .split(/\s+/)
     .filter(Boolean);
 
-  // ===== Filter Dataset =====
   return data.filter(row => {
     const years = parseFloat(row["Years"] || 0);
     const status = String(row["Status"] || "").toLowerCase();
