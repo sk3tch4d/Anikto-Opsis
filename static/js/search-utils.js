@@ -2,6 +2,8 @@
 // SHARED SEARCH UTILITIES
 // ==============================
 
+import { openPanelById } from "./panels.js";
+
 // ==============================
 // PARSE TO SEARCH MODULE
 // ==============================
@@ -26,5 +28,8 @@ export function searchFromStat(inputId, value) {
   if (input) {
     input.value = value;
     input.dispatchEvent(new Event("input"));
+
+    const panelId = `${inputId}-panel`;
+    openPanelById(panelId);
   }
 }
