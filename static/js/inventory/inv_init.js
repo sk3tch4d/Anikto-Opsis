@@ -5,7 +5,7 @@
 // ==============================
 
 import { populateInventoryStats } from "./inv_stats.js";
-import { setupInventoryDownloadButton } from "./inv_download.js";
+import { setupInventoryDownloadButton } from "./inv_downloads.js";
 
 // ==============================
 // DEBUG TOGGLE
