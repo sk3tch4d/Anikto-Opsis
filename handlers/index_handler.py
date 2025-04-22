@@ -133,59 +133,58 @@ def process_index_upload():
             if os.path.exists(path):
                 pdf_files.append(path)
 
-# ==============================
-# ROUTING DECISIONS (Declarative)
-# ==============================
-has_pdfs = bool(pdf_files)
-has_seniority = seniority_df is not None
-has_inventory_or_catalog = has_inventory or has_catalog
-
-# === NO VALID FILES
-if not (has_pdfs or has_seniority or has_inventory_or_catalog):
-    if DEBUG_MODE:
-        app.logger.info("[ROUTING] No valid files found. Returning index with error.")
-    return render_template("index.html", error="No valid files selected or uploaded.")
-
-# === ONLY INVENTORY / CATALOG
-if has_inventory_or_catalog and not has_pdfs and not has_seniority:
-    if DEBUG_MODE:
-        label = "Inventory+Catalog" if has_inventory and has_catalog else "Inventory" if has_inventory else "Catalog"
-        app.logger.info(f"[ROUTING] {label} file(s) detected. Showing inventory panel.")
-    return render_template("inventory.html", table=[])
-
-# === ONLY SENIORITY
-if has_seniority and not has_pdfs:
-    if DEBUG_MODE:
-        app.logger.info(f"[ROUTING] Seniority file loaded: {seniority_filename}")
-    return render_template(
-        "seniority.html",
-        table=seniority_df.to_dict(orient="records"),
-        filename=seniority_filename
-    )
-
-# === ONLY PDFS
-if has_pdfs and not has_seniority:
-    if DEBUG_MODE:
-        app.logger.info(f"[ROUTING] Processing {len(pdf_files)} PDF(s).")
-    output_files, stats = process_report(pdf_files)
-    return render_template(
-        "arg.html",
-        outputs=[os.path.basename(f) for f in output_files],
-        stats=stats
-    )
-
-# === PDFs + Excel (Prioritize Excel)
-if has_pdfs and (has_seniority or has_inventory_or_catalog):
-    if has_seniority:
+    # ==============================
+    # ROUTING DECISIONS (Declarative)
+    # ==============================
+    has_pdfs = bool(pdf_files)
+    has_seniority = seniority_df is not None
+    has_inventory_or_catalog = has_inventory or has_catalog
+    
+    # === NO VALID FILES
+    if not (has_pdfs or has_seniority or has_inventory_or_catalog):
         if DEBUG_MODE:
-            app.logger.info("[ROUTING] PDFs + Seniority Detected. Prioritizing Seniority")
+            app.logger.info("[ROUTING] No valid files found. Returning index with error.")
+        return render_template("index.html", error="No valid files selected or uploaded.")
+    
+    # === ONLY INVENTORY / CATALOG
+    if has_inventory_or_catalog and not has_pdfs and not has_seniority:
+        if DEBUG_MODE:
+            label = "Inventory+Catalog" if has_inventory and has_catalog else "Inventory" if has_inventory else "Catalog"
+            app.logger.info(f"[ROUTING] {label} file(s) detected. Showing inventory panel.")
+        return render_template("inventory.html", table=[])
+    
+    # === ONLY SENIORITY
+    if has_seniority and not has_pdfs:
+        if DEBUG_MODE:
+            app.logger.info(f"[ROUTING] Seniority file loaded: {seniority_filename}")
         return render_template(
             "seniority.html",
             table=seniority_df.to_dict(orient="records"),
             filename=seniority_filename
         )
-    else:
+    
+    # === ONLY PDFS
+    if has_pdfs and not has_seniority:
         if DEBUG_MODE:
-            app.logger.info("[ROUTING] PDFs + Inventory/Catalog Detected. Prioritizing Inventory")
-        return render_template("inventory.html", table=[])
-
+            app.logger.info(f"[ROUTING] Processing {len(pdf_files)} PDF(s).")
+        output_files, stats = process_report(pdf_files)
+        return render_template(
+            "arg.html",
+            outputs=[os.path.basename(f) for f in output_files],
+            stats=stats
+        )
+    
+    # === PDFs + Excel (Prioritize Excel)
+    if has_pdfs and (has_seniority or has_inventory_or_catalog):
+        if has_seniority:
+            if DEBUG_MODE:
+                app.logger.info("[ROUTING] PDFs + Seniority Detected. Prioritizing Seniority")
+            return render_template(
+                "seniority.html",
+                table=seniority_df.to_dict(orient="records"),
+                filename=seniority_filename
+            )
+        else:
+            if DEBUG_MODE:
+                app.logger.info("[ROUTING] PDFs + Inventory/Catalog Detected. Prioritizing Inventory")
+            return render_template("inventory.html", table=[])
