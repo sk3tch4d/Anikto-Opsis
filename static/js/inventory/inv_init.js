@@ -187,7 +187,7 @@ export function initializeInventoryApp() {
   // ==============================
   // DOWNLOAD BUTTON SETUP
   // ==============================
-  if (document.getElementById("download-inventory-button")) {
+  if (document.getElementById("inventory-search-button")) {
     setupInventoryDownloadButton();
   }
 }
