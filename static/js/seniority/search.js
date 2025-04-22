@@ -126,10 +126,9 @@ function parseSeniorityQuery(query, data) {
 
   // Build OR keyword groups
   const keywordGroups = normalized
-    .replace(/\b\d+[\+\-]?\b/g, "")
-    .replace(/years\s*[:=<>]*\s*\d+/g, "")
-    .replace(/\b(under|max)\s*\d+/g, "")
-    .replace(/\d+\s*-\s*\d+/g, "") // remove ranges
+    .replace(/\d+\s*-\s*\d+/g, "") // remove ranges like "10 - 20"
+    .replace(/\b(under|max|years\s*[:=<>]*)\s*\d+\b/g, "") // remove full "years >= 10", "under 5", etc.
+    .replace(/^\s*\d+[\+\-]?\s*$/, "") // remove standalone "10+", "10-"
     .split(/\s*\bor\b\s*/i)
     .map(group =>
       group
