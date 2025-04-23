@@ -79,11 +79,12 @@ export function populateInventoryStats(results) {
     // Remaining item details
     const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
     const uslContainer = document.createElement("div");
-    uslContainer.className = "clickable-match-container"; // same style as summary pills
+    uslContainer.className = "clickable-match-container";
 
     matching.forEach(item => {
       const span = document.createElement("span");
-      span.className = "clickable-match"; // same pill style
+      span.className = "clickable-match";
+      span.setAttribute("data-value", item.USL); // This makes it searchable/clickable
       span.textContent = item.USL;
       uslContainer.appendChild(span);
     });
