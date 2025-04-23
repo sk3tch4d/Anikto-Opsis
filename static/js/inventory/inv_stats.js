@@ -17,7 +17,12 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 export function populateInventoryStats(results) {
   const statsBox = document.getElementById("inventory-stats");
   const loading = document.getElementById("loading");
-  if (!statsBox || !loading) return;
+  if (!statsBox || !loading) {
+    DEBUG_MODE && console.warn("[STATS] Missing statsBox or loading element.");
+    return;
+  }
+
+  DEBUG_MODE && console.log("[STATS] Starting to populate stats...");
 
   // Start: show spinner, hide stats
   toggleLoadingState(true, {
@@ -32,11 +37,13 @@ export function populateInventoryStats(results) {
   // ==============================
   const searchInput = document.getElementById("inventory-search");
   const currentSearch = searchInput?.value.trim() || "(None)";
+  DEBUG_MODE && console.log(`[STATS] Current search term: "${currentSearch}"`);
 
   // ==============================
   // BASIC SUMMARY & STATS
   // ==============================
   const uniqueNums = [...new Set(results.map(item => item.Num))];
+  DEBUG_MODE && console.log(`[STATS] Unique store numbers: ${uniqueNums.length}`);
 
   const liResults = document.createElement("li");
   liResults.innerHTML = `<span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Unique:</span> ${uniqueNums.length}`;
@@ -71,6 +78,8 @@ export function populateInventoryStats(results) {
     const uom = base.UOM ?? "";
     const topMatch = matching.reduce((a, b) => a.QTY > b.QTY ? a : b);
 
+    DEBUG_MODE && console.log(`[STATS] Rendering item ${base.Num}`);
+
     const li = document.createElement("li");
 
     li.innerHTML = `<span class="tag-label">Stores Number:</span> `;
@@ -94,7 +103,7 @@ export function populateInventoryStats(results) {
     });
 
     li.innerHTML += `
-      <br><span class="tag-label">Description:</span> ${highlightMatch(base.Description, currentSearch)}<br>
+      <br><span class="tag-label">Description:</span> ${highlightMatch(base.Description ?? '', currentSearch)}<br>
       <span class="tag-label">Cost:</span> ${cost} / ${uom}<br>
       <span class="tag-label">Total Quantity:</span> ${totalQty}<br>
       <span class="tag-label">USLs:</span>
@@ -108,6 +117,8 @@ export function populateInventoryStats(results) {
   // MAKE CLICKABLE
   // ==============================
   setupParseStats(".clickable-stat, .clickable-match", "inventory-search", "data-value");
+
+  DEBUG_MODE && console.log("[STATS] Done populating stats. Showing results...");
 
   // Done: hide spinner, show stats
   toggleLoadingState(false, {
