@@ -33,6 +33,16 @@
             </select>
           </div>
 
+          <!-- SEARCH AND FILTER INLINE -->
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <!-- Search box: fills available space -->
+            <input id="inventory-search" class="input" placeholder="Search..." style="flex: 1;" />
+            <!-- Filter box: fixed width -->
+            <select id="usl-filter" class="input" style="flex: 0 0 100px;">
+              <option value="Any">All</option>
+            </select>
+          </div>
+
           <!-- LOADING SPINNER -->
           <div id="loading">
             <div class="spinner"></div>
