@@ -4,6 +4,7 @@
 // ==============================
 
 import { displayRandomQuote } from './quotes.js';
+import { withLoadingToggle } from './loading.js';
 
 // ==============================
 // CONFIGURATION
@@ -45,13 +46,15 @@ function setupFormBehavior() {
   if (!form) return;
 
   form.addEventListener("submit", () => {
-    const uploadForm = document.getElementById("upload-form");
-    const loading = document.getElementById("loading");
-
-    if (uploadForm) uploadForm.style.display = "none";
-    if (loading) loading.style.display = "block";
-
-    displayRandomQuote();
+    withLoadingToggle(
+      {
+        show: [document.getElementById("loading")],
+        hide: [document.getElementById("upload-form")]
+      },
+      () => {
+        displayRandomQuote(); // or any logic you want to run while loading
+      }
+    );
   });
 }
 
