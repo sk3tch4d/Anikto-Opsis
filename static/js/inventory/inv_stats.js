@@ -4,7 +4,7 @@
 // ==============================
 
 import { setupParseStats, highlightMatch } from "../search-utils.js";
-import { toggleLoadingState } from "..loading.js";
+import { toggleLoadingState } from "../loading.js";
 
 // ==============================
 // DEBUG TOGGLE
