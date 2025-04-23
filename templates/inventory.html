@@ -22,10 +22,10 @@
         <div class="panel-header" onclick="togglePanel(this)">Search Catalog</div>
         <div class="panel-body scrollable-panel">
           
-          <!-- Search Input -->
+          <!-- SEARCH INPUT -->
           <input id="inventory-search" class="input full-width" placeholder="Search..." />
       
-          <!-- Filters: USL, Sort By, Sort Direction -->
+          <!-- FILTERS & SORT -->
           <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
             <select id="usl-filter" class="input full-width" style="flex: 1;">
               <option value="Any">All</option>
@@ -39,24 +39,24 @@
             <button id="sort-direction" class="input sort-button" type="button">↓</button>
           </div>
 
+          <!-- LOADING SPINNER -->
+          <div id="loading">
+            <div class="spinner"></div>
+          </div>
+
           <ul id="inventory-stats" style="list-style: none; padding-left: 0; line-height: 1.8; text-align: center;">
-          <!-- Populated by JS -->
+            <!-- JS -->
           </ul>
         </div>
       </div>
 
 
       <!-- ============================= -->
-      <!-- PANEL: SEARCH STATS -->
+      <!-- PANEL: SEARCH RESULTS -->
       <!-- ============================= -->
       <div class="panel panel-animate" id="inventory-stats-panel">
         <div class="panel-header" onclick="togglePanel(this)">Search Statistics</div>
         <div class="panel-body">
-          
-            <!-- LOADING SPINNER -->
-            <div id="loading">
-              <div class="spinner"></div>
-            </div>
       
             <!-- Results + Empty State -->
             <ul id="inventory-results" style="margin-top: 1rem;"></ul>
