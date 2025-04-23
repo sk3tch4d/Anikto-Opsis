@@ -79,11 +79,11 @@ export function populateInventoryStats(results) {
     // Remaining item details
     const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
     const uslContainer = document.createElement("div");
-    uslContainer.className = "usl-pill-container";
-    
+    uslContainer.className = "clickable-match-container"; // same style as summary pills
+
     matching.forEach(item => {
       const span = document.createElement("span");
-      span.className = "highlightMatch";
+      span.className = "clickable-match"; // same pill style
       span.textContent = item.USL;
       uslContainer.appendChild(span);
     });
@@ -92,7 +92,7 @@ export function populateInventoryStats(results) {
       <br><strong>Description:</strong> ${base.Description}<br>
       <strong>Cost:</strong> ${cost} / ${uom}<br>
       <strong>Total Quantity:</strong> ${totalQty}<br>
-      <strong>USLs:</strong><br>
+      <strong>USLs:</strong>
     `;
 
     li.appendChild(uslContainer);
