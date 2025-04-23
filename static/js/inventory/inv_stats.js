@@ -31,11 +31,11 @@ export function populateInventoryStats(results) {
   const uniqueNums = [...new Set(results.map(item => item.Num))];
 
   const liResults = document.createElement("li");
-  liResults.innerHTML = `<strong>Results:</strong> ${results.length} <strong> Unique:</strong> ${uniqueNums.length}`;
+  liResults.innerHTML = `<span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Unique:</span> ${uniqueNums.length}`;
   statsBox.appendChild(liResults);
 
   const liMatches = document.createElement("li");
-  liMatches.innerHTML = `<strong>Matches:</strong> `;
+  liMatches.innerHTML = `<span class="tag-label">Matches:</span> `;
   const container = document.createElement("div");
   container.className = "clickable-match-container";
 
@@ -66,7 +66,7 @@ export function populateInventoryStats(results) {
     const li = document.createElement("li");
 
     // Store number label
-    li.innerHTML = `<strong>Stores Number:</strong> `;
+    li.innerHTML = `<span class="tag-label">Stores Number:</span> `;
 
     // Clickable stat span with highlight
     const numberSpan = document.createElement("span");
@@ -89,10 +89,10 @@ export function populateInventoryStats(results) {
     });
 
     li.innerHTML += `
-      <br><strong>Description:</strong> ${highlightMatch(base.Description, currentSearch)}<br>
-      <strong>Cost:</strong> ${cost} / ${uom}<br>
-      <strong>Total Quantity:</strong> ${totalQty}<br>
-      <strong>USLs:</strong>
+      <br><span class="tag-label">Description:</span> ${highlightMatch(base.Description, currentSearch)}<br>
+      <span class="tag-label">Cost:</span> ${cost} / ${uom}<br>
+      <span class="tag-label">Total Quantity:</span> ${totalQty}<br>
+      <span class="tag-label">USLs:</span>
     `;
 
     li.appendChild(uslContainer);
