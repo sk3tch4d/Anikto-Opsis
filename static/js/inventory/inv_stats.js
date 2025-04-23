@@ -4,7 +4,6 @@
 // ==============================
 
 import { setupParseStats, highlightMatch } from "../search-utils.js";
-import { toggleLoadingState } from "../loading.js";
 
 // ==============================
 // DEBUG TOGGLE
@@ -16,20 +15,12 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 // ==============================
 export function populateInventoryStats(results) {
   const statsBox = document.getElementById("inventory-stats");
-  const loading = document.getElementById("loading");
-  if (!statsBox || !loading) {
-    DEBUG_MODE && console.warn("[STATS] Missing statsBox or loading element.");
+  if (!statsBox) {
+    DEBUG_MODE && console.warn("[STATS] Missing statsBox element.");
     return;
   }
 
   DEBUG_MODE && console.log("[STATS] Starting to populate stats...");
-
-  // Start: show spinner, hide stats
-  toggleLoadingState(true, {
-    show: [loading],
-    hide: [statsBox]
-  });
-
   statsBox.innerHTML = "";
 
   // ==============================
@@ -76,12 +67,9 @@ export function populateInventoryStats(results) {
     const old = base.Old?.trim() ? ` (Old: ${base.Old})` : "";
     const cost = base.Cost !== undefined ? base.Cost : "N/A";
     const uom = base.UOM ?? "";
-    const topMatch = matching.reduce((a, b) => a.QTY > b.QTY ? a : b);
-
-    DEBUG_MODE && console.log(`[STATS] Rendering item ${base.Num}`);
+    const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
 
     const li = document.createElement("li");
-
     li.innerHTML = `<span class="tag-label">Stores Number:</span> `;
 
     const numberSpan = document.createElement("span");
@@ -90,7 +78,6 @@ export function populateInventoryStats(results) {
     numberSpan.innerHTML = highlightMatch(base.Num + old, currentSearch);
     li.appendChild(numberSpan);
 
-    const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
     const uslContainer = document.createElement("div");
     uslContainer.className = "clickable-match-container";
 
@@ -118,18 +105,5 @@ export function populateInventoryStats(results) {
   // ==============================
   setupParseStats(".clickable-stat, .clickable-match", "inventory-search", "data-value");
 
-  DEBUG_MODE && console.log("[STATS] Done populating stats. Showing results...");
-
-  // Done: hide spinner, show stats
-  toggleLoadingState(false, {
-    show: [statsBox],
-    hide: [loading]
-  });
-}
-
-// ==============================
-// EXPOSE - DEBUGGING
-// ==============================
-if (DEBUG_MODE) {
-  window.populateInventoryStats = populateInventoryStats;
+  DEBUG_MODE && console.log("[STATS] Finished populating stats.");
 }
