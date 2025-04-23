@@ -6,7 +6,7 @@
 import { populateInventoryStats } from "./inv_stats.js";
 import { setupInventoryDownloadSearch } from "./inv_downloads.js";
 import { highlightMatch } from '../search-utils.js';
-import { withLoadingToggle } from './loading.js';
+import { withLoadingToggle } from '../loading.js';
 
 // ==============================
 // GLOBAL CONST
