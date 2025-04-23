@@ -1,7 +1,6 @@
 // ==============================
 // LOADING TOGGLER
 // ==============================
-
 export function toggleLoadingState(isLoading, { show, hide } = {}) {
   if (!show || !hide) return;
 
