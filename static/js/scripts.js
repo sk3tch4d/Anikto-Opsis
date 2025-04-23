@@ -8,6 +8,8 @@ import { initDebugToggle } from './debugging.js';
 import { initTypewriter } from './header.js';
 // ----- Panels -----
 import { togglePanel, collapseAllPanels, openPanelById } from './panels.js';
+// ----- Sticky Bars -----
+import { initStickyBars } from './sticky.js';
 // ----- Dropzone -----
 import { initDropzone } from './dropzone.js';
 // ----- Quotes -----
@@ -36,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
     window.togglePanel = togglePanel;
     collapseAllPanels({ excludeSelector: "#login-panel" });
   }
+  // ----- Sticky Bars -----
+  if (document.querySelector(".sticky-bar")) initStickyBars();
   // ----- Dropzone -----
   if (document.querySelector(".drop-zone")) initDropzone();
   // ----- Quotes -----
