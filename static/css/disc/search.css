@@ -1,0 +1,17 @@
+/* Sticky header bar shared styling */
+.sticky-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #1a1a1a;
+  padding: 0.5rem;
+  border-bottom: 1px solid #333;
+  transition: opacity 0.3s ease;
+}
+.sticky-blur {
+  background: rgba(26, 26, 26, 0.9);
+  backdrop-filter: blur(6px);
+}
+.sticky-faded {
+  opacity: 0.4;
+}
