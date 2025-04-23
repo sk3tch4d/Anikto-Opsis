@@ -126,3 +126,10 @@ export function populateInventoryStats(results) {
     hide: [loading]
   });
 }
+
+// ==============================
+// EXPOSE - DEBUGGING
+// ==============================
+if (DEBUG_MODE) {
+  window.populateInventoryStats = populateInventoryStats;
+}
