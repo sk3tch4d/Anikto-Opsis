@@ -25,18 +25,11 @@
           <!-- SEARCH INPUT -->
           <input id="inventory-search" class="input full-width" placeholder="Search..." />
       
-          <!-- FILTERS & SORT -->
+          <!-- FILTERS -->
           <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
             <select id="usl-filter" class="input full-width" style="flex: 1;">
               <option value="Any">All</option>
             </select>
-            <select id="sort-by" class="input full-width" style="flex: 1;">
-              <option value="QTY">Quantity</option>
-              <option value="USL">USL</option>
-              <option value="Num">Number</option>
-              <option value="Cost">Cost</option>
-            </select>
-            <button id="sort-direction" class="input sort-button" type="button">↓</button>
           </div>
 
           <!-- LOADING SPINNER -->
@@ -57,12 +50,21 @@
       <div class="panel panel-animate" id="inventory-stats-panel">
         <div class="panel-header" onclick="togglePanel(this)">Search Statistics</div>
         <div class="panel-body">
+
+          <!-- SORT -->
+          <select id="sort-by" class="input full-width" style="flex: 1;">
+            <option value="QTY">Quantity</option>
+            <option value="USL">USL</option>
+            <option value="Num">Number</option>
+            <option value="Cost">Cost</option>
+          </select>
+          <button id="sort-direction" class="input sort-button" type="button">↓</button>
       
-            <!-- Results + Empty State -->
-            <ul id="inventory-results" style="margin-top: 1rem;"></ul>
-            <p id="no-results" class="error-text" style="display: none; text-align: center; margin-top: 1rem;">
-              No results found.
-            </p>
+          <!-- RESULTS + EMPTY STATE -->
+          <ul id="inventory-results" style="margin-top: 1rem;"></ul>
+          <p id="no-results" class="error-text" style="display: none; text-align: center; margin-top: 1rem;">
+            No results found.
+          </p>
           
         </div>
       </div>
