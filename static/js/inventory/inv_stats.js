@@ -15,12 +15,8 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 // ==============================
 export function populateInventoryStats(results) {
   const statsBox = document.getElementById("inventory-stats");
-  if (!statsBox) {
-    DEBUG_MODE && console.warn("[STATS] Missing statsBox element.");
-    return;
-  }
+  if (!statsBox) return;
 
-  DEBUG_MODE && console.log("[STATS] Starting to populate stats...");
   statsBox.innerHTML = "";
 
   // ==============================
@@ -28,13 +24,11 @@ export function populateInventoryStats(results) {
   // ==============================
   const searchInput = document.getElementById("inventory-search");
   const currentSearch = searchInput?.value.trim() || "(None)";
-  DEBUG_MODE && console.log(`[STATS] Current search term: "${currentSearch}"`);
 
   // ==============================
   // BASIC SUMMARY & STATS
   // ==============================
   const uniqueNums = [...new Set(results.map(item => item.Num))];
-  DEBUG_MODE && console.log(`[STATS] Unique store numbers: ${uniqueNums.length}`);
 
   const liResults = document.createElement("li");
   liResults.innerHTML = `<span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Unique:</span> ${uniqueNums.length}`;
@@ -67,17 +61,22 @@ export function populateInventoryStats(results) {
     const old = base.Old?.trim() ? ` (Old: ${base.Old})` : "";
     const cost = base.Cost !== undefined ? base.Cost : "N/A";
     const uom = base.UOM ?? "";
-    const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
+    const topMatch = matching.reduce((a, b) => a.QTY > b.QTY ? a : b);
 
     const li = document.createElement("li");
+
+    // Store number label
     li.innerHTML = `<span class="tag-label">Stores Number:</span> `;
 
+    // Clickable stat span with highlight
     const numberSpan = document.createElement("span");
     numberSpan.className = "clickable-stat";
     numberSpan.setAttribute("data-value", base.Num);
     numberSpan.innerHTML = highlightMatch(base.Num + old, currentSearch);
     li.appendChild(numberSpan);
 
+    // Remaining item details
+    const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
     const uslContainer = document.createElement("div");
     uslContainer.className = "clickable-match-container";
 
@@ -90,7 +89,7 @@ export function populateInventoryStats(results) {
     });
 
     li.innerHTML += `
-      <br><span class="tag-label">Description:</span> ${highlightMatch(base.Description ?? '', currentSearch)}<br>
+      <br><span class="tag-label">Description:</span> ${highlightMatch(base.Description, currentSearch)}<br>
       <span class="tag-label">Cost:</span> ${cost} / ${uom}<br>
       <span class="tag-label">Total Quantity:</span> ${totalQty}<br>
       <span class="tag-label">USLs:</span>
@@ -104,6 +103,4 @@ export function populateInventoryStats(results) {
   // MAKE CLICKABLE
   // ==============================
   setupParseStats(".clickable-stat, .clickable-match", "inventory-search", "data-value");
-
-  DEBUG_MODE && console.log("[STATS] Finished populating stats.");
 }
