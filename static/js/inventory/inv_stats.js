@@ -26,13 +26,9 @@ export function populateInventoryStats(results) {
   const currentSearch = searchInput?.value.trim() || "(None)";
 
   // ==============================
-  // BASIC SUMMARY STATS
+  // BASIC SUMMARY & STATS
   // ==============================
   const uniqueNums = [...new Set(results.map(item => item.Num))];
-
-  const liSearch = document.createElement("li");
-  liSearch.innerHTML = `<strong>Current Search:</strong> <em>${currentSearch}</em>`;
-  statsBox.appendChild(liSearch);
 
   const liResults = document.createElement("li");
   liResults.innerHTML = `<strong>Results:</strong> ${results.length} <strong> Unique:</strong> ${uniqueNums.length}`;
