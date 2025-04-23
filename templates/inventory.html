@@ -22,16 +22,15 @@
         <div class="panel-header" onclick="togglePanel(this)">Search Catalog</div>
         <div class="panel-body scrollable-panel">
 
-          <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
+          <!--<div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">-->
+          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
             <!-- SEARCH INPUT -->
             <input id="inventory-search" class="input full-width" placeholder="Search..." />
       
-            <!-- FILTERS 
-            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;"> -->
-              <select id="usl-filter" class="input full-width" style="flex: 1;">
-                <option value="Any">All</option>
-              </select>
-            <!--</div>-->
+            <!-- FILTERS -->
+            <select id="usl-filter" class="input full-width" style="flex: 1;">
+              <option value="Any">All</option>
+            </select>
           </div>
 
           <!-- LOADING SPINNER -->
@@ -53,8 +52,9 @@
         <div class="panel-header" onclick="togglePanel(this)">Search Statistics</div>
         <div class="panel-body">
 
-          <!-- SORT ROW -->
-          <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
+          <!-- SORT ROW 
+          <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">-->
+          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
             <select id="sort-by" class="input full-width" style="flex: 1;">
               <option value="QTY">Quantity</option>
               <option value="USL">USL</option>
