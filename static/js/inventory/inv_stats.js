@@ -15,7 +15,14 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 // ==============================
 export function populateInventoryStats(results) {
   const statsBox = document.getElementById("inventory-stats");
-  if (!statsBox) return;
+  const loading = document.getElementById("loading");
+  if (!statsBox || !loading) return;
+
+  // Start: show spinner, hide stats
+  toggleLoadingState(true, {
+    show: [loading],
+    hide: [statsBox]
+  });
 
   statsBox.innerHTML = "";
 
@@ -65,17 +72,14 @@ export function populateInventoryStats(results) {
 
     const li = document.createElement("li");
 
-    // Store number label
     li.innerHTML = `<span class="tag-label">Stores Number:</span> `;
 
-    // Clickable stat span with highlight
     const numberSpan = document.createElement("span");
     numberSpan.className = "clickable-stat";
     numberSpan.setAttribute("data-value", base.Num);
     numberSpan.innerHTML = highlightMatch(base.Num + old, currentSearch);
     li.appendChild(numberSpan);
 
-    // Remaining item details
     const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
     const uslContainer = document.createElement("div");
     uslContainer.className = "clickable-match-container";
@@ -103,4 +107,10 @@ export function populateInventoryStats(results) {
   // MAKE CLICKABLE
   // ==============================
   setupParseStats(".clickable-stat, .clickable-match", "inventory-search", "data-value");
+
+  // Done: hide spinner, show stats
+  toggleLoadingState(false, {
+    show: [statsBox],
+    hide: [loading]
+  });
 }
