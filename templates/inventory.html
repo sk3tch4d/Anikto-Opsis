@@ -19,29 +19,23 @@
       <!-- PANEL: INVENTORY SEARCH -->
       <!-- ============================= -->
       <div class="panel panel-animate" id="inventory-search-panel">
-        <div class="panel-header" onclick="togglePanel(this)">Search Catalog</div>
 
-          <!-- SEARCH AND FILTER -->
-          <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem 0 2rem;">
-            <!-- FIXED WIDTH -->
-            <select id="usl-filter" class="input full-width" style="flex: 0 0 100px;">
-              <option value="Any">All</option>
-            </select>
-            <!-- NON FIXED -->
-            <input id="inventory-search" class="input full-width" placeholder="Search..." style="flex: 1;" />
-          </div>
-        <div class="panel-body scrollable-panel">
+      <!-- Panel header stays as-is -->
+      <div class="panel-header" onclick="togglePanel(this)">Search Catalog</div>
 
-          <!-- LOADING SPINNER -->
-          <div id="loading">
-            <div class="spinner"></div>
-          </div>
-
-          <ul id="inventory-stats" style="list-style: none; padding-left: 0; line-height: 1.8; text-align: center;">
-            <!-- JS -->
-          </ul>
-        </div>
+      <!-- Sticky or static controls go here -->
+      <div class="sticky-bar">
+        <select id="usl-filter" class="input full-width" style="flex: 0 0 100px;">
+          <option value="Any">All</option>
+        </select>
+        <input id="inventory-search" class="input full-width" placeholder="Search..." style="flex: 1;" />
       </div>
+
+      <!-- Scrollable stats/results -->
+      <div class="panel-body scrollable-panel">
+        <ul id="inventory-stats"></ul>
+      </div>
+    </div>
 
 
       <!-- ============================= -->
