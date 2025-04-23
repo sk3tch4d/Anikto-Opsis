@@ -6,21 +6,12 @@
 
 import { populateInventoryStats } from "./inv_stats.js";
 import { setupInventoryDownloadSearch } from "./inv_downloads.js";
+import { highlightMatch } from '../search-utils.js';
 
 // ==============================
 // DEBUG TOGGLE
 // ==============================
 const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
-
-// ==============================
-// HIGHLIGHT MATCH HELPER
-// ==============================
-export function highlightMatch(text, term) {
-  if (!term) return text;
-  const safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const regex = new RegExp(`(${safeTerm})`, "ig");
-  return text.replace(regex, `<span class="highlight">$1</span>`);
-}
 
 // ==============================
 // MAIN INITIALIZER
