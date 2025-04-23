@@ -22,25 +22,14 @@
         <div class="panel-header" onclick="togglePanel(this)">Search Catalog</div>
         <div class="panel-body scrollable-panel">
 
-          <!--<div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
-          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-            <!-- SEARCH INPUT 
-            <input id="inventory-search" class="input full-width" placeholder="Search..." />
-      
-            <!-- FILTERS
-            <select id="usl-filter" class="input full-width" style="flex: 1;">
-              <option value="Any">All</option>
-            </select>
-          </div>-->
-
-          <!-- SEARCH AND FILTER INLINE -->
-          <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-            <!-- Search box: fills available space -->
-            <input id="inventory-search" class="input full-width" placeholder="Search..." style="flex: 1;" />
-            <!-- Filter box: fixed width -->
+          <!-- SEARCH AND FILTER -->
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem 0 1rem;">
+            <!-- FIXED WIDTH -->
             <select id="usl-filter" class="input full-width" style="flex: 0 0 100px;">
               <option value="Any">All</option>
             </select>
+            <!-- NON FIXED -->
+            <input id="inventory-search" class="input full-width" placeholder="Search..." style="flex: 1;" />
           </div>
 
           <!-- LOADING SPINNER -->
@@ -59,12 +48,11 @@
       <!-- PANEL: SEARCH RESULTS -->
       <!-- ============================= -->
       <div class="panel panel-animate" id="inventory-stats-panel">
-        <div class="panel-header" onclick="togglePanel(this)">Search Statistics</div>
+        <div class="panel-header" onclick="togglePanel(this)">Full Results</div>
         <div class="panel-body">
 
-          <!-- SORT ROW 
-          <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">-->
-          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+          <!-- SORT ROW -->
+          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem 0 1rem;">
             <select id="sort-by" class="input full-width" style="flex: 1;">
               <option value="QTY">Quantity</option>
               <option value="USL">USL</option>
