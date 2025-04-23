@@ -3,7 +3,7 @@
 // Inventory Statistics Renderer
 // ==============================
 
-import { setupParseStats } from "../search-utils.js";
+import { setupParseStats, highlightMatch } from "../search-utils.js";
 
 // ==============================
 // DEBUG TOGGLE
@@ -38,7 +38,7 @@ export function populateInventoryStats(results) {
   liMatches.innerHTML = `<strong>Matches:</strong> `;
   const container = document.createElement("div");
   container.className = "clickable-match-container";
-  
+
   uniqueNums.forEach(num => {
     const span = document.createElement("span");
     span.className = "clickable-match";
@@ -46,10 +46,9 @@ export function populateInventoryStats(results) {
     span.textContent = num;
     container.appendChild(span);
   });
-  
+
   liMatches.appendChild(container);
   statsBox.appendChild(liMatches);
-
 
   // ==============================
   // PER-ITEM DETAIL BLOCKS
@@ -69,11 +68,11 @@ export function populateInventoryStats(results) {
     // Store number label
     li.innerHTML = `<strong>Stores Number:</strong> `;
 
-    // Clickable stat span
+    // Clickable stat span with highlight
     const numberSpan = document.createElement("span");
     numberSpan.className = "clickable-stat";
     numberSpan.setAttribute("data-value", base.Num);
-    numberSpan.textContent = base.Num + old;
+    numberSpan.innerHTML = highlightMatch(base.Num + old, currentSearch);
     li.appendChild(numberSpan);
 
     // Remaining item details
@@ -84,20 +83,19 @@ export function populateInventoryStats(results) {
     matching.forEach(item => {
       const span = document.createElement("span");
       span.className = "clickable-match";
-      span.setAttribute("data-value", item.USL); // This makes it searchable/clickable
+      span.setAttribute("data-value", item.USL);
       span.textContent = item.USL;
       uslContainer.appendChild(span);
     });
 
     li.innerHTML += `
-      <br><strong>Description:</strong> ${base.Description}<br>
+      <br><strong>Description:</strong> ${highlightMatch(base.Description, currentSearch)}<br>
       <strong>Cost:</strong> ${cost} / ${uom}<br>
       <strong>Total Quantity:</strong> ${totalQty}<br>
       <strong>USLs:</strong>
     `;
 
     li.appendChild(uslContainer);
-
     statsBox.appendChild(li);
   });
 
