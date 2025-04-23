@@ -61,7 +61,11 @@ export function initializeInventoryApp() {
     withLoadingToggle(
       {
         show: [document.getElementById("loading")],
-        hide: [resultsList, noResults]
+        hide: [
+          resultsList,
+          noResults,
+          document.getElementById("inventory-stats") 
+        ]
       },
       () => {
         resultsList.innerHTML = "";
