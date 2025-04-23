@@ -93,7 +93,7 @@ export function togglePanel(header) {
     disableBodyLock();
     closePanel();
   } else {
-    enableBodyLock(300);
+    enableBodyLock(3000);
     openPanel();
   }
 
