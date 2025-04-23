@@ -13,6 +13,12 @@
   box-sizing: border-box;
 }
 
+.panel.open {
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease;
+}
+
 /* ============================= */
 /* PANEL HEADER                  */
 /* ============================= */
@@ -43,6 +49,10 @@
   outline: none;
 }
 
+
+/* ============================= */
+/* PANEL - NO SHADOW             */
+/* ============================= */
 /* Remove box shadow from specific panels */
 .panel.no-shadow {
   box-shadow: none !important;
@@ -59,7 +69,7 @@
 
 
 /* ============================= */
-/* PANEL BODY / TOGGLE BEHAVIOR */
+/* PANEL BODY / TOGGLE BEHAVIOR  */
 /* ============================= */
 .panel-body {
   background-color: #2f3136;
@@ -76,13 +86,6 @@
   padding: 1rem;
   border-radius: 0 0 8px 8px;
 }
-
-.panel.open {
-  box-shadow: 0 0 0 2px rgba(20, 20, 25, 0.3);
-  border-radius: 8px;
-  transition: box-shadow 0.3s ease;
-}
-
 
 /* ============================= */
 /* PANEL LABELS (e.g., checkboxes) */
