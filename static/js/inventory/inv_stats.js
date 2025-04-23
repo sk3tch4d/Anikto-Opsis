@@ -77,17 +77,25 @@ export function populateInventoryStats(results) {
     li.appendChild(numberSpan);
 
     // Remaining item details
+    const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
+    const uslContainer = document.createElement("div");
+    uslContainer.className = "usl-pill-container";
+    
+    matching.forEach(item => {
+      const span = document.createElement("span");
+      span.className = "highlightMatch";
+      span.textContent = item.USL;
+      uslContainer.appendChild(span);
+    });
+
     li.innerHTML += `
       <br><strong>Description:</strong> ${base.Description}<br>
       <strong>Cost:</strong> ${cost} / ${uom}<br>
-      <strong>Top Quantity:</strong> ${topMatch.USL} - ${topMatch.QTY}<br>
-      <strong>Top 3 USLs:</strong><br>
-      ${matching
-        .sort((a, b) => b.QTY - a.QTY)
-        .slice(0, 3)
-        .map(m => `&nbsp;&nbsp;- ${m.USL} (${m.QTY})`)
-        .join("<br>")}
+      <strong>Total Quantity:</strong> ${totalQty}<br>
+      <strong>USLs:</strong><br>
     `;
+
+    li.appendChild(uslContainer);
 
     statsBox.appendChild(li);
   });
