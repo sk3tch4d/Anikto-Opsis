@@ -38,17 +38,10 @@
             </select>
             <button id="sort-direction" class="input sort-button" type="button">↓</button>
           </div>
-      
-          <!-- LOADING SPINNER -->
-          <div id="loading">
-            <div class="spinner"></div>
-          </div>
-      
-          <!-- Results + Empty State -->
-          <ul id="inventory-results" style="margin-top: 1rem;"></ul>
-          <p id="no-results" class="error-text" style="display: none; text-align: center; margin-top: 1rem;">
-            No results found.
-          </p>
+
+          <ul id="inventory-stats" style="list-style: none; padding-left: 0; line-height: 1.8; text-align: center;">
+          <!-- Populated by JS -->
+          </ul>
         </div>
       </div>
 
@@ -59,9 +52,18 @@
       <div class="panel panel-animate" id="inventory-stats-panel">
         <div class="panel-header" onclick="togglePanel(this)">Search Statistics</div>
         <div class="panel-body">
-          <ul id="inventory-stats" style="list-style: none; padding-left: 0; line-height: 1.8; text-align: center;">
-          <!-- Populated by JS -->
-          </ul>
+          
+            <!-- LOADING SPINNER -->
+            <div id="loading">
+              <div class="spinner"></div>
+            </div>
+      
+            <!-- Results + Empty State -->
+            <ul id="inventory-results" style="margin-top: 1rem;"></ul>
+            <p id="no-results" class="error-text" style="display: none; text-align: center; margin-top: 1rem;">
+              No results found.
+            </p>
+          
         </div>
       </div>
 
