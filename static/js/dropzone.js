@@ -4,7 +4,7 @@
 // ==============================
 
 import { displayRandomQuote } from './quotes.js';
-import { withLoadingToggle } from './loading.js';
+import { toggleLoadingState } from './loading.js';
 
 // ==============================
 // CONFIGURATION
@@ -41,20 +41,19 @@ export function initDropzone() {
 // ==============================
 // FORM SUBMISSION BEHAVIOR
 // ==============================
+import { toggleLoadingState } from './loading.js';
+
 function setupFormBehavior() {
   const form = document.querySelector("form");
   if (!form) return;
 
   form.addEventListener("submit", () => {
-    withLoadingToggle(
-      {
-        show: [document.getElementById("loading")],
-        hide: [document.getElementById("upload-form")]
-      },
-      () => {
-        displayRandomQuote(); // or any logic you want to run while loading
-      }
-    );
+    toggleLoadingState(true, {
+      show: [document.getElementById("loading")],
+      hide: [document.getElementById("upload-form")]
+    });
+
+    displayRandomQuote();
   });
 }
 
