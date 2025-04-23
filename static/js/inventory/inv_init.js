@@ -170,7 +170,7 @@ export function initializeInventoryApp() {
   // ==============================
   searchInput.addEventListener("input", () => {
     clearTimeout(window._searchDebounce);
-    window._searchDebounce = setTimeout(doSearch, 200);
+    window._searchDebounce = setTimeout(doSearch, 300);
   });
 
   uslFilter.addEventListener("change", doSearch);
