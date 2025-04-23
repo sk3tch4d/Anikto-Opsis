@@ -24,12 +24,14 @@ const nonClosableElements = [
 // ==============================
 // LOCK / UNLOCK BODY SCROLL
 // ==============================
-// ENABLE (DELAY)
-function enableBodyLock(delay = 0) {
-  if (delay > 0) {
+// ENABLE (boolean)
+function enableBodyLock(delayed = true) {
+  if (delayed) {
     setTimeout(() => {
-      document.body.classList.add('lock-scroll');
-    }, delay);
+      requestAnimationFrame(() => {
+        document.body.classList.add('lock-scroll');
+      });
+    }, 50); // small delay
   } else {
     document.body.classList.add('lock-scroll');
   }
@@ -67,7 +69,7 @@ export function openPanelById(panelId) {
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
 
   // Lock Body
-  enableBodyLock(300);
+  enableBodyLock();
 }
 
 // ==============================
@@ -93,7 +95,7 @@ export function togglePanel(header) {
     disableBodyLock();
     closePanel();
   } else {
-    enableBodyLock(3000);
+    enableBodyLock();
     openPanel();
   }
 
