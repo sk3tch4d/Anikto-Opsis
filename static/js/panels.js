@@ -112,14 +112,20 @@ export function togglePanel(header) {
     void header.offsetWidth;
     header.classList.add('bounce');
 
-    // Smooth scroll into view
+    // Smooth Scroll to View -> Lock
     setTimeout(() => {
       requestAnimationFrame(() => {
         const yOffset = -14;
         const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
+  
         window.scrollTo({ top: y, behavior: 'smooth' });
+  
+        // Use a second timeout to wait for smooth scroll to complete
+        setTimeout(() => {
+          enableBodyLock(false);
+        }, 400); // Scroll Speed
       });
-    }, 250);
+    }, 100);
 
     // Auto-close on tap inside body
     if (!nonClosablePanels.includes(panelId)) {
