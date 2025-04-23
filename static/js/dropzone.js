@@ -41,8 +41,6 @@ export function initDropzone() {
 // ==============================
 // FORM SUBMISSION BEHAVIOR
 // ==============================
-import { toggleLoadingState } from './loading.js';
-
 function setupFormBehavior() {
   const form = document.querySelector("form");
   if (!form) return;
