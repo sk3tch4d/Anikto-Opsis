@@ -20,6 +20,18 @@ const nonClosableElements = [
   "A"
 ];
 
+
+// ==============================
+// LOCK / UNLOCK BODY SCROLL
+// ==============================
+function enableBodyLock() {
+  document.body.classList.add('lock-scroll');
+}
+function disableBodyLock() {
+  document.body.classList.remove('lock-scroll');
+}
+
+
 // ==============================
 // OPEN PANEL (panelID)
 // ==============================
@@ -67,8 +79,10 @@ export function togglePanel(header) {
   const isOpen = panel.classList.contains('open');
 
   if (isOpen) {
+    disableBodyLock();
     closePanel();
   } else {
+    enableBodyLock();
     openPanel();
   }
 
