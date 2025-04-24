@@ -40,6 +40,29 @@ function enableBodyLock(delayed = true) {
 function disableBodyLock() {
   document.body.classList.remove('lock-scroll');
 }
+// ENABLE FROM WAIT
+function waitForScrollAndLock() {
+  let lastScrollY = window.scrollY;
+  let timeout;
+
+  function checkScrollStop() {
+    const currentY = window.scrollY;
+    if (Math.abs(currentY - lastScrollY) < 2) {
+      enableBodyLock();
+      window.removeEventListener('scroll', checkScrollStop);
+      clearTimeout(timeout);
+    } else {
+      lastScrollY = currentY;
+    }
+  }
+
+  // Attach listener and fallback timeout
+  window.addEventListener('scroll', checkScrollStop);
+  timeout = setTimeout(() => {
+    enableBodyLock(); // fallback
+    window.removeEventListener('scroll', checkScrollStop);
+  }, 800); // timeout fallback
+}
 
 
 // ==============================
@@ -69,7 +92,7 @@ export function openPanelById(panelId) {
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
 
   // Lock Body
-  enableBodyLock();
+  waitForScrollAndLock();
 }
 
 // ==============================
@@ -95,7 +118,7 @@ export function togglePanel(header) {
     disableBodyLock();
     closePanel();
   } else {
-    enableBodyLock();
+    waitForScrollAndLock();
     openPanel();
   }
 
@@ -112,20 +135,14 @@ export function togglePanel(header) {
     void header.offsetWidth;
     header.classList.add('bounce');
 
-    // Smooth Scroll to View -> Lock
+    // Smooth Scroll to View
     setTimeout(() => {
       requestAnimationFrame(() => {
         const yOffset = -14;
         const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
-  
         window.scrollTo({ top: y, behavior: 'smooth' });
-  
-        // Use a second timeout to wait for smooth scroll to complete
-        setTimeout(() => {
-          enableBodyLock(false);
-        }, 400); // Scroll Speed
       });
-    }, 100);
+    }, 250);
 
     // Auto-close on tap inside body
     if (!nonClosablePanels.includes(panelId)) {
