@@ -71,10 +71,10 @@ export function openPanel(panelId) {
     
           window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
 
-          // Delay lock just enough to let scroll visually apply
+          // Delay lock enough to let scroll visually apply
           setTimeout(() => {
             enableBodyLock();
-          }, 350);
+          }, 500);
 
         });
       };
