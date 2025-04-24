@@ -95,7 +95,12 @@ export function openPanel(panelId) {
 
 // Wrapper for compatibility
 export function openPanelById(panelId) {
-  openPanel(panelId);
+  setTimeout(() => {
+    const panel = document.getElementById(panelId);
+    if (panel) {
+      openPanel(panel);
+    }
+  }, 250); // Delay for transistion
 }
 
 // ==============================
