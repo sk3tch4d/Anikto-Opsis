@@ -2,7 +2,7 @@
 // RENDER.JS
 // Renders List Results
 // ==============================
-import { getStatusDot } from "./statusDot.js";
+import { getStatusDot } from "../statusdot.js";
 
 // ==============================
 // RENDER MATCHED RESULTS
