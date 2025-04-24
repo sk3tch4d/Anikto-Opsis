@@ -4,14 +4,6 @@
 
 
 /* ============================= */
-/* INPUT: ERROR    */
-/* ============================= */
-input.full-width.input-error {
-  border: 1px solid #ff4d4f;
-  color: #f8dada;
-}
-
-/* ============================= */
 /* INPUT: FULL-WIDTH             */
 /* ============================= */
 input.full-width {
@@ -33,6 +25,15 @@ input.full-width {
 }
 input.full-width:focus {
   border-color: #5c7aff;
+}
+
+/* ============================= */
+/* INPUT: FULL-WIDTH  ERROR      */
+/* ============================= */
+input.full-width.input-error {
+  border: 1px solid #ff4d4f !important;
+  background: linear-gradient(-30deg, #3b1e1e, #4b2a2a, #3b1e1e) !important;
+  color: #f8dada;
 }
 
 /* ============================= */
