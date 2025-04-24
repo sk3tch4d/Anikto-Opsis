@@ -45,44 +45,43 @@ export function openPanel(panelId) {
 
   const wasOpen = panel.classList.contains('open');
 
-  // Step 1: Collapse others
   collapseAllPanels({ excludeSelector: `#${panelId}` });
 
-  // Step 2: Delay open so collapse DOM settles first
   requestAnimationFrame(() => {
     panel.classList.remove("panel-closed");
     panel.classList.add("open");
     header?.classList.add("open");
     body?.classList.add("open");
 
+    // ✨ Dynamically apply maxHeight using scrollHeight
+    body.style.maxHeight = body.scrollHeight + 'px';
+
     if (!wasOpen) {
       const onTransitionEnd = (e) => {
         if (e.propertyName !== 'max-height') return;
         body.removeEventListener('transitionend', onTransitionEnd);
-    
+
         requestAnimationFrame(() => {
           const yOffset = -14;
           const headerRect = header.getBoundingClientRect();
           const scrollTarget = headerRect.top + window.pageYOffset + yOffset;
-    
+
           console.log('[DEBUG] headerRect.top:', headerRect.top);
           console.log('[DEBUG] pageYOffset:', window.pageYOffset);
           console.log('[DEBUG] Final Scroll Target (y):', scrollTarget);
-    
+
           window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
 
-          // Delay lock enough to let scroll visually apply
+          // Delay body lock slightly to allow scroll to complete
           setTimeout(() => {
             enableBodyLock();
-          }, 500);
-
+          }, 50);
         });
       };
       body.addEventListener('transitionend', onTransitionEnd);
     } else {
       enableBodyLock();
     }
-
 
     setupTouchListeners(body, panelId, panel, header);
   });
@@ -118,6 +117,10 @@ export function togglePanel(header) {
 function closePanel(panel) {
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
+
+  // Animate collapse by resetting maxHeight
+  body.style.maxHeight = '0px';
+
   panel.classList.remove('open');
   header?.classList.remove('open');
   body?.classList.remove('open');
@@ -137,6 +140,7 @@ export function collapseAllPanels({ excludeSelector = null } = {}) {
     const panel = body.closest('.panel');
     if (exclusions.some(sel => panel?.matches(sel))) return;
 
+    body.style.maxHeight = '0px'; // ✨ Collapse dynamically
     body.classList.remove('open');
     panel?.classList.remove('open');
   });
