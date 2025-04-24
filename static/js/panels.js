@@ -24,44 +24,19 @@ const nonClosableElements = [
 // ==============================
 // LOCK / UNLOCK BODY SCROLL
 // ==============================
-// ENABLE (boolean)
-function enableBodyLock(delayed = true) {
-  if (delayed) {
-    setTimeout(() => {
-      requestAnimationFrame(() => {
-        document.body.classList.add('lock-scroll');
-      });
-    }, 50); // small delay
-  } else {
-    document.body.classList.add('lock-scroll');
-  }
+// ENABLE
+let scrollY = 0;
+
+function enableBodyLock() {
+  scrollY = window.scrollY;
+  document.body.style.top = `-${scrollY}px`;
+  document.body.classList.add('lock-scroll');
 }
 // DISABLE
 function disableBodyLock() {
   document.body.classList.remove('lock-scroll');
-}
-// ENABLE FROM WAIT
-function waitForScrollAndLock() {
-  let lastScrollY = window.scrollY;
-  let timeout;
-
-  function checkScrollStop() {
-    const currentY = window.scrollY;
-    if (Math.abs(currentY - lastScrollY) < 2) {
-      enableBodyLock();
-      window.removeEventListener('scroll', checkScrollStop);
-      clearTimeout(timeout);
-    } else {
-      lastScrollY = currentY;
-    }
-  }
-
-  // Attach listener and fallback timeout
-  window.addEventListener('scroll', checkScrollStop);
-  timeout = setTimeout(() => {
-    enableBodyLock(); // fallback
-    window.removeEventListener('scroll', checkScrollStop);
-  }, 800); // timeout fallback
+  document.body.style.top = '';
+  window.scrollTo(0, scrollY);
 }
 
 
@@ -92,7 +67,7 @@ export function openPanelById(panelId) {
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
 
   // Lock Body
-  waitForScrollAndLock();
+  enableBodyLock();
 }
 
 // ==============================
@@ -118,7 +93,7 @@ export function togglePanel(header) {
     disableBodyLock();
     closePanel();
   } else {
-    waitForScrollAndLock();
+    enableBodyLock();
     openPanel();
   }
 
@@ -126,23 +101,23 @@ export function togglePanel(header) {
   // HELPER: OPEN PANEL
   // ==============================
   function openPanel() {
-    // Scroll panel into view *before* applying open state
-    panel.scrollIntoView({ behavior: "smooth", block: "start" });
-    
-    setTimeout(() => {
-      panel.classList.add('open');
-      header.classList.add('open');
-      body.classList.add('open');
-    
-      // Bounce effect
-      header.classList.remove('bounce');
-      void header.offsetWidth;
-      header.classList.add('bounce');
-    
-      // Lock scroll just after opening
-      setTimeout(() => enableBodyLock(false), 50);
-    }, 400); // Wait for scrollIntoView to finish
+    panel.classList.add('open');
+    header.classList.add('open');
+    body.classList.add('open');
 
+    // Bounce effect
+    header.classList.remove('bounce');
+    void header.offsetWidth;
+    header.classList.add('bounce');
+
+    // Smooth scroll into view
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        const yOffset = -14;
+        const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      });
+    }, 250);
 
     // Auto-close on tap inside body
     if (!nonClosablePanels.includes(panelId)) {
