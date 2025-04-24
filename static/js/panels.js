@@ -31,11 +31,11 @@ function disableBodyLock() {
 }
 
 // ==============================
-// OPEN PANEL
+// OPEN PANEL (string | element)
 // ==============================
-export function openPanel(panelId) {
-  const panel = document.getElementById(panelId);
-  if (!panel) return console.warn(`Panel not found: ${panelId}`);
+export function openPanel(target) {
+  const panel = typeof target === "string" ? document.getElementById(target) : target;
+  if (!panel) return console.warn(`Panel not found: ${target}`);
 
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
@@ -55,6 +55,7 @@ export function openPanel(panelId) {
     });
   }, 250);
 
+  const panelId = panel.id;
   if (!nonClosablePanels.includes(panelId)) {
     const closePanelOnTouch = (event) => {
       const target = event.target;
@@ -95,12 +96,7 @@ export function openPanel(panelId) {
 
 // Wrapper for compatibility
 export function openPanelById(panelId) {
-  setTimeout(() => {
-    const panel = document.getElementById(panelId);
-    if (panel) {
-      openPanel(panel);
-    }
-  }, 250); // Delay for transistion
+  openPanel(panelId);
 }
 
 // ==============================
