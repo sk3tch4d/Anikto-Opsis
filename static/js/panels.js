@@ -29,20 +29,26 @@ let scrollOffsetY = 0;
 // LOCK
 function enableBodyLock() {
   scrollOffsetY = window.scrollY || window.pageYOffset;
-  document.body.style.top = `-${scrollOffsetY}px`;
   document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollOffsetY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
   document.body.style.width = '100%';
+  document.body.style.overflow = 'hidden'; // <- Important addition
   document.body.classList.add('lock-scroll');
 }
-
 // UNLOCK
 function disableBodyLock() {
   document.body.classList.remove('lock-scroll');
   document.body.style.position = '';
   document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
   document.body.style.width = '';
+  document.body.style.overflow = ''; // <- Match addition
   window.scrollTo(0, scrollOffsetY);
 }
+
 
 
 // ==============================
