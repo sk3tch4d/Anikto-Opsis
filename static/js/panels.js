@@ -54,7 +54,12 @@ export function openPanel(panelId) {
     body?.classList.add("open");
 
     // ✨ Dynamically apply maxHeight using scrollHeight
-    body.style.maxHeight = body.scrollHeight + 'px';
+    // Wait for DOM to reflow after .open is applied
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        body.style.maxHeight = body.scrollHeight + 'px';
+      });
+    });
 
     if (!wasOpen) {
       const onTransitionEnd = (e) => {
