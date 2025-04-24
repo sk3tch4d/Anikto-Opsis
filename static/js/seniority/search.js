@@ -20,6 +20,12 @@ export function initSenioritySearch() {
   // Live search with debounce
   input.addEventListener("input", debouncedSearch);
 
+  // Clear Results on Select
+  input.addEventListener("focus", () => {
+    input.value = "";
+    doSenioritySearch();
+  });
+
   // Optional: Enter key manually triggers search (fallback for older browsers or UX)
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
@@ -125,6 +131,10 @@ function parseSeniorityQuery(query, data) {
   return data.filter(row => {
     const years = parseFloat(row["Years"] || 0);
     const text = `${row.Status} ${row.Position}`.toLowerCase();
+    const fullName = `${row["First Name"]} ${row["Last Name"]}`.toLowerCase();
+
+    // 🔍 Match direct name search
+    if (normalized && fullName.includes(normalized)) return true;
 
     let match = true;
 
