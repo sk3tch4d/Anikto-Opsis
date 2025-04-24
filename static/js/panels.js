@@ -54,15 +54,16 @@ export function openPanel(panelId) {
 
   if (!wasOpen) {
     requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const yOffset = -14;
-          const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        });
+      requestAnimationFrame(() => {
+        const yOffset = -14;
+        const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        setTimeout(() => enableBodyLock(), 500); // Delay to let scroll finish
       });
-    }
-
-  enableBodyLock(); // <-- MOVED OUT OF TIMEOUT
+    });
+  } else {
+    enableBodyLock();
+  }
 
   if (!nonClosablePanels.includes(panelId)) {
     const closePanelOnTouch = (event) => {
