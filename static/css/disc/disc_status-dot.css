@@ -1,0 +1,11 @@
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 0.4rem;
+}
+.status-dot.yellow { background: #ffd700; }
+.status-dot.red { background: #e74c3c; }
+.status-dot.green { background: #2ecc71; }
+.status-dot.gray { background: #999; }
