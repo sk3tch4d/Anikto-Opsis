@@ -1,0 +1,29 @@
+.autocomplete-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: #1e1f22;
+  border: 1px solid #2e2e2e;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  max-height: 180px;
+  overflow-y: auto;
+  margin-top: 0.25rem;
+}
+
+.autocomplete-item {
+  padding: 0.6rem 1rem;
+  color: #ccc;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.autocomplete-item:hover {
+  background: #2c2e32;
+}
