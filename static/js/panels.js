@@ -53,11 +53,12 @@ export function openPanel(panelId) {
     header?.classList.add("open");
     body?.classList.add("open");
 
-    // ✨ Dynamically apply maxHeight using scrollHeight
+    // ✨ Force layout reflow before measuring scrollHeight
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        body.style.maxHeight = body.scrollHeight + 'px';
-      });
+      // Force layout calculation
+      void body.offsetHeight;
+      const contentHeight = body.scrollHeight;
+      body.style.maxHeight = contentHeight + 'px';
     });
 
     if (!wasOpen) {
