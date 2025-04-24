@@ -2,11 +2,11 @@
 // SEARCH.JS
 // Core Search + Filter Utilities
 // ==============================
+
 import { renderResults } from './results.js';
 import { populateStats, populateGlobalStats } from './stats.js';
 import { populatePositionList } from './positions.js';
 import { searchFromStat } from '../search-utils.js'; // centralized function
-
 
 // ==============================
 // INIT LOGIC
@@ -42,7 +42,6 @@ export function initSenioritySearch() {
   populatePositionList();
 }
 
-
 // ==============================
 // DEBOUNCE HELPER
 // ==============================
@@ -54,7 +53,6 @@ function debounce(func, delay = 300) {
   };
 }
 
-
 // ==============================
 // NORMALIZATION HELPERS
 // ==============================
@@ -65,11 +63,9 @@ export function normalize(str) {
     .replace(/\s+/g, " ")
     .trim();
 }
-
 export function isMobile() {
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
-
 
 // ==============================
 // SEARCH TRIGGER FROM STATS
@@ -78,7 +74,6 @@ export function searchFromGlobalStat(query) {
   // Delegate to smart input handler
   searchFromStat("seniority-search", query);
 }
-
 
 // ==============================
 // SMART SEARCH - FUZZY MATCHING
@@ -152,7 +147,6 @@ function parseSeniorityQuery(query, data) {
     return match;
   });
 }
-
 
 // ==============================
 // MAIN SEARCH FUNCTION
