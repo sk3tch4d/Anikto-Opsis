@@ -44,20 +44,23 @@ export function openPanel(panelId) {
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
 
+  const wasOpen = panel.classList.contains('open'); // <-- NEW
+
   collapseAllPanels();
   panel.classList.remove("panel-closed");
   panel.classList.add("open");
   header?.classList.add("open");
   body?.classList.add("open");
 
-  setTimeout(() => {
-    requestAnimationFrame(() => {
+  if (!wasOpen) { // <-- NEW
+    requestAnimationFrame(() => { // <-- MODIFIED
       const yOffset = -14;
       const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
-      enableBodyLock();
     });
-  }, 250);
+  }
+
+  enableBodyLock(); // <-- MOVED OUT OF TIMEOUT
 
   if (!nonClosablePanels.includes(panelId)) {
     const closePanelOnTouch = (event) => {
