@@ -54,13 +54,13 @@ export function openPanel(panelId) {
 
   if (!wasOpen) {
     requestAnimationFrame(() => {
-      setTimeout(() => {
-        const yOffset = -14;
-        const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }, 0);
-    });
-  }
+        requestAnimationFrame(() => {
+          const yOffset = -14;
+          const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        });
+      });
+    }
 
   enableBodyLock(); // <-- MOVED OUT OF TIMEOUT
 
