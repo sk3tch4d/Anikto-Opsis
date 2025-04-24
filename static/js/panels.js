@@ -24,29 +24,24 @@ const nonClosableElements = [
 // ==============================
 // LOCK / UNLOCK BODY SCROLL
 // ==============================
-let previousScrollY = 0;
+let scrollOffsetY = 0;
 
 // LOCK
 function enableBodyLock() {
-  previousScrollY = window.scrollY;
-  Object.assign(document.body.style, {
-    position: 'fixed',
-    top: `-${previousScrollY}px`,
-    width: '100%',
-    overflowY: 'scroll'
-  });
+  scrollOffsetY = window.scrollY || window.pageYOffset;
+  document.body.style.top = `-${scrollOffsetY}px`;
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
   document.body.classList.add('lock-scroll');
 }
+
 // UNLOCK
 function disableBodyLock() {
   document.body.classList.remove('lock-scroll');
-  Object.assign(document.body.style, {
-    position: '',
-    top: '',
-    width: '',
-    overflowY: ''
-  });
-  window.scrollTo(0, previousScrollY);
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  window.scrollTo(0, scrollOffsetY);
 }
 
 
