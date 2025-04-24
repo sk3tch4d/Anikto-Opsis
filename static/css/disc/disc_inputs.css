@@ -4,6 +4,15 @@
 
 
 /* ============================= */
+/* INPUT: ERROR    */
+/* ============================= */
+.input-error {
+  border-color: #ff4d4f; /* brighter red for contrast */
+  background: linear-gradient(-30deg, #2c1a1a, #3b1e1e, #2c1a1a); /* subtle red-toned gradient */
+  color: #f8dada; /* softer error font color */
+}
+
+/* ============================= */
 /* INPUT: FULL-WIDTH             */
 /* ============================= */
 input.full-width {
