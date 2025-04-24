@@ -58,10 +58,12 @@ export function openPanel(panelId) {
       if (e.propertyName !== 'max-height') return; // only run once for max-height
       body.removeEventListener('transitionend', onTransitionEnd);
 
-      const yOffset = -14;
-      const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-      enableBodyLock();
+      requestAnimationFrame(() => {
+        const yOffset = -14;
+        const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        enableBodyLock();
+      });
     };
     body.addEventListener('transitionend', onTransitionEnd);
   } else {
