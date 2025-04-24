@@ -70,12 +70,14 @@ function renderListItem(row) {
   const statusDot = getStatusDot(status, position);
 
   return `
-    <li style="margin-bottom: 1.5em;">
-      <strong>${first} ${last}</strong><br>
-      ${statusDot} ${status}<br>
-      <em>${position}</em><br>
-      ${years.toFixed(2)} Years
-    </li>
+    <div class="compare-card">
+      <li style="margin-bottom: 1.5em;">
+        <strong>${first} ${last}</strong><br>
+        ${statusDot}${status}<br>
+        <em>${position}</em><br>
+        ${years.toFixed(2)} Years
+      </li>
+    </div>
   `;
 }
 
