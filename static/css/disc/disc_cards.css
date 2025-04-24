@@ -36,9 +36,9 @@
   line-height: 1.6;
 }
 
-/* Optional: Better for small screens 
+/* Optional: Better for small screens */
 @media (max-width: 600px) {
   .compare-delta .delta-item {
     flex: 1 1 100%;
   }
-}*/
+}
