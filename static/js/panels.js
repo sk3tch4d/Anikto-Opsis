@@ -28,10 +28,17 @@ const nonClosableElements = [
 let scrollY = 0;
 
 function enableBodyLock() {
-  scrollY = window.scrollY;
-  document.body.style.top = `-${scrollY}px`;
-  document.body.classList.add('lock-scroll');
+  if (window.requestIdleCallback) {
+    requestIdleCallback(() => {
+      document.body.classList.add('lock-scroll');
+    }, { timeout: 1000 });
+  } else {
+    setTimeout(() => {
+      document.body.classList.add('lock-scroll');
+    }, 500);
+  }
 }
+
 // DISABLE
 function disableBodyLock() {
   document.body.classList.remove('lock-scroll');
