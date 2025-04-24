@@ -97,7 +97,7 @@ function renderDelta(a, b) {
       <div class="delta-item"><strong>Months:</strong><br>${months.toFixed(1)}</div>
       <div class="delta-item"><strong>Weeks:</strong><br>${weeks.toFixed(1)}</div>
       <div class="delta-item"><strong>Days:</strong><br>${days.toFixed(0)}</div>
-      <div class="delta-item"><strong>Hours:</strong><br>${hours.toFixed(0)}</div>
+      <div class="delta-item full-span"><strong>Hours:</strong><br>${hours.toFixed(0)}</div>
     </div>
   `;
 }
