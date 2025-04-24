@@ -53,33 +53,26 @@ export function openPanel(panelId) {
     header?.classList.add("open");
     body?.classList.add("open");
 
-    requestAnimationFrame(() => {
-      void body.offsetHeight; // Force layout reflow
-      const contentHeight = body.scrollHeight;
-      body.style.maxHeight = contentHeight + 'px';
-    });
-
     if (!wasOpen) {
       const onTransitionEnd = (e) => {
         if (e.propertyName !== 'max-height') return;
         body.removeEventListener('transitionend', onTransitionEnd);
 
         requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            const yOffset = -14;
-            const headerRect = header.getBoundingClientRect();
-            const scrollTarget = headerRect.top + window.pageYOffset + yOffset;
+          const yOffset = -14;
+          const headerRect = header.getBoundingClientRect();
+          const scrollTarget = headerRect.top + window.pageYOffset + yOffset;
 
-            console.log('[DEBUG] headerRect.top:', headerRect.top);
-            console.log('[DEBUG] pageYOffset:', window.pageYOffset);
-            console.log('[DEBUG] Final Scroll Target (y):', scrollTarget);
+          console.log('[DEBUG] headerRect.top:', headerRect.top);
+          console.log('[DEBUG] pageYOffset:', window.pageYOffset);
+          console.log('[DEBUG] Final Scroll Target (y):', scrollTarget);
 
-            window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+          window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
 
-            setTimeout(() => {
-              enableBodyLock();
-            }, 500);
-          });
+          // Delay lock enough to let scroll visually apply
+          setTimeout(() => {
+            enableBodyLock();
+          }, 500);
         });
       };
       body.addEventListener('transitionend', onTransitionEnd);
@@ -121,9 +114,6 @@ export function togglePanel(header) {
 function closePanel(panel) {
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
-
-  body.style.maxHeight = '0px';
-
   panel.classList.remove('open');
   header?.classList.remove('open');
   body?.classList.remove('open');
@@ -143,7 +133,6 @@ export function collapseAllPanels({ excludeSelector = null } = {}) {
     const panel = body.closest('.panel');
     if (exclusions.some(sel => panel?.matches(sel))) return;
 
-    body.style.maxHeight = '0px';
     body.classList.remove('open');
     panel?.classList.remove('open');
   });
