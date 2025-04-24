@@ -2,7 +2,7 @@
 // RENDER.JS
 // Renders List Results
 // ==============================
-import { getSeniorityEmoji } from "./emoji.js";
+import { getStatusDot } from "./statusDot.js";
 
 // ==============================
 // RENDER MATCHED RESULTS
@@ -22,11 +22,11 @@ export function renderResults(matches) {
     const position = row["Position"] || "";
     const status = row["Status"] || "";
     const years = parseFloat(row["Years"] || 0);
-    const emoji = getSeniorityEmoji(status, position);
+    const statusDot = getStatusDot(status, position);
 
     html += "<li style='margin-bottom: 1.5em;'>";
     html += `<strong>${first} ${last}</strong><br>`;
-    html += `${emoji} ${status}<br>`;
+    html += `${statusDot} ${status}<br>`;
     html += `<em>${position}</em><br>`;
     html += `${years.toFixed(2)} Years`;
     html += "</li>";
