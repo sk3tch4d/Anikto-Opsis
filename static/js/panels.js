@@ -67,7 +67,9 @@ export function openPanel(panelId) {
           console.log('[DEBUG] pageYOffset:', window.pageYOffset);
           console.log('[DEBUG] Final Scroll Target (y):', scrollTarget);
 
-          window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+          setTimeout(() => {
+            window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+          }, 10); // allow a frame or two more before scrolling
 
           // Delay lock enough to let scroll visually apply
           setTimeout(() => {
