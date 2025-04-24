@@ -70,7 +70,12 @@ export function openPanel(panelId) {
           console.log('[DEBUG] Final Scroll Target (y):', scrollTarget);
     
           window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
-          enableBodyLock();
+
+          // Delay lock just enough to let scroll visually apply
+          setTimeout(() => {
+            enableBodyLock();
+          }, 50);
+
         });
       };
       body.addEventListener('transitionend', onTransitionEnd);
