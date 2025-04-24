@@ -99,7 +99,9 @@ export function openPanel(panelId) {
 
 // Wrapper for compatibility
 export function openPanelById(panelId) {
-  openPanel(panelId);
+  setTimeout(() => {
+    openPanel(panelId);
+  }, 250); // Delay to allow DOM updates
 }
 
 // ==============================
