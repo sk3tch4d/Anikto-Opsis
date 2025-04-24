@@ -71,12 +71,10 @@ function renderListItem(row) {
 
   return `
     <div class="compare-card">
-      <li style="margin-bottom: 1.5em;">
-        <strong>${first} ${last}</strong><br>
-        ${statusDot}${status}<br>
-        <em>${position}</em><br>
-        ${years.toFixed(2)} Years
-      </li>
+      <strong>${first} ${last}</strong><br>
+      ${statusDot}${status}<br>
+      <em>${position}</em><br>
+      ${years.toFixed(2)} Years
     </div>
   `;
 }
