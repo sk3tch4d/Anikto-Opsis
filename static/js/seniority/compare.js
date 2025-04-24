@@ -6,16 +6,6 @@
 import { normalize } from './search.js';
 import { getSeniorityEmoji } from './emoji.js';
 
-// ==============================
-// INIT COMPARE HANDLER
-// ==============================
-export function initComparisonPanel() {
-  const compareBtn = document.getElementById("compare-button");
-  if (compareBtn) {
-    compareBtn.addEventListener("click", handleComparison);
-  }
-  setupCompareValidation();
-}
 
 // ==============================
 // NAME MATCHING UTILITY
@@ -27,34 +17,9 @@ function findPersonByName(name) {
 }
 
 // ==============================
-// HANDLE COMPARISON
+// SETUP AND VALIDATION
 // ==============================
-function handleComparison() {
-  const input1 = document.getElementById("compare-input-1")?.value.trim();
-  const input2 = document.getElementById("compare-input-2")?.value.trim();
-  const resultsDiv = document.getElementById("compare-results");
-
-  const match1 = findPersonByName(input1);
-  const match2 = findPersonByName(input2);
-
-  if (!input1 || !input2 || !match1 || !match2) {
-    resultsDiv.innerHTML = "<p>One or both entries not found.</p>";
-    return;
-  }
-
-  resultsDiv.innerHTML = `
-    <ul style="list-style: none; padding-left: 0;">
-      ${renderListItem(match1)}
-      ${renderListItem(match2)}
-    </ul>
-    ${renderDelta(match1, match2)}
-  `;
-}
-
-// ==============================
-// SETUP VALIDATION
-// ==============================
-function setupCompareValidation() {
+function initComparisonPanel() {
   const input1 = document.getElementById("compare-input-1");
   const input2 = document.getElementById("compare-input-2");
   const resultsDiv = document.getElementById("compare-results");
@@ -93,7 +58,6 @@ function setupCompareValidation() {
   input1.addEventListener("input", updateUI);
   input2.addEventListener("input", updateUI);
 }
-
 
 // ==============================
 // RENDER LIST ITEM
