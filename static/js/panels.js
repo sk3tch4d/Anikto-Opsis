@@ -46,7 +46,8 @@ export function openPanel(panelId) {
 
   const wasOpen = panel.classList.contains('open');
 
-  collapseAllPanels();
+  collapseAllPanels({ excludeSelector: `#${panelId}` });
+
   panel.classList.remove("panel-closed");
   panel.classList.add("open");
   header?.classList.add("open");
