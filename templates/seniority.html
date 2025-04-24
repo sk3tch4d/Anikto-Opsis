@@ -22,12 +22,13 @@
       <div class="panel panel-animate" id="seniority-search-panel">
         <div class="panel-header" onclick="togglePanel(this)">Search</div>
         <div class="panel-body scrollable-panel">
-          <input id="seniority-search" class="input full-width" placeholder="Search..." />
-          <button id="seniority-search-button" class="button full-width" style="margin-top: 0.5rem;">Search</button>
+          <div class="sticky-bar">
+            <input id="seniority-search" class="input full-width" placeholder="Search..." />
+            <button id="seniority-search-button" class="button full-width" style="margin-top: 0.5rem;">Search</button>
+          </div>
           <div id="seniority-results" style="margin-top: 1rem;"></div>
         </div>
       </div>
-
   
       <!-- ============================= -->
       <!-- PANEL: SEARCH STATS -->
@@ -42,7 +43,6 @@
           </ul>
         </div>
       </div>
-
       
       <!-- ============================= -->
       <!-- PANEL: COMPARE -->
@@ -67,7 +67,6 @@
         {% endfor %}
       </datalist>
 
-
       <!-- ============================= -->
       <!-- PANEL: POSITIONS -->
       <!-- ============================= -->
@@ -77,7 +76,6 @@
           <ul id="seniority-positions" style="list-style: none; padding-left: 0;"></ul>
         </div>
       </div>
-
 
       <!-- ============================= -->
       <!-- PANEL: GLOBAL STATS -->
@@ -93,7 +91,6 @@
         </div>
       </div>
 
-
       <!-- ============================= -->
       <!-- PANEL: DOWNLOADS -->
       <!-- ============================= -->
@@ -105,7 +102,6 @@
           </ul>
         </div>
       </div>
-
 
       <!-- ============================= -->
       <!-- PANEL: RETURN -->
