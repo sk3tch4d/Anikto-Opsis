@@ -128,6 +128,10 @@ def register_routes(app):
     def inventory():
         return render_template("inventory.html", table=[])
 
+    @app.route("/test")
+    def testing():
+        return render_template("testing.html", table=[])
+
     # ==============================
     # DB Check
     # ==============================
