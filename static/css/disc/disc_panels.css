@@ -2,7 +2,6 @@
 /* DISC PANELS                   */
 /* ============================= */
 
-
 /* ============================= */
 /* PANEL                         */
 /* ============================= */
@@ -49,24 +48,19 @@
   outline: none;
 }
 
-
 /* ============================= */
 /* PANEL - NO SHADOW             */
 /* ============================= */
-/* Remove box shadow from specific panels */
 .panel.no-shadow {
   box-shadow: none !important;
   background: transparent !important;
   border: none !important;
   padding: 0;
 }
-/* Ensure the elements keeps their own style */
 .panel.no-shadow .button.full-width {
   margin-top: 2rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
-
 
 /* ============================= */
 /* PANEL BODY / TOGGLE BEHAVIOR  */
@@ -84,11 +78,21 @@
   max-height: 3000px;
   padding: 1rem;
   border-radius: 0 0 8px 8px;
-  
-  overflow-y: auto; /* ✅ allow scrolling when open */
-  -webkit-overflow-scrolling: touch; /* ✅ smooth iOS scrolling */
 }
 
+/* Use scroll only on the scrollable container */
+.scrollable-panel {
+  overflow-y: auto;
+  max-height: 82vh;
+  padding: 1rem;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollable-panel::-webkit-scrollbar {
+  display: none;
+}
 
 /* ============================= */
 /* PANEL LABELS (e.g., checkboxes) */
@@ -111,7 +115,6 @@
 .panel-body label:hover {
   background: #2a2d33;
 }
-
 
 /* ============================= */
 /* UPLOAD PANEL VARIANT          */
@@ -142,36 +145,6 @@
   background-color: #32353a;
 }
 
-
-/* ============================= */
-/* PANEL: SCROLLABLE (LEGACY)    */
-/* ============================= */
-.scrollable-panel {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  padding: 0;
-  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.panel.open .scrollable-panel {
-  max-height: 3000px;
-  opacity: 1;
-  overflow-y: auto;
-  padding: 1rem;
-  border-top: 1px solid #232529;
-  border-bottom: 1px solid #232529;
-  border-radius: 0 0 8px 8px;
-}
-
-.scrollable-panel::-webkit-scrollbar {
-  display: none;
-}
-
-
-
 /* ============================= */
 /* BODY LOCK WHEN PANEL OPEN     */
 /* ============================= */
@@ -180,7 +153,6 @@ body.lock-scroll {
   height: 100%;
   touch-action: none;
 }
-
 
 /* ============================= */
 /* SENIORITY PANEL LAYOUT        */
@@ -193,13 +165,11 @@ body.lock-scroll {
 .search-controls {
   flex: 0 0 auto;
 }
-/* Fixed .scrollable-fill logic */
 .scrollable-fill {
   flex: 1 1 auto;
   overflow-y: auto;
   margin-top: 1rem;
   padding: 1em;
-/*  padding-right: 0.5rem;  Space for scrollbar */
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
@@ -208,7 +178,6 @@ body.lock-scroll {
 .scrollable-fill::-webkit-scrollbar {
   display: none;
 }
-
 
 /* ============================= */
 /* ANIMATION: PANEL SLIDE-IN     */
@@ -233,7 +202,6 @@ body.lock-scroll {
     transform: translateY(0);
   }
 }
-
 
 /* ============================= */
 /* ANIMATION: HEADER BOUNCE      */
