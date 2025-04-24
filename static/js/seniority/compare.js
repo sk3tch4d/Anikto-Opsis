@@ -5,6 +5,15 @@
 
 import { normalize } from './search.js';
 import { getStatusDot } from '../statusdot.js';
+import { initAutocomplete } from './autocomplete.js';
+
+// ==============================
+// INIT AUTOCOMPLETE
+// ==============================
+export function initComparisonPanel() {
+  initAutocomplete("compare-input-1", "autocomplete-1");
+  initAutocomplete("compare-input-2", "autocomplete-2");
+}
 
 // ==============================
 // NAME MATCHING UTILITY
