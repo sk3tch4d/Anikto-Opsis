@@ -21,25 +21,21 @@ const nonClosableElements = [
 ];
 
 // ==============================
-// LOCK / UNLOCK BODY
+// SCROLL LOCK
 // ==============================
-// LOCK
 function enableBodyLock() {
-  document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
 }
-// UNLOCK
 function disableBodyLock() {
-  document.documentElement.style.overflow = '';
   document.body.style.overflow = '';
 }
 
 // ==============================
-// OPEN PANEL (string | element)
+// OPEN PANEL
 // ==============================
-export function openPanel(target) {
-  const panel = typeof target === "string" ? document.getElementById(target) : target;
-  if (!panel) return console.warn(`Panel not found: ${target}`);
+export function openPanel(panelId) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return console.warn(`Panel not found: ${panelId}`);
 
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
@@ -59,7 +55,6 @@ export function openPanel(target) {
     });
   }, 250);
 
-  const panelId = panel.id;
   if (!nonClosablePanels.includes(panelId)) {
     const closePanelOnTouch = (event) => {
       const target = event.target;
