@@ -75,7 +75,7 @@ export function openPanel(panelId) {
           // Delay body lock slightly to allow scroll to complete
           setTimeout(() => {
             enableBodyLock();
-          }, 50);
+          }, 500);
         });
       };
       body.addEventListener('transitionend', onTransitionEnd);
