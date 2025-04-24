@@ -2,6 +2,7 @@
 // COMPARE.JS
 // Comparison Panel Logic
 // ==============================
+
 import { normalize } from './search.js';
 import { getSeniorityEmoji } from './emoji.js';
 
@@ -13,32 +14,30 @@ export function initComparisonPanel() {
   if (compareBtn) {
     compareBtn.addEventListener("click", handleComparison);
   }
+  setupCompareValidation();
 }
 
+// ==============================
+// NAME MATCHING UTILITY
+// ==============================
+function findPersonByName(name) {
+  return (window.seniorityData || []).find(row =>
+    normalize(`${row["First Name"]} ${row["Last Name"]}`) === normalize(name)
+  );
+}
 
 // ==============================
 // HANDLE COMPARISON
 // ==============================
 function handleComparison() {
-  const input1 = normalize(document.getElementById("compare-input-1")?.value.trim());
-  const input2 = normalize(document.getElementById("compare-input-2")?.value.trim());
+  const input1 = document.getElementById("compare-input-1")?.value.trim();
+  const input2 = document.getElementById("compare-input-2")?.value.trim();
   const resultsDiv = document.getElementById("compare-results");
-  const data = window.seniorityData || [];
 
-  if (!input1 || !input2) {
-    resultsDiv.innerHTML = "<p>Please enter two names to compare.</p>";
-    return;
-  }
+  const match1 = findPersonByName(input1);
+  const match2 = findPersonByName(input2);
 
-  const match1 = data.find(row =>
-    normalize(`${row["First Name"]} ${row["Last Name"]}`).includes(input1)
-  );
-
-  const match2 = data.find(row =>
-    normalize(`${row["First Name"]} ${row["Last Name"]}`).includes(input2)
-  );
-
-  if (!match1 || !match2) {
+  if (!input1 || !input2 || !match1 || !match2) {
     resultsDiv.innerHTML = "<p>One or both entries not found.</p>";
     return;
   }
@@ -52,6 +51,25 @@ function handleComparison() {
   `;
 }
 
+// ==============================
+// SETUP VALIDATION
+// ==============================
+function setupCompareValidation() {
+  const input1 = document.getElementById("compare-input-1");
+  const input2 = document.getElementById("compare-input-2");
+  const button = document.getElementById("compare-button");
+
+  const validateInputs = () => {
+    const valid1 = !!findPersonByName(input1.value.trim());
+    const valid2 = !!findPersonByName(input2.value.trim());
+    button.disabled = !(valid1 && valid2);
+    input1.classList.toggle("input-error", !valid1 && input1.value !== "");
+    input2.classList.toggle("input-error", !valid2 && input2.value !== "");
+  };
+
+  input1.addEventListener("input", validateInputs);
+  input2.addEventListener("input", validateInputs);
+}
 
 // ==============================
 // RENDER LIST ITEM
@@ -73,7 +91,6 @@ function renderListItem(row) {
     </li>
   `;
 }
-
 
 // ==============================
 // RENDER DELTA COMPARISON
