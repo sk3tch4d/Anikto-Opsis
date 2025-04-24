@@ -21,12 +21,16 @@ const nonClosableElements = [
 ];
 
 // ==============================
-// SCROLL LOCK
+// LOCK / UNLOCK BODY
 // ==============================
+// LOCK
 function enableBodyLock() {
+  document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
 }
+// UNLOCK
 function disableBodyLock() {
+  document.documentElement.style.overflow = '';
   document.body.style.overflow = '';
 }
 
