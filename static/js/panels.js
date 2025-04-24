@@ -54,7 +54,6 @@ export function openPanel(panelId) {
     body?.classList.add("open");
 
     // ✨ Dynamically apply maxHeight using scrollHeight
-    // Wait for DOM to reflow after .open is applied
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         body.style.maxHeight = body.scrollHeight + 'px';
@@ -66,21 +65,23 @@ export function openPanel(panelId) {
         if (e.propertyName !== 'max-height') return;
         body.removeEventListener('transitionend', onTransitionEnd);
 
+        // ✅ Defer measurement 2 frames after layout settles
         requestAnimationFrame(() => {
-          const yOffset = -14;
-          const headerRect = header.getBoundingClientRect();
-          const scrollTarget = headerRect.top + window.pageYOffset + yOffset;
+          requestAnimationFrame(() => {
+            const yOffset = -14;
+            const headerRect = header.getBoundingClientRect();
+            const scrollTarget = headerRect.top + window.pageYOffset + yOffset;
 
-          console.log('[DEBUG] headerRect.top:', headerRect.top);
-          console.log('[DEBUG] pageYOffset:', window.pageYOffset);
-          console.log('[DEBUG] Final Scroll Target (y):', scrollTarget);
+            console.log('[DEBUG] headerRect.top:', headerRect.top);
+            console.log('[DEBUG] pageYOffset:', window.pageYOffset);
+            console.log('[DEBUG] Final Scroll Target (y):', scrollTarget);
 
-          window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+            window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
 
-          // Delay body lock slightly to allow scroll to complete
-          setTimeout(() => {
-            enableBodyLock();
-          }, 500);
+            setTimeout(() => {
+              enableBodyLock();
+            }, 500);
+          });
         });
       };
       body.addEventListener('transitionend', onTransitionEnd);
@@ -145,7 +146,7 @@ export function collapseAllPanels({ excludeSelector = null } = {}) {
     const panel = body.closest('.panel');
     if (exclusions.some(sel => panel?.matches(sel))) return;
 
-    body.style.maxHeight = '0px'; // ✨ Collapse dynamically
+    body.style.maxHeight = '0px';
     body.classList.remove('open');
     panel?.classList.remove('open');
   });
