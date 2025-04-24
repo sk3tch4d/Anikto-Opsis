@@ -19,7 +19,7 @@ function findPersonByName(name) {
 // ==============================
 // SETUP AND VALIDATION
 // ==============================
-function initComparisonPanel() {
+export function initComparisonPanel() {
   const input1 = document.getElementById("compare-input-1");
   const input2 = document.getElementById("compare-input-2");
   const resultsDiv = document.getElementById("compare-results");
