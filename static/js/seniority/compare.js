@@ -4,7 +4,7 @@
 // ==============================
 
 import { normalize } from './search.js';
-import { getStatusDot } from './statusDot.js';
+import { getStatusDot } from '../statusdot.js';
 
 // ==============================
 // NAME MATCHING UTILITY
