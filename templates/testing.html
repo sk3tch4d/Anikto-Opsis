@@ -9,7 +9,7 @@
 </head>
 <body>
   <h1 id="typed-header">
-    <span id="typed-text">Testing Page | Panel Scroll Debug</span>
+    <span id="typed-text" data-title="Inventory Catalog|Anikto Opsis"></span>
   </h1>
 
   <div id="panel-wrapper">
@@ -84,6 +84,6 @@
     </div>
   </div>
 
-  <script type="module" src="js/scripts.js?v=testing"></script>
+  <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=1) }}"></script>
 </body>
 </html>
