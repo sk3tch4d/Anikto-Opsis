@@ -14,7 +14,7 @@
 .compare-card:hover {
   transform: scale(1.005);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
-
+}
   
 .compare-delta {
   display: grid;
