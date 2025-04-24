@@ -14,7 +14,7 @@ export function renderResults(matches) {
     return;
   }
 
-  let html = "<ul style='list-style: none; padding-left: 0;'>";
+  let html = "";
 
   matches.forEach(row => {
     const first = row["First Name"] || "";
@@ -24,15 +24,17 @@ export function renderResults(matches) {
     const years = parseFloat(row["Years"] || 0);
     const statusDot = getStatusDot(status, position);
 
-    html += "<li style='margin-bottom: 1.5em;'>";
-    html += `<strong>${first} ${last}</strong><br>`;
-    html += `${statusDot} ${status}<br>`;
-    html += `<em>${position}</em><br>`;
-    html += `${years.toFixed(2)} Years`;
-    html += "</li>";
+    html += `
+      <div class="compare-card">
+        <strong>${first} ${last}</strong><br>
+        ${statusDot} ${status}<br>
+        <em>${position}</em><br>
+        ${years.toFixed(2)} Years
+      </div>
+    `;
   });
 
-  html += "</ul>";
   resultsDiv.innerHTML = html;
   resultsDiv.scrollTop = 0;
 }
+
