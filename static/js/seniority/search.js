@@ -13,37 +13,14 @@ import { searchFromStat } from '../search-utils.js'; // centralized function
 // ==============================
 export function initSenioritySearch() {
   const input = document.getElementById("seniority-search");
-  const button = document.getElementById("seniority-search-button");
-  if (!input || !button) return;
+  if (!input) return;
 
-  // Hide search button by default
-  button.style.display = "none";
+  const debouncedSearch = debounce(doSenioritySearch, 300);
 
-  // Show on focus
-  input.addEventListener("focus", () => {
-    button.style.display = "block";
-    input.value = "";
-  });
+  // Live search with debounce
+  input.addEventListener("input", debouncedSearch);
 
-  // Hide on blur
-  input.addEventListener("blur", () => {
-    setTimeout(() => {
-      button.style.display = "none";
-    }, 100);
-  });
-
-  // Live search on input
-  input.addEventListener("input", () => {
-    doSenioritySearch();
-  });
-
-  // Manual fallback (optional)
-  button.addEventListener("click", () => {
-    doSenioritySearch();
-    input.blur();
-  });
-
-  // Enter key (optional)
+  // Optional: Enter key manually triggers search (fallback for older browsers or UX)
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -52,11 +29,23 @@ export function initSenioritySearch() {
     }
   });
 
-  // Default behavior
+  // Optional: pre-fill and search on load
   input.value = "Supply Assistant";
   doSenioritySearch();
   populateGlobalStats();
   populatePositionList();
+}
+
+
+// ==============================
+// DEBOUNCE HELPER
+// ==============================
+function debounce(func, delay = 300) {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), delay);
+  };
 }
 
 
@@ -91,19 +80,15 @@ export function searchFromGlobalStat(query) {
 function parseSeniorityQuery(query, data) {
   const normalized = query.toLowerCase().trim();
 
-  // Match year conditions
   const eqMatch = normalized.match(/(?:^=|years\s*[:=])\s*(\d+)/);
   const gteMatch = normalized.match(/(?:^>=|years\s*>=)\s*(\d+)/);
   const lteMatch = normalized.match(/(?:^<=|years\s*<=|under|max)\s*(\d+)/);
-
   const plusMatch = normalized.match(/(\d+)\+/);
   const minusMatch = normalized.match(/(\d+)-/);
-  
-  const rangeMatch = normalized.match(/(\d+)\s*-\s*(\d+)/);  // "10-20"
-  const shorthandMatch = normalized.match(/(\d+)(\+|-)/);    // e.g. "assistant 10+"
+  const rangeMatch = normalized.match(/(\d+)\s*-\s*(\d+)/);
+  const shorthandMatch = normalized.match(/(\d+)(\+|-)/);
 
   const exactYears = eqMatch ? parseFloat(eqMatch[1]) : null;
-
   const minYears = rangeMatch
     ? parseFloat(rangeMatch[1])
     : gteMatch
@@ -124,11 +109,10 @@ function parseSeniorityQuery(query, data) {
     ? parseFloat(shorthandMatch[1])
     : null;
 
-  // Build OR keyword groups
   const keywordGroups = normalized
-    .replace(/\d+\s*-\s*\d+/g, "") // remove ranges like "10 - 20"
-    .replace(/\b(under|max|years\s*[:=<>]*)\s*\d+\b/g, "") // remove full "years >= 10", "under 5", etc.
-    .replace(/^\s*\d+[\+\-]?\s*$/, "") // remove standalone "10+", "10-"
+    .replace(/\d+\s*-\s*\d+/g, "")
+    .replace(/\b(under|max|years\s*[:=<>]*)\s*\d+\b/g, "")
+    .replace(/^\s*\d+[\+\-]?\s*$/, "")
     .split(/\s*\bor\b\s*/i)
     .map(group =>
       group
@@ -144,12 +128,10 @@ function parseSeniorityQuery(query, data) {
 
     let match = true;
 
-    // Numeric filtering
     if (exactYears !== null) match = match && years === exactYears;
     if (minYears !== null) match = match && years >= minYears;
     if (maxYears !== null) match = match && years <= maxYears;
 
-    // OR-based keyword matching
     if (keywordGroups.length) {
       const orMatch = keywordGroups.some(group =>
         group.every(word => text.includes(word))
