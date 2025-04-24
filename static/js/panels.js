@@ -75,9 +75,6 @@ export function openPanelById(panelId) {
   
    // Scroll into view
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
-
-  // Lock Body
-  enableBodyLock();
 }
 
 // ==============================
@@ -103,7 +100,6 @@ export function togglePanel(header) {
     disableBodyLock();
     closePanel();
   } else {
-    enableBodyLock();
     openPanel();
   }
 
@@ -128,6 +124,11 @@ export function togglePanel(header) {
         window.scrollTo({ top: y, behavior: 'smooth' });
       });
     }, 250);
+
+    setTimeout(() => {
+      enableBodyLock();
+    }, 4000); // Delay matches scroll animation time
+
 
     // Auto-close on tap inside body
     if (!nonClosablePanels.includes(panelId)) {
