@@ -53,10 +53,8 @@ export function openPanel(panelId) {
     header?.classList.add("open");
     body?.classList.add("open");
 
-    // ✨ Force layout reflow before measuring scrollHeight
     requestAnimationFrame(() => {
-      // Force layout calculation
-      void body.offsetHeight;
+      void body.offsetHeight; // Force layout reflow
       const contentHeight = body.scrollHeight;
       body.style.maxHeight = contentHeight + 'px';
     });
@@ -66,7 +64,6 @@ export function openPanel(panelId) {
         if (e.propertyName !== 'max-height') return;
         body.removeEventListener('transitionend', onTransitionEnd);
 
-        // ✅ Defer measurement 2 frames after layout settles
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             const yOffset = -14;
@@ -125,7 +122,6 @@ function closePanel(panel) {
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
 
-  // Animate collapse by resetting maxHeight
   body.style.maxHeight = '0px';
 
   panel.classList.remove('open');
