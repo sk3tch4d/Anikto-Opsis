@@ -4,8 +4,7 @@
 // ==============================
 
 import { normalize } from './search.js';
-import { getSeniorityEmoji } from './emoji.js';
-
+import { getStatusDot } from './statusDot.js';
 
 // ==============================
 // NAME MATCHING UTILITY
@@ -68,12 +67,12 @@ function renderListItem(row) {
   const position = row["Position"] || "";
   const status = row["Status"] || "";
   const years = parseFloat(row["Years"] || 0);
-  const emoji = getSeniorityEmoji(status, position);
+  const statusDot = getStatusDot(status, position);
 
   return `
     <li style="margin-bottom: 1.5em;">
       <strong>${first} ${last}</strong><br>
-      ${emoji} ${status}<br>
+      ${statusDot} ${status}<br>
       <em>${position}</em><br>
       ${years.toFixed(2)} Years
     </li>
