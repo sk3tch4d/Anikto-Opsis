@@ -57,19 +57,43 @@ function handleComparison() {
 function setupCompareValidation() {
   const input1 = document.getElementById("compare-input-1");
   const input2 = document.getElementById("compare-input-2");
-  const button = document.getElementById("compare-button");
+  const resultsDiv = document.getElementById("compare-results");
 
-  const validateInputs = () => {
-    const valid1 = !!findPersonByName(input1.value.trim());
-    const valid2 = !!findPersonByName(input2.value.trim());
-    button.disabled = !(valid1 && valid2);
-    input1.classList.toggle("input-error", !valid1 && input1.value !== "");
-    input2.classList.toggle("input-error", !valid2 && input2.value !== "");
+  const updateUI = () => {
+    const name1 = input1.value.trim();
+    const name2 = input2.value.trim();
+    const match1 = findPersonByName(name1);
+    const match2 = findPersonByName(name2);
+
+    const valid1 = !!match1;
+    const valid2 = !!match2;
+
+    input1.classList.toggle("input-error", !valid1 && name1 !== "");
+    input2.classList.toggle("input-error", !valid2 && name2 !== "");
+
+    if (!valid1 && !valid2) {
+      resultsDiv.innerHTML = "";
+      return;
+    }
+
+    let html = "<ul style='list-style: none; padding-left: 0;'>";
+
+    if (valid1) html += renderListItem(match1);
+    if (valid2) html += renderListItem(match2);
+
+    html += "</ul>";
+
+    if (valid1 && valid2) {
+      html += renderDelta(match1, match2);
+    }
+
+    resultsDiv.innerHTML = html;
   };
 
-  input1.addEventListener("input", validateInputs);
-  input2.addEventListener("input", validateInputs);
+  input1.addEventListener("input", updateUI);
+  input2.addEventListener("input", updateUI);
 }
+
 
 // ==============================
 // RENDER LIST ITEM
