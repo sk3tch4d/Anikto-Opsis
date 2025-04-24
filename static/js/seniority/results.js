@@ -2,7 +2,7 @@
 // RESULTS.JS
 // Render Search Result Entries
 // ==============================
-import { getStatusDot } from './statusDot.js';
+import { getStatusDot } from '../statusdot.js';
 
 // ==============================
 // RENDER MATCHED RESULTS
