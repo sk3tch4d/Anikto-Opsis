@@ -126,23 +126,23 @@ export function togglePanel(header) {
   // HELPER: OPEN PANEL
   // ==============================
   function openPanel() {
-    panel.classList.add('open');
-    header.classList.add('open');
-    body.classList.add('open');
-
-    // Bounce effect
-    header.classList.remove('bounce');
-    void header.offsetWidth;
-    header.classList.add('bounce');
-
-    // Smooth Scroll to View
+    // Scroll panel into view *before* applying open state
+    panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    
     setTimeout(() => {
-      requestAnimationFrame(() => {
-        const yOffset = -14;
-        const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      });
-    }, 250);
+      panel.classList.add('open');
+      header.classList.add('open');
+      body.classList.add('open');
+    
+      // Bounce effect
+      header.classList.remove('bounce');
+      void header.offsetWidth;
+      header.classList.add('bounce');
+    
+      // Lock scroll just after opening
+      setTimeout(() => enableBodyLock(false), 50);
+    }, 400); // Wait for scrollIntoView to finish
+
 
     // Auto-close on tap inside body
     if (!nonClosablePanels.includes(panelId)) {
