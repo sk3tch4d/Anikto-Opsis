@@ -1,13 +1,13 @@
 .compare-card {
   background: #232529;
-  padding: 1rem 1.25rem;
-  border-radius: 12px;
-  margin-bottom: 1rem;
+  padding: 0.85rem 1.1rem; /* reduced padding */
+  border-radius: 10px;
+  margin-bottom: 0.85rem; /* less gap between cards */
   border: 1px solid #2f3136;
   box-shadow: inset 0 0 0 1px #1c1e22;
   color: #cfcfcf;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 0.88rem; /* slightly smaller */
   font-family: 'Segoe UI', Tahoma, sans-serif;
   transition: transform 0.2s ease;
 }
@@ -15,6 +15,7 @@
   transform: scale(1.005);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
 }
+
   
 .compare-delta {
   display: grid;
