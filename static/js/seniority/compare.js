@@ -94,12 +94,12 @@ function renderDelta(a, b) {
   const weeks = days / 7;
 
   return `
-    <ul style="list-style: none; padding-left: 0; margin-top: 1.5rem;">
-      <li><p><strong>Years:</strong> ${delta.toFixed(2)}</p></li>
-      <li><p><strong>Months:</strong> ${months.toFixed(1)}</p></li>
-      <li><p><strong>Weeks:</strong> ${weeks.toFixed(1)}</p></li>
-      <li><p><strong>Days:</strong> ${days.toFixed(0)}</p></li>
-      <li><p><strong>Hours:</strong> ${hours.toFixed(0)}</p></li>
-    </ul>
+    <div class="compare-delta">
+      <div class="delta-item"><strong>Years:</strong><br>${delta.toFixed(2)}</div>
+      <div class="delta-item"><strong>Months:</strong><br>${months.toFixed(1)}</div>
+      <div class="delta-item"><strong>Weeks:</strong><br>${weeks.toFixed(1)}</div>
+      <div class="delta-item"><strong>Days:</strong><br>${days.toFixed(0)}</div>
+      <div class="delta-item"><strong>Hours:</strong><br>${hours.toFixed(0)}</div>
+    </div>
   `;
 }
