@@ -44,7 +44,7 @@ export function openPanel(panelId) {
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
 
-  const wasOpen = panel.classList.contains('open'); // <-- NEW
+  const wasOpen = panel.classList.contains('open');
 
   collapseAllPanels();
   panel.classList.remove("panel-closed");
@@ -52,11 +52,13 @@ export function openPanel(panelId) {
   header?.classList.add("open");
   body?.classList.add("open");
 
-  if (!wasOpen) { // <-- NEW
-    requestAnimationFrame(() => { // <-- MODIFIED
-      const yOffset = -14;
-      const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+  if (!wasOpen) {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const yOffset = -14;
+        const y = header.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }, 0);
     });
   }
 
