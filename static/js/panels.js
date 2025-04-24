@@ -74,7 +74,7 @@ export function openPanel(panelId) {
           // Delay lock just enough to let scroll visually apply
           setTimeout(() => {
             enableBodyLock();
-          }, 250);
+          }, 350);
 
         });
       };
