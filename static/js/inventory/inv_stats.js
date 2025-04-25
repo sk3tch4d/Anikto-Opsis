@@ -69,11 +69,23 @@ export function populateInventoryStats(results) {
       ? `<br><span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
       : "";
 
+    const groupMatch = (base.Group || "").toLowerCase().includes(currentSearch.toLowerCase());
+    const costCenterMatch = (base.Cost_Center || "").toLowerCase().includes(currentSearch.toLowerCase());
+
+    const groupLine = groupMatch
+      ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}<br>`
+      : "";
+    const costCenterLine = costCenterMatch
+      ? `<span class="tag-label">Cost Center:</span> ${highlightMatch(base.Cost_Center, currentSearch)}<br>`
+      : "";
+
     const detailsHTML = `
       <span class="tag-label">Stores Number:</span> <span class="clickable-stat" data-value="${base.Num}">${numberHTML}</span><br>
       <span class="tag-label">Description:</span> ${descHTML}<br>
       <span class="tag-label">Cost:</span> ${cost} / ${uom}<br>
       <span class="tag-label">Total Quantity:</span> ${totalQty}${binInfo}<br>
+      ${groupLine}
+      ${costCenterLine}
       <span class="tag-label">USLs:</span>
     `;
 
@@ -93,19 +105,7 @@ export function populateInventoryStats(results) {
       });
 
     card.appendChild(infoBlock);
-    card.appendChild(uslContainer);
-
-    // Conditionally show Group on match
-    if (base.Group?.trim()) {
-      const groupLower = base.Group.toLowerCase();
-      const searchTerm = currentSearch.toLowerCase();
-      if (groupLower.includes(searchTerm)) {
-        const groupLine = document.createElement("div");
-        groupLine.innerHTML = `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, searchTerm)}<br>`;
-        card.appendChild(groupLine);
-      }
-    }
-    
+    card.appendChild(uslContainer);  
     statsBox.appendChild(card);
   });
 
