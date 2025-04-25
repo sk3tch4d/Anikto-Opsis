@@ -56,8 +56,6 @@ export function populateInventoryStats(results) {
 
     const base = matching[0];
     const old = base.Old?.trim() ? ` (Old: ${base.Old})` : "";
-    const cost = base.Cost !== undefined ? base.Cost : "N/A";
-    const uom = base.UOM ?? "";
     const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
 
     const card = document.createElement("div");
@@ -82,7 +80,6 @@ export function populateInventoryStats(results) {
     const detailsHTML = `
       <span class="tag-label">Stores Number:</span> <span class="clickable-stat" data-value="${base.Num}">${numberHTML}</span><br>
       <span class="tag-label">Description:</span> ${descHTML}<br>
-      <span class="tag-label">Cost:</span> ${cost} / ${uom}<br>
       <span class="tag-label">Total Quantity:</span> ${totalQty}${binInfo}<br>
       ${groupLine}
       ${costCenterLine}
