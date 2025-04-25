@@ -36,8 +36,8 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
     if DEBUG:
         print(f"[DEBUG] Starting search: term='{term}', usl='{usl}', sort='{sort}', direction='{direction}'")
 
-    # Filter by USL unless it's 'all'
-    if usl != "all":
+    # ✅ Skip USL filter if it's 'all' or empty
+    if usl and usl != "all":
         df = df[df["USL"].astype(str).str.strip().str.lower() == usl]
 
     # Apply search
