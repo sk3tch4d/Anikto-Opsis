@@ -80,13 +80,15 @@ export function populateInventoryStats(results) {
     const uslContainer = document.createElement("div");
     uslContainer.className = "clickable-match-container";
 
-    matching.forEach(item => {
-      const span = document.createElement("span");
-      span.className = "clickable-match";
-      span.setAttribute("data-value", item.USL);
-      span.textContent = item.USL;
-      uslContainer.appendChild(span);
-    });
+    [...matching]
+      .sort((a, b) => b.QTY - a.QTY)
+      .forEach(item => {
+        const span = document.createElement("span");
+        span.className = "clickable-match";
+        span.setAttribute("data-value", item.USL);
+        span.textContent = item.USL;
+        uslContainer.appendChild(span);
+      });
 
     li.innerHTML += `
       <br><span class="tag-label">Description:</span> ${highlightMatch(base.Description, currentSearch)}<br>
