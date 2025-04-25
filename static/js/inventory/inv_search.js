@@ -115,6 +115,16 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
   const term = searchInput.value.trim().toLowerCase();
   const usl = uslFilter.value;
   const sort = sortBy.value;
+
+  // Validate search term
+  if (!term) {
+    resultsList.innerHTML = "";
+    elements.stats.innerHTML = "";
+    noResults.style.display = "block";
+    noResults.innerText = "Please enter a search term.";
+    return;
+  }
+
   const key = generateSearchKey({ term, usl, sort, dir: sortDirection });
 
   withLoadingToggle(
@@ -129,6 +139,7 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
       if (searchCache.has(key)) {
         const cached = searchCache.get(key);
         renderInventoryResults(cached, term, resultsList);
+        populateInventoryStats(cached);
         return;
       }
 
@@ -136,6 +147,8 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
         .then(res => res.json())
         .then(data => {
           if (!data || !data.length) {
+            resultsList.innerHTML = "";
+            elements.stats.innerHTML = "";
             noResults.style.display = "block";
             noResults.innerText = "No results found. Try a different search.";
             return;
@@ -147,6 +160,8 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
           updateSearchCache(key, data);
         })
         .catch(err => {
+          resultsList.innerHTML = "";
+          elements.stats.innerHTML = "";
           noResults.style.display = "block";
           noResults.innerText = "Error loading results. Please try again.";
           DEBUG_MODE && console.error("[DEBUG] Fetch Error:", err);
