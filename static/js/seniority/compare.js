@@ -5,6 +5,7 @@
 
 import { normalize } from './search.js';
 import { getStatusDot } from '../statusdot.js';
+import { scrollPanel } from '../panels.js';
 //import { initAutocomplete } from './autocomplete.js';
 
 // ==============================
@@ -58,6 +59,7 @@ export function initComparisonPanel() {
 
     if (valid1 && valid2) {
       html += renderDelta(match1, match2);
+      scrollPanel();
     }
 
     resultsDiv.innerHTML = html;
