@@ -4,6 +4,8 @@
 
 import { initDebugToggle } from './debugging.js';
 
+// ==============================
+
 const nonClosablePanels = [
   "downloads",
   "seniority-search-panel",
@@ -34,6 +36,31 @@ function disableBodyLock() {
 }
 
 // ==============================
+// SCROLL TO HEADER
+// ==============================
+export function scrollPanel(header = null, yOffset = -14, delay = 10) {
+  
+  if (!header) {
+    const openPanel = document.querySelector('.panel.open');
+    header = openPanel?.querySelector('.panel-header');
+  }
+
+  if (!header) return;
+
+  const headerRect = header.getBoundingClientRect();
+  const scrollTarget = headerRect.top + window.pageYOffset + yOffset;
+
+  console.log('[DEBUG] headerRect.top:', headerRect.top);
+  console.log('[DEBUG] pageYOffset:', window.pageYOffset);
+  console.log('[DEBUG] Final Scroll Target (y):', scrollTarget);
+
+  setTimeout(() => {
+    window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+  }, delay);
+}
+
+
+// ==============================
 // OPEN PANEL
 // ==============================
 export function openPanel(panelId) {
@@ -57,19 +84,9 @@ export function openPanel(panelId) {
       const onTransitionEnd = (e) => {
         if (e.propertyName !== 'max-height') return;
         body.removeEventListener('transitionend', onTransitionEnd);
-
+      
         requestAnimationFrame(() => {
-          const yOffset = -14;
-          const headerRect = header.getBoundingClientRect();
-          const scrollTarget = headerRect.top + window.pageYOffset + yOffset;
-
-          console.log('[DEBUG] headerRect.top:', headerRect.top);
-          console.log('[DEBUG] pageYOffset:', window.pageYOffset);
-          console.log('[DEBUG] Final Scroll Target (y):', scrollTarget);
-
-          setTimeout(() => {
-            window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
-          }, 10); // allow a frame or two more before scrolling
+          scrollPanel(header);
 
           // Delay lock enough to let scroll visually apply
           setTimeout(() => {
@@ -77,6 +94,7 @@ export function openPanel(panelId) {
           }, 500);
         });
       };
+
       body.addEventListener('transitionend', onTransitionEnd);
     } else {
       enableBodyLock();
