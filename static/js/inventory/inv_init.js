@@ -64,6 +64,10 @@ export function initializeInventoryApp() {
       noResults,
       sortDirection
     });
+
+    // Adjust Search Window
+    const header = document.querySelector('#inventory-search-panel .panel-header');
+    scrollPanel(header);
   }
 
   // ==============================
