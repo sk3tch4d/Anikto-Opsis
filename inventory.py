@@ -31,12 +31,14 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
         return []
 
     term = term.strip().lower()
+    usl = usl.strip().lower()
+
     if DEBUG:
         print(f"[DEBUG] Starting search: term='{term}', usl='{usl}', sort='{sort}', direction='{direction}'")
 
-    # Filter by USL
-    if usl != "Any":
-        df = df[df["USL"].astype(str).str.strip().str.upper() == usl.strip().upper()]
+    # Filter by USL unless it's 'all'
+    if usl != "all":
+        df = df[df["USL"].astype(str).str.strip().str.lower() == usl]
 
     # Apply search
     if term:
