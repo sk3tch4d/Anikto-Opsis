@@ -88,6 +88,9 @@ export function initializeInventoryApp() {
   // ==============================
   window.addEventListener("beforeunload", () => {
     localStorage.setItem("inventoryScrollTop", window.scrollY);
+    // Adjust Search Window
+    const header = document.querySelector('#inventory-search-panel .panel-header');
+    scrollPanel(header);
   });
 
   // ==============================
