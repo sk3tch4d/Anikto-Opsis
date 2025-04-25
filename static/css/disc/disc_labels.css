@@ -5,13 +5,14 @@
 }
 
 
+/* ==== USL TOGGLE ==== */
 .tag-toggle {
   display: inline-block;
-  background-color: #444;
-  color: #fff;
+  background-color: #3a3f5c;
+  color: #7289da;
   padding: 4px 10px;
-  margin: 8px 0 4px 0;
-  border-radius: 999px;
+  margin: 8px 0 6px 0;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
   font-size: 0.85em;
@@ -20,12 +21,14 @@
 }
 
 .tag-toggle:hover {
-  background-color: #555;
+  background-color: #58608d;
+  color: #ccc;
 }
 
 .chevron {
   display: inline-block;
   margin-left: 6px;
+  color: #bbb;
   transition: transform 0.3s ease;
 }
 
