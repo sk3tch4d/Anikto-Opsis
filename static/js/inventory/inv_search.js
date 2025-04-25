@@ -25,13 +25,16 @@ const MAX_CACHE_SIZE = 20;
 // URL BUILDER
 // ==============================
 function buildSearchUrl({ term, usl, sort, dir }) {
-  const params = new URLSearchParams({
-    term: term.trim().toLowerCase(),
-    usl,
-    sort,
-    dir
-  });
-  return `/inventory-search?${params}`;
+  const formattedTerm = term
+    .trim()
+    .toLowerCase()
+    .replace(/[+|\s]+/g, ",") // convert + or space to comma
+    .replace(/,+/g, ",");      // collapse multiple commas
+
+  const params = new URLSearchParams({ term: formattedTerm, usl, sort, dir });
+  const finalUrl = `/inventory-search?${params}`;
+  DEBUG_MODE && console.log(`[DEBUG] Built search URL: ${finalUrl}`);
+  return finalUrl;
 }
 
 // ==============================
@@ -110,11 +113,21 @@ function debounce(fn, wait) {
 // ==============================
 // SEARCH LOGIC
 // ==============================
-export const doInventorySearch = debounce(function({ searchInput, uslFilter, sortBy, sortDirButton, resultsList, noResults, sortDirection }) {
+export const doInventorySearch = debounce(function({
+  searchInput,
+  uslFilter,
+  sortBy,
+  sortDirButton,
+  resultsList,
+  noResults,
+  sortDirection
+}) {
   const term = searchInput.value.trim().toLowerCase();
   const usl = uslFilter.value;
   const sort = sortBy.value;
   const key = generateSearchKey({ term, usl, sort, dir: sortDirection });
+
+  DEBUG_MODE && console.log(`[DEBUG] Triggered search: term='${term}', usl='${usl}', sort='${sort}', direction='${sortDirection}'`);
 
   withLoadingToggle(
     {
@@ -127,6 +140,7 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
       // Use cache if available
       if (searchCache.has(key)) {
         const cached = searchCache.get(key);
+        DEBUG_MODE && console.log("[DEBUG] Using cached result for:", key);
         renderInventoryResults(cached, term, resultsList);
         return;
       }
@@ -140,6 +154,7 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
             return;
           }
 
+          DEBUG_MODE && console.log(`[DEBUG] Received ${data.length} results`);
           populateInventoryStats(data);
           renderInventoryResults(data, term, resultsList);
           window.inventorySearchResults = data;
