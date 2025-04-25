@@ -36,11 +36,11 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
     if DEBUG:
         print(f"[DEBUG] Starting search: term='{term}', usl='{usl}', sort='{sort}', direction='{direction}'")
 
-    # ✅ Skip USL filter if it's 'all' or empty
-    if usl and usl != "all":
+    # ✅ Skip USL filter if it's 'all', 'any', or empty
+    if usl and usl not in ("all", "any"):
         df = df[df["USL"].astype(str).str.strip().str.lower() == usl]
 
-    # Apply search
+    # ✅ Apply search terms
     if term:
         try:
             terms = [t.strip() for t in re.split(r"[\s,]+", term) if t.strip()]
@@ -58,18 +58,19 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
                 print(f"[ERROR] Search failed: {e}")
             return []
 
-    # Validate sort field
+    # ✅ Validate sort field
     valid_sort_fields = {"QTY", "USL", "Num", "Cost"}
     if sort not in valid_sort_fields:
         sort = "QTY"
 
-    # Sort
+    # ✅ Sort
     ascending = (direction == "asc")
     if sort in df.columns:
         df = df.sort_values(by=sort, ascending=ascending)
         if DEBUG:
             print(f"[DEBUG] Sorted by '{sort}' in {'ascending' if ascending else 'descending'} order.")
 
+    # ✅ Final slice
     final_df = df[[
         "Num", "Old", "Bin", "Description", "USL",
         "QTY", "UOM", "Cost", "Group", "Cost_Center"
