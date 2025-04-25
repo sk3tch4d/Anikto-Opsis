@@ -41,6 +41,7 @@ function disableBodyLock() {
 export function scrollPanel(header = null, yOffset = -14, delay = 10) {
   
   if (!header) {
+    console.warn('scrollPanel: No header found to scroll. Defaulted');
     const openPanel = document.querySelector('.panel.open');
     header = openPanel?.querySelector('.panel-header');
   }
