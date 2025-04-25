@@ -3,3 +3,26 @@
   color: #7d8be8;
   font-weight: 600;
 }
+
+
+
+.tag-toggle {
+  display: inline-block;
+  background-color: #444;
+  color: #fff;
+  padding: 4px 10px;
+  margin: 8px 0 4px 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.85em;
+  user-select: none;
+}
+
+.usl-wrapper.hidden {
+  display: none;
+}
+
+.usl-wrapper {
+  margin-top: 6px;
+}
