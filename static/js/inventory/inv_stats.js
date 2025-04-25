@@ -92,11 +92,11 @@ export function populateInventoryStats(results) {
     // Create toggle pill
     const toggle = document.createElement("span");
     toggle.className = "tag-label tag-toggle clickable-toggle";
-    toggle.textContent = `USLs (${matching.length})`;
+    toggle.innerHTML = `USLs (${matching.length}) <span class="chevron">▼</span>`;
 
     // Create USL container (initially hidden)
     const uslWrapper = document.createElement("div");
-    uslWrapper.className = "usl-wrapper hidden";
+    uslWrapper.className = "usl-wrapper";
 
     const uslContainer = document.createElement("div");
     uslContainer.className = "clickable-match-container";
@@ -115,8 +115,8 @@ export function populateInventoryStats(results) {
 
     // Toggle behavior
     toggle.addEventListener("click", () => {
-      const isShowing = uslWrapper.classList.toggle("show");
-      toggle.textContent = isShowing ? "Hide USLs" : `USLs (${matching.length})`;
+      uslWrapper.classList.toggle("show");
+      toggle.classList.toggle("toggle-open");
     });
 
     // Assemble
