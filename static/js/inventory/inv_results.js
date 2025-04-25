@@ -4,7 +4,6 @@
 // ==============================
 
 import { highlightMatch } from "../search-utils.js";
-import { scrollPanel } from "../panels.js";
 
 // ==============================
 // MAIN RENDER FUNCTION
@@ -78,8 +77,5 @@ export function renderInventoryResults(data, term, resultsList) {
     li.innerHTML = html;
     resultsList.appendChild(li);
   });
-}
 
-// UPDATE PANEL
-const header = document.querySelector('#inventory-search-panel .panel-header');
-      scrollPanel(header);
+}
