@@ -90,10 +90,17 @@ export function populateInventoryStats(results) {
         uslContainer.appendChild(span);
       });
 
+    // Add the Bin info if only one USL is matched
+    let binInfo = "";
+    if (matching.length === 1 && matching[0].Bin) {
+      const binHighlighted = highlightMatch(matching[0].Bin, currentSearch);
+      binInfo = `<br><span class="tag-label">Bin:</span> ${binHighlighted}`;
+    }
+
     li.innerHTML += `
       <br><span class="tag-label">Description:</span> ${highlightMatch(base.Description, currentSearch)}<br>
       <span class="tag-label">Cost:</span> ${cost} / ${uom}<br>
-      <span class="tag-label">Total Quantity:</span> ${totalQty}<br>
+      <span class="tag-label">Total Quantity:</span> ${totalQty}${binInfo}<br>
       <span class="tag-label">USLs:</span>
     `;
 
