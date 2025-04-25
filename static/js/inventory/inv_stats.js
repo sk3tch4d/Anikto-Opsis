@@ -83,7 +83,6 @@ export function populateInventoryStats(results) {
       <span class="tag-label">Total Quantity:</span> ${totalQty}${binInfo}<br>
       ${groupLine}
       ${costCenterLine}
-      <span class="tag-label">USLs:</span>
     `;
 
     const infoBlock = document.createElement("div");
