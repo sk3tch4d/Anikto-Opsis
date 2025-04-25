@@ -133,7 +133,7 @@ export function populateInventoryStats(results) {
     // ========== Matches Toggle ==========
     const numToggle = document.createElement("span");
     numToggle.className = "tag-label tag-toggle clickable-toggle";
-    numToggle.innerHTML = `Matches (${matching.length}) <span class="chevron">▼</span>`;
+    numToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
 
     const numWrapper = document.createElement("div");
     numWrapper.className = "usl-wrapper";
@@ -142,11 +142,12 @@ export function populateInventoryStats(results) {
     const matchContainerForToggle = document.createElement("div");
     matchContainerForToggle.className = "clickable-match-container";
 
-    matching.forEach(item => {
+    const uniqueMatches = [...new Set(results.map(item => item.Num))];
+    uniqueMatches.forEach(matchNum => {
       const span = document.createElement("span");
       span.className = "clickable-match";
-      span.setAttribute("data-value", item.Num);
-      span.textContent = item.Num;
+      span.setAttribute("data-value", matchNum);
+      span.textContent = matchNum;
       matchContainerForToggle.appendChild(span);
     });
 
@@ -159,11 +160,18 @@ export function populateInventoryStats(results) {
 
     // ========== Assemble ==========
     card.appendChild(infoBlock);
-    card.appendChild(toggle);
-    card.appendChild(uslWrapper);
-    card.appendChild(numToggle);
-    card.appendChild(numWrapper);
 
+    const toggleGroup = document.createElement("div");
+    toggleGroup.style.display = "flex";
+    toggleGroup.style.flexDirection = "column";
+    toggleGroup.style.gap = "0.5rem";
+
+    toggleGroup.appendChild(toggle);
+    toggleGroup.appendChild(uslWrapper);
+    toggleGroup.appendChild(numToggle);
+    toggleGroup.appendChild(numWrapper);
+
+    card.appendChild(toggleGroup);
     statsBox.appendChild(card);
   });
 
