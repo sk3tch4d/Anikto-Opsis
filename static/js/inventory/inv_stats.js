@@ -19,40 +19,37 @@ export function populateInventoryStats(results) {
 
   statsBox.innerHTML = "";
 
-  // ==============================
-  // GET SEARCH TERM
-  // ==============================
   const searchInput = document.getElementById("inventory-search");
   const currentSearch = searchInput?.value.trim() || "(None)";
 
-  // ==============================
-  // BASIC SUMMARY & STATS
-  // ==============================
   const uniqueNums = [...new Set(results.map(item => item.Num))];
 
-  const liResults = document.createElement("li");
-  liResults.innerHTML = `<span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Unique:</span> ${uniqueNums.length}`;
-  statsBox.appendChild(liResults);
+  // ========== STATS SUMMARY BLOCK ==========
+  const summaryContainer = document.createElement("div");
+  summaryContainer.className = "compare-card";
 
-  const liMatches = document.createElement("li");
+  const liResults = document.createElement("div");
+  liResults.innerHTML = `<span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Unique:</span> ${uniqueNums.length}`;
+  summaryContainer.appendChild(liResults);
+
+  const liMatches = document.createElement("div");
   liMatches.innerHTML = `<span class="tag-label">Matches:</span> `;
-  const container = document.createElement("div");
-  container.className = "clickable-match-container";
+  const matchContainer = document.createElement("div");
+  matchContainer.className = "clickable-match-container";
 
   uniqueNums.forEach(num => {
     const span = document.createElement("span");
     span.className = "clickable-match";
     span.setAttribute("data-value", num);
     span.textContent = num;
-    container.appendChild(span);
+    matchContainer.appendChild(span);
   });
 
-  liMatches.appendChild(container);
-  statsBox.appendChild(liMatches);
+  liMatches.appendChild(matchContainer);
+  summaryContainer.appendChild(liMatches);
+  statsBox.appendChild(summaryContainer);
 
-  // ==============================
-  // PER-ITEM DETAIL BLOCKS
-  // ==============================
+  // ========== PER-ITEM CARDS ==========
   uniqueNums.forEach(num => {
     const matching = results.filter(r => r.Num === num);
     if (!matching.length) return;
@@ -61,26 +58,31 @@ export function populateInventoryStats(results) {
     const old = base.Old?.trim() ? ` (Old: ${base.Old})` : "";
     const cost = base.Cost !== undefined ? base.Cost : "N/A";
     const uom = base.UOM ?? "";
-    const topMatch = matching.reduce((a, b) => a.QTY > b.QTY ? a : b);
-
-    const li = document.createElement("li");
-
-    // Store number label
-    li.innerHTML = `<span class="tag-label">Stores Number:</span> `;
-
-    // Clickable stat span with highlight
-    const numberSpan = document.createElement("span");
-    numberSpan.className = "clickable-stat";
-    numberSpan.setAttribute("data-value", base.Num);
-    numberSpan.innerHTML = highlightMatch(base.Num + old, currentSearch);
-    li.appendChild(numberSpan);
-
-    // Remaining item details
     const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
+
+    const card = document.createElement("div");
+    card.className = "compare-card";
+
+    const numberHTML = highlightMatch(base.Num + old, currentSearch);
+    const descHTML = highlightMatch(base.Description, currentSearch);
+    const binInfo = matching.length === 1 && matching[0].Bin
+      ? `<br><span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
+      : "";
+
+    const detailsHTML = `
+      <span class="tag-label">Stores Number:</span> <span class="clickable-stat" data-value="${base.Num}">${numberHTML}</span><br>
+      <span class="tag-label">Description:</span> ${descHTML}<br>
+      <span class="tag-label">Cost:</span> ${cost} / ${uom}<br>
+      <span class="tag-label">Total Quantity:</span> ${totalQty}${binInfo}<br>
+      <span class="tag-label">USLs:</span>
+    `;
+
+    const infoBlock = document.createElement("div");
+    infoBlock.innerHTML = detailsHTML;
+
     const uslContainer = document.createElement("div");
     uslContainer.className = "clickable-match-container";
-
-    [...matching]
+    matching
       .sort((a, b) => b.QTY - a.QTY)
       .forEach(item => {
         const span = document.createElement("span");
@@ -90,26 +92,10 @@ export function populateInventoryStats(results) {
         uslContainer.appendChild(span);
       });
 
-    // Add the Bin info if only one USL is matched
-    let binInfo = "";
-    if (matching.length === 1 && matching[0].Bin) {
-      const binHighlighted = highlightMatch(matching[0].Bin, currentSearch);
-      binInfo = `<br><span class="tag-label">Bin:</span> ${binHighlighted}`;
-    }
-
-    li.innerHTML += `
-      <br><span class="tag-label">Description:</span> ${highlightMatch(base.Description, currentSearch)}<br>
-      <span class="tag-label">Cost:</span> ${cost} / ${uom}<br>
-      <span class="tag-label">Total Quantity:</span> ${totalQty}${binInfo}<br>
-      <span class="tag-label">USLs:</span>
-    `;
-
-    li.appendChild(uslContainer);
-    statsBox.appendChild(li);
+    card.appendChild(infoBlock);
+    card.appendChild(uslContainer);
+    statsBox.appendChild(card);
   });
 
-  // ==============================
-  // MAKE CLICKABLE
-  // ==============================
   setupParseStats(".clickable-stat, .clickable-match", "inventory-search", "data-value");
 }
