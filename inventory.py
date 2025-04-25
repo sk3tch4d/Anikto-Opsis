@@ -35,56 +35,48 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
     if DEBUG:
         print(f"[DEBUG] Starting search: term='{term}', usl='{usl}', sort='{sort}', direction='{direction}'")
 
-    # ✅ Filter by USL
+    # Filter by USL
     usl = usl.strip().lower()
     if usl not in {"any", "all", ""}:
         df = df[df["USL"].astype(str).str.strip().str.lower() == usl]
 
-    # ✅ Apply search
-    if term:
-        try:
-            if term.isdigit():
-                before = len(df)
+    try:
+        matches = pd.DataFrame()
 
-                primary = df[df["Num"].astype(str).str.contains(term)]
-                if not primary.empty:
-                    df = primary
-                    source = "Num"
-                else:
-                    fallback = df[df["Old"].astype(str).str.contains(term)]
-                    df = fallback
-                    source = "Old (fallback)"
-            
-                after = len(df)
-                if DEBUG:
-                    print(f"[DEBUG] Numeric term '{term}' matched in {source}: {before} → {after} rows")
+        if term:
+            # Primary number matches
+            num_matches = df[df["Num"].astype(str).str.lower().str.contains(term, na=False)]
+            old_matches = df[df["Old"].astype(str).str.lower().str.contains(term, na=False)]
+            primary_matches = pd.concat([num_matches, old_matches])
 
-            else:
-                excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
-                search_cols = [col for col in df.columns if col not in excluded]
+            # Textual matches in all relevant fields
+            excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
+            search_cols = [col for col in df.columns if col not in excluded]
+            text_matches = df[df[search_cols].apply(
+                lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1
+            )]
 
-                # New robust search line
-                df = df[df[search_cols].apply(
-                    lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1
-                )]
-        except Exception as e:
-            if DEBUG:
-                print(f"[ERROR] Search failed: {e}")
-            return []
+            # Combine & deduplicate
+            matches = pd.concat([primary_matches, text_matches]).drop_duplicates()
 
-    # ✅ Validate sort field
+        else:
+            matches = df
+
+    except Exception as e:
+        if DEBUG:
+            print(f"[ERROR] Search failed: {e}")
+        return []
+
+    # Sort validation
     valid_sort_fields = {"QTY", "USL", "Num", "Cost"}
     if sort not in valid_sort_fields:
         sort = "QTY"
 
-    # ✅ Sort
     ascending = (direction == "asc")
-    if sort in df.columns:
-        df = df.sort_values(by=sort, ascending=ascending)
-        if DEBUG:
-            print(f"[DEBUG] Sorted by '{sort}' in {'ascending' if ascending else 'descending'} order.")
+    if sort in matches.columns:
+        matches = matches.sort_values(by=sort, ascending=ascending)
 
-    final_df = df[[
+    final_df = matches[[
         "Num", "Old", "Bin", "Description", "USL",
         "QTY", "UOM", "Cost", "Group", "Cost_Center"
     ]].head(100)
