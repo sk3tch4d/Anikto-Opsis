@@ -89,8 +89,18 @@ export function populateInventoryStats(results) {
     const infoBlock = document.createElement("div");
     infoBlock.innerHTML = detailsHTML;
 
+    // Create toggle pill
+    const toggle = document.createElement("span");
+    toggle.className = "tag-label tag-toggle clickable-toggle";
+    toggle.textContent = `USLs (${matching.length})`;
+
+    // Create USL container (initially hidden)
+    const uslWrapper = document.createElement("div");
+    uslWrapper.className = "usl-wrapper hidden";
+
     const uslContainer = document.createElement("div");
     uslContainer.className = "clickable-match-container";
+
     matching
       .sort((a, b) => b.QTY - a.QTY)
       .forEach(item => {
@@ -101,8 +111,18 @@ export function populateInventoryStats(results) {
         uslContainer.appendChild(span);
       });
 
+    uslWrapper.appendChild(uslContainer);
+
+    // Toggle behavior
+    toggle.addEventListener("click", () => {
+      const isHidden = uslWrapper.classList.toggle("hidden");
+      toggle.textContent = isHidden ? `USLs (${matching.length})` : "Hide USLs";
+    });
+
+    // Assemble
     card.appendChild(infoBlock);
-    card.appendChild(uslContainer);  
+    card.appendChild(toggle);
+    card.appendChild(uslWrapper);  
     statsBox.appendChild(card);
   });
 
