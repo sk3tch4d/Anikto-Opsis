@@ -1,10 +1,9 @@
 # ==============================
-# INVENTORY HANDLERS
+# INVENTORY.PY
 # ==============================
+
 import pandas as pd
-
 DEBUG = False
-
 
 # ==============================
 # INVENTORY DATA
@@ -63,8 +62,10 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
             else:
                 excluded = ["QTY", "UOM", "Created", "Last_Change", "ROP", "ROQ", "Cost"]
                 search_cols = [col for col in df.columns if col not in excluded]
-                df = df[df[search_cols].astype(str).apply(
-                    lambda row: row.str.lower().str.contains(term).any(), axis=1
+
+                # New robust search line
+                df = df[df[search_cols].apply(
+                    lambda row: row.astype(str).str.lower().str.contains(term).any(), axis=1
                 )]
         except Exception as e:
             if DEBUG:
