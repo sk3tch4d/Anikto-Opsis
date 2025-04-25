@@ -32,20 +32,33 @@ export function populateInventoryStats(results) {
   liResults.innerHTML = `<span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Unique:</span> ${uniqueNums.length}`;
   summaryContainer.appendChild(liResults);
 
+  // Matches Toggle
   const liMatches = document.createElement("div");
-  liMatches.innerHTML = `<span class="tag-label">Matches:</span> `;
-  const matchContainer = document.createElement("div");
-  matchContainer.className = "clickable-match-container";
+  liMatches.className = "expandable-section";
+
+  const matchToggle = document.createElement("span");
+  matchToggle.className = "tag-label tag-toggle clickable-toggle";
+  matchToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
+  liMatches.appendChild(matchToggle);
+
+  const matchList = document.createElement("div");
+  matchList.className = "clickable-match-container usl-wrapper";
+  matchList.style.display = "none";
 
   uniqueNums.forEach(num => {
     const span = document.createElement("span");
     span.className = "clickable-match";
     span.setAttribute("data-value", num);
     span.textContent = num;
-    matchContainer.appendChild(span);
+    matchList.appendChild(span);
   });
 
-  liMatches.appendChild(matchContainer);
+  matchToggle.addEventListener("click", () => {
+    matchList.style.display = matchList.style.display === "none" ? "flex" : "none";
+    matchToggle.classList.toggle("toggle-open");
+  });
+
+  liMatches.appendChild(matchList);
   summaryContainer.appendChild(liMatches);
   statsBox.appendChild(summaryContainer);
 
@@ -83,20 +96,19 @@ export function populateInventoryStats(results) {
       <span class="tag-label">Total Quantity:</span> ${totalQty}${binInfo}<br>
       ${groupLine}
       ${costCenterLine}
-      <span class="tag-label">USLs:</span>
     `;
 
     const infoBlock = document.createElement("div");
     infoBlock.innerHTML = detailsHTML;
 
-    // Create toggle pill
+    // ========== USL Toggle ==========
     const toggle = document.createElement("span");
     toggle.className = "tag-label tag-toggle clickable-toggle";
     toggle.innerHTML = `USLs (${matching.length}) <span class="chevron">▼</span>`;
 
-    // Create USL container (initially hidden)
     const uslWrapper = document.createElement("div");
     uslWrapper.className = "usl-wrapper";
+    uslWrapper.style.display = "none";
 
     const uslContainer = document.createElement("div");
     uslContainer.className = "clickable-match-container";
@@ -113,16 +125,45 @@ export function populateInventoryStats(results) {
 
     uslWrapper.appendChild(uslContainer);
 
-    // Toggle behavior
     toggle.addEventListener("click", () => {
-      uslWrapper.classList.toggle("show");
+      uslWrapper.style.display = uslWrapper.style.display === "none" ? "flex" : "none";
       toggle.classList.toggle("toggle-open");
     });
 
-    // Assemble
+    // ========== Matches Toggle ==========
+    const numToggle = document.createElement("span");
+    numToggle.className = "tag-label tag-toggle clickable-toggle";
+    numToggle.innerHTML = `Matches (${matching.length}) <span class="chevron">▼</span>`;
+
+    const numWrapper = document.createElement("div");
+    numWrapper.className = "usl-wrapper";
+    numWrapper.style.display = "none";
+
+    const matchContainerForToggle = document.createElement("div");
+    matchContainerForToggle.className = "clickable-match-container";
+
+    matching.forEach(item => {
+      const span = document.createElement("span");
+      span.className = "clickable-match";
+      span.setAttribute("data-value", item.Num);
+      span.textContent = item.Num;
+      matchContainerForToggle.appendChild(span);
+    });
+
+    numWrapper.appendChild(matchContainerForToggle);
+
+    numToggle.addEventListener("click", () => {
+      numWrapper.style.display = numWrapper.style.display === "none" ? "flex" : "none";
+      numToggle.classList.toggle("toggle-open");
+    });
+
+    // ========== Assemble ==========
     card.appendChild(infoBlock);
     card.appendChild(toggle);
-    card.appendChild(uslWrapper);  
+    card.appendChild(uslWrapper);
+    card.appendChild(numToggle);
+    card.appendChild(numWrapper);
+
     statsBox.appendChild(card);
   });
 
