@@ -5,7 +5,7 @@
 
 import { normalize } from './search.js';
 import { getStatusDot } from '../statusdot.js';
-import { initAutocomplete } from './autocomplete.js';
+//import { initAutocomplete } from './autocomplete.js';
 
 // ==============================
 // INIT AUTOCOMPLETE
