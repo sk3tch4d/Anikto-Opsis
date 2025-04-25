@@ -59,7 +59,8 @@ export function initComparisonPanel() {
 
     if (valid1 && valid2) {
       html += renderDelta(match1, match2);
-      scrollPanel();
+      const header = document.querySelector('#compare-panel .panel-header');
+      scrollPanel(header);
     }
 
     resultsDiv.innerHTML = html;
