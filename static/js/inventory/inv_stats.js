@@ -32,33 +32,20 @@ export function populateInventoryStats(results) {
   liResults.innerHTML = `<span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Unique:</span> ${uniqueNums.length}`;
   summaryContainer.appendChild(liResults);
 
-  // Matches Toggle
   const liMatches = document.createElement("div");
-  liMatches.className = "expandable-section";
-
-  const matchToggle = document.createElement("span");
-  matchToggle.className = "tag-label tag-toggle clickable-toggle";
-  matchToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
-  liMatches.appendChild(matchToggle);
-
-  const matchList = document.createElement("div");
-  matchList.className = "clickable-match-container usl-wrapper";
-  matchList.style.display = "none";
+  liMatches.innerHTML = `<span class="tag-label">Matches:</span> `;
+  const matchContainer = document.createElement("div");
+  matchContainer.className = "clickable-match-container";
 
   uniqueNums.forEach(num => {
     const span = document.createElement("span");
     span.className = "clickable-match";
     span.setAttribute("data-value", num);
     span.textContent = num;
-    matchList.appendChild(span);
+    matchContainer.appendChild(span);
   });
 
-  matchToggle.addEventListener("click", () => {
-    matchList.style.display = matchList.style.display === "none" ? "flex" : "none";
-    matchToggle.classList.toggle("toggle-open");
-  });
-
-  liMatches.appendChild(matchList);
+  liMatches.appendChild(matchContainer);
   summaryContainer.appendChild(liMatches);
   statsBox.appendChild(summaryContainer);
 
@@ -96,19 +83,20 @@ export function populateInventoryStats(results) {
       <span class="tag-label">Total Quantity:</span> ${totalQty}${binInfo}<br>
       ${groupLine}
       ${costCenterLine}
+      <span class="tag-label">USLs:</span>
     `;
 
     const infoBlock = document.createElement("div");
     infoBlock.innerHTML = detailsHTML;
 
-    // ========== USL Toggle ==========
+    // Create toggle pill
     const toggle = document.createElement("span");
     toggle.className = "tag-label tag-toggle clickable-toggle";
     toggle.innerHTML = `USLs (${matching.length}) <span class="chevron">▼</span>`;
 
+    // Create USL container (initially hidden)
     const uslWrapper = document.createElement("div");
     uslWrapper.className = "usl-wrapper";
-    uslWrapper.style.display = "none";
 
     const uslContainer = document.createElement("div");
     uslContainer.className = "clickable-match-container";
@@ -125,53 +113,16 @@ export function populateInventoryStats(results) {
 
     uslWrapper.appendChild(uslContainer);
 
+    // Toggle behavior
     toggle.addEventListener("click", () => {
-      uslWrapper.style.display = uslWrapper.style.display === "none" ? "flex" : "none";
+      uslWrapper.classList.toggle("show");
       toggle.classList.toggle("toggle-open");
     });
 
-    // ========== Matches Toggle ==========
-    const numToggle = document.createElement("span");
-    numToggle.className = "tag-label tag-toggle clickable-toggle";
-    numToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
-
-    const numWrapper = document.createElement("div");
-    numWrapper.className = "usl-wrapper";
-    numWrapper.style.display = "none";
-
-    const matchContainerForToggle = document.createElement("div");
-    matchContainerForToggle.className = "clickable-match-container";
-
-    const uniqueMatches = [...new Set(results.map(item => item.Num))];
-    uniqueMatches.forEach(matchNum => {
-      const span = document.createElement("span");
-      span.className = "clickable-match";
-      span.setAttribute("data-value", matchNum);
-      span.textContent = matchNum;
-      matchContainerForToggle.appendChild(span);
-    });
-
-    numWrapper.appendChild(matchContainerForToggle);
-
-    numToggle.addEventListener("click", () => {
-      numWrapper.style.display = numWrapper.style.display === "none" ? "flex" : "none";
-      numToggle.classList.toggle("toggle-open");
-    });
-
-    // ========== Assemble ==========
+    // Assemble
     card.appendChild(infoBlock);
-
-    const toggleGroup = document.createElement("div");
-    toggleGroup.style.display = "flex";
-    toggleGroup.style.flexDirection = "column";
-    toggleGroup.style.gap = "0.5rem";
-
-    toggleGroup.appendChild(toggle);
-    toggleGroup.appendChild(uslWrapper);
-    toggleGroup.appendChild(numToggle);
-    toggleGroup.appendChild(numWrapper);
-
-    card.appendChild(toggleGroup);
+    card.appendChild(toggle);
+    card.appendChild(uslWrapper);  
     statsBox.appendChild(card);
   });
 
