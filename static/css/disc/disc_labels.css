@@ -19,10 +19,15 @@
   user-select: none;
 }
 
-.usl-wrapper.hidden {
-  display: none;
-}
 
 .usl-wrapper {
-  margin-top: 6px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.25s ease;
+}
+
+.usl-wrapper.show {
+  max-height: 500px; /* big enough to contain USLs */
+  opacity: 1;
 }
