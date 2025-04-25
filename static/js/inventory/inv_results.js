@@ -4,7 +4,7 @@
 // ==============================
 
 import { highlightMatch } from "../search-utils.js";
-import { scrollPanel } from "../panels.js';
+import { scrollPanel } from "../panels.js";
 
 // ==============================
 // MAIN RENDER FUNCTION
