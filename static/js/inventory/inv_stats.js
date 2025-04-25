@@ -115,8 +115,8 @@ export function populateInventoryStats(results) {
 
     // Toggle behavior
     toggle.addEventListener("click", () => {
-      const isHidden = uslWrapper.classList.toggle("hidden");
-      toggle.textContent = isHidden ? `USLs (${matching.length})` : "Hide USLs";
+      const isShowing = uslWrapper.classList.toggle("show");
+      toggle.textContent = isShowing ? "Hide USLs" : `USLs (${matching.length})`;
     });
 
     // Assemble
