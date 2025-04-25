@@ -94,6 +94,18 @@ export function populateInventoryStats(results) {
 
     card.appendChild(infoBlock);
     card.appendChild(uslContainer);
+
+    // Conditionally show Group on match
+    if (base.Group?.trim()) {
+      const groupLower = base.Group.toLowerCase();
+      const searchTerm = currentSearch.toLowerCase();
+      if (groupLower.includes(searchTerm)) {
+        const groupLine = document.createElement("div");
+        groupLine.innerHTML = `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, searchTerm)}<br>`;
+        card.appendChild(groupLine);
+      }
+    }
+    
     statsBox.appendChild(card);
   });
 
