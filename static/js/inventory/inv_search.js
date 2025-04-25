@@ -5,6 +5,7 @@
 import { populateInventoryStats } from "./inv_stats.js";
 import { renderInventoryResults } from "./inv_results.js";
 import { withLoadingToggle } from "../loading.js";
+import { scrollPanel } from '../panels.js';
 
 // ==============================
 // DEBUGGING
