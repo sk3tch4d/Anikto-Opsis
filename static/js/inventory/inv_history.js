@@ -20,9 +20,7 @@ function formatFriendlyTimestamp(date) {
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ` at ${time}`;
 }
 
-//
-
-export function addSearchToHistory(term, results) {
+export function addSearchToHistory(term, uslFilter, results) {
   const container = document.getElementById("search-history-list");
   if (!container || !results.length) return;
 
@@ -42,12 +40,18 @@ export function addSearchToHistory(term, results) {
   timeLine.textContent = friendlyTimestamp;
   card.appendChild(timeLine);
 
-  // Header with search term
+  // Search term
   const header = document.createElement("div");
   header.innerHTML = `<span class="tag-label">Search:</span> ${term}`;
   card.appendChild(header);
 
-  // Toggle Pill
+  // Filter term
+  const filterLine = document.createElement("div");
+  filterLine.innerHTML = `<span class="tag-label">Filter:</span> ${uslFilter}`;
+  filterLine.style.marginBottom = "4px";
+  card.appendChild(filterLine);
+
+  // Toggle for matches
   const matchesToggle = document.createElement("span");
   matchesToggle.className = "tag-label tag-toggle clickable-toggle";
   matchesToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
