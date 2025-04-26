@@ -33,7 +33,16 @@ export function populateInventoryStats(results) {
   summaryContainer.appendChild(liResults);
 
   const liMatches = document.createElement("div");
-  liMatches.innerHTML = `<span class="tag-label">Matches:</span> `;
+
+  // Create Matches Toggle
+  const matchesToggle = document.createElement("span");
+  matchesToggle.className = "tag-label tag-toggle clickable-toggle";
+  matchesToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
+
+  // Create Matches Wrapper (hidden initially)
+  const matchesWrapper = document.createElement("div");
+  matchesWrapper.className = "usl-wrapper"; // Reuse for collapse/expand behavior
+
   const matchContainer = document.createElement("div");
   matchContainer.className = "clickable-match-container";
 
@@ -45,7 +54,18 @@ export function populateInventoryStats(results) {
     matchContainer.appendChild(span);
   });
 
-  liMatches.appendChild(matchContainer);
+  matchesWrapper.appendChild(matchContainer);
+
+  // Add toggle behavior
+  matchesToggle.addEventListener("click", () => {
+    matchesWrapper.classList.toggle("show");
+    matchesToggle.classList.toggle("toggle-open");
+  });
+
+  // Assemble into liMatches
+  liMatches.appendChild(matchesToggle);
+  liMatches.appendChild(matchesWrapper);
+
   summaryContainer.appendChild(liMatches);
   statsBox.appendChild(summaryContainer);
 
@@ -88,7 +108,7 @@ export function populateInventoryStats(results) {
     const infoBlock = document.createElement("div");
     infoBlock.innerHTML = detailsHTML;
 
-    // Create toggle pill
+    // Create USL toggle pill
     const toggle = document.createElement("span");
     toggle.className = "tag-label tag-toggle clickable-toggle";
     toggle.innerHTML = `USLs (${matching.length}) <span class="chevron">▼</span>`;
