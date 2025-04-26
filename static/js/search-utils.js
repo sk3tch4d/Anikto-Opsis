@@ -19,16 +19,17 @@ export function searchFromStat(inputId, value) {
 }
 
 // ==============================
-// PARSE TO SEARCH MODULE
+// PARSE TO SEARCH MODULE (Upgraded with Event Delegation)
 // ==============================
 export function setupParseStats(selector, inputId, attribute = "data-value") {
-  document.querySelectorAll(selector).forEach(elem => {
-    elem.addEventListener("click", () => {
-      const value = elem.getAttribute(attribute);
+  document.addEventListener("click", function(e) {
+    const target = e.target.closest(selector);
+    if (target) {
+      const value = target.getAttribute(attribute);
       if (value) {
         searchFromStat(inputId, value);
       }
-    });
+    }
   });
 }
 
