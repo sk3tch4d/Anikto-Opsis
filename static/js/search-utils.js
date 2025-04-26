@@ -23,32 +23,24 @@ export function searchFromStat(inputId, value) {
 // ==============================
 export function setupParseStats() {
   document.addEventListener("click", function(e) {
-    const targetStat = e.target.closest(".clickable-stat");
-    const targetMatch = e.target.closest(".clickable-match");
+    const target = e.target.closest(".clickable-match, .clickable-stat");
+
+    if (!target) return;
 
     const searchInput = document.getElementById("inventory-search");
     const uslFilter = document.getElementById("usl-filter");
 
-    if (targetStat && uslFilter && searchInput) {
-      const uslValue = targetStat.getAttribute("data-value");
-      const numValue = targetStat.getAttribute("data-number"); // Associated Number
+    const searchValue = target.getAttribute("data-search");
+    const filterValue = target.getAttribute("data-filter");
 
-      if (uslValue) {
-        uslFilter.value = uslValue;
-        uslFilter.dispatchEvent(new Event("change"));
-      }
-      if (numValue) {
-        searchInput.value = numValue;
-        searchInput.dispatchEvent(new Event("input"));
-      }
+    if (filterValue && uslFilter) {
+      uslFilter.value = filterValue;
+      uslFilter.dispatchEvent(new Event("change"));
     }
 
-    if (targetMatch && searchInput) {
-      const matchValue = targetMatch.getAttribute("data-value");
-      if (matchValue) {
-        searchInput.value = matchValue;
-        searchInput.dispatchEvent(new Event("input"));
-      }
+    if (searchValue && searchInput) {
+      searchInput.value = searchValue;
+      searchInput.dispatchEvent(new Event("input"));
     }
   });
 }
