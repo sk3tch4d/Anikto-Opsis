@@ -3,55 +3,52 @@
 // Inventory Search Results Exporter
 // ==============================
 
-import * as XLSX from "https://cdn.sheetjs.com/xlsx-latest/package/xlsx.mjs";
+import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.2/package/xlsx.mjs"; // or wherever you're importing SheetJS from
 
 // ==============================
-// INIT DOWNLOAD BUTTON
+// Setup Download for Search Results
 // ==============================
 export function setupInventoryDownloadSearch() {
-  const btn = document.getElementById("inventory-search-download");
-  if (btn) {
-    btn.addEventListener("click", downloadInventorySearch);
-  }
+  const downloadButton = document.getElementById("inventory-search-download");
+  if (!downloadButton) return;
+
+  downloadButton.addEventListener("click", () => {
+    if (!window.inventorySearchResults || !window.inventorySearchResults.length) {
+      return alert("No search results to download.");
+    }
+
+    const worksheet = XLSX.utils.json_to_sheet(window.inventorySearchResults);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
+
+    XLSX.writeFile(workbook, "search_results.xlsx");
+  });
 }
 
 // ==============================
-// DOWNLOAD INVENTORY SEARCH RESULTS
+// Setup Download for Search History
 // ==============================
-export function downloadInventorySearch() {
-  const results = window.inventorySearchResults || [];
-  if (!results.length) {
-    alert("No inventory results to download.");
-    return;
-  }
+export function setupInventoryDownloadHistory() {
+  const downloadButton = document.getElementById("inventory-history-download");
+  if (!downloadButton) return;
 
-  const headers = ["Number", "USL", "Bin", "Quantity", "Description", "Cost Center", "Cost", "UOM", "Old", "Group"];
-  const rows = results.map(row => [
-    row["Num"] || "",
-    row["USL"] || "",
-    row["Bin"] || "",
-    row["QTY"] || "",
-    row["Description"] || "",
-    row["Cost_Center"] || "",
-    row["Cost"] || "",
-    row["UOM"] || "",
-    row["Old"] || "",
-    row["Group"] || ""
-  ]);
+  downloadButton.addEventListener("click", () => {
+    if (!window.inventorySearchHistory || !window.inventorySearchHistory.length) {
+      return alert("No search history to download.");
+    }
 
-  const worksheet = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+    // Format history cleanly
+    const formattedHistory = window.inventorySearchHistory.map(entry => ({
+      "Timestamp": entry.timestamp,
+      "Search Term": entry.search,
+      "Filter Used": entry.filter,
+      "Matches": entry.matches
+    }));
 
-  worksheet["!cols"] = headers.map((header, i) => {
-    const maxLen = Math.max(
-      header.length,
-      ...rows.map(row => String(row[i] || "").length)
-    );
-    return { wch: maxLen + 2 };
+    const worksheet = XLSX.utils.json_to_sheet(formattedHistory);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Search History");
+
+    XLSX.writeFile(workbook, "search_history.xlsx");
   });
-
-  worksheet["!rows"] = [{ hpt: 20 }];
-
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Inventory Results");
-  XLSX.writeFile(workbook, "Inventory_Results.xlsx");
 }
