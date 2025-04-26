@@ -7,6 +7,9 @@
 /* INPUT: FULL-WIDTH             */
 /* ============================= */
 input.full-width {
+  position: relative;
+  overflow: hidden;
+  /**/
   width: 100%;
   max-width: 100%;
   padding: 0.6rem 1rem;
@@ -40,6 +43,9 @@ input.full-width.input-error {
 /* INPUT SELECT: FULL-WIDTH      */
 /* ============================= */
 select.input.full-width {
+  position: relative;
+  overflow: hidden;
+  /**/
   width: 100%;
   max-width: 100%;
   padding: 0.6rem 1rem;
@@ -148,24 +154,28 @@ input[type="date"]:focus {
   background-color: #36393f;
 }
 
-
 /* ============================= */
-/* KEYFRAMES: FLASH ANIMATION    */
+/* INPUT: FLASH ANIMATION        */
 /* ============================= */
-@keyframes flashUpdate {
-  0% {
-    box-shadow: 0 0 0 0px rgba(114, 137, 218, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 8px 4px rgba(114, 137, 218, 0.8);
-  }
-  100% {
-    box-shadow: 0 0 0 0px rgba(114, 137, 218, 0.5);
-  }
+.input-flash::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 26px; /* match your input border-radius + margin */
+  box-shadow: 0 0 8px 4px rgba(114, 137, 218, 0.7);
+  animation: flashUpdate 0.6s ease;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.input-flash {
-  animation: flashUpdate 0.6s ease;
-  box-shadow: 0 0 0 0px rgba(114, 137, 218, 0.5); /* force baseline box-shadow */
-  transition: box-shadow 0.6s ease;
+/* ==============//============== */
+/* KEYFRAMES: FLASH ANIMATION    */
+/* ==============//============= */
+@keyframes flashUpdate {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
 }
