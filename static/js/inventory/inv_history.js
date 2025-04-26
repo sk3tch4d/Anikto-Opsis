@@ -79,5 +79,6 @@ export function addSearchToHistory(term, uslFilter, results) {
 
   card.appendChild(matchesToggle);
   card.appendChild(matchesWrapper);
-  container.appendChild(card);
+ 
+  container.prepend(card);
 }
