@@ -126,6 +126,7 @@ export function populateInventoryStats(results) {
         const span = document.createElement("span");
         span.className = "clickable-match";
         span.setAttribute("data-value", item.USL);
+        span.setAttribute("data-number", base.Num); 
         span.textContent = item.USL;
         uslContainer.appendChild(span);
       });
