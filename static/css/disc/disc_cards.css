@@ -1,3 +1,9 @@
+/* ======================= */
+/* DISC_CARDS.CSS          */
+/* ======================= */
+
+
+/* ==== COMPARE CARD ==== */
 .compare-card {
   background: #232529;
   padding: 0.85rem 1.1rem; /* reduced padding */
@@ -15,18 +21,17 @@
   transform: scale(1.005);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
 }
+
+/* ==== COMPARE DELTA ==== */
 .compare-delta .full-span {
   grid-column: span 2;
 }
-
-  
 .compare-delta {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
   margin-top: 1.25rem;
 }
-
 .compare-delta .delta-item {
   background: #222325;
   padding: 0.6rem 0.75rem;
@@ -41,14 +46,12 @@
   justify-content: space-between;
   align-items: center;
 }
-
 .compare-delta .delta-item strong {
   font-size: 0.85rem;
   color: #888;
   font-weight: 600;
   margin-right: 0.5rem;
 }
-
 
 /* Optional: Better for small screens */
 @media (max-width: 600px) {
