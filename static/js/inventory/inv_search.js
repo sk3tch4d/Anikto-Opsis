@@ -4,6 +4,7 @@
 
 import { populateInventoryStats } from "./inv_stats.js";
 import { renderInventoryResults } from "./inv_results.js";
+import { addSearchToHistory } from "./inv_history.js";
 import { withLoadingToggle } from "../loading.js";
 import { scrollPanel } from '../panels.js';
 
@@ -157,6 +158,7 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
           populateInventoryStats(data);
           renderInventoryResults(data, term, resultsList);
           window.inventorySearchResults = data;
+          addSearchToHistory(searchInput.value.trim(), data);
           updateSearchCache(key, data);
         })
         .catch(err => {
