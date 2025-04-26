@@ -21,18 +21,31 @@ export function searchFromStat(inputId, value) {
 // ==============================
 // PARSE TO SEARCH MODULE (Upgraded with Event Delegation)
 // ==============================
-export function setupParseStats(selector, inputId, attribute = "data-value") {
+export function setupParseStats() {
   document.addEventListener("click", function(e) {
-    const target = e.target.closest(selector);
-    if (target) {
-      const value = target.getAttribute(attribute);
-      if (value) {
-        searchFromStat(inputId, value);
+    const targetStat = e.target.closest(".clickable-stat");
+    const targetMatch = e.target.closest(".clickable-match");
+
+    const searchInput = document.getElementById("inventory-search");
+    const uslFilter = document.getElementById("usl-filter");
+
+    if (targetStat && uslFilter) {
+      const uslValue = targetStat.getAttribute("data-value");
+      if (uslValue) {
+        uslFilter.value = uslValue;
+        uslFilter.dispatchEvent(new Event("change"));
+      }
+    }
+
+    if (targetMatch && searchInput) {
+      const matchValue = targetMatch.getAttribute("data-value");
+      if (matchValue) {
+        searchInput.value = matchValue;
+        searchInput.dispatchEvent(new Event("input"));
       }
     }
   });
 }
-
 // ==============================
 // MATCH HIGHLIGHTING
 // ==============================
