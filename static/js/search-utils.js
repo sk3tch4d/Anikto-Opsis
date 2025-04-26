@@ -29,11 +29,17 @@ export function setupParseStats() {
     const searchInput = document.getElementById("inventory-search");
     const uslFilter = document.getElementById("usl-filter");
 
-    if (targetStat && uslFilter) {
+    if (targetStat && uslFilter && searchInput) {
       const uslValue = targetStat.getAttribute("data-value");
+      const numValue = targetStat.getAttribute("data-number"); // Associated Number
+
       if (uslValue) {
         uslFilter.value = uslValue;
         uslFilter.dispatchEvent(new Event("change"));
+      }
+      if (numValue) {
+        searchInput.value = numValue;
+        searchInput.dispatchEvent(new Event("input"));
       }
     }
 
@@ -46,6 +52,7 @@ export function setupParseStats() {
     }
   });
 }
+
 // ==============================
 // MATCH HIGHLIGHTING
 // ==============================
