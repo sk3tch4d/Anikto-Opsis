@@ -1,6 +1,7 @@
 /* ==== LOADING SPINNER ==== */
 
 #loading {
+  position: fixed;
   display: none;
   text-align: center;
   padding: 2rem;
