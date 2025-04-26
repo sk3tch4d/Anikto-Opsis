@@ -158,7 +158,7 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
           populateInventoryStats(data);
           renderInventoryResults(data, term, resultsList);
           window.inventorySearchResults = data;
-          addSearchToHistory(searchInput.value.trim(), data);
+          addSearchToHistory(searchInput.value.trim(), uslFilter.value, data);
           updateSearchCache(key, data);
         })
         .catch(err => {
