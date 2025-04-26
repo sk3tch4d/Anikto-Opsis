@@ -44,6 +44,7 @@ export function scrollPanel(header = null, yOffset = -14, delay = 10) {
     const openPanel = document.querySelector('.panel.open');
     header = openPanel?.querySelector('.panel-header');
   }
+
   if (!header) return;
 
   const headerRect = header.getBoundingClientRect();
@@ -73,11 +74,7 @@ export function openPanel(panelId) {
     panel.classList.add("open");
     header?.classList.add("open");
     body?.classList.add("open");
-
-    if (body) {
-      // ========== NEW: Lock the panel body height
-      body.style.minHeight = `${body.scrollHeight}px`;
-    }
+    body.style.minHeight = '70vh'; // NEW: fix minimum size when opening
 
     if (!wasOpen) {
       const onTransitionEnd = (e) => {
@@ -86,7 +83,6 @@ export function openPanel(panelId) {
 
         requestAnimationFrame(() => {
           scrollPanel(header);
-
           setTimeout(() => {
             enableBodyLock();
           }, 500);
@@ -136,10 +132,7 @@ function closePanel(panel) {
   header?.classList.remove('open');
   body?.classList.remove('open');
 
-  // ========== NEW: Unlock min-height when closing
-  if (body) {
-    body.style.minHeight = "";
-  }
+  body.style.minHeight = ''; // NEW: reset min-height when closing
 
   setTimeout(() => {
     document.getElementById('mobile-focus-reset')?.focus();
@@ -158,6 +151,7 @@ export function collapseAllPanels({ excludeSelector = null } = {}) {
 
     body.classList.remove('open');
     panel?.classList.remove('open');
+    body.style.minHeight = '';
   });
 }
 
