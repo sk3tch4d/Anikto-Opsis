@@ -1,5 +1,6 @@
 // ==============================
-// SHARED SEARCH UTILITIES
+// SEARCH-UTILS.JS
+// Shared Search Utilities
 // ==============================
 
 import { openPanelById } from "./panels.js";
