@@ -157,7 +157,7 @@ input[type="date"]:focus {
     box-shadow: 0 0 0 0px rgba(114, 137, 218, 0.5);
   }
   50% {
-    box-shadow: 0 0 8px 4px rgba(114, 137, 218, 0.7);
+    box-shadow: 0 0 8px 4px rgba(114, 137, 218, 0.8);
   }
   100% {
     box-shadow: 0 0 0 0px rgba(114, 137, 218, 0.5);
@@ -166,4 +166,6 @@ input[type="date"]:focus {
 
 .input-flash {
   animation: flashUpdate 0.6s ease;
+  box-shadow: 0 0 0 0px rgba(114, 137, 218, 0.5); /* force baseline box-shadow */
+  transition: box-shadow 0.6s ease;
 }
