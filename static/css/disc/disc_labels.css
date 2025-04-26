@@ -1,9 +1,13 @@
+/* ======================= */
+/* DISC_LABELS.CSS         */
+/* ======================= */
 
+
+/* ==== TAG LABEL ==== */
 .tag-label {
   color: #7d8be8;
   font-weight: 600;
 }
-
 
 /* ==== USL TOGGLE ==== */
 .tag-toggle {
@@ -19,36 +23,32 @@
   user-select: none;
   transition: background-color 0.2s ease;
 }
-
 .tag-toggle:hover {
   background-color: #58608d;
   color: #ccc;
 }
 
-
+/* ==== CHEVRON ==== */
 .chevron {
   display: inline-block;
   margin-left: 6px;
   color: #bbb;
   transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
-
+.toggle-open .chevron {
+  transform: rotate(180deg);
+}
 .toggle-open .chevron {
   transform: rotate(180deg);
 }
 
-
-.toggle-open .chevron {
-  transform: rotate(180deg);
-}
-
+/* ==== USL WRAPPER ==== */
 .usl-wrapper {
   overflow: hidden;
   max-height: 0;
   opacity: 0;
   transition: max-height 0.25s ease, opacity 0.25s ease;
 }
-
 .usl-wrapper.show {
   max-height: 500px;
   opacity: 1;
