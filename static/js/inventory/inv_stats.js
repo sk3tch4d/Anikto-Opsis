@@ -48,7 +48,7 @@ export function populateInventoryStats(results) {
   uniqueNums.forEach(num => {
     const span = document.createElement("span");
     span.className = "clickable-match";
-    span.setAttribute("data-search", num); // <-- update
+    span.setAttribute("data-search", num);
     span.textContent = num;
     matchContainer.appendChild(span);
   });
@@ -105,7 +105,6 @@ export function populateInventoryStats(results) {
     const infoBlock = document.createElement("div");
     infoBlock.innerHTML = detailsHTML;
 
-    // Create USL toggle pill
     const toggle = document.createElement("span");
     toggle.className = "tag-label tag-toggle clickable-toggle";
     toggle.innerHTML = `USLs (${matching.length}) <span class="chevron">▼</span>`;
@@ -120,9 +119,9 @@ export function populateInventoryStats(results) {
       .sort((a, b) => b.QTY - a.QTY)
       .forEach(item => {
         const span = document.createElement("span");
-        span.className = "clickable-stat"; // <-- use clickable-stat for USLs
-        span.setAttribute("data-search", base.Num); // number into search
-        span.setAttribute("data-filter", item.USL); // usl into filter
+        span.className = "clickable-match";
+        span.setAttribute("data-search", base.Num);
+        span.setAttribute("data-filter", item.USL);
         span.textContent = item.USL;
         uslContainer.appendChild(span);
       });
@@ -140,5 +139,5 @@ export function populateInventoryStats(results) {
     statsBox.appendChild(card);
   });
 
-  setupParseStats(); // No params needed now
+  setupParseStats();
 }
