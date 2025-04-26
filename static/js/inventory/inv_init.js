@@ -8,7 +8,6 @@ import { populateInventoryStats } from "./inv_stats.js";
 import { setupInventoryDownloadSearch, setupInventoryDownloadHistory } from "./inv_downloads.js";
 import { highlightMatch } from '../search-utils.js';
 import { withLoadingToggle } from '../loading.js';
-import { scrollPanel } from '../panels.js';
 
 // ==============================
 // GLOBAL CONST
@@ -65,10 +64,6 @@ export function initializeInventoryApp() {
       noResults,
       sortDirection
     });
-
-    // Adjust Search Window
-    const header = document.querySelector('#inventory-search-panel .panel-header');
-    scrollPanel(header);
   }
 
   // ==============================
