@@ -10,7 +10,7 @@ const nonClosablePanels = [
   "downloads",
   "seniority-search-panel",
   "inventory-search-panel",
-  "scheduled-search-panel"
+  "scheduled-search-panel",
   "search-history-panel"
 ];
 
