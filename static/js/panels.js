@@ -11,6 +11,7 @@ const nonClosablePanels = [
   "seniority-search-panel",
   "inventory-search-panel",
   "scheduled-search-panel"
+  "search-history-panel"
 ];
 
 const nonClosableElements = [
