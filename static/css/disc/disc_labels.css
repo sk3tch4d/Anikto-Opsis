@@ -25,12 +25,18 @@
   color: #ccc;
 }
 
+
 .chevron {
   display: inline-block;
   margin-left: 6px;
   color: #bbb;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
+
+.toggle-open .chevron {
+  transform: rotate(180deg);
+}
+
 
 .toggle-open .chevron {
   transform: rotate(180deg);
