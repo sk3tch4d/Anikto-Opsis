@@ -5,7 +5,8 @@
 import { initDebugToggle } from './debugging.js';
 
 // ==============================
-
+// GLOBAL: CONST
+// ==============================
 const nonClosablePanels = [
   "downloads",
   "seniority-search-panel",
@@ -13,7 +14,6 @@ const nonClosablePanels = [
   "scheduled-search-panel",
   "search-history-panel"
 ];
-
 const nonClosableElements = [
   "BUTTON",
   "INPUT",
@@ -30,7 +30,6 @@ function enableBodyLock() {
   document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
 }
-
 function disableBodyLock() {
   document.documentElement.style.overflow = '';
   document.body.style.overflow = '';
@@ -40,27 +39,20 @@ function disableBodyLock() {
 // SCROLL TO HEADER
 // ==============================
 export function scrollPanel(header = null, yOffset = -14, delay = 10) {
-  
   if (!header) {
     console.warn('scrollPanel: No header found to scroll. Defaulted');
     const openPanel = document.querySelector('.panel.open');
     header = openPanel?.querySelector('.panel-header');
   }
-
   if (!header) return;
 
   const headerRect = header.getBoundingClientRect();
   const scrollTarget = headerRect.top + window.pageYOffset + yOffset;
 
-  console.log('[DEBUG] headerRect.top:', headerRect.top);
-  console.log('[DEBUG] pageYOffset:', window.pageYOffset);
-  console.log('[DEBUG] Final Scroll Target (y):', scrollTarget);
-
   setTimeout(() => {
     window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
   }, delay);
 }
-
 
 // ==============================
 // OPEN PANEL
@@ -82,15 +74,19 @@ export function openPanel(panelId) {
     header?.classList.add("open");
     body?.classList.add("open");
 
+    if (body) {
+      // ========== NEW: Lock the panel body height
+      body.style.minHeight = `${body.scrollHeight}px`;
+    }
+
     if (!wasOpen) {
       const onTransitionEnd = (e) => {
         if (e.propertyName !== 'max-height') return;
         body.removeEventListener('transitionend', onTransitionEnd);
-      
+
         requestAnimationFrame(() => {
           scrollPanel(header);
 
-          // Delay lock enough to let scroll visually apply
           setTimeout(() => {
             enableBodyLock();
           }, 500);
@@ -139,6 +135,11 @@ function closePanel(panel) {
   panel.classList.remove('open');
   header?.classList.remove('open');
   body?.classList.remove('open');
+
+  // ========== NEW: Unlock min-height when closing
+  if (body) {
+    body.style.minHeight = "";
+  }
 
   setTimeout(() => {
     document.getElementById('mobile-focus-reset')?.focus();
