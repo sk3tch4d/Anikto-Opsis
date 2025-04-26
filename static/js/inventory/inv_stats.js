@@ -39,9 +39,8 @@ export function populateInventoryStats(results) {
   matchesToggle.className = "tag-label tag-toggle clickable-toggle";
   matchesToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
 
-  // Create Matches Wrapper (hidden initially)
   const matchesWrapper = document.createElement("div");
-  matchesWrapper.className = "usl-wrapper"; // Reuse for collapse/expand behavior
+  matchesWrapper.className = "usl-wrapper";
 
   const matchContainer = document.createElement("div");
   matchContainer.className = "clickable-match-container";
@@ -49,20 +48,18 @@ export function populateInventoryStats(results) {
   uniqueNums.forEach(num => {
     const span = document.createElement("span");
     span.className = "clickable-match";
-    span.setAttribute("data-value", num);
+    span.setAttribute("data-search", num); // <-- update
     span.textContent = num;
     matchContainer.appendChild(span);
   });
 
   matchesWrapper.appendChild(matchContainer);
 
-  // Add toggle behavior
   matchesToggle.addEventListener("click", () => {
     matchesWrapper.classList.toggle("show");
     matchesToggle.classList.toggle("toggle-open");
   });
 
-  // Assemble into liMatches
   liMatches.appendChild(matchesToggle);
   liMatches.appendChild(matchesWrapper);
 
@@ -98,7 +95,7 @@ export function populateInventoryStats(results) {
       : "";
 
     const detailsHTML = `
-      <span class="tag-label">Stores Number:</span> <span class="clickable-stat" data-value="${base.Num}">${numberHTML}</span><br>
+      <span class="tag-label">Stores Number:</span> <span class="clickable-stat" data-search="${base.Num}">${numberHTML}</span><br>
       <span class="tag-label">Description:</span> ${descHTML}<br>
       <span class="tag-label">Total Quantity:</span> ${totalQty}${binInfo}<br>
       ${groupLine}
@@ -113,7 +110,6 @@ export function populateInventoryStats(results) {
     toggle.className = "tag-label tag-toggle clickable-toggle";
     toggle.innerHTML = `USLs (${matching.length}) <span class="chevron">▼</span>`;
 
-    // Create USL container (initially hidden)
     const uslWrapper = document.createElement("div");
     uslWrapper.className = "usl-wrapper";
 
@@ -124,27 +120,25 @@ export function populateInventoryStats(results) {
       .sort((a, b) => b.QTY - a.QTY)
       .forEach(item => {
         const span = document.createElement("span");
-        span.className = "clickable-match";
-        span.setAttribute("data-value", item.USL);
-        span.setAttribute("data-number", base.Num); 
+        span.className = "clickable-stat"; // <-- use clickable-stat for USLs
+        span.setAttribute("data-search", base.Num); // number into search
+        span.setAttribute("data-filter", item.USL); // usl into filter
         span.textContent = item.USL;
         uslContainer.appendChild(span);
       });
 
     uslWrapper.appendChild(uslContainer);
 
-    // Toggle behavior
     toggle.addEventListener("click", () => {
       uslWrapper.classList.toggle("show");
       toggle.classList.toggle("toggle-open");
     });
 
-    // Assemble
     card.appendChild(infoBlock);
     card.appendChild(toggle);
-    card.appendChild(uslWrapper);  
+    card.appendChild(uslWrapper);
     statsBox.appendChild(card);
   });
 
-  setupParseStats(".clickable-stat, .clickable-match", "inventory-search", "data-value");
+  setupParseStats(); // No params needed now
 }
