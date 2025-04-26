@@ -101,6 +101,6 @@ export function initializeInventoryApp() {
     setupInventoryDownloadSearch();
   }
   if (document.getElementById("inventory-history-download")) {
-  setupInventoryDownloadHistory();
+    setupInventoryDownloadHistory();
   }
 }
