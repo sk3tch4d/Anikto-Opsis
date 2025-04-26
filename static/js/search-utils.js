@@ -6,29 +6,6 @@
 import { openPanelById } from "./panels.js";
 
 // ==============================
-// FLASH INPUT HELPER
-// ==============================
-function flashInput(element) {
-  if (!element) return;
-
-  const flash = document.createElement("div");
-  flash.className = "flash-overlay";
-
-  // Important: The input's parent must be relative
-  const parent = element.parentElement;
-  if (parent && getComputedStyle(parent).position === "static") {
-    parent.style.position = "relative";
-  }
-
-  parent.appendChild(flash);
-
-  setTimeout(() => {
-    flash.remove();
-  }, 600); // match the animation length
-}
-
-
-// ==============================
 // TRIGGER SEARCH FROM STAT
 // ==============================
 export function searchFromStat(inputId, value) {
@@ -43,17 +20,9 @@ export function searchFromStat(inputId, value) {
 }
 
 // ==============================
-// PARSE TO SEARCH MODULE
+// PARSE TO SEARCH MODULE (Event Delegation, Simple)
 // ==============================
 export function setupParseStats() {
-
-  function flashInput(element) {
-    if (!element) return;
-    element.classList.remove("input-flash");
-    void element.offsetWidth; 
-    element.classList.add("input-flash");
-  }
-
   document.addEventListener("click", function(e) {
     const target = e.target.closest(".clickable-match, .clickable-stat");
 
@@ -68,13 +37,11 @@ export function setupParseStats() {
     if (filterValue && uslFilter) {
       uslFilter.value = filterValue;
       uslFilter.dispatchEvent(new Event("change"));
-      flashInput(uslFilter);  // <--- flash filter
     }
 
     if (searchValue && searchInput) {
       searchInput.value = searchValue;
       searchInput.dispatchEvent(new Event("input"));
-      flashInput(searchInput); // <--- flash search box
     }
   });
 }
