@@ -176,7 +176,7 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
         .catch(err => {
           if (err.name === "AbortError") {
             DEBUG_MODE && console.warn("[DEBUG] Fetch aborted.");
-            return; // Don't treat aborted fetch as a real error
+            return;
           }
           resultsList.innerHTML = "";
           elements.stats.innerHTML = "";
@@ -193,5 +193,5 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
   // Adjust Search Window
   const header = document.querySelector('#inventory-search-panel .panel-header');
   scrollPanel(header);
-  
+
 }, DEBOUNCE_DELAY);
