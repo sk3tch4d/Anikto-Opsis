@@ -1,10 +1,8 @@
 // ==============================
-// SEARCH_HISTORY.JS
+// INV_HISTORY.JS
 // Search History Renderer
 // ==============================
 
-//
- 
 function formatFriendlyTimestamp(date) {
   const now = new Date();
   const isToday = date.toDateString() === now.toDateString();
@@ -28,6 +26,18 @@ export function addSearchToHistory(term, uslFilter, results) {
   const now = new Date();
   const friendlyTimestamp = formatFriendlyTimestamp(now);
 
+  // Initialize history array if not present
+  window.inventorySearchHistory = window.inventorySearchHistory || [];
+
+  // Save this search to history memory
+  window.inventorySearchHistory.unshift({
+    timestamp: friendlyTimestamp,
+    search: term,
+    filter: uslFilter || "All",
+    matches: uniqueNums.join(", ")
+  });
+
+  // ===== Build Card =====
   const card = document.createElement("div");
   card.className = "compare-card";
 
@@ -40,18 +50,12 @@ export function addSearchToHistory(term, uslFilter, results) {
   timeLine.textContent = friendlyTimestamp;
   card.appendChild(timeLine);
 
-  // Search term
+  // Search Term + Filter
   const header = document.createElement("div");
-  header.innerHTML = `<span class="tag-label">Search:</span> ${term}`;
+  header.innerHTML = `<span class="tag-label">Search:</span> ${term}<br><span class="tag-label">Filter:</span> ${uslFilter || "All"}`;
   card.appendChild(header);
 
-  // Filter term
-  const filterLine = document.createElement("div");
-  filterLine.innerHTML = `<span class="tag-label">Filter:</span> ${uslFilter}`;
-  filterLine.style.marginBottom = "4px";
-  card.appendChild(filterLine);
-
-  // Toggle for matches
+  // Toggle Pill for Matches
   const matchesToggle = document.createElement("span");
   matchesToggle.className = "tag-label tag-toggle clickable-toggle";
   matchesToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
@@ -79,6 +83,7 @@ export function addSearchToHistory(term, uslFilter, results) {
 
   card.appendChild(matchesToggle);
   card.appendChild(matchesWrapper);
- 
+
+  // Insert at the top
   container.prepend(card);
 }
