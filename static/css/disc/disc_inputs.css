@@ -153,9 +153,9 @@ input[type="date"]:focus {
 /* KEYFRAMES: FLASH ANIMATION    */
 /* ============================= */
 @keyframes flashUpdate {
-  0% { background-color: #4c5698; }
-  50% { background-color: #6d77c7; }
-  100% { background-color: #4c5698; }
+  0% { border-color: #6d77c7; }
+  50% { border-color: #4c5698; }
+  100% { border-color: #6d77c7; }
 }
 
 .input-flash {
