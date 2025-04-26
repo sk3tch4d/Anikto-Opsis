@@ -1,7 +1,6 @@
 /* ==== LOADING SPINNER ==== */
 
 #loading {
-  position: fixed;
   display: none;
   text-align: center;
   padding: 2rem;
@@ -16,6 +15,8 @@
   height: 40px;
   animation: spin 1s linear infinite;
   margin: 1rem auto;
+  position: fixed;
+  pointer-events: none;
 }
 
 /* ==== KEYFRAMES ==== */
