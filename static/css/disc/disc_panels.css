@@ -11,7 +11,6 @@
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   width: clamp(320px, 85vw, 480px);
   box-sizing: border-box;
-  position: relative;
 }
 
 .panel.open {
@@ -33,9 +32,6 @@
   border-radius: 10px;
   text-align: center;
   transition: background 0.2s ease, color 0.2s ease;
-  position: sticky;
-  top: 0;
-  z-index: 2;
 }
 
 .panel.open > .panel-header {
@@ -56,12 +52,14 @@
 /* ============================= */
 /* PANEL - NO SHADOW             */
 /* ============================= */
+/* Remove box shadow from specific panels */
 .panel.no-shadow {
   box-shadow: none !important;
   background: transparent !important;
   border: none !important;
   padding: 0;
 }
+/* Ensure the elements keeps their own style */
 .panel.no-shadow .button.full-width {
   margin-top: 2rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -76,16 +74,13 @@
   overflow: hidden;
   padding: 0;
   transition: max-height 0.2s ease, padding 0.2s ease;
-  position: relative;
 }
 .panel-body.open {
   border-top: 1px solid #232529;
   border-bottom: 1px solid #232529;
-  overflow-y: auto;
-  max-height: 85vh;
+  max-height: 3000px;
   padding: 1rem;
   border-radius: 0 0 8px 8px;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* ============================= */
@@ -185,12 +180,13 @@ body.lock-scroll {
 .search-controls {
   flex: 0 0 auto;
 }
-
+/* Fixed .scrollable-fill logic */
 .scrollable-fill {
   flex: 1 1 auto;
   overflow-y: auto;
   margin-top: 1rem;
   padding: 1em;
+/*  padding-right: 0.5rem;  Space for scrollbar */
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
@@ -228,8 +224,8 @@ body.lock-scroll {
 /* ANIMATION: HEADER BOUNCE      */
 /* ============================= */
 @keyframes hover-bounce {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.06); }
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.06); }
   100% { transform: scale(1); }
 }
 
