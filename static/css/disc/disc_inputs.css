@@ -155,34 +155,17 @@ input[type="date"]:focus {
 }
 
 /* ============================= */
-/* INPUT: FLASH ANIMATION        */
+/* FLASH OVERLAY                 */
 /* ============================= */
-input.full-width.input-flash,
-select.input.full-width.input-flash {
-  position: relative;
-  overflow: visible; /* NOT hidden */
-}
-
-.input-flash::after {
-  content: "";
+.flash-overlay {
   position: absolute;
   top: -4px;
   left: -4px;
   right: -4px;
   bottom: -4px;
   border-radius: 26px;
-  box-shadow: 0 0 8px 4px rgba(114, 137, 218, 0.7);
-  animation: flashUpdate 0.6s ease;
   pointer-events: none;
-  z-index: 1; /* Sit behind the text */
-}
-
-
-/* ==============//============== */
-/* KEYFRAMES: FLASH ANIMATION    */
-/* ==============//============= */
-@keyframes flashUpdate {
-  0% { opacity: 0; }
-  50% { opacity: 1; }
-  100% { opacity: 0; }
+  animation: flashUpdate 0.6s ease;
+  box-shadow: 0 0 8px 4px rgba(114, 137, 218, 0.7);
+  z-index: 5;
 }
