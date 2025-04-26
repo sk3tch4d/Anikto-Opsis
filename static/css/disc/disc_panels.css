@@ -72,9 +72,11 @@
 /* PANEL BODY / TOGGLE BEHAVIOR  */
 /* ============================= */
 .panel-body {
+  overflow-y: auto;
+  transition: max-height 0.4s ease, min-height 0.4s ease;
+  max-height: 80vh; /* Maximum panel expansion */
+  min-height: 0;
   background-color: #2f3136;
-  max-height: 0;
-  overflow: hidden;
   padding: 0;
   transition: max-height 0.2s ease, padding 0.2s ease;
 }
