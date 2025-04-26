@@ -143,3 +143,20 @@ input[type="date"]:focus {
 .custom-date-display:hover {
   background-color: #36393f;
 }
+
+
+@keyframes flashUpdate {
+  0% {
+    background-color: #4c5698;
+  }
+  50% {
+    background-color: #6d77c7;
+  }
+  100% {
+    background-color: #4c5698;
+  }
+}
+
+.input-flash {
+  animation: flashUpdate 0.6s ease;
+}
