@@ -45,6 +45,11 @@ const elements = {
 };
 
 // ==============================
+// FETCH ABORT CONTROLLER
+// ==============================
+let currentFetchController = null;
+
+// ==============================
 // SCROLL RESTORE
 // ==============================
 function restoreScrollPosition(key = "inventoryScrollTop", delay = SCROLL_RESTORE_DELAY) {
@@ -60,19 +65,19 @@ function restoreScrollPosition(key = "inventoryScrollTop", delay = SCROLL_RESTOR
 // ==============================
 // FETCH HELPERS
 // ==============================
-function fetchWithTimeout(resource, options = {}, timeout = FETCH_TIMEOUT) {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeout);
+function fetchWithTimeout(resource, options = {}, timeout = FETCH_TIMEOUT, controller = null) {
+  const ctrl = controller || new AbortController();
+  const id = setTimeout(() => ctrl.abort(), timeout);
   return fetch(resource, {
     ...options,
-    signal: controller.signal
+    signal: ctrl.signal
   }).finally(() => clearTimeout(id));
 }
 
-async function fetchWithRetry(url, options = {}, retries = FETCH_RETRIES, delay = FETCH_RETRY_DELAY) {
+async function fetchWithRetry(url, options = {}, retries = FETCH_RETRIES, delay = FETCH_RETRY_DELAY, controller = null) {
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
-      return await fetchWithTimeout(url, options);
+      return await fetchWithTimeout(url, options, FETCH_TIMEOUT, controller);
     } catch (err) {
       if (attempt === retries) throw err;
       DEBUG_MODE && console.warn(`[DEBUG] Retry ${attempt + 1} failed. Retrying in ${delay}ms...`);
@@ -136,15 +141,22 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
     () => {
       noResults.style.display = "none";
 
+      // Cancel any previous fetch
+      if (currentFetchController) {
+        currentFetchController.abort();
+      }
+      currentFetchController = new AbortController();
+
       // Use cache if available
       if (searchCache.has(key)) {
         const cached = searchCache.get(key);
         renderInventoryResults(cached, term, resultsList);
         populateInventoryStats(cached);
+        addSearchToHistory(searchInput.value.trim(), uslFilter.value, cached);
         return;
       }
 
-      return fetchWithRetry(buildSearchUrl({ term, usl, sort, dir: sortDirection }))
+      return fetchWithRetry(buildSearchUrl({ term, usl, sort, dir: sortDirection }), {}, FETCH_RETRIES, FETCH_RETRY_DELAY, currentFetchController)
         .then(res => res.json())
         .then(data => {
           if (!data || !data.length) {
@@ -162,6 +174,10 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
           updateSearchCache(key, data);
         })
         .catch(err => {
+          if (err.name === "AbortError") {
+            DEBUG_MODE && console.warn("[DEBUG] Fetch aborted.");
+            return; // Don't treat aborted fetch as a real error
+          }
           resultsList.innerHTML = "";
           elements.stats.innerHTML = "";
           noResults.style.display = "block";
