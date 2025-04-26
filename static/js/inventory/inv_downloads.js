@@ -37,7 +37,6 @@ export function setupInventoryDownloadHistory() {
       return alert("No search history to download.");
     }
 
-    // Format history cleanly
     const formattedHistory = window.inventorySearchHistory.map(entry => ({
       "Timestamp": entry.timestamp,
       "Search Term": entry.search,
