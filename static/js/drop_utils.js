@@ -1,6 +1,6 @@
 // ==============================
 // DROP_UTILS MODULE
-// Handles button text, loading quotes, loading screen control
+// Handles Button/Loading Text
 // ==============================
 
 import { toggleLoadingState } from './loading.js';
@@ -21,7 +21,7 @@ const isUncleanedFile = name => UNCLEANED_REGEX.test(name);
 const isValidFile = name => /\.(pdf|xlsx|db)$/i.test(name);
 
 // ==============================
-// REFRESH DROPZONE UI (on file change)
+// REFRESH DROPZONE UI
 // ==============================
 export function refreshDropUI() {
   updateGenerateButtonText();
@@ -32,7 +32,7 @@ export function refreshDropUI() {
 // ==============================
 function updateGenerateButtonText() {
   const fileInput = document.getElementById("file-input");
-  const generateBtn = document.getElementById("generate");
+  const generateBtn = document.getElementById("processing");
   if (!generateBtn) return;
 
   const uploadedFiles = fileInput?.files ? Array.from(fileInput.files) : [];
@@ -62,12 +62,43 @@ function updateGenerateButtonText() {
 }
 
 // ==============================
-// UPDATE LOADING TEXT (smart based on file)
+// GEN TEXT HANDLING
 // ==============================
-function updateLoadingText() {
-  const quoteEl = document.getElementById("quote");
-  if (!quoteEl) return;
+let upTexts = {};
 
+export function initUpTexts() {
+  fetch('/static/drop_texts.json')
+    .then(response => response.json())
+    .then(data => {
+      upTexts = data;
+    })
+    .catch(error => {
+      console.error("Failed to load drop texts:", error);
+    });
+}
+
+export function updateGenText(typeKey) {
+  const statusEl = document.getElementById("generating");
+  if (!statusEl) return;
+
+  const matchingTexts = upTexts[typeKey];
+  if (!Array.isArray(matchingTexts) || matchingTexts.length === 0) {
+    statusEl.textContent = "Generating your report...";
+    return;
+  }
+
+  statusEl.textContent = matchingTexts[Math.floor(Math.random() * matchingTexts.length)];
+
+  // Optional: smooth fade
+  statusEl.classList.remove('show');
+  void statusEl.offsetWidth;
+  statusEl.classList.add('show');
+}
+
+// ==============================
+// DETECT FILE TYPE
+// ==============================
+function detectFileTypeKey() {
   const fileInput = document.getElementById("file-input");
   const uploadedFiles = fileInput?.files ? Array.from(fileInput.files) : [];
   const existingCheckboxes = document.querySelectorAll('input[name="existing_pdfs"]:checked');
@@ -85,49 +116,19 @@ function updateLoadingText() {
   ];
 
   const matched = typeMatchers.find(t => allFiles.some(t.match));
-  const typeKey = matched ? matched.key : 'default';
-
-  uploadTextSettings(typeKey);
+  return matched ? matched.key : 'default';
 }
 
 // ==============================
-// UPLOAD TEXT SETTINGS (dynamic smart file quotes)
-// ==============================
-let upTexts = {};
-
-export function initUpTexts() {
-  fetch('/static/drop_texts.json')
-    .then(response => response.json())
-    .then(data => {
-      upTexts = data;
-    })
-    .catch(error => {
-      console.error("Failed to load drop texts:", error);
-    });
-}
-
-function uploadTextSettings(typeKey) {
-  const quoteEl = document.getElementById("quote");
-  if (!quoteEl) return;
-
-  const matchingTexts = upTexts[typeKey];
-  if (!Array.isArray(matchingTexts) || matchingTexts.length === 0) {
-    quoteEl.textContent = "Generating your report...";
-    return;
-  }
-
-  quoteEl.textContent = matchingTexts[Math.floor(Math.random() * matchingTexts.length)];
-}
-
-// ==============================
-// START FORM LOADING UI (handles everything when form submitted)
+// START FORM LOADING UI
 // ==============================
 export function startFormLoadingUI() {
   toggleLoadingState(true, {
     show: [document.getElementById("loading")],
     hide: [document.getElementById("upload-form")]
   });
-  
-  updateLoadingText();
+
+  const typeKey = detectFileTypeKey();
+  updateGenText(typeKey);
   displayRandomQuote();
 }
