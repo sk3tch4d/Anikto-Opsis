@@ -6,8 +6,7 @@
 import { doInventorySearch } from "./inv_search.js";
 import { populateInventoryStats } from "./inv_stats.js";
 import { setupInventoryDownloadSearch, setupInventoryDownloadHistory } from "./inv_downloads.js";
-import { highlightMatch } from '../search-utils.js';
-import { withLoadingToggle } from '../loading.js';
+import { highlightMatch } from '../search-utils.js'; 
 
 // ==============================
 // GLOBAL CONST
@@ -84,9 +83,8 @@ export function initializeInventoryApp() {
   // ==============================
   window.addEventListener("beforeunload", () => {
     localStorage.setItem("inventoryScrollTop", window.scrollY);
-    // Adjust Search Window
     const header = document.querySelector('#inventory-search-panel .panel-header');
-    scrollPanel(header);
+    if (header) scrollPanel(header); // safe guard
   });
 
   // ==============================
