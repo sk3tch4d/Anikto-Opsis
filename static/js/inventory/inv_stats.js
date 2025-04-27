@@ -31,7 +31,6 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
     span.className = "clickable-match";
     span.textContent = text;
 
-    // Apply any custom attributes
     for (const [attr, value] of Object.entries(itemAttributes)) {
       span.setAttribute(attr, typeof value === "function" ? value(text) : value);
     }
@@ -44,12 +43,6 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
   });
 
   wrapper.appendChild(container);
-
-  // Auto-expand small lists
-  if (items.length <= 3) {
-    wrapper.classList.add("show");
-    toggle.classList.add("toggle-open");
-  }
 
   toggle.addEventListener("click", () => {
     wrapper.classList.toggle("show");
@@ -98,7 +91,8 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
 
   card.appendChild(infoBlock);
 
-  if (currentFilter === "All") {
+  // Only add the toggle list if the filter is "all"
+  if (currentFilter === "all") {
     const { toggle, wrapper: uslWrapper } = createToggleList({
       label: "USLs",
       items: matching.map(item => item.USL),
@@ -127,7 +121,7 @@ export function populateInventoryStats(results) {
   const currentSearch = searchInput?.value.trim() || "(None)";
 
   const filterInput = document.getElementById("inventory-filter");
-  const currentFilter = filterInput?.value.trim() || "All";
+  const currentFilter = (filterInput?.value.trim().toLowerCase()) || "all"; // Normalize to lowercase
 
   const uniqueNums = [...new Set(results.map(item => item.Num))];
 
@@ -181,6 +175,14 @@ export function populateInventoryStats(results) {
     const card = createInventoryItemCard(matching, base, currentSearch, currentFilter);
     statsBox.appendChild(card);
   });
+
+  // ====== Show "No Results Found" if none ======
+  if (!uniqueNums.length) {
+    const noResults = document.createElement("div");
+    noResults.className = "no-results";
+    noResults.textContent = "No results found.";
+    statsBox.appendChild(noResults);
+  }
 
   setupParseStats();
 }
