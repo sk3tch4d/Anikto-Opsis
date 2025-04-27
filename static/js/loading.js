@@ -1,33 +1,34 @@
 // ==============================
-// LOADING TOGGLER
+// LOADING.JS — Loading Spinner Control
 // ==============================
-export function toggleLoadingState(isLoading, { show, hide } = {}) {
-  if (!show || !hide) return;
 
-  show.forEach(el => {
-    if (el) el.style.display = isLoading ? "block" : "none";
-  });
 
-  hide.forEach(el => {
-    if (el) el.style.display = isLoading ? "none" : "block";
-  });
+// ==============================
+// SHOW LOADING
+// ==============================
+export function showLoading(spinnerTarget = document.getElementById('loading')) {
+  if (!spinnerTarget) return;
+
+  spinnerTarget.style.display = 'block';
+
+  // Create a spinner if not already inside
+  if (!spinnerTarget.querySelector('.spinner')) {
+    const spinner = document.createElement('div');
+    spinner.className = 'spinner';
+    spinnerTarget.appendChild(spinner);
+  }
 }
 
 // ==============================
-// LOADING WRAPPER
+// HIDE LOADING
 // ==============================
-export function withLoadingToggle({ show, hide }, task = () => {}) {
-  const run = () => {
-    toggleLoadingState(true, { show, hide });
+export function hideLoading(spinnerTarget = document.getElementById('loading')) {
+  if (!spinnerTarget) return;
 
-    Promise.resolve(task()).finally(() => {
-      toggleLoadingState(false, { show, hide });
-    });
-  };
+  spinnerTarget.style.display = 'none';
 
-  if (document.readyState === "complete" || document.readyState === "interactive") {
-    run();
-  } else {
-    document.addEventListener("DOMContentLoaded", run);
+  const spinner = spinnerTarget.querySelector('.spinner');
+  if (spinner) {
+    spinner.remove();
   }
 }
