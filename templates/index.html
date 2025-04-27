@@ -21,14 +21,6 @@
   <div id="upload-form" class="index-upload">
     <form method="POST" enctype="multipart/form-data">
 
-      <!-- Loading Spinner and Text -->
-      <div id="loading">
-        <div class="spinner"></div>
-        <p>Generating your report...</p>
-        <br>
-        <p id="quote" style="font-style: italic;"></p>
-      </div>
-
       <!-- Upload Input -->
       <label for="file-input" class="drop-zone" id="drop-zone">
         <span class="drop-text">Tap or Drop files here</span>
@@ -63,10 +55,19 @@
       </div>
 
     </form>
+  </div>
 
-    {% if error %}
-      <div class="error">{{ error }}</div>
-    {% endif %}
+  <!-- Quote + Loading OUTSIDE the upload-form -->
+  {% if error %}
+    <div class="error">{{ error }}</div>
+  {% endif %}
+
+  <p id="loading-text" style="display: none;">Generating your report...</p>
+  <p id="quote" style="display: none; font-style: italic;"></p>
+
+  <!-- Loading Spinner -->
+  <div id="loading" style="display: none;">
+    <div class="spinner"></div>
   </div>
 
   <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
