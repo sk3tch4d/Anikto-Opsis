@@ -6,3 +6,8 @@ form.button-form {
   display: flex;
   justify-content: center;
 }
+
+#quote {
+  display: none;
+  font-style: italic;
+}
