@@ -11,6 +11,7 @@
 import os
 import re
 import config
+import tempfile
 from config import UPLOAD_FOLDER
 from flask import (
     request,
@@ -24,6 +25,7 @@ from dataman import (
     import_shifts_from_json,
     import_shifts_from_csv,
 )
+from inv_cleaner import clean_xlsx
 from report import get_working_on_date, get_shifts_for_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
@@ -61,6 +63,31 @@ def register_routes(app):
         direction = request.args.get("dir", "desc")
         results = search_inventory(config.INVENTORY_DF, term, usl, sort, direction)
         return jsonify(results)
+
+    @app.route("/clean-inventory-xlsx", methods=["POST"])
+    def clean_inventory_xlsx():
+        file = request.files.get('file')
+        if not file:
+            return jsonify({"error": "No file uploaded"}), 400
+
+        try:
+            tmp_path = clean_xlsx_and_save(file)
+            response = send_file(tmp_path, as_attachment=True, download_name='cleaned_inventory.xlsx')
+
+            @response.call_on_close
+            def cleanup():
+                try:
+                    os.unlink(tmp_path)
+                except Exception as e:
+                    app.logger.error(f"Error deleting temp file: {e}")
+
+            return response
+
+        except ValueError as ve:
+            return jsonify({"error": str(ve)}), 400
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
 
 
     # ==============================
