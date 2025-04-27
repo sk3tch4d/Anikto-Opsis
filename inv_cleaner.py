@@ -43,7 +43,7 @@ def clean_xlsx(file_stream):
 
     # 2. Drop rows where 'Description' starts with XX or XXX
     if 'Description' in df.columns:
-        pattern = r'^(XX|XXX)'
+        pattern = r'^(xx|xxx|XX|XXX)'
         df = df[~df['Description'].astype(str).str.match(pattern)]
 
     # 3. Drop rows containing 'DELETED' in any cell
