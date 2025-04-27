@@ -46,7 +46,7 @@ function setupFormBehavior() {
   form.addEventListener("submit", () => {
     const uploadForm = document.getElementById("upload-form");
 
-    showLoading('loading'); // PATCH: pass ID as STRING now
+    showLoading('loading');
 
     if (uploadForm) {
       uploadForm.style.display = 'none';
