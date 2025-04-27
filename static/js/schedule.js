@@ -1,6 +1,8 @@
 // ==============================
-// SCHEDULE MODULE
+// ARG_SCHEDULE.JS MODULE
 // ==============================
+
+import { showPanelSpinner, hidePanelSpinner } from "../loading.js"; // ✅ NEW
 
 // ==============================
 // FETCH SCHEDULE DATA
@@ -8,13 +10,13 @@
 export async function fetchWorkingOnDate() {
   const dateInput = document.getElementById('working-date');
   const resultsDiv = document.getElementById('working-date-results');
-  const loadingDiv = document.getElementById('working-date-loading');
 
   if (!dateInput || !dateInput.value) return;
 
   const dateStr = dateInput.value;
   if (resultsDiv) resultsDiv.innerHTML = "";
-  if (loadingDiv) loadingDiv.style.display = "block";
+
+  showPanelSpinner(); // ✅ NEW
 
   try {
     const response = await fetch(`/api/working_on_date?date=${dateStr}`);
@@ -41,7 +43,7 @@ export async function fetchWorkingOnDate() {
   } catch (err) {
     if (resultsDiv) resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
   } finally {
-    if (loadingDiv) loadingDiv.style.display = "none";
+    hidePanelSpinner(); // ✅ NEW
   }
 }
 
