@@ -6,12 +6,13 @@
 // ==============================
 // SHOW LOADING
 // ==============================
-export function showLoading(spinnerTarget = document.getElementById('loading')) {
+export function showLoading(spinnerId = 'loading') {
+  const spinnerTarget = document.getElementById(spinnerId);
   if (!spinnerTarget) return;
 
   spinnerTarget.style.display = 'block';
 
-  // Create a spinner if not already inside
+  // Ensure spinner element exists
   if (!spinnerTarget.querySelector('.spinner')) {
     const spinner = document.createElement('div');
     spinner.className = 'spinner';
@@ -22,7 +23,8 @@ export function showLoading(spinnerTarget = document.getElementById('loading')) 
 // ==============================
 // HIDE LOADING
 // ==============================
-export function hideLoading(spinnerTarget = document.getElementById('loading')) {
+export function hideLoading(spinnerId = 'loading') {
+  const spinnerTarget = document.getElementById(spinnerId);
   if (!spinnerTarget) return;
 
   spinnerTarget.style.display = 'none';
