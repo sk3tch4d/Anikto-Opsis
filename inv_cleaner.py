@@ -3,39 +3,42 @@
 # ==============================
 
 import pandas as pd
-import json
 import os
 import tempfile
 from datetime import datetime
 
 # ==============================
-# DEFAULT CONFIG PATH
+# COLUMN CONFIG
 # ==============================
-DEFAULT_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "inv_xlsx_filters.json")
+
+COLUMN_RENAMES = {
+    "SLoc": "USL",
+    "Sloc": "USL",
+    "Mat. #": "Material",
+    "Material": "Material",
+    "Material Description": "Description",
+    "Material description": "Description",
+    "Un": "UOM",
+    "U/M": "UOM",
+    "Matl grp": "Goup",
+    "Material Group": "Goup",
+    "Replenishmt qty": "ROQ",
+    "Reorder point": "ROP",
+    "Old Material Number": "Old Material",
+    "Created": "Created",
+    "Cost ctr": "Cost Center",
+    "Vendor's Name": "Vendor Name",
+    "Vendor material numTer": "Vendor Material"
+}
+
+REMOVE_COLUMNS = [
+    "StL", "Mat", "Pl", "Plnt", "Un.1", "Un.2",
+    "Latex/Expiry Information", "Person responsible",
+    "Stge loc. descr.", "MRPC", "Type", "Plant", "Del"
+]
 
 # ==============================
-# Load Config Utility
-# ==============================
-def load_config(config_path=DEFAULT_CONFIG_PATH):
-    try:
-        with open(config_path, "r") as f:
-            config = json.load(f)
-        
-        # Normalize keys same as Excel columns
-        raw_renames = config.get("column_renames", {})
-        normalized_renames = {
-            re.sub(r"\s+", " ", k.strip()): v for k, v in raw_renames.items()
-        }
-        remove_columns = [
-            re.sub(r"\s+", " ", col.strip()) for col in config.get("remove_columns", [])
-        ]
-        return normalized_renames, remove_columns
-
-    except FileNotFoundError:
-        return {}, []
-
-# ==============================
-# Autofit Columns Utility
+# Utility: Autofit Columns
 # ==============================
 def autofit_columns(worksheet, max_width=40, min_width=10, padding=2):
     for col_cells in worksheet.columns:
@@ -49,19 +52,16 @@ def autofit_columns(worksheet, max_width=40, min_width=10, padding=2):
 # ==============================
 # CLEAN XLSX
 # ==============================
-def clean_xlsx(file_stream, config_path=None):
-    column_renames, remove_columns = load_config(config_path or DEFAULT_CONFIG_PATH)
-
+def clean_xlsx(file_stream):
     df = pd.read_excel(file_stream)
 
-    # Normalize columns
+    # Normalize columns early
     df.columns = df.columns.str.strip().str.replace(r"\s+", " ", regex=True)
 
-    # 1. Rename
-    if column_renames:
-        df.rename(columns={k: v for k, v in column_renames.items() if k in df.columns}, inplace=True)
+    # 1. Rename columns
+    df.rename(columns={k: v for k, v in COLUMN_RENAMES.items() if k in df.columns}, inplace=True)
 
-    # 2. Drop rows: Description starts with XX or XXX (case insensitive)
+    # 2. Drop rows: Description starts with XX or XXX
     if 'Description' in df.columns:
         df = df[~df['Description'].astype(str).str.match(r'^(XX|XXX)', case=False, na=False)]
 
@@ -70,33 +70,27 @@ def clean_xlsx(file_stream, config_path=None):
     df = df[~mask_deleted]
 
     # 4. Drop rows where 'Mat', 'Pl', or 'Del' == 'X'
-    cols_to_check = []
-    for original_col in ['Mat', 'Pl', 'Del']:
-        new_col = column_renames.get(original_col, original_col)
-        if new_col in df.columns:
-            cols_to_check.append(new_col)
-
-    for col in cols_to_check:
-        df = df[df[col].astype(str).str.upper() != 'X']
+    for col in ['Mat', 'Pl', 'Del']:
+        if col in df.columns:
+            df = df[df[col].astype(str).str.upper() != 'X']
 
     # 5. Drop duplicate columns
     if df.columns.duplicated().any():
         df = df.loc[:, ~df.columns.duplicated()]
 
     # 6. Remove unwanted columns
-    if remove_columns:
-        df.drop(columns=[col for col in remove_columns if col in df.columns], inplace=True, errors='ignore')
+    df.drop(columns=[col for col in REMOVE_COLUMNS if col in df.columns], inplace=True, errors='ignore')
 
     return df
 
 # ==============================
 # CLEANER SAVE AND RETURN
 # ==============================
-def clean_xlsx_and_save(file_stream, config_path=None):
+def clean_xlsx_and_save(file_stream):
     if not file_stream.filename.lower().endswith('.xlsx'):
         raise ValueError("Invalid file format. Please upload an .xlsx file.")
 
-    cleaned_df = clean_xlsx(file_stream, config_path)
+    cleaned_df = clean_xlsx(file_stream)
 
     base_filename = os.path.splitext(os.path.basename(file_stream.filename))[0]
     today = datetime.now().strftime("%Y-%m-%d")
