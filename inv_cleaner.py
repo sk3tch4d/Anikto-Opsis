@@ -22,8 +22,19 @@ def load_config(config_path=DEFAULT_CONFIG_PATH):
             config = json.load(f)
         return config.get("column_renames", {}), config.get("remove_columns", [])
     except FileNotFoundError:
-        # fallback if config is missing
         return {}, []
+
+# ==============================
+# Autofit Columns Utility
+# ==============================
+def autofit_columns(worksheet, max_width=40, min_width=10, padding=2):
+    for col_cells in worksheet.columns:
+        lengths = [len(str(cell.value)) if cell.value is not None else 0 for cell in col_cells]
+        if lengths:
+            best_fit = max(lengths) + padding
+            best_fit = min(max(best_fit, min_width), max_width)
+            col_letter = col_cells[0].column_letter
+            worksheet.column_dimensions[col_letter].width = best_fit
 
 # ==============================
 # CLEAN XLSX
@@ -33,32 +44,33 @@ def clean_xlsx(file_stream, config_path=None):
 
     df = pd.read_excel(file_stream)
 
-    # 1. Rename columns immediately
+    # Normalize columns
+    df.columns = df.columns.str.strip().str.replace(r"\s+", " ", regex=True)
+
+    # 1. Rename
     if column_renames:
         df.rename(columns={k: v for k, v in column_renames.items() if k in df.columns}, inplace=True)
 
-    # 2. Drop rows: Description starts with XX or XXX (case insensitive)
+    # 2. Drop rows starting with XX or XXX
     if 'Description' in df.columns:
         df = df[~df['Description'].astype(str).str.match(r'^(XX|XXX)', case=False, na=False)]
 
-    # 3. Drop rows: any 'DELETED' anywhere
+    # 3. Drop rows with 'DELETED' anywhere
     mask_deleted = df.astype(str).apply(lambda x: x.str.contains('DELETED', case=False, na=False)).any(axis=1)
     df = df[~mask_deleted]
 
-    # 4. Drop rows: 'Mat', 'Pl', or 'Del' == 'X'
+    # 4. Drop rows where 'Mat', 'Pl', or 'Del' == 'X'
     for col in ['Mat', 'Pl', 'Del']:
         if col in df.columns:
             df = df[df[col].astype(str).str.upper() != 'X']
 
-    # 5. Drop duplicate columns if any
+    # 5. Drop duplicate columns
     if df.columns.duplicated().any():
         df = df.loc[:, ~df.columns.duplicated()]
 
-    # 6. Remove unwanted columns
+    # 6. Drop unwanted columns
     if remove_columns:
-        cols_to_drop = [col for col in remove_columns if col in df.columns]
-        if cols_to_drop:
-            df.drop(columns=cols_to_drop, inplace=True)
+        df.drop(columns=[col for col in remove_columns if col in df.columns], inplace=True, errors='ignore')
 
     return df
 
@@ -82,16 +94,6 @@ def clean_xlsx_and_save(file_stream, config_path=None):
         workbook = writer.book
         worksheet = writer.sheets["Sheet1"]
 
-        max_width = 40
-        min_width = 10
-        padding = 2
-
-        for col_cells in worksheet.columns:
-            lengths = [len(str(cell.value)) if cell.value is not None else 0 for cell in col_cells]
-            if lengths:
-                best_fit = max(lengths) + padding
-                best_fit = min(max(best_fit, min_width), max_width)
-                col_letter = col_cells[0].column_letter
-                worksheet.column_dimensions[col_letter].width = best_fit
+        autofit_columns(worksheet)
 
     return cleaned_path, cleaned_filename
