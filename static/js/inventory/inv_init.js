@@ -7,7 +7,7 @@ import { doInventorySearch } from "./inv_search.js";
 import { populateInventoryStats } from "./inv_stats.js";
 import { setupInventoryDownloadSearch, setupInventoryDownloadHistory } from "./inv_downloads.js";
 import { highlightMatch } from '../search-utils.js';
-import { scrollPanel } from '..panels.js';
+import { scrollPanel } from '../panels.js';
 
 // ==============================
 // GLOBAL CONST
