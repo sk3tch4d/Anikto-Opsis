@@ -1,37 +1,75 @@
 // ==============================
-// DROP_UTILS.JS - HANDLE DYNAMIC
+// DROP_UTILS MODULE
+// Button text logic and file type matchers
 // ==============================
 
-let upTexts = {};
-const drop_text = '/static/drop_texts.json';
+const DEBUG_MODE = false;
 
 // ==============================
-// LOAD ALL DYNAMIC TEXTS
+// FILE TYPE MATCHERS
 // ==============================
-export function initUpTexts() {
-  fetch(drop_text)
-    .then(response => response.json())
-    .then(data => {
-      upTexts = data;
-    })
-    .catch(error => {
-      console.error("Failed to load up texts:", error);
-    });
-}
+const CATALOG_REGEX = /(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$/i;
+const ARG_REGEX = /(arg|flowsheet).*?\.(pdf)$/i;
+const SENIORITY_REGEX = /(cupe).*seniority.*(list)?.*\.xlsx$/i;
+const UNCLEANED_REGEX = /(list|ven|vendor|cost|usl|cc).*\.xlsx$/i;
+
+export const isCatalogFile = name => CATALOG_REGEX.test(name);
+export const isArgFile = name => ARG_REGEX.test(name);
+export const isSeniorityFile = name => SENIORITY_REGEX.test(name);
+export const isUncleanedFile = name => UNCLEANED_REGEX.test(name);
+export const isValidFile = name => /\.(pdf|xlsx|db)$/i.test(name);
 
 // ==============================
-// DYNAMIC SET UPLOAD SETTINGS
+// UPDATE GENERATE BUTTON TEXT
 // ==============================
-export function uploadTextSettings(typeKey) {
-  const quoteEl = document.getElementById("quote");
-  if (!quoteEl || !upTexts) return;
+export function updateGenerateButtonText() {
+  const fileInput = document.getElementById("file-input");
+  const generateBtn = document.getElementById("generate");
+  if (!generateBtn) return;
 
-  const matchingTexts = upTexts[typeKey];
-  
-  if (!Array.isArray(matchingTexts) || matchingTexts.length === 0) {
-    quoteEl.textContent = "Generating your report...";
+  const uploadedFiles = fileInput?.files ? Array.from(fileInput.files) : [];
+  const existingCheckboxes = document.querySelectorAll('input[name="existing_pdfs"]:checked');
+  const existingFiles = Array.from(existingCheckboxes).map(cb => cb.value);
+
+  const allFiles = uploadedFiles.map(f => f.name.trim())
+    .concat(existingFiles.map(name => name.trim()));
+
+  const fileNames = allFiles
+    .map(name => name.toLowerCase())
+    .filter(isValidFile);
+
+  if (DEBUG_MODE) {
+    console.log("[DEBUG] Selected valid files:", fileNames);
+    const invalid = allFiles.filter(name => !isValidFile(name));
+    if (invalid.length) {
+      console.warn("[DEBUG] Invalid file types excluded:", invalid);
+    }
+  }
+
+  if (fileNames.length === 0) {
+    generateBtn.textContent = "Generate";
+    generateBtn.disabled = true;
     return;
   }
 
-  quoteEl.textContent = matchingTexts[Math.floor(Math.random() * matchingTexts.length)];
+  // Declarative matching
+  const typeMatchers = [
+    { label: "Generate Catalog", match: isCatalogFile },
+    { label: "Generate Seniority Summary", match: isSeniorityFile },
+    { label: "Generate ARG Summary", match: isArgFile },
+    { label: "Generate Cleaned File", match: isUncleanedFile }
+  ];
+
+  const match = typeMatchers.find(t => fileNames.some(t.match));
+  generateBtn.textContent = match ? match.label : "Generate";
+
+  if (DEBUG_MODE) {
+    if (match) {
+      console.log(`[DEBUG] Matched: ${match.label}`);
+    } else {
+      console.log("[DEBUG] No file type matched.");
+    }
+  }
+
+  generateBtn.disabled = false;
 }
