@@ -4,59 +4,35 @@
 
 
 // ==============================
-// SHOW LOADING
+// LOADING TOGGLER
 // ==============================
-export function showLoading(spinnerId = 'loading') {
-  const spinnerTarget = document.getElementById(spinnerId);
-  if (!spinnerTarget) return;
+export function toggleLoadingState(isLoading, { show, hide } = {}) {
+  if (!show || !hide) return;
 
-  spinnerTarget.style.display = 'block';
+  show.forEach(el => {
+    if (el) el.style.display = isLoading ? "block" : "none";
+  });
 
-  // Ensure spinner element exists
-  if (!spinnerTarget.querySelector('.spinner')) {
-    const spinner = document.createElement('div');
-    spinner.className = 'spinner';
-    spinnerTarget.appendChild(spinner);
-  }
+  hide.forEach(el => {
+    if (el) el.style.display = isLoading ? "none" : "block";
+  });
 }
 
 // ==============================
-// HIDE LOADING
+// LOADING WRAPPER
 // ==============================
-export function hideLoading(spinnerId = 'loading') {
-  const spinnerTarget = document.getElementById(spinnerId);
-  if (!spinnerTarget) return;
+export function withLoadingToggle({ show, hide }, task = () => {}) {
+  const run = () => {
+    toggleLoadingState(true, { show, hide });
 
-  spinnerTarget.style.display = 'none';
+    Promise.resolve(task()).finally(() => {
+      toggleLoadingState(false, { show, hide });
+    });
+  };
 
-  const spinner = spinnerTarget.querySelector('.spinner');
-  if (spinner) {
-    spinner.remove();
-  }
-}
-
-// ==============================
-// SHOW PANEL LOADING
-// ==============================
-export function showPanelSpinner() {
-  const openPanel = document.querySelector('.panel.open');
-  if (!openPanel) return;
-  const spinner = openPanel.querySelector('.panel-loading');
-  if (spinner) {
-    spinner.classList.add('show');
-    spinner.style.display = 'block';
-  }
-}
-
-// ==============================
-// HIDE PANEL LOADING
-// ==============================
-export function hidePanelSpinner() {
-  const openPanel = document.querySelector('.panel.open');
-  if (!openPanel) return;
-  const spinner = openPanel.querySelector('.panel-loading');
-  if (spinner) {
-    spinner.classList.remove('show');
-    spinner.style.display = 'none';
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    run();
+  } else {
+    document.addEventListener("DOMContentLoaded", run);
   }
 }
