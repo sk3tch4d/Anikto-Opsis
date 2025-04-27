@@ -3,12 +3,13 @@
 // ==============================
 
 let upTexts = {};
+const drop_text = '/static/drop_texts.json';
 
 // ==============================
 // LOAD ALL DYNAMIC TEXTS
 // ==============================
 export function initUpTexts() {
-  fetch('/static/up_texts.json')
+  fetch(drop_text)
     .then(response => response.json())
     .then(data => {
       upTexts = data;
@@ -26,9 +27,11 @@ export function uploadTextSettings(typeKey) {
   if (!quoteEl || !upTexts) return;
 
   const matchingTexts = upTexts[typeKey];
-  if (Array.isArray(matchingTexts) && matchingTexts.length > 0) {
-    quoteEl.textContent = matchingTexts[Math.floor(Math.random() * matchingTexts.length)];
-  } else {
+  
+  if (!Array.isArray(matchingTexts) || matchingTexts.length === 0) {
     quoteEl.textContent = "Generating your report...";
+    return;
   }
+
+  quoteEl.textContent = matchingTexts[Math.floor(Math.random() * matchingTexts.length)];
 }
