@@ -2,7 +2,7 @@
 /* DISC_CARDS.CSS          */
 /* ======================= */
 
-/* ==== GLOBAL LOADING SPINNER (e.g., index page) ==== */
+/* ==== LOADING SPINNER ==== */
 #loading {
   display: none;
   text-align: center;
@@ -10,7 +10,6 @@
   font-size: 1.2rem;
   color: #7289da;
 }
-
 .spinner {
   border: 4px solid rgba(255, 255, 255, 0.1);
   border-top: 4px solid #7289da;
@@ -19,26 +18,7 @@
   height: 40px;
   animation: spin 1s linear infinite;
   margin: 1rem auto;
-  pointer-events: none;
 }
-
-/* ==== PANEL-BASED SPINNER ==== */
-.panel-loading {
-  display: none; /* DEFAULT HIDDEN */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.panel-loading.show {
-  display: block;
-  opacity: 1;
-}
-
 
 /* ==== KEYFRAMES ==== */
 @keyframes spin {
