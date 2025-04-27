@@ -26,9 +26,8 @@ function setupFormBehavior() {
   const form = document.querySelector("form");
   if (!form) return;
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    startFormLoadingUI(); 
+  form.addEventListener("submit", () => {
+    startFormLoadingUI();
   });
 }
 
