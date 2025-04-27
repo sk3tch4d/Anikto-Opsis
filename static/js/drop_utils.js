@@ -67,7 +67,7 @@ function updateGenerateButtonText() {
 let upTexts = {};
 
 export function initUpTexts() {
-  fetch('/static/drop_texts.json')
+  fetch('/static/drop_text.json')
     .then(response => response.json())
     .then(data => {
       upTexts = data;
