@@ -20,7 +20,17 @@ def load_config(config_path=DEFAULT_CONFIG_PATH):
     try:
         with open(config_path, "r") as f:
             config = json.load(f)
-        return config.get("column_renames", {}), config.get("remove_columns", [])
+        
+        # Normalize keys same as Excel columns
+        raw_renames = config.get("column_renames", {})
+        normalized_renames = {
+            re.sub(r"\s+", " ", k.strip()): v for k, v in raw_renames.items()
+        }
+        remove_columns = [
+            re.sub(r"\s+", " ", col.strip()) for col in config.get("remove_columns", [])
+        ]
+        return normalized_renames, remove_columns
+
     except FileNotFoundError:
         return {}, []
 
