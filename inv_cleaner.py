@@ -11,6 +11,7 @@ from datetime import datetime
 # ==============================
 
 COLUMN_RENAMES = {
+    "SLoc": "USL",
     "Sloc": "USL",
     "Mat. #": "Material",
     "Material": "Material",
