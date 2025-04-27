@@ -1,5 +1,5 @@
 # ==============================
-# INDEX HANDLER: Upload & Routing
+# INDEX HANDLER: UPLOAD & ROUTE
 # ==============================
 
 import os
@@ -11,6 +11,7 @@ from config import UPLOAD_FOLDER, DEBUG_MODE, CATALOG_REGEX, SENIORITY_REGEX
 from inventory import load_inventory_data
 from seniority import load_seniority_file
 from report import process_report
+from inv_cleaner import clean_xlsx_and_save  # <-- NEW: importing cleaning function
 
 # ==============================
 # MAIN ENTRYPOINT
@@ -36,7 +37,7 @@ def process_index_upload():
 
     def handle_seniority(file, fname_lower):
         nonlocal seniority_df
-        match = re.search(r"(\d{4}-\d{2}-\d{2})", fname_lower)
+        match = re.search(r"(\\d{4}-\\d{2}-\\d{2})", fname_lower)
         date_str = match.group(1) if match else datetime.now().strftime("%Y-%m-%d")
         save_path = os.path.join("/tmp", f"CUPE-SL-{date_str}.xlsx")
         file.save(save_path)
@@ -110,11 +111,22 @@ def process_index_upload():
             break
 
         if not matched:
+            # ⚡ Check for 'list' in unmatched .xlsx
+            if ext == '.xlsx' and 'list' in fname_lower:
+                if DEBUG_MODE:
+                    app.logger.info(f"[LIST FILE DETECTED] {file.filename}")
+                cleaned_path = clean_xlsx_and_save(file)
+                filename = os.path.basename(cleaned_path)
+                download_link = f"/download/{filename}"
+                return render_template(
+                    "index.html",
+                    message="File cleaned successfully!",
+                    download_link=download_link
+                )
+
             app.logger.warning(f"[SKIPPED] Unknown or unsupported file: {file.filename}")
-    
             if DEBUG_MODE:
                 print(f"[DEBUG] No match found for: {file.filename}")
-
 
     # ==============================
     # ATTACH EXISTING PDFs
