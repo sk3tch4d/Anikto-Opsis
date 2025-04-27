@@ -32,14 +32,15 @@
             </div>
           </div>
 
+          <!-- Loading (panel-specific) -->
+          <div id="loading-inventory-search" class="panel-loading">
+            <div class="spinner"></div>
+          </div>
+
           <ul id="inventory-stats" style="list-style: none; padding-left: 0; line-height: 1.8; text-align: center;">
             <!--JS-->
           </ul>
 
-          <!-- Loading + Stats -->
-          <div id="loading">
-            <div class="spinner"></div>
-          </div>
         </div>
       </div>
 
@@ -63,16 +64,17 @@
             </div>
           </div>
 
+          <!-- Loading (panel-specific) -->
+          <div id="loading-inventory-stats" class="panel-loading">
+            <div class="spinner"></div>
+          </div>
+
           <!-- Results -->
           <ul id="inventory-results" style="margin-top: 1rem;"></ul>
           <p id="no-results" class="error-text" style="display: none; text-align: center; margin-top: 1rem;">
             No results found.
           </p>
 
-          <!-- Loading + Stats -->
-          <div id="loading">
-            <div class="spinner"></div>
-          </div>
         </div>
       </div>
 
@@ -82,6 +84,12 @@
       <div class="panel panel-animate" id="search-history-panel">
         <div class="panel-header" onclick="togglePanel(this)">Search History</div>
         <div class="panel-body scrollable-panel">
+
+          <!-- Loading (panel-specific) -->
+          <div id="loading-search-history" class="panel-loading">
+            <div class="spinner"></div>
+          </div>
+
           <ul id="search-history-list" style="list-style: none; padding-left: 0;"></ul>
         </div>
       </div>
