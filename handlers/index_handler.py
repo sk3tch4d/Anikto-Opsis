@@ -11,7 +11,7 @@ from config import UPLOAD_FOLDER, DEBUG_MODE, CATALOG_REGEX, SENIORITY_REGEX
 from inventory import load_inventory_data
 from seniority import load_seniority_file
 from report import process_report
-from inv_cleaner import clean_xlsx_and_save  # <-- NEW: importing cleaning function
+from inv_cleaner import clean_xlsx_and_save
 
 # ==============================
 # MAIN ENTRYPOINT
@@ -111,7 +111,7 @@ def process_index_upload():
             break
 
         if not matched:
-            # ⚡ Check for 'list' in unmatched .xlsx
+            # ⚡ Check for 'list' in unmatched .xlsx (Uncleaned File?)
             if ext == '.xlsx' and 'list' in fname_lower:
                 if DEBUG_MODE:
                     app.logger.info(f"[LIST FILE DETECTED] {file.filename}")
