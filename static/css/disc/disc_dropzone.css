@@ -64,6 +64,87 @@ input[type="file"] {
 }
 
 
+
+
+
+/* ==========================================================
+   FILE ACTION STYLES
+   Shared styles for upload/download file blocks
+   ========================================================== */
+
+/* -- Base Style -- */
+.file-action {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: #26282c;
+  color: #ccc !important;
+  border: 1px solid #7289da;
+  border-radius: 10px;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin: 0 0 0.75rem;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+  font-weight: normal;
+}
+
+/* -- Hover + Focus States -- */
+.file-upload:hover,
+.file-upload:focus {
+  background-color: #32353a;
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+}
+/* -- Visited State -- */
+.file-upload:visited {
+  color: #ccc;
+}
+/* -- Upload-Specific Tweaks -- */
+.file-upload.uploaded {
+  margin-top: 0.5rem;
+}
+.file-upload.mimic-drop {
+  border: 2px solid #7289da;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+/* -- Match Dropzone Padding -- */
+.index-upload .file-action {
+  padding: 1.5rem;
+}
+
+
+/* ------ SHIMMER ------ */
+.file-action.shimmer {
+  background: linear-gradient(
+    90deg,
+    #9494b8 30%,
+    #7289da 60%,
+    #7575a3 90%
+  );
+  background-size: 400% auto;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shimmer 8s ease-in-out infinite;
+}
+
+/* ------ SHIMMER ------ */
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
 /* ------ PULSE ------ */
 @keyframes pulse-glow {
   0% {
