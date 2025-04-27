@@ -32,7 +32,7 @@ export function refreshDropUI() {
 // ==============================
 function updateGenerateButtonText() {
   const fileInput = document.getElementById("file-input");
-  const generateBtn = document.getElementById("processing");
+  const generateBtn = document.getElementById("generate");
   if (!generateBtn) return;
 
   const uploadedFiles = fileInput?.files ? Array.from(fileInput.files) : [];
@@ -78,7 +78,7 @@ export function initUpTexts() {
 }
 
 export function updateGenText(typeKey) {
-  const statusEl = document.getElementById("generating");
+  const statusEl = document.getElementById("processing");
   if (!statusEl) return;
 
   const matchingTexts = upTexts[typeKey];
