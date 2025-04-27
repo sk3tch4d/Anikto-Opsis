@@ -1,19 +1,8 @@
 import pandas as pd
 import re
+import tempfile
 
-COLUMN_RENAMES = {
-    "Sloc": "USL",
-    "Material": "Material",
-    "Material Description": "Description",
-    "Un": "UOM",
-    "Matl grp": "Goup",
-    "Replenishment qty": "ROQ",
-    "Reorder point": "ROP",
-    "Old Material Number": "Old Material",
-    "Created": "Created"
-}
-
-REMOVE_COLUMNS = ["Stl", "Mat", "Pl", "Plnt"]
+# (Your existing COLUMN_RENAMES and REMOVE_COLUMNS here)
 
 def clean_xlsx(file_stream):
     df = pd.read_excel(file_stream)
@@ -34,7 +23,6 @@ def clean_xlsx(file_stream):
     # Handle duplicate 'Un' column issue
     un_cols = [col for col in df.columns if col == 'Un']
     if len(un_cols) > 1:
-        # Assuming the second 'Un' is valid (adjust if needed)
         cols = []
         un_counter = 0
         for col in df.columns:
@@ -46,7 +34,7 @@ def clean_xlsx(file_stream):
         df = df[cols]
 
     # Remove unwanted columns
-    for col in REMOVE_COLUMNS:
+    for col in ["Stl", "Mat", "Pl", "Plnt"]:
         if col in df.columns:
             df.drop(columns=col, inplace=True)
 
@@ -54,3 +42,15 @@ def clean_xlsx(file_stream):
     df.rename(columns={k: v for k, v in COLUMN_RENAMES.items() if k in df.columns}, inplace=True)
 
     return df
+
+def clean_xlsx_and_save(file_stream):
+    if not file_stream.filename.lower().endswith('.xlsx'):
+        raise ValueError("Invalid file format. Please upload an .xlsx file.")
+
+    cleaned_df = clean_xlsx(file_stream)
+
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx')
+    cleaned_df.to_excel(tmp.name, index=False)
+    tmp.close()
+
+    return tmp.name
