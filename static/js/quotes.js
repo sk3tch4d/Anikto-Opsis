@@ -25,5 +25,6 @@ export function displayRandomQuote() {
   const quoteEl = document.getElementById("quote");
   if (quoteEl && quotes.length) {
     quoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+    quoteEl.style.display = 'block'; // <--- PATCH
   }
 }
