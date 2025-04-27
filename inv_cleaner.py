@@ -3,34 +3,23 @@
 # ==============================
 
 import pandas as pd
-import re
+import json
 import os
 import tempfile
 from datetime import datetime
 
 # ==============================
+# Load External JSON Config
+# ==============================
 
-COLUMN_RENAMES = {
-    "SLoc": "USL",
-    "Sloc": "USL",
-    "Mat. #": "Material",
-    "Material": "Material",
-    "Material Description": "Description",
-    "Material description": "Description",
-    "Un": "UOM",
-    "U/M": "UOM",
-    "Matl grp": "Goup",
-    "Material Group": "Goup",
-    "Replenishmt qty": "ROQ",
-    "Reorder point": "ROP",
-    "Old Material Number": "Old Material",
-    "Created": "Created",
-    "Cost ctr": "Cost Center",
-    "Vendor's Name": "Vendor Name",
-    "Vendor material numTer": "Vendor Material"
-}
+# Automatically find the path of inv_xlsx_filters.json
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), "inv_xlsx_filters.json")
 
-REMOVE_COLUMNS = ["StL", "Mat", "Pl", "Plnt", "Un.1", "Un.2", "Latex/Expiry Information", "Person responsible", "Stge loc. descr.", "MRPC", "Type", "Plant", "Del"]
+with open(CONFIG_PATH, "r") as f:
+    config = json.load(f)
+
+COLUMN_RENAMES = config.get("column_renames", {})
+REMOVE_COLUMNS = config.get("remove_columns", [])
 
 # ==============================
 # CLEAN XLSX
@@ -38,41 +27,30 @@ REMOVE_COLUMNS = ["StL", "Mat", "Pl", "Plnt", "Un.1", "Un.2", "Latex/Expiry Info
 def clean_xlsx(file_stream):
     df = pd.read_excel(file_stream)
 
-    # 1. Rename columns immediately to standardize names
+    # 1. Rename columns immediately
     df.rename(columns={k: v for k, v in COLUMN_RENAMES.items() if k in df.columns}, inplace=True)
 
-    # 2. Drop rows where 'Description' starts with XX or XXX
+    # 2. Drop rows: Description starts with XX or XXX (case insensitive)
     if 'Description' in df.columns:
-        pattern = r'^(xx|xxx|XX|XXX)'
-        df = df[~df['Description'].astype(str).str.match(pattern)]
+        df = df[~df['Description'].astype(str).str.match(r'^(XX|XXX)', case=False, na=False)]
 
-    # 3. Drop rows containing 'DELETED' in any cell
-    mask = df.astype(str).applymap(lambda x: 'DELETED' in x.upper() if isinstance(x, str) else False)
-    df = df[~mask.any(axis=1)]
+    # 3. Drop rows: any 'DELETED' anywhere
+    mask_deleted = df.astype(str).apply(lambda x: x.str.contains('DELETED', case=False, na=False)).any(axis=1)
+    df = df[~mask_deleted]
 
-    # 4. Drop rows where 'Mat', 'Pl', 'Del' is 'X'
+    # 4. Drop rows: 'Mat', 'Pl', or 'Del' == 'X'
     for col in ['Mat', 'Pl', 'Del']:
         if col in df.columns:
-            df = df[df[col] != 'X']
+            df = df[df[col].astype(str).str.upper() != 'X']
 
-    # 5. Handle duplicate 'UOM' columns
-    uom_cols = [col for col in df.columns if col == 'UOM']
-    if len(uom_cols) > 1:
-        cols = []
-        uom_counter = 0
-        for col in df.columns:
-            if col == 'UOM':
-                uom_counter += 1
-                if uom_counter == 1:
-                    continue  # Keep first
-            cols.append(col)
-        df = df[cols]
+    # 5. Drop duplicate columns if any
+    if df.columns.duplicated().any():
+        df = df.loc[:, ~df.columns.duplicated()]
 
-    # 6. Drop unwanted columns
-    dropped_cols = [col for col in REMOVE_COLUMNS if col in df.columns]
-    if dropped_cols:
-        print(f"Dropped columns: {', '.join(dropped_cols)}")
-    df.drop(columns=dropped_cols, inplace=True)
+    # 6. Remove unwanted columns
+    cols_to_drop = [col for col in REMOVE_COLUMNS if col in df.columns]
+    if cols_to_drop:
+        df.drop(columns=cols_to_drop, inplace=True)
 
     return df
 
@@ -86,10 +64,27 @@ def clean_xlsx_and_save(file_stream):
     cleaned_df = clean_xlsx(file_stream)
 
     base_filename = os.path.splitext(os.path.basename(file_stream.filename))[0]
-    today = datetime.now().strftime("%Y-%m-%d")  # 👈 today's date
-    cleaned_filename = f"{base_filename}_cleaned_{today}.xlsx"  # 👈 now includes date
+    today = datetime.now().strftime("%Y-%m-%d")
+    cleaned_filename = f"{base_filename}_cleaned_{today}.xlsx"
     cleaned_path = os.path.join("/tmp", cleaned_filename)
 
-    cleaned_df.to_excel(cleaned_path, index=False)
+    # Save with openpyxl and auto-adjust columns
+    with pd.ExcelWriter(cleaned_path, engine="openpyxl") as writer:
+        cleaned_df.to_excel(writer, index=False)
+
+        workbook = writer.book
+        worksheet = writer.sheets["Sheet1"]
+
+        max_width = 40
+        min_width = 10
+        padding = 2
+
+        for col_cells in worksheet.columns:
+            lengths = [len(str(cell.value)) if cell.value is not None else 0 for cell in col_cells]
+            if lengths:
+                best_fit = max(lengths) + padding
+                best_fit = min(max(best_fit, min_width), max_width)
+                col_letter = col_cells[0].column_letter
+                worksheet.column_dimensions[col_letter].width = best_fit
 
     return cleaned_path, cleaned_filename
