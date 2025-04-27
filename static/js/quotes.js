@@ -1,39 +1,29 @@
 // ==============================
-// QUOTES.JS
+// QUOTES MODULE
 // ==============================
 
 let quotes = [];
-let quotesLoaded = false;
 
-async function fetchQuotes() {
-  if (quotesLoaded) return;
-  try {
-    const response = await fetch('/static/quotes.json');
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-    quotes = await response.json();
-    quotesLoaded = true;
-  } catch (error) {
-    console.error("[Quotes] Failed to load quotes:", error);
-    quotes = ["Stay positive. Stay strong."];
-    quotesLoaded = true;
-  }
+// ==============================
+// INIT QUOTES (Fetch + Display One)
+// ==============================
+export function initQuotes() {
+  fetch('/static/quotes.json')
+    .then(response => response.json())
+    .then(data => {
+      quotes = data;
+    })
+    .catch(error => {
+      console.error("Failed to load quotes:", error);
+    });
 }
 
-async function displayRandomQuote() {
+// ==============================
+// DISPLAY RANDOM QUOTE
+// ==============================
+export function displayRandomQuote() {
   const quoteEl = document.getElementById("quote");
-  if (!quoteEl) {
-    console.error("[Quotes] Could not find #quote element.");
-    return;
+  if (quoteEl && quotes.length) {
+    quoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
   }
-
-  if (!quotesLoaded) {
-    await fetchQuotes();
-  }
-
-  const quote = quotes.length ? quotes[Math.floor(Math.random() * quotes.length)] : "Keep going!";
-  quoteEl.textContent = quote;
-  quoteEl.style.display = 'block';
 }
-
-// Export
-export { displayRandomQuote };
