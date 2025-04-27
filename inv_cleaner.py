@@ -9,26 +9,33 @@ import tempfile
 from datetime import datetime
 
 # ==============================
-# Load External JSON Config
+# DEFAULT CONFIG PATH
 # ==============================
+DEFAULT_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "inv_xlsx_filters.json")
 
-# Automatically find the path of inv_xlsx_filters.json
-CONFIG_PATH = os.path.join(os.path.dirname(__file__), "inv_xlsx_filters.json")
-
-with open(CONFIG_PATH, "r") as f:
-    config = json.load(f)
-
-COLUMN_RENAMES = config.get("column_renames", {})
-REMOVE_COLUMNS = config.get("remove_columns", [])
+# ==============================
+# Load Config Utility
+# ==============================
+def load_config(config_path=DEFAULT_CONFIG_PATH):
+    try:
+        with open(config_path, "r") as f:
+            config = json.load(f)
+        return config.get("column_renames", {}), config.get("remove_columns", [])
+    except FileNotFoundError:
+        # fallback if config is missing
+        return {}, []
 
 # ==============================
 # CLEAN XLSX
 # ==============================
-def clean_xlsx(file_stream):
+def clean_xlsx(file_stream, config_path=None):
+    column_renames, remove_columns = load_config(config_path or DEFAULT_CONFIG_PATH)
+
     df = pd.read_excel(file_stream)
 
     # 1. Rename columns immediately
-    df.rename(columns={k: v for k, v in COLUMN_RENAMES.items() if k in df.columns}, inplace=True)
+    if column_renames:
+        df.rename(columns={k: v for k, v in column_renames.items() if k in df.columns}, inplace=True)
 
     # 2. Drop rows: Description starts with XX or XXX (case insensitive)
     if 'Description' in df.columns:
@@ -48,27 +55,27 @@ def clean_xlsx(file_stream):
         df = df.loc[:, ~df.columns.duplicated()]
 
     # 6. Remove unwanted columns
-    cols_to_drop = [col for col in REMOVE_COLUMNS if col in df.columns]
-    if cols_to_drop:
-        df.drop(columns=cols_to_drop, inplace=True)
+    if remove_columns:
+        cols_to_drop = [col for col in remove_columns if col in df.columns]
+        if cols_to_drop:
+            df.drop(columns=cols_to_drop, inplace=True)
 
     return df
 
 # ==============================
 # CLEANER SAVE AND RETURN
 # ==============================
-def clean_xlsx_and_save(file_stream):
+def clean_xlsx_and_save(file_stream, config_path=None):
     if not file_stream.filename.lower().endswith('.xlsx'):
         raise ValueError("Invalid file format. Please upload an .xlsx file.")
 
-    cleaned_df = clean_xlsx(file_stream)
+    cleaned_df = clean_xlsx(file_stream, config_path)
 
     base_filename = os.path.splitext(os.path.basename(file_stream.filename))[0]
     today = datetime.now().strftime("%Y-%m-%d")
     cleaned_filename = f"{base_filename}_cleaned_{today}.xlsx"
     cleaned_path = os.path.join("/tmp", cleaned_filename)
 
-    # Save with openpyxl and auto-adjust columns
     with pd.ExcelWriter(cleaned_path, engine="openpyxl") as writer:
         cleaned_df.to_excel(writer, index=False)
 
