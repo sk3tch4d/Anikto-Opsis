@@ -24,14 +24,21 @@
 
 /* ==== PANEL-BASED SPINNER ==== */
 .panel-loading {
-  display: none; /* ALWAYS HIDDEN BY DEFAULT */
+  display: none; /* DEFAULT HIDDEN */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
+.panel-loading.show {
+  display: block;
+  opacity: 1;
+}
+
 
 /* ==== KEYFRAMES ==== */
 @keyframes spin {
