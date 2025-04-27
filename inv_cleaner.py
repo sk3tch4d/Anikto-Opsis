@@ -54,10 +54,13 @@ def clean_xlsx(file_stream):
         df = df[cols]
 
     # Remove unwanted columns
-    for col in ["Stl", "Mat", "Pl", "Plnt"]:
-        if col in df.columns:
-            df.drop(columns=col, inplace=True)
+    df.drop(columns=[col for col in REMOVE_COLUMNS if col in df.columns], inplace=True)
 
+    # Print columns removed
+    dropped_cols = [col for col in REMOVE_COLUMNS if col in df.columns]
+    if dropped_cols:
+        print(f"Dropped columns: {', '.join(dropped_cols)}")
+    
     # Rename columns
     df.rename(columns={k: v for k, v in COLUMN_RENAMES.items() if k in df.columns}, inplace=True)
 
