@@ -1,27 +1,28 @@
 {
   "catalog": [
-    "Organizing your catalog...",
+    "Organizing the catalog...",
     "Processing inventory data...",
     "Preparing item listings..."
   ],
   "seniority": [
     "Summarizing seniority ranks...",
     "Calculating employee lists...",
-    "Reviewing seniority status..."
+    "Reviewing seniority data..."
   ],
   "arg": [
     "Processing ARG workflows...",
-    "Analyzing schedules...",
-    "Building ARG overview..."
+    "Analyzing schedule data...",
+    "Building ARG overview...",
+    "Extrapolating coverage..."
   ],
   "uncleaned": [
-    "Cleaning messy spreadsheets...",
+    "Cleaning spreadsheet data...",
     "Simplifying data...",
-    "Refining product sheets..."
+    "Refining product sheets...",
+    "Cleaning columns..."
   ],
   "default": [
     "Generating your report...",
-    "Compiling your data...",
-    "Finalizing your request..."
+    "Compiling your data..."
   ]
 }
