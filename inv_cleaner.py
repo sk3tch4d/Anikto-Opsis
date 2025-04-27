@@ -14,6 +14,7 @@ COLUMN_RENAMES = {
     "Sloc": "USL",
     "Material": "Material",
     "Material Description": "Description",
+    "Material description": "Description",
     "Un": "UOM",
     "U/M": "UOM",
     "Matl grp": "Goup",
@@ -21,10 +22,12 @@ COLUMN_RENAMES = {
     "Replenishmt qty": "ROQ",
     "Reorder point": "ROP",
     "Old Material Number": "Old Material",
-    "Created": "Created"
+    "Created": "Created",
+    "Vendor's Name": "Vendor Name",
+    "Vendor material numTer": "Vendor Material"
 }
 
-REMOVE_COLUMNS = ["StL", "Mat", "Mat. #", "Pl", "Plnt", "Un.1", "Un.2", "Latex/Expiry Information", "MRPC"]
+REMOVE_COLUMNS = ["StL", "Mat", "Mat. #", "Pl", "Plnt", "Un.1", "Un.2", "Latex/Expiry Information", "MRPC", "Type"]
 
 # ==============================
 # CLEAN XLSX
