@@ -1,9 +1,28 @@
+# ==============================
+# INV_CLEANER.PY - CLEAN XLSX
+# ==============================
+
 import pandas as pd
 import re
 import tempfile
 
-# (Your existing COLUMN_RENAMES and REMOVE_COLUMNS here)
+COLUMN_RENAMES = {
+    "Sloc": "USL",
+    "Material": "Material",
+    "Material Description": "Description",
+    "Un": "UOM",
+    "Matl grp": "Goup",
+    "Replenishment qty": "ROQ",
+    "Reorder point": "ROP",
+    "Old Material Number": "Old Material",
+    "Created": "Created"
+}
 
+REMOVE_COLUMNS = ["Stl", "Mat", "Pl", "Plnt"]
+
+# ==============================
+# CLEAN XLSX
+# ==============================
 def clean_xlsx(file_stream):
     df = pd.read_excel(file_stream)
 
@@ -43,6 +62,9 @@ def clean_xlsx(file_stream):
 
     return df
 
+# ==============================
+# CLEANER SAVE AND RETURN
+# ==============================
 def clean_xlsx_and_save(file_stream):
     if not file_stream.filename.lower().endswith('.xlsx'):
         raise ValueError("Invalid file format. Please upload an .xlsx file.")
