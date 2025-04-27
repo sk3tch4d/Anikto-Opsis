@@ -1,5 +1,5 @@
 // ==============================
-// SCRIPTS.JS — APP BOOTSTRAP
+// SCRIPTS.JS — APP BOOTSTRAP 🛠
 // ==============================
 
 // ----- Debugging -----
@@ -13,7 +13,7 @@ import { initStickyBars } from './sticky.js';
 // ----- Dropzone -----
 import { initDropzone } from './dropzone.js';
 // ----- Drop Utils -----
-import { updateGenerateButtonText } from './drop_utils.js';
+import { refreshDropUI } from './drop_utils.js';
 // ----- Quotes -----
 import { initQuotes } from './quotes.js';
 // ----- Schedule -----
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Dropzone -----
   if (document.querySelector(".drop-zone")) {
     initDropzone();
-    updateGenerateButtonText();
+    refreshDropUI();
   }
   
   // ----- Quotes -----
