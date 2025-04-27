@@ -38,7 +38,7 @@ REMOVE_COLUMNS = [
 ]
 
 # ==============================
-# Utility: Autofit Columns
+# UTILITY: AUTOFIT COLUMNS
 # ==============================
 def autofit_columns(worksheet, max_width=40, min_width=10, padding=2):
     for col_cells in worksheet.columns:
@@ -106,44 +106,3 @@ def clean_xlsx_and_save(file_stream):
         autofit_columns(worksheet)
 
     return cleaned_path, cleaned_filename
-
-
-# ==============================
-# MINI BATCH CLEAN + MERGE
-# ==============================
-
-def clean_multiple_and_merge(file_streams):
-    """
-    Cleans multiple XLSX uploads and merges them into one DataFrame.
-    Adds a 'Source File' column with original filename (no extension).
-    Saves one merged XLSX.
-    """
-    cleaned_dfs = []
-
-    for file_stream in file_streams:
-        try:
-            df = clean_xlsx(file_stream)  # Just clean, don't save
-            source_name = os.path.splitext(os.path.basename(file_stream.filename))[0]
-            df['Source File'] = source_name
-            cleaned_dfs.append(df)
-        except Exception as e:
-            print(f"[ERROR] Failed to clean {file_stream.filename}: {e}")
-            continue
-
-    if not cleaned_dfs:
-        raise ValueError("No valid files were cleaned.")
-
-    merged_df = pd.concat(cleaned_dfs, ignore_index=True)
-
-    today = datetime.now().strftime("%Y-%m-%d")
-    merged_filename = f"merged_cleaned_inventory_{today}.xlsx"
-    merged_path = os.path.join("/tmp", merged_filename)
-
-    with pd.ExcelWriter(merged_path, engine="openpyxl") as writer:
-        merged_df.to_excel(writer, index=False)
-        workbook = writer.book
-        worksheet = writer.sheets["Sheet1"]
-        autofit_columns(worksheet)
-
-    return merged_path, merged_filename
-
