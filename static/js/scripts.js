@@ -13,7 +13,7 @@ import { initStickyBars } from './sticky.js';
 // ----- Dropzone -----
 import { initDropzone } from './dropzone.js';
 // ----- Quotes -----
-import { initQuotes } from './quotes.js';
+import { displayRandomQuote } from './quotes.js';
 // ----- Schedule -----
 import { initScheduleUI } from './schedule.js';
 // ----- Search-Utils -----
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Dropzone -----
   if (document.querySelector(".drop-zone")) initDropzone();
   // ----- Quotes -----
-  if (document.querySelector("#quote")) initQuotes();
+  if (document.querySelector("#quote")) displayRandomQuote();
   // ----- Schedule -----
   if (document.querySelector("#working-date")) initScheduleUI();
   // ----- Admin -----
