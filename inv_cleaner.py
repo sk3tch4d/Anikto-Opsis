@@ -51,24 +51,29 @@ def clean_xlsx(file_stream, config_path=None):
     if column_renames:
         df.rename(columns={k: v for k, v in column_renames.items() if k in df.columns}, inplace=True)
 
-    # 2. Drop rows starting with XX or XXX
+    # 2. Drop rows: Description starts with XX or XXX (case insensitive)
     if 'Description' in df.columns:
         df = df[~df['Description'].astype(str).str.match(r'^(XX|XXX)', case=False, na=False)]
 
-    # 3. Drop rows with 'DELETED' anywhere
+    # 3. Drop rows: any 'DELETED' anywhere
     mask_deleted = df.astype(str).apply(lambda x: x.str.contains('DELETED', case=False, na=False)).any(axis=1)
     df = df[~mask_deleted]
 
     # 4. Drop rows where 'Mat', 'Pl', or 'Del' == 'X'
-    for col in ['Mat', 'Pl', 'Del']:
-        if col in df.columns:
-            df = df[df[col].astype(str).str.upper() != 'X']
+    cols_to_check = []
+    for original_col in ['Mat', 'Pl', 'Del']:
+        new_col = column_renames.get(original_col, original_col)
+        if new_col in df.columns:
+            cols_to_check.append(new_col)
+
+    for col in cols_to_check:
+        df = df[df[col].astype(str).str.upper() != 'X']
 
     # 5. Drop duplicate columns
     if df.columns.duplicated().any():
         df = df.loc[:, ~df.columns.duplicated()]
 
-    # 6. Drop unwanted columns
+    # 6. Remove unwanted columns
     if remove_columns:
         df.drop(columns=[col for col in remove_columns if col in df.columns], inplace=True, errors='ignore')
 
