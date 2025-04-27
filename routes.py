@@ -25,7 +25,7 @@ from dataman import (
     import_shifts_from_json,
     import_shifts_from_csv,
 )
-from inv_cleaner import clean_xlsx
+from inv_cleaner import clean_xlsx, clean_xlsx_and_save, clean_multiple_and_merge
 from report import get_working_on_date, get_shifts_for_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
@@ -55,6 +55,9 @@ def register_routes(app):
             return jsonify(result[0]), result[1]
         return jsonify(result)
 
+    # ==============================
+    # XLSX CLEANING API
+    # ==============================
     @app.route("/inventory-search")
     def inventory_search():
         term = request.args.get("term", "")
@@ -85,6 +88,29 @@ def register_routes(app):
 
         except ValueError as ve:
             return jsonify({"error": str(ve)}), 400
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+
+    @app.route("/clean-merge-xlsx", methods=["POST"])
+    def clean_and_merge_inventory():
+        uploaded_files = request.files.getlist("uploads")
+        if not uploaded_files:
+            return jsonify({"error": "No files uploaded."}), 400
+    
+        try:
+            merged_path, merged_filename = clean_multiple_and_merge(uploaded_files)
+            response = send_file(merged_path, as_attachment=True, download_name=merged_filename)
+    
+            @response.call_on_close
+            def cleanup():
+                try:
+                    os.unlink(merged_path)
+                except Exception as e:
+                    app.logger.error(f"Error deleting temp file: {e}")
+    
+            return response
+    
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
