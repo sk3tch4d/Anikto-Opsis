@@ -115,9 +115,8 @@ def process_index_upload():
             if ext == '.xlsx' and 'list' in fname_lower:
                 if DEBUG_MODE:
                     app.logger.info(f"[LIST FILE DETECTED] {file.filename}")
-                cleaned_path = clean_xlsx_and_save(file)
-                filename = os.path.basename(cleaned_path)
-                download_link = f"/download/{filename}"
+                cleaned_path, cleaned_filename = clean_xlsx_and_save(file)
+                download_link = f"/download/{cleaned_filename}"
                 return render_template(
                     "index.html",
                     message="File cleaned successfully!",
