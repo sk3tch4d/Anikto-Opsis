@@ -27,7 +27,8 @@ def clean_xlsx(file_stream):
     df = pd.read_excel(file_stream)
 
     # Drop rows containing 'DELETED' in any cell
-    df = df[~df.apply(lambda row: row.astype(str).str.contains('DELETED', case=False).any(), axis=1)]
+    mask = df.astype(str).applymap(lambda x: 'DELETED' in x.upper() if isinstance(x, str) else False)
+    df = df[~mask.any(axis=1)]
 
     # Drop rows where 'Mat' or 'Pl' is 'X'
     for col in ['Mat', 'Pl']:
