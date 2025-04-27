@@ -21,12 +21,7 @@
       <div class="panel panel-animate" id="inventory-search-panel">
         <div class="panel-header" onclick="togglePanel(this)">Search Catalog</div>
         <div class="panel-body scrollable-panel">
-          
-          <!-- 🔥 CLEAN SPINNER -->
-          <div class="panel-loading">
-            <div class="spinner"></div>
-          </div>
-      
+
           <!-- STICKY: Search and Filter -->
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
@@ -36,26 +31,25 @@
               <input id="inventory-search" class="input full-width" placeholder="Search..." style="flex: 1;" />
             </div>
           </div>
-      
+
           <ul id="inventory-stats" style="list-style: none; padding-left: 0; line-height: 1.8; text-align: center;">
             <!--JS-->
           </ul>
-      
+
+          <!-- Loading + Stats -->
+          <div id="loading">
+            <div class="spinner"></div>
+          </div>
         </div>
       </div>
-      
+
       <!-- ============================= -->
       <!-- PANEL: SEARCH RESULTS -->
       <!-- ============================= -->
       <div class="panel panel-animate" id="inventory-stats-panel">
         <div class="panel-header" onclick="togglePanel(this)">Full Results</div>
         <div class="panel-body scrollable-panel">
-      
-          <!-- 🔥 CLEAN SPINNER -->
-          <div class="panel-loading">
-            <div class="spinner"></div>
-          </div>
-      
+
           <!-- STICKY: Sort Row -->
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
@@ -68,15 +62,20 @@
               <button id="sort-direction" class="input sort-button" type="button" style="flex: 0 0 auto;">↓</button>
             </div>
           </div>
-      
+
+          <!-- Results -->
           <ul id="inventory-results" style="margin-top: 1rem;"></ul>
           <p id="no-results" class="error-text" style="display: none; text-align: center; margin-top: 1rem;">
             No results found.
           </p>
-      
+
+          <!-- Loading + Stats -->
+          <div id="loading">
+            <div class="spinner"></div>
+          </div>
         </div>
       </div>
-      
+
       <!-- ============================= -->
       <!-- PANEL: SEARCH HISTORY -->
       <!-- ============================= -->
@@ -86,7 +85,7 @@
           <ul id="search-history-list" style="list-style: none; padding-left: 0;"></ul>
         </div>
       </div>
-      
+
       <!-- ============================= -->
       <!-- PANEL: DOWNLOADS -->
       <!-- ============================= -->
@@ -99,7 +98,7 @@
           </ul>
         </div>
       </div>
-      
+
       <!-- ============================= -->
       <!-- PANEL: RETURN -->
       <!-- ============================= -->
@@ -108,7 +107,6 @@
           <button type="submit" class="button full-width">Process Another</button>
         </form>
       </div>
-
 
     </div> <!-- END panel-container -->
   </div> <!-- END panel-wrapper -->
