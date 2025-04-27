@@ -4,7 +4,11 @@
 
 import pandas as pd
 import re
+import os
 import tempfile
+from datetime import datetime
+
+# ==============================
 
 COLUMN_RENAMES = {
     "Sloc": "USL",
@@ -75,8 +79,11 @@ def clean_xlsx_and_save(file_stream):
 
     cleaned_df = clean_xlsx(file_stream)
 
-    tmp = tempfile.NamedTemporaryFile(delete=False, suffix='.xlsx')
-    cleaned_df.to_excel(tmp.name, index=False)
-    tmp.close()
+    base_filename = os.path.splitext(os.path.basename(file_stream.filename))[0]
+    today = datetime.now().strftime("%Y-%m-%d")  # 👈 today's date
+    cleaned_filename = f"{base_filename}_cleaned_{today}.xlsx"  # 👈 now includes date
+    cleaned_path = os.path.join("/tmp", cleaned_filename)
 
-    return tmp.name
+    cleaned_df.to_excel(cleaned_path, index=False)
+
+    return cleaned_path, cleaned_filename
