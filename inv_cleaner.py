@@ -12,6 +12,7 @@ from datetime import datetime
 
 COLUMN_RENAMES = {
     "Sloc": "USL",
+    "Mat. #": "Material",
     "Material": "Material",
     "Material Description": "Description",
     "Material description": "Description",
@@ -27,7 +28,7 @@ COLUMN_RENAMES = {
     "Vendor material numTer": "Vendor Material"
 }
 
-REMOVE_COLUMNS = ["StL", "Mat", "Mat. #", "Pl", "Plnt", "Un.1", "Un.2", "Latex/Expiry Information", "MRPC", "Type"]
+REMOVE_COLUMNS = ["StL", "Mat", "Pl", "Plnt", "Un.1", "Un.2", "Latex/Expiry Information", "MRPC", "Type", "Del"]
 
 # ==============================
 # CLEAN XLSX
@@ -39,8 +40,8 @@ def clean_xlsx(file_stream):
     mask = df.astype(str).applymap(lambda x: 'DELETED' in x.upper() if isinstance(x, str) else False)
     df = df[~mask.any(axis=1)]
 
-    # Drop rows where 'Mat' or 'Pl' is 'X'
-    for col in ['Mat', 'Pl']:
+    # Drop rows where 'Mat', 'Pl', 'Del' is 'X'
+    for col in ['Mat', 'Pl', 'Del']:
         if col in df.columns:
             df = df[df[col] != 'X']
 
