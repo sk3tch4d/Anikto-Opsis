@@ -34,3 +34,29 @@ export function hideLoading(spinnerId = 'loading') {
     spinner.remove();
   }
 }
+
+// ==============================
+// SHOW PANEL LOADING
+// ==============================
+function showPanelSpinner() {
+  const openPanel = document.querySelector('.panel.open');
+  if (!openPanel) return;
+  const spinner = openPanel.querySelector('.panel-loading');
+  if (spinner) {
+    spinner.classList.add('show');
+    spinner.style.display = 'block';
+  }
+}
+
+// ==============================
+// HIDE PANEL LOADING
+// ==============================
+function hidePanelSpinner() {
+  const openPanel = document.querySelector('.panel.open');
+  if (!openPanel) return;
+  const spinner = openPanel.querySelector('.panel-loading');
+  if (spinner) {
+    spinner.classList.remove('show');
+    spinner.style.display = 'none';
+  }
+}
