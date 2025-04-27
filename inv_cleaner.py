@@ -55,21 +55,21 @@ def autofit_columns(worksheet, max_width=40, min_width=10, padding=2):
 def clean_xlsx(file_stream):
     df = pd.read_excel(file_stream)
 
-    # Normalize columns early
+    # Normalize columns
     df.columns = df.columns.str.strip().str.replace(r"\s+", " ", regex=True)
 
-    # 1. Rename columns
+    # 1. Rename
     df.rename(columns={k: v for k, v in COLUMN_RENAMES.items() if k in df.columns}, inplace=True)
 
-    # 2. Drop rows: Description starts with XX or XXX
+    # 2. Drop Description starts with XX/XXX
     if 'Description' in df.columns:
         df = df[~df['Description'].astype(str).str.match(r'^(XX|XXX)', case=False, na=False)]
 
-    # 3. Drop rows: any 'DELETED' anywhere
+    # 3. Drop DELETED rows
     mask_deleted = df.astype(str).apply(lambda x: x.str.contains('DELETED', case=False, na=False)).any(axis=1)
     df = df[~mask_deleted]
 
-    # 4. Drop rows where 'Mat', 'Pl', or 'Del' == 'X'
+    # 4. Drop rows where 'Mat', 'Pl', 'Del' == 'X'
     for col in ['Mat', 'Pl', 'Del']:
         if col in df.columns:
             df = df[df[col].astype(str).str.upper() != 'X']
@@ -80,6 +80,20 @@ def clean_xlsx(file_stream):
 
     # 6. Remove unwanted columns
     df.drop(columns=[col for col in REMOVE_COLUMNS if col in df.columns], inplace=True, errors='ignore')
+
+    # 7. Fix 'Created' column to just date
+    if 'Created' in df.columns:
+        df['Created'] = pd.to_datetime(df['Created'], errors='coerce').dt.date
+
+    # 8. Sort by Material then USL
+    sort_cols = []
+    if 'Material' in df.columns:
+        sort_cols.append('Material')
+    if 'USL' in df.columns:
+        sort_cols.append('USL')
+
+    if sort_cols:
+        df = df.sort_values(by=sort_cols, ascending=True, na_position='last')
 
     return df
 
