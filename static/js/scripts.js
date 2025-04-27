@@ -13,7 +13,7 @@ import { initStickyBars } from './sticky.js';
 // ----- Dropzone -----
 import { initDropzone } from './dropzone.js';
 // ----- Drop Utils -----
-import { refreshDropUI } from './drop_utils.js';
+import { refreshDropUI, initUpTexts } from './drop_utils.js';
 // ----- Quotes -----
 import { initQuotes } from './quotes.js';
 // ----- Schedule -----
@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector(".drop-zone")) {
     initDropzone();
     refreshDropUI();
+    initUpTexts();
   }
   
   // ----- Quotes -----
