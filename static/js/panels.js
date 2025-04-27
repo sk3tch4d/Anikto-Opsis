@@ -13,7 +13,6 @@ const nonClosablePanels = [
   "scheduled-search-panel",
   "search-history-panel"
 ];
-
 const nonClosableElements = [
   "BUTTON",
   "INPUT",
