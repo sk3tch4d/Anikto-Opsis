@@ -1,10 +1,9 @@
 // ==============================
 // DROPZONE MODULE
-// File Input, Drag-drop, and Form Submission
+// Handles File Uploads
 // ==============================
 
-import { toggleLoadingState } from './loading.js';
-import { updateGenerateButtonText } from './drop_utils.js';
+import { refreshDropUI, startFormLoadingUI } from './drop_utils.js';
 
 // ==============================
 // INIT DROPZONE
@@ -28,10 +27,7 @@ function setupFormBehavior() {
   if (!form) return;
 
   form.addEventListener("submit", () => {
-    toggleLoadingState(true, {
-      show: [document.getElementById("loading")],
-      hide: [document.getElementById("upload-form")]
-    });
+    startFormLoadingUI();
   });
 }
 
@@ -96,12 +92,12 @@ function setupDragAndDrop(dropZone, fileInput) {
 // ==============================
 function bindChangeEvents() {
   const fileInput = document.getElementById("file-input");
-  fileInput?.addEventListener("change", updateGenerateButtonText);
+  fileInput?.addEventListener("change", refreshDropUI);
 
   const checkboxes = document.querySelectorAll('input[name="existing_pdfs"]');
   checkboxes.forEach(cb => {
-    cb.addEventListener("change", updateGenerateButtonText);
+    cb.addEventListener("change", refreshDropUI);
   });
 
-  updateGenerateButtonText(); // initial call
+  refreshDropUI(); // Set button on load if anything is pre-checked
 }
