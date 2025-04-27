@@ -44,11 +44,11 @@ function setupFormBehavior() {
   if (!form) return;
 
   form.addEventListener("submit", () => {
-    const loadingTarget = document.getElementById("loading");
     const uploadForm = document.getElementById("upload-form");
 
-    if (loadingTarget && uploadForm) {
-      showLoading(loadingTarget);
+    showLoading('loading'); // PATCH: pass ID as STRING now
+
+    if (uploadForm) {
       uploadForm.style.display = 'none';
     }
 
