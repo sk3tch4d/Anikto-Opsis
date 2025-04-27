@@ -5,7 +5,7 @@
 import { populateInventoryStats } from "./inv_stats.js";
 import { renderInventoryResults } from "./inv_results.js";
 import { addSearchToHistory } from "./inv_history.js";
-import { withLoadingToggle } from "../loading.js";
+import { showLoading, hideLoading } from "../loading.js"; // CHANGED
 
 // ==============================
 // DEBUGGING
@@ -39,7 +39,7 @@ function buildSearchUrl({ term, usl, sort, dir }) {
 // ELEMENTS
 // ==============================
 const elements = {
-  loading: document.getElementById("loading"),
+  loading: document.getElementById("loading-inventory-search"), // CHANGED
   stats: document.getElementById("inventory-stats")
 };
 
@@ -116,12 +116,11 @@ function debounce(fn, wait) {
 // ==============================
 // SEARCH LOGIC
 // ==============================
-export const doInventorySearch = debounce(function({ searchInput, uslFilter, sortBy, sortDirButton, resultsList, noResults, sortDirection }) {
+export const doInventorySearch = debounce(async function({ searchInput, uslFilter, sortBy, sortDirButton, resultsList, noResults, sortDirection }) {
   const term = searchInput.value.trim().toLowerCase();
   const usl = uslFilter.value;
   const sort = sortBy.value;
 
-  // Validate search term
   if (!term) {
     resultsList.innerHTML = "";
     elements.stats.innerHTML = "";
@@ -132,61 +131,55 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
 
   const key = generateSearchKey({ term, usl, sort, dir: sortDirection });
 
-  withLoadingToggle(
-    {
-      show: [elements.loading],
-      hide: [resultsList, noResults, elements.stats]
-    },
-    () => {
-      noResults.style.display = "none";
+  showLoading(elements.loading); // NEW
 
-      // Cancel any previous fetch
-      if (currentFetchController) {
-        currentFetchController.abort();
-      }
-      currentFetchController = new AbortController();
+  noResults.style.display = "none";
 
-      // Use cache if available
-      if (searchCache.has(key)) {
-        const cached = searchCache.get(key);
-        renderInventoryResults(cached, term, resultsList);
-        populateInventoryStats(cached);
-        addSearchToHistory(searchInput.value.trim(), uslFilter.value, cached);
-        return;
-      }
+  // Cancel any previous fetch
+  if (currentFetchController) {
+    currentFetchController.abort();
+  }
+  currentFetchController = new AbortController();
 
-      return fetchWithRetry(buildSearchUrl({ term, usl, sort, dir: sortDirection }), {}, FETCH_RETRIES, FETCH_RETRY_DELAY, currentFetchController)
-        .then(res => res.json())
-        .then(data => {
-          if (!data || !data.length) {
-            resultsList.innerHTML = "";
-            elements.stats.innerHTML = "";
-            noResults.style.display = "block";
-            noResults.innerText = "No results found. Try a different search.";
-            return;
-          }
-
-          populateInventoryStats(data);
-          renderInventoryResults(data, term, resultsList);
-          window.inventorySearchResults = data;
-          addSearchToHistory(searchInput.value.trim(), uslFilter.value, data);
-          updateSearchCache(key, data);
-        })
-        .catch(err => {
-          if (err.name === "AbortError") {
-            DEBUG_MODE && console.warn("[DEBUG] Fetch aborted.");
-            return;
-          }
-          resultsList.innerHTML = "";
-          elements.stats.innerHTML = "";
-          noResults.style.display = "block";
-          noResults.innerText = "Error loading results. Please try again.";
-          DEBUG_MODE && console.error("[DEBUG] Fetch Error:", err);
-        })
-        .finally(() => {
-          restoreScrollPosition();
-        });
+  try {
+    if (searchCache.has(key)) {
+      const cached = searchCache.get(key);
+      renderInventoryResults(cached, term, resultsList);
+      populateInventoryStats(cached);
+      addSearchToHistory(searchInput.value.trim(), uslFilter.value, cached);
+      return;
     }
-  );
+
+    const response = await fetchWithRetry(buildSearchUrl({ term, usl, sort, dir: sortDirection }), {}, FETCH_RETRIES, FETCH_RETRY_DELAY, currentFetchController);
+    const data = await response.json();
+
+    if (!data || !data.length) {
+      resultsList.innerHTML = "";
+      elements.stats.innerHTML = "";
+      noResults.style.display = "block";
+      noResults.innerText = "No results found. Try a different search.";
+      return;
+    }
+
+    populateInventoryStats(data);
+    renderInventoryResults(data, term, resultsList);
+    window.inventorySearchResults = data;
+    addSearchToHistory(searchInput.value.trim(), uslFilter.value, data);
+    updateSearchCache(key, data);
+
+  } catch (err) {
+    if (err.name === "AbortError") {
+      DEBUG_MODE && console.warn("[DEBUG] Fetch aborted.");
+      return;
+    }
+    resultsList.innerHTML = "";
+    elements.stats.innerHTML = "";
+    noResults.style.display = "block";
+    noResults.innerText = "Error loading results. Please try again.";
+    DEBUG_MODE && console.error("[DEBUG] Fetch Error:", err);
+  } finally {
+    hideLoading(elements.loading); // NEW
+    restoreScrollPosition();
+  }
 
 }, DEBOUNCE_DELAY);
