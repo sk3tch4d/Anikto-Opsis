@@ -2,7 +2,7 @@
 // ARG_SCHEDULE.JS MODULE
 // ==============================
 
-import { showPanelSpinner, hidePanelSpinner } from "../loading.js"; // ✅ NEW
+import { showPanelSpinner, hidePanelSpinner } from "./loading.js"; // ✅ NEW
 
 // ==============================
 // FETCH SCHEDULE DATA
