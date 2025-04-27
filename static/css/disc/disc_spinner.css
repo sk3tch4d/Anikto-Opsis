@@ -1,5 +1,9 @@
-/* ==== LOADING SPINNER ==== */
+/* ======================= */
+/* DISC_CARDS.CSS          */
+/* ======================= */
 
+
+/* ==== LOADING SPINNER =*/
 #loading {
   display: none;
   text-align: center;
@@ -15,12 +19,20 @@
   height: 40px;
   animation: spin 1s linear infinite;
   margin: 1rem auto;
-  position: fixed;
+  pointer-events: none;
+}
+
+/* ==== PANEL SPINNER =*/
+.panel-body #loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
   pointer-events: none;
 }
 
 /* ==== KEYFRAMES ==== */
-
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
