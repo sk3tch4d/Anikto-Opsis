@@ -5,7 +5,7 @@
 import { populateInventoryStats } from "./inv_stats.js";
 import { renderInventoryResults } from "./inv_results.js";
 import { addSearchToHistory } from "./inv_history.js";
-import { showLoading, hideLoading } from "../loading.js"; // CHANGED
+import { showPanelSpinner, hidePanelSpinner } from "../loading.js"; // CHANGED
 
 // ==============================
 // DEBUGGING
@@ -39,7 +39,6 @@ function buildSearchUrl({ term, usl, sort, dir }) {
 // ELEMENTS
 // ==============================
 const elements = {
-  loading: document.getElementById("loading-inventory-search"), // CHANGED
   stats: document.getElementById("inventory-stats")
 };
 
@@ -131,7 +130,7 @@ export const doInventorySearch = debounce(async function({ searchInput, uslFilte
 
   const key = generateSearchKey({ term, usl, sort, dir: sortDirection });
 
-  showLoading(elements.loading); // NEW
+  showPanelSpinner(); // NEW
 
   noResults.style.display = "none";
 
@@ -178,7 +177,7 @@ export const doInventorySearch = debounce(async function({ searchInput, uslFilte
     noResults.innerText = "Error loading results. Please try again.";
     DEBUG_MODE && console.error("[DEBUG] Fetch Error:", err);
   } finally {
-    hideLoading(elements.loading); // NEW
+    hidePanelSpinner(); // NEW
     restoreScrollPosition();
   }
 
