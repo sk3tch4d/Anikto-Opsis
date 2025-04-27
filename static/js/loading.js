@@ -38,7 +38,7 @@ export function hideLoading(spinnerId = 'loading') {
 // ==============================
 // SHOW PANEL LOADING
 // ==============================
-function showPanelSpinner() {
+export function showPanelSpinner() {
   const openPanel = document.querySelector('.panel.open');
   if (!openPanel) return;
   const spinner = openPanel.querySelector('.panel-loading');
@@ -51,7 +51,7 @@ function showPanelSpinner() {
 // ==============================
 // HIDE PANEL LOADING
 // ==============================
-function hidePanelSpinner() {
+export function hidePanelSpinner() {
   const openPanel = document.querySelector('.panel.open');
   if (!openPanel) return;
   const spinner = openPanel.querySelector('.panel-loading');
