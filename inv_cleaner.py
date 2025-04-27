@@ -12,13 +12,13 @@ COLUMN_RENAMES = {
     "Material Description": "Description",
     "Un": "UOM",
     "Matl grp": "Goup",
-    "Replenishment qty": "ROQ",
+    "Replenishmt qty": "ROQ",
     "Reorder point": "ROP",
     "Old Material Number": "Old Material",
     "Created": "Created"
 }
 
-REMOVE_COLUMNS = ["Stl", "Mat", "Pl", "Plnt"]
+REMOVE_COLUMNS = ["StL", "Mat", "Pl", "Plnt", "Un.1", "Un.2"]
 
 # ==============================
 # CLEAN XLSX
