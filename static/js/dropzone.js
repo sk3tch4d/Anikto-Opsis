@@ -4,7 +4,7 @@
 // ==============================
 
 import { displayRandomQuote } from './quotes.js';
-import { toggleLoadingState } from './loading.js';
+import { showLoading, hideLoading } from './loading.js';
 
 // ==============================
 // CONFIGURATION
@@ -23,7 +23,6 @@ const isArgFile = name => ARG_REGEX.test(name);
 const isSeniorityFile = name => SENIORITY_REGEX.test(name);
 const isValidFile = name => /\.(pdf|xlsx|db)$/i.test(name);
 
-
 // ==============================
 // INIT DROPZONE
 // ==============================
@@ -37,7 +36,6 @@ export function initDropzone() {
   setupDragAndDrop(dropZone, fileInput);
 }
 
-
 // ==============================
 // FORM SUBMISSION BEHAVIOR
 // ==============================
@@ -46,17 +44,19 @@ function setupFormBehavior() {
   if (!form) return;
 
   form.addEventListener("submit", () => {
-    toggleLoadingState(true, {
-      show: [document.getElementById("loading")],
-      hide: [document.getElementById("upload-form")]
-    });
+    const loadingTarget = document.getElementById("loading");
+    const uploadForm = document.getElementById("upload-form");
+
+    if (loadingTarget && uploadForm) {
+      showLoading(loadingTarget);
+      uploadForm.style.display = 'none';
+    }
 
     displayRandomQuote();
   });
 }
 
 export { setupFormBehavior };
-
 
 // ==============================
 // FILE INPUT BEHAVIOR
@@ -90,7 +90,6 @@ function setupFileInput(fileInput, fileList) {
   });
 }
 
-
 // ==============================
 // DRAG & DROP SUPPORT
 // ==============================
@@ -114,7 +113,6 @@ function setupDragAndDrop(dropZone, fileInput) {
     dropZone.classList.remove("active");
   });
 }
-
 
 // ==============================
 // GENERATE BUTTON TEXT + STATE
@@ -149,7 +147,6 @@ function updateGenerateButtonText() {
     return;
   }
 
-  // Declarative matching
   const typeMatchers = [
     { label: "Generate Catalog", match: isCatalogFile },
     { label: "Generate Seniority Summary", match: isSeniorityFile },
@@ -169,7 +166,6 @@ function updateGenerateButtonText() {
 
   generateBtn.disabled = false;
 }
-
 
 // ==============================
 // BIND CHANGE EVENTS
