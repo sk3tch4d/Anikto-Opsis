@@ -36,43 +36,41 @@ REMOVE_COLUMNS = ["StL", "Mat", "Pl", "Plnt", "Un.1", "Un.2", "Latex/Expiry Info
 def clean_xlsx(file_stream):
     df = pd.read_excel(file_stream)
 
-    # Drop rows containing 'DELETED' in any cell
+    # 1. Rename columns immediately to standardize names
+    df.rename(columns={k: v for k, v in COLUMN_RENAMES.items() if k in df.columns}, inplace=True)
+
+    # 2. Drop rows where 'Description' starts with XX or XXX
+    if 'Description' in df.columns:
+        pattern = r'^(XX|XXX)'
+        df = df[~df['Description'].astype(str).str.match(pattern)]
+
+    # 3. Drop rows containing 'DELETED' in any cell
     mask = df.astype(str).applymap(lambda x: 'DELETED' in x.upper() if isinstance(x, str) else False)
     df = df[~mask.any(axis=1)]
 
-    # Drop rows where 'Mat', 'Pl', 'Del' is 'X'
+    # 4. Drop rows where 'Mat', 'Pl', 'Del' is 'X'
     for col in ['Mat', 'Pl', 'Del']:
         if col in df.columns:
             df = df[df[col] != 'X']
 
-    # Drop rows where Material Description starts with XX or XXX
-    if 'Material Description' in df.columns:
-        pattern = r'^(XX|XXX)'
-        df = df[~df['Material Description'].astype(str).str.match(pattern)]
-
-    # Handle duplicate 'Un' column issue
-    un_cols = [col for col in df.columns if col == 'Un']
-    if len(un_cols) > 1:
+    # 5. Handle duplicate 'UOM' columns
+    uom_cols = [col for col in df.columns if col == 'UOM']
+    if len(uom_cols) > 1:
         cols = []
-        un_counter = 0
+        uom_counter = 0
         for col in df.columns:
-            if col == 'Un':
-                un_counter += 1
-                if un_counter == 1:
-                    continue  # Skip the first 'Un'
+            if col == 'UOM':
+                uom_counter += 1
+                if uom_counter == 1:
+                    continue  # Keep first
             cols.append(col)
         df = df[cols]
 
-    # Print columns removed
+    # 6. Drop unwanted columns
     dropped_cols = [col for col in REMOVE_COLUMNS if col in df.columns]
     if dropped_cols:
         print(f"Dropped columns: {', '.join(dropped_cols)}")
-    
-    # Remove unwanted columns
-    df.drop(columns=[col for col in REMOVE_COLUMNS if col in df.columns], inplace=True)
-    
-    # Rename columns
-    df.rename(columns={k: v for k, v in COLUMN_RENAMES.items() if k in df.columns}, inplace=True)
+    df.drop(columns=dropped_cols, inplace=True)
 
     return df
 
