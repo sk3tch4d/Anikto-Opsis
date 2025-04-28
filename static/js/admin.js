@@ -1,5 +1,5 @@
 // ==============================
-// ADMIN MODULE
+// ADMIN.JS
 // ==============================
 
 import { collapseAllPanels } from './panels.js';
