@@ -2,7 +2,10 @@
 /* DISC_LABELS.CSS                */
 /* ============================== */
 
-/* ==== TOAST ==== */
+
+/* ============================== */
+/* TOAST                          */
+/* ============================== */
 .toast {
   position: fixed;
   bottom: 20px;
@@ -17,37 +20,41 @@
   transition: opacity 0.4s ease, bottom 0.4s ease;
   z-index: 1000;
 }
-
 .toast.show {
   opacity: 1;
   bottom: 40px;
 }
 
-
-/* ==== SAVED CARD ==== */
+/* ============================== */
+/* SAVED CARD                     */
+/* ============================== */
 .saved-card {
   border: 2px solid #00c853;
   box-shadow: 0 0 10px #00c853;
   transition: all 0.3s ease;
 }
 
-/* ==== TAG LABEL ==== */
+/* ============================== */
+/* TAG LABEL                      */
+/* ============================== */
 .tag-label {
   color: #9393ec;
   font-size: 1rem;
 }
 
-/* ==== USL TOGGLE ==== */
+/* ============================== */
+/* TAG TOGGLE                     */
+/* ============================== */
 .tag-toggle {
   display: inline-block;
   background-color: #3a3f5c;
-  color: #7289da;
-  padding: 4px 10px;
-  margin: 8px 0 6px 0;
+  color: #9aaae4;
+  padding: 6px 14px;
+  margin: 12px 0 0.8px 0;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 0.85em;
+  font-size: 0.9em;
   user-select: none;
   transition: background-color 0.2s ease;
 }
@@ -56,7 +63,9 @@
   color: #ccc;
 }
 
-/* ==== CHEVRON ==== */
+/* ============================== */
+/* CHEVRON                        */
+/* ============================== */
 .chevron {
   display: inline-block;
   margin-left: 6px;
@@ -70,7 +79,9 @@
   transform: rotate(180deg);
 }
 
-/* ==== USL WRAPPER ==== */
+/* ============================== */
+/* USL WRAPPER                    */
+/* ============================== */
 .usl-wrapper {
   overflow: hidden;
   max-height: 0;
@@ -84,6 +95,6 @@
   /*box-shadow: inset 0 0 0.4rem 0.1rem #0d0c0d;*/
   color: #7289da;
   padding: 12px 14px;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
+  border-radius: 8px;
+  transition: background-color 0.5s ease;
 }
