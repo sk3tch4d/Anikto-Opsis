@@ -4,6 +4,7 @@
 // ==============================
 
 import { openPanelById, scrollPanel } from "./panels.js";
+import { removeFocus } from "./helpers.js';
 
 // ==============================
 // TRIGGER SEARCH FROM STAT
@@ -24,14 +25,15 @@ export function searchFromStat(inputId, value) {
 export function setupParseStats() {
   let pressTimer = null;
 
+  // ====== Cache DOM elements ======
+  const searchInput = document.getElementById("inventory-search");
+  const uslFilter = document.getElementById("usl-filter");
+
   // ====== Normal Click to Search ======
   document.addEventListener("click", function (e) {
     const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
 
     if (matchTarget) {
-      const searchInput = document.getElementById("inventory-search");
-      const uslFilter = document.getElementById("usl-filter");
-
       const searchValue = matchTarget.getAttribute("data-search");
       const filterValue = matchTarget.getAttribute("data-filter");
 
@@ -57,6 +59,7 @@ export function setupParseStats() {
       }
 
       scrollPanel();
+      removeFocus(matchTarget);
     }
   }, { passive: true });
 
@@ -73,10 +76,10 @@ export function setupParseStats() {
 
     if (inputMatch) {
       pressTimer = setTimeout(() => {
-        const searchInput = document.getElementById("inventory-search");
         if (searchInput) {
           searchInput.value = "";
           searchInput.dispatchEvent(new Event("input"));
+          removeFocus(searchInput);
           triggerVibration();
           showToast("Search cleared");
         }
@@ -85,11 +88,10 @@ export function setupParseStats() {
 
     if (filterMatch) {
       pressTimer = setTimeout(() => {
-        const uslFilter = document.getElementById("usl-filter");
         if (uslFilter) {
           uslFilter.value = "All";
           uslFilter.dispatchEvent(new Event("change"));
-          uslFilter.blur();
+          removeFocus(uslFilter);
           triggerVibration();
           showToast("Filter reset");
         }
@@ -102,6 +104,7 @@ export function setupParseStats() {
     pressTimer = null;
   }
 }
+
 
 // ==============================
 // MATCH HIGHLIGHTING
