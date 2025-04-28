@@ -1,5 +1,5 @@
 // ==============================
-// INV_STATS.JS
+// INV_STATS.JS 
 // Inventory Statistics Renderer
 // ==============================
 
@@ -25,6 +25,29 @@ function showToast(message) {
   setTimeout(() => {
     toast.classList.remove("show");
   }, 2000);
+}
+
+// ==============================
+// HELPER: HAPTIC FEEDBACK
+// ==============================
+function vibrateShort() {
+  if (navigator.vibrate) {
+    navigator.vibrate(50); // Short pulse
+  }
+}
+
+// ==============================
+// HELPER: CLEAR TEXT SELECTION
+// ==============================
+function clearTextSelection() {
+  if (window.getSelection) {
+    const sel = window.getSelection();
+    if (sel && !sel.isCollapsed) {
+      sel.removeAllRanges();
+    }
+  } else if (document.selection) {
+    document.selection.empty();
+  }
 }
 
 // ==============================
@@ -77,6 +100,8 @@ function toggleSaveItem(card, base) {
     card.classList.add("saved-card");
     showToast("Saved!");
   }
+  vibrateShort(); // ✅ Short vibration on save/remove
+  clearTextSelection(); // ✅ Clear accidental text highlight
   updateSavedPanel();
 }
 
@@ -114,7 +139,6 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
 
   wrapper.appendChild(container);
 
-  // ===== Local toggle binding
   toggle.addEventListener("click", () => {
     wrapper.classList.toggle("show");
     toggle.classList.toggle("toggle-open");
@@ -150,7 +174,6 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
     : "";
 
   const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
-
   const quantityLabel = (currentFilter === "all" && uniqueUSLs.length > 1) ? "Total Quantity" : "Quantity";
 
   const firstUSL = matching.length === 1 ? matching[0].USL : null;
@@ -178,7 +201,7 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
       singlePill.className = "clickable-match";
       singlePill.textContent = uniqueUSLs[0];
       singlePill.setAttribute("data-filter", uniqueUSLs[0]);
-      singlePill.setAttribute("data-search", base.Num); // Important
+      singlePill.setAttribute("data-search", base.Num);
       card.appendChild(singlePill);
     } else if (uniqueUSLs.length > 1) {
       const { toggle, wrapper: uslWrapper } = createToggleList({
@@ -238,7 +261,6 @@ export function populateInventoryStats(results) {
     });
 
     liMatches.appendChild(matchContainer);
-
   } else {
     const matchesToggle = document.createElement("span");
     matchesToggle.className = "tag-label tag-toggle clickable-toggle";
