@@ -1,12 +1,12 @@
 // ==============================
 // INV_DOWNLOAD.JS
-// Inventory Search Results Exporter
+// Inventory Data Exporter
 // ==============================
 
-import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.2/package/xlsx.mjs"; // or wherever you're importing SheetJS from
+import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.2/package/xlsx.mjs";
 
 // ==============================
-// Setup Download for Search Results
+// SETUP: DOWNLOAD FOR SEARCH
 // ==============================
 export function setupInventoryDownloadSearch() {
   const downloadButton = document.getElementById("inventory-search-download");
@@ -26,7 +26,7 @@ export function setupInventoryDownloadSearch() {
 }
 
 // ==============================
-// Setup Download for Search History
+// SETUP: DOWNLOAD FOR HISTORY
 // ==============================
 export function setupInventoryDownloadHistory() {
   const downloadButton = document.getElementById("inventory-history-download");
