@@ -35,8 +35,8 @@ function findClosestBySelector(element, selector) {
 // ==============================
 export function setupParseStats() {
   document.addEventListener("click", function(e) {
-    const matchTarget = findClosestBySelector(e.target, ".clickable-match, .clickable-stat");
-    const toggleTarget = findClosestBySelector(e.target, ".clickable-toggle");
+    const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
+    const toggleTarget = e.target.matches(".clickable-toggle") ? e.target : null;
 
     const searchInput = document.getElementById("inventory-search");
     const uslFilter = document.getElementById("usl-filter");
