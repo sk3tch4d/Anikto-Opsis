@@ -23,72 +23,74 @@ export function searchFromStat(inputId, value) {
 // ==============================
 export function setupParseStats() {
   let pressTimer = null;
-  let longPressTriggered = false;
-
-  document.addEventListener("mousedown", startLongPress);
-  document.addEventListener("touchstart", startLongPress);
-  document.addEventListener("mouseup", clearLongPress);
-  document.addEventListener("touchend", clearLongPress);
-  document.addEventListener("mouseleave", clearLongPress);
 
   document.addEventListener("click", function (e) {
-    // If a long press already happened, cancel click
-    if (longPressTriggered) {
-      longPressTriggered = false;
-      return;
-    }
-
     const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
-    if (!matchTarget) return;
 
     const searchInput = document.getElementById("inventory-search");
     const uslFilter = document.getElementById("usl-filter");
 
-    const searchValue = matchTarget.getAttribute("data-search");
-    const filterValue = matchTarget.getAttribute("data-filter");
+    if (matchTarget) {
+      const searchValue = matchTarget.getAttribute("data-search");
+      const filterValue = matchTarget.getAttribute("data-filter");
 
-    if (uslFilter) {
-      if (filterValue && Array.from(uslFilter.options).some(opt => opt.value === filterValue)) {
-        uslFilter.value = filterValue;
-      } else {
-        uslFilter.value = "All";
+      if (uslFilter) {
+        if (filterValue && Array.from(uslFilter.options).some(opt => opt.value === filterValue)) {
+          uslFilter.value = filterValue;
+        } else {
+          uslFilter.value = "All"; // fallback
+        }
+        uslFilter.dispatchEvent(new Event("change"));
       }
-      uslFilter.dispatchEvent(new Event("change"));
-    }
 
-    if (searchValue && searchInput) {
-      searchInput.value = searchValue;
-      searchInput.dispatchEvent(new Event("input"));
-    }
-
-    const searchPanel = document.getElementById("inventory-search-panel");
-    if (searchPanel && !searchPanel.classList.contains("open")) {
-      openPanelById("inventory-search-panel");
-    }
-
-    scrollPanel();
-  }, { passive: true });
-
-  function startLongPress(e) {
-    const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
-    if (!matchTarget) return;
-
-    pressTimer = setTimeout(() => {
-      longPressTriggered = true; // Mark that long press succeeded
-
-      const searchInput = document.getElementById("inventory-search");
-      const uslFilter = document.getElementById("usl-filter");
-
-      if (searchInput) {
-        searchInput.value = "";
+      if (searchValue && searchInput) {
+        searchInput.value = searchValue;
         searchInput.dispatchEvent(new Event("input"));
       }
 
-      if (uslFilter) {
-        uslFilter.value = "All";
-        uslFilter.dispatchEvent(new Event("change"));
+      const searchPanel = document.getElementById("inventory-search-panel");
+      if (searchPanel && !searchPanel.classList.contains("open")) {
+        openPanelById("inventory-search-panel");
       }
-    }, 600); // 600ms long press
+
+      scrollPanel();
+    }
+  }, { passive: true });
+
+  // ==============================
+  // LONG PRESS RESET LOGIC
+  // ==============================
+  const searchInput = document.getElementById("inventory-search");
+  const uslFilter = document.getElementById("usl-filter");
+
+  if (searchInput) {
+    searchInput.addEventListener("mousedown", startLongPressInput);
+    searchInput.addEventListener("touchstart", startLongPressInput);
+    searchInput.addEventListener("mouseup", clearLongPress);
+    searchInput.addEventListener("touchend", clearLongPress);
+    searchInput.addEventListener("mouseleave", clearLongPress);
+  }
+
+  if (uslFilter) {
+    uslFilter.addEventListener("mousedown", startLongPressFilter);
+    uslFilter.addEventListener("touchstart", startLongPressFilter);
+    uslFilter.addEventListener("mouseup", clearLongPress);
+    uslFilter.addEventListener("touchend", clearLongPress);
+    uslFilter.addEventListener("mouseleave", clearLongPress);
+  }
+
+  function startLongPressInput(e) {
+    pressTimer = setTimeout(() => {
+      searchInput.value = "";
+      searchInput.dispatchEvent(new Event("input"));
+    }, 600);
+  }
+
+  function startLongPressFilter(e) {
+    pressTimer = setTimeout(() => {
+      uslFilter.value = "All";
+      uslFilter.dispatchEvent(new Event("change"));
+    }, 600);
   }
 
   function clearLongPress() {
