@@ -20,23 +20,12 @@ export function searchFromStat(inputId, value) {
 }
 
 // ==============================
-// HELPER: climb up and find parent by selector
-// ==============================
-function findClosestBySelector(element, selector) {
-  while (element) {
-    if (element.matches(selector)) return element;
-    element = element.parentElement;
-  }
-  return null;
-}
-
-// ==============================
 // PARSE TO SEARCH MODULE (Event Delegation)
 // ==============================
 export function setupParseStats() {
-  let pressTimer = null; // ====== For Long Press Detection
+  let pressTimer = null; // Long Press
 
-  document.addEventListener("click", function(e) {
+  document.addEventListener("click", function (e) {
     const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
 
     const searchInput = document.getElementById("inventory-search");
@@ -50,7 +39,7 @@ export function setupParseStats() {
         if (filterValue && Array.from(uslFilter.options).some(opt => opt.value === filterValue)) {
           uslFilter.value = filterValue;
         } else {
-          uslFilter.value = "All"; // fallback safely
+          uslFilter.value = "All"; // fallback
         }
         uslFilter.dispatchEvent(new Event("change"));
       }
@@ -69,8 +58,14 @@ export function setupParseStats() {
     }
   }, { passive: true });
 
-  // ====== Long Press Logic ======
-  document.addEventListener("mousedown", (e) => {
+  // ====== Long Press Reset ======
+  document.addEventListener("mousedown", (e) => startLongPress(e));
+  document.addEventListener("touchstart", (e) => startLongPress(e));
+  document.addEventListener("mouseup", clearLongPress);
+  document.addEventListener("touchend", clearLongPress);
+  document.addEventListener("mouseleave", clearLongPress);
+
+  function startLongPress(e) {
     if (e.target.closest(".clickable-match, .clickable-stat")) {
       pressTimer = setTimeout(() => {
         const searchInput = document.getElementById("inventory-search");
@@ -85,14 +80,14 @@ export function setupParseStats() {
           uslFilter.value = "All";
           uslFilter.dispatchEvent(new Event("change"));
         }
-      }, 600); // 600ms = long press
+      }, 600); // 600ms
     }
-  });
+  }
 
-  document.addEventListener("mouseup", () => clearTimeout(pressTimer));
-  document.addEventListener("mouseleave", () => clearTimeout(pressTimer));
+  function clearLongPress() {
+    clearTimeout(pressTimer);
+  }
 }
-
 
 // ==============================
 // MATCH HIGHLIGHTING
