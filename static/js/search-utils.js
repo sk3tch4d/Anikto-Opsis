@@ -45,12 +45,12 @@ export function setupParseStats() {
         searchInput.dispatchEvent(new Event("input"));
       }
 
-      // Open Search Panel smart
       const searchPanel = document.getElementById("inventory-search-panel");
       if (searchPanel && !searchPanel.classList.contains("open")) {
         openPanelById("inventory-search-panel");
       }
-      scrollPanel();
+
+      scrollPanel(); // Only scroll when a match, not on toggle click
     }
 
     // ====== Toggle clicked (expand/collapse) ======
@@ -61,9 +61,8 @@ export function setupParseStats() {
         toggleTarget.classList.toggle("toggle-open");
       }
     }
-  });
+  }, { passive: true });
 }
-
 
 // ==============================
 // MATCH HIGHLIGHTING
