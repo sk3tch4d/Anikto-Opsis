@@ -79,35 +79,28 @@ export function setupParseStats() {
     uslFilter.addEventListener("mouseleave", clearLongPress);
   }
 
-  function startLongPressInput(e) {
+  function startLongPressInput() {
     pressTimer = setTimeout(() => {
-      if (searchInput) {
-        searchInput.value = "";
-        searchInput.dispatchEvent(new Event("input"));
-        triggerVibration(); // <=== Added!
-      }
+      searchInput.value = "";
+      searchInput.dispatchEvent(new Event("input"));
+      triggerVibration();
+      showToast("Search cleared");
     }, 600);
   }
 
-  function startLongPressFilter(e) {
+  function startLongPressFilter() {
     pressTimer = setTimeout(() => {
-      if (uslFilter) {
-        uslFilter.value = "All";
-        uslFilter.dispatchEvent(new Event("change"));
-        triggerVibration(); // <=== Added!
-      }
+      uslFilter.value = "All";
+      uslFilter.dispatchEvent(new Event("change"));
+      uslFilter.blur(); // force blur to refresh UI
+      triggerVibration();
+      showToast("Filter reset");
     }, 600);
   }
 
   function clearLongPress() {
     clearTimeout(pressTimer);
     pressTimer = null;
-  }
-
-  function triggerVibration() {
-    if (navigator.vibrate) {
-      navigator.vibrate(100); // happy buzz
-    }
   }
 }
 
@@ -119,4 +112,31 @@ export function highlightMatch(text, term) {
   const safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const regex = new RegExp(`(${safeTerm})`, "ig");
   return text.replace(regex, `<span class="highlight">$1</span>`);
+}
+
+// ==============================
+// HAPTIC VIBRATION
+// ==============================
+function triggerVibration() {
+  if (navigator.vibrate) {
+    navigator.vibrate(30); // small short vibration (30ms)
+  }
+}
+
+// ==============================
+// TOAST FEEDBACK
+// ==============================
+function showToast(message) {
+  let toast = document.getElementById("toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "toast";
+    toast.className = "toast-message";
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 1800);
 }
