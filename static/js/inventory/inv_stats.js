@@ -11,6 +11,64 @@ import { setupParseStats, highlightMatch } from "../search-utils.js";
 const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 
 // ==============================
+// GLOBAL: SAVED ITEMS
+// ==============================
+const savedItems = new Set();
+
+// ==============================
+// HELPER: SHOW TOAST
+// ==============================
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2000);
+}
+
+// ==============================
+// HELPER: UPDATE SAVED PANEL
+// ==============================
+function updateSavedPanel() {
+  const savedPanel = document.querySelector("#inventory-saved-panel .panel-body");
+  savedPanel.innerHTML = "";
+
+  if (savedItems.size === 0) {
+    savedPanel.innerHTML = "<p>No items saved yet.</p>";
+    return;
+  }
+
+  const ul = document.createElement("ul");
+  ul.style.listStyle = "none";
+  ul.style.paddingLeft = "0";
+
+  savedItems.forEach(id => {
+    const li = document.createElement("li");
+    li.textContent = id;
+    ul.appendChild(li);
+  });
+
+  savedPanel.appendChild(ul);
+}
+
+// ==============================
+// HELPER: TOGGLE SAVE ITEM
+// ==============================
+function toggleSaveItem(card, itemId) {
+  if (savedItems.has(itemId)) {
+    savedItems.delete(itemId);
+    card.classList.remove("saved-card");
+    showToast("Removed!");
+  } else {
+    savedItems.add(itemId);
+    card.classList.add("saved-card");
+    showToast("Saved!");
+  }
+  updateSavedPanel();
+}
+
+// ==============================
 // HELPER: CREATE TOGGLE LIST
 // ==============================
 function createToggleList({ label, items, itemAttributes = {}, sort = true, searchableValue = "" }) {
@@ -95,6 +153,11 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   infoBlock.innerHTML = detailsHTML;
 
   card.appendChild(infoBlock);
+
+  // Attach Save Toggle on Double Click
+  card.addEventListener("dblclick", () => {
+    toggleSaveItem(card, base.Num);
+  });
 
   // Only add USLs if the filter is "all"
   if (currentFilter === "all") {
