@@ -237,6 +237,8 @@ export function populateInventoryStats(results) {
 
   const uniqueNums = [...new Set(results.map(item => item.Num))];
 
+  const fragment = document.createDocumentFragment(); // 🛠️ Batch changes here
+
   const summaryContainer = document.createElement("div");
   summaryContainer.className = "compare-card";
 
@@ -246,9 +248,8 @@ export function populateInventoryStats(results) {
   summaryContainer.appendChild(liResults);
 
   const liMatches = document.createElement("div");
-  const uniqueNumsCount = uniqueNums.length;
 
-  if (uniqueNumsCount <= 3) {
+  if (uniqueNums.length <= 3) {
     const matchContainer = document.createElement("div");
     matchContainer.className = "clickable-match-container";
 
@@ -264,7 +265,7 @@ export function populateInventoryStats(results) {
   } else {
     const matchesToggle = document.createElement("span");
     matchesToggle.className = "tag-label tag-toggle clickable-toggle";
-    matchesToggle.innerHTML = `Matches (${uniqueNumsCount}) <span class="chevron">▼</span>`;
+    matchesToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
 
     const matchesWrapper = document.createElement("div");
     matchesWrapper.className = "usl-wrapper";
@@ -292,7 +293,7 @@ export function populateInventoryStats(results) {
   }
 
   summaryContainer.appendChild(liMatches);
-  statsBox.appendChild(summaryContainer);
+  fragment.appendChild(summaryContainer); // 🛠️ Add summary to fragment first
 
   uniqueNums.forEach(num => {
     const matching = results.filter(r => r.Num === num);
@@ -300,15 +301,18 @@ export function populateInventoryStats(results) {
 
     const base = matching[0];
     const card = createInventoryItemCard(matching, base, currentSearch, currentFilter);
-    statsBox.appendChild(card);
+    fragment.appendChild(card); // 🛠️ Batch all cards to fragment
   });
 
   if (!uniqueNums.length) {
     const noResults = document.createElement("div");
     noResults.className = "no-results";
     noResults.textContent = "No results found.";
-    statsBox.appendChild(noResults);
+    fragment.appendChild(noResults); // 🛠️ Even no-results goes into fragment
   }
+
+  statsBox.appendChild(fragment); // 🛠️ ONE DOM hit here
 
   setupParseStats();
 }
+
