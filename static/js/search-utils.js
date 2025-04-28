@@ -4,7 +4,7 @@
 // ==============================
 
 import { openPanelById, scrollPanel } from "./panels.js";
-import { removeFocus } from "./helpers.js';
+import { removeFocus } from "./helpers.js";
 
 // ==============================
 // TRIGGER SEARCH FROM STAT
