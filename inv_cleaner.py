@@ -14,6 +14,7 @@ from datetime import datetime
 COLUMN_RENAMES = {
     "SLoc": "USL",
     "Sloc": "USL",
+    "Mat.#": "Material",
     "Mat. #": "Material",
     "Material": "Material",
     "Material Description": "Description",
@@ -38,7 +39,7 @@ REMOVE_COLUMNS = [
     "Latex/Expiry Information", "Person responsible",
     "Stge loc. descr.", "MRPC", "Type", "Plant", "Del", 
     "Last Order Price", "Curr.", "Per", "Last PO",
-    "Conv.", "=", "OPUn", "OUn"
+    "Conv.", "=", "OPUn", "OUn", "Curr..1", "OPUn.1", "D"
 ]
 
 # ==============================
