@@ -84,8 +84,8 @@ export function setupParseStats() {
       if (searchInput) {
         searchInput.value = "";
         searchInput.dispatchEvent(new Event("input"));
+        triggerVibration(); // <=== Added!
       }
-      triggerVibration();
     }, 600);
   }
 
@@ -94,8 +94,8 @@ export function setupParseStats() {
       if (uslFilter) {
         uslFilter.value = "All";
         uslFilter.dispatchEvent(new Event("change"));
+        triggerVibration(); // <=== Added!
       }
-      triggerVibration();
     }, 600);
   }
 
@@ -106,7 +106,7 @@ export function setupParseStats() {
 
   function triggerVibration() {
     if (navigator.vibrate) {
-      navigator.vibrate(100); // short buzz!
+      navigator.vibrate(100); // happy buzz
     }
   }
 }
