@@ -20,6 +20,7 @@ COLUMN_RENAMES = {
     "Material description": "Description",
     "Un": "UOM",
     "U/M": "UOM",
+    "Net price": "Cost",
     "Matl grp": "Goup",
     "Material Group": "Goup",
     "Replenishmt qty": "ROQ",
@@ -28,13 +29,16 @@ COLUMN_RENAMES = {
     "Created": "Created",
     "Cost ctr": "Cost Center",
     "Vendor's Name": "Vendor Name",
-    "Vendor material numTer": "Vendor Material"
+    "Vendor material numTer": "Vendor Material",
+    "Vendor material number": "Vendor Material"
 }
 
 REMOVE_COLUMNS = [
     "StL", "Mat", "Pl", "Plnt", "Un.1", "Un.2",
     "Latex/Expiry Information", "Person responsible",
-    "Stge loc. descr.", "MRPC", "Type", "Plant", "Del"
+    "Stge loc. descr.", "MRPC", "Type", "Plant", "Del, 
+    "Last Order Price", "Curr.", "Per", "Last PO",
+    "Conv.", "=", "OPUn", "OUn"
 ]
 
 # ==============================
@@ -70,7 +74,7 @@ def clean_xlsx(file_stream):
     df = df[~mask_deleted]
 
     # 4. Drop rows where 'Mat', 'Pl', 'Del' == 'X'
-    for col in ['Mat', 'Pl', 'Del']:
+    for col in ['Mat', 'Pl', 'D', 'Del']:
         if col in df.columns:
             df = df[df[col].astype(str).str.upper() != 'X']
 
