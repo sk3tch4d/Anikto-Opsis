@@ -3,8 +3,11 @@
 // ==============================
 
 import { collapseAllPanels } from './panels.js';
-//const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
-const DEBUG_MODE = true;
+
+// ==============================
+// DEBUG MODE
+// ==============================
+const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 if (DEBUG_MODE) console.log("[DEBUG] Admin Module Loaded");
 
 // ==============================
@@ -47,7 +50,6 @@ export function initAdminLogin() {
     }
   }
 }
-
 
 // ==============================
 // CUSTOM JSON UPLOAD FORM
