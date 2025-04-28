@@ -51,16 +51,17 @@
   color: #9aaae4;
   padding: 6px 14px;
   margin: 12px 0 0.8px 0;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 0.9em;
+  font-size: 0.88rem;
   user-select: none;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.4s ease, color 0.6s ease, border-radius 0.8s ease;
 }
 .tag-toggle:hover {
   background-color: #58608d;
-  color: #ccc;
+  color: #ddd;
+  border-radius: 16px;
 }
 
 /* ============================== */
