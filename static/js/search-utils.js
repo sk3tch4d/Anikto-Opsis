@@ -20,12 +20,23 @@ export function searchFromStat(inputId, value) {
 }
 
 // ==============================
-// PARSE TO SEARCH MODULE (Event Delegation, Simple)
+// HELPER: climb up and find parent by selector
+// ==============================
+function findClosestBySelector(element, selector) {
+  while (element) {
+    if (element.matches(selector)) return element;
+    element = element.parentElement;
+  }
+  return null;
+}
+
+// ==============================
+// PARSE TO SEARCH MODULE (Event Delegation)
 // ==============================
 export function setupParseStats() {
   document.addEventListener("click", function(e) {
-    const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
-    const toggleTarget = e.target.closest(".clickable-toggle");
+    const matchTarget = findClosestBySelector(e.target, ".clickable-match, .clickable-stat");
+    const toggleTarget = findClosestBySelector(e.target, ".clickable-toggle");
 
     const searchInput = document.getElementById("inventory-search");
     const uslFilter = document.getElementById("usl-filter");
@@ -36,10 +47,10 @@ export function setupParseStats() {
       const filterValue = matchTarget.getAttribute("data-filter");
     
       if (uslFilter) {
-        if (filterValue) {
+        if (filterValue && Array.from(uslFilter.options).some(opt => opt.value === filterValue)) {
           uslFilter.value = filterValue;
         } else {
-          uslFilter.value = "All"; // Force ALL if missing
+          uslFilter.value = "All"; // fallback safely
         }
         uslFilter.dispatchEvent(new Event("change"));
       }
@@ -65,9 +76,8 @@ export function setupParseStats() {
         toggleTarget.classList.toggle("toggle-open");
       }
     }
-  });
+  }, { passive: true });
 }
-
 
 // ==============================
 // MATCH HIGHLIGHTING
