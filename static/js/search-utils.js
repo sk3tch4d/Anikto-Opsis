@@ -24,36 +24,46 @@ export function searchFromStat(inputId, value) {
 // ==============================
 export function setupParseStats() {
   document.addEventListener("click", function(e) {
-    const target = e.target.closest(".clickable-match, .clickable-stat");
-
-    if (!target) return;
+    const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
+    const toggleTarget = e.target.closest(".clickable-toggle");
 
     const searchInput = document.getElementById("inventory-search");
     const uslFilter = document.getElementById("usl-filter");
 
-    const searchValue = target.getAttribute("data-search");
-    const filterValue = target.getAttribute("data-filter");
+    // ====== Match clicked (searching) ======
+    if (matchTarget) {
+      const searchValue = matchTarget.getAttribute("data-search");
+      const filterValue = matchTarget.getAttribute("data-filter");
 
-    if (filterValue && uslFilter) {
-      uslFilter.value = filterValue;
-      uslFilter.dispatchEvent(new Event("change"));
+      if (filterValue && uslFilter) {
+        uslFilter.value = filterValue;
+        uslFilter.dispatchEvent(new Event("change"));
+      }
+
+      if (searchValue && searchInput) {
+        searchInput.value = searchValue;
+        searchInput.dispatchEvent(new Event("input"));
+      }
+
+      // Open Search Panel smart
+      const searchPanel = document.getElementById("inventory-search-panel");
+      if (searchPanel && !searchPanel.classList.contains("open")) {
+        openPanelById("inventory-search-panel");
+      }
+      scrollPanel();
     }
 
-    if (searchValue && searchInput) {
-      searchInput.value = searchValue;
-      searchInput.dispatchEvent(new Event("input"));
+    // ====== Toggle clicked (expand/collapse) ======
+    if (toggleTarget) {
+      const wrapper = toggleTarget.nextElementSibling;
+      if (wrapper && wrapper.classList.contains("usl-wrapper")) {
+        wrapper.classList.toggle("show");
+        toggleTarget.classList.toggle("toggle-open");
+      }
     }
-
-    // ===== Smart Open: Only if not already in search panel =====
-    const searchPanel = document.getElementById("inventory-search-panel");
-    if (searchPanel && !searchPanel.classList.contains("open")) {
-      openPanelById("inventory-search-panel");
-    }
-
-    // Always scroll to top nicely after any match click
-    scrollPanel();
   });
 }
+
 
 // ==============================
 // MATCH HIGHLIGHTING
