@@ -6,14 +6,13 @@
 import { openPanelById, scrollPanel } from "./panels.js";
 
 // ==============================
-// TRIGGER SEARCH FROM STAT
+// SEARCH FROM STAT
 // ==============================
 export function searchFromStat(inputId, value) {
   const input = document.getElementById(inputId);
   if (input) {
     input.value = value;
     input.dispatchEvent(new Event("input"));
-
     const panelId = `${inputId}-panel`;
     openPanelById(panelId);
   }
@@ -23,7 +22,8 @@ export function searchFromStat(inputId, value) {
 // PARSE TO SEARCH MODULE (Event Delegation)
 // ==============================
 export function setupParseStats() {
-  let pressTimer = null; // Long Press
+  let pressTimer = null;
+  let pressTarget = null; // new
 
   document.addEventListener("click", function (e) {
     const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
@@ -39,7 +39,7 @@ export function setupParseStats() {
         if (filterValue && Array.from(uslFilter.options).some(opt => opt.value === filterValue)) {
           uslFilter.value = filterValue;
         } else {
-          uslFilter.value = "All"; // fallback
+          uslFilter.value = "All";
         }
         uslFilter.dispatchEvent(new Event("change"));
       }
@@ -58,34 +58,39 @@ export function setupParseStats() {
     }
   }, { passive: true });
 
-  // ====== Long Press Reset ======
-  document.addEventListener("mousedown", (e) => startLongPress(e));
-  document.addEventListener("touchstart", (e) => startLongPress(e));
+  // ====== Long Press Logic ======
+  document.addEventListener("mousedown", startLongPress);
+  document.addEventListener("touchstart", startLongPress);
   document.addEventListener("mouseup", clearLongPress);
   document.addEventListener("touchend", clearLongPress);
   document.addEventListener("mouseleave", clearLongPress);
 
   function startLongPress(e) {
-    if (e.target.closest(".clickable-match, .clickable-stat")) {
-      pressTimer = setTimeout(() => {
-        const searchInput = document.getElementById("inventory-search");
-        const uslFilter = document.getElementById("usl-filter");
+    const match = e.target.closest(".clickable-match, .clickable-stat");
+    if (!match) return;
 
-        if (searchInput) {
-          searchInput.value = "";
-          searchInput.dispatchEvent(new Event("input"));
-        }
+    pressTarget = match; // Save starting target
+    pressTimer = setTimeout(() => {
+      const searchInput = document.getElementById("inventory-search");
+      const uslFilter = document.getElementById("usl-filter");
 
-        if (uslFilter) {
-          uslFilter.value = "All";
-          uslFilter.dispatchEvent(new Event("change"));
-        }
-      }, 600); // 600ms
-    }
+      if (searchInput) {
+        searchInput.value = "";
+        searchInput.dispatchEvent(new Event("input"));
+      }
+      if (uslFilter) {
+        uslFilter.value = "All";
+        uslFilter.dispatchEvent(new Event("change"));
+      }
+    }, 600);
   }
 
-  function clearLongPress() {
-    clearTimeout(pressTimer);
+  function clearLongPress(e) {
+    if (pressTimer) {
+      clearTimeout(pressTimer);
+      pressTimer = null;
+    }
+    pressTarget = null;
   }
 }
 
