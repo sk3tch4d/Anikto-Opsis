@@ -78,11 +78,16 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
     ? `<span class="tag-label">Cost Center:</span> ${highlightMatch(base.Cost_Center, currentSearch)}<br>`
     : "";
 
+  const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
+
+  // Determine Quantity Label
+  const quantityLabel = (currentFilter === "all" && uniqueUSLs.length > 1) ? "Total Quantity" : "Quantity";
+
   const detailsHTML = `
     <span class="tag-label">Stores Number:</span> <span class="clickable-stat" data-search="${base.Num}">${numberHTML}</span><br>
-    <span class="tag-label">Description:</span> ${descHTML}<br>
-    <span class="tag-label">Total Quantity:</span> ${totalQty}${binInfo}<br>
-    ${groupLine}
+    ${descHTML}<br>
+    <span class="tag-label">${quantityLabel}:</span> ${totalQty} ${binInfo}<br>
+    ${groupLine}<br>
     ${costCenterLine}
   `;
 
@@ -93,8 +98,6 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
 
   // Only add USLs if the filter is "all"
   if (currentFilter === "all") {
-    const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
-
     if (uniqueUSLs.length === 1) {
       // Single USL — show simple pill
       const singlePill = document.createElement("span");
@@ -132,7 +135,7 @@ export function populateInventoryStats(results) {
   const searchInput = document.getElementById("inventory-search");
   const currentSearch = searchInput?.value.trim() || "(None)";
 
-  const filterInput = document.getElementById("usl-filter");
+  const filterInput = document.getElementById("usl-filter"); // <== your updated id here!
   const currentFilter = (filterInput?.value.trim().toLowerCase()) || "all"; // Normalize to lowercase
 
   const uniqueNums = [...new Set(results.map(item => item.Num))];
