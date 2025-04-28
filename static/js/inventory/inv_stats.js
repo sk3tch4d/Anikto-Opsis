@@ -145,7 +145,8 @@ export function populateInventoryStats(results) {
   summaryContainer.className = "compare-card";
 
   const liResults = document.createElement("div");
-  liResults.innerHTML = `<span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Unique:</span> ${uniqueNums.length}`;
+  const resultsCount = results.length >= 100 ? "100+" : results.length;
+  liResults.innerHTML = `<span class="tag-label">Results:</span> ${resultsCount} <span class="tag-label">Unique:</span> ${uniqueNums.length}`;
   summaryContainer.appendChild(liResults);
 
   const liMatches = document.createElement("div");
