@@ -3,7 +3,7 @@
 // Shared Search Utilities
 // ==============================
 
-import { openPanelById } from "./panels.js";
+import { openPanelById, scrollPanel } from "./panels.js";
 
 // ==============================
 // TRIGGER SEARCH FROM STAT
@@ -43,6 +43,15 @@ export function setupParseStats() {
       searchInput.value = searchValue;
       searchInput.dispatchEvent(new Event("input"));
     }
+
+    // ===== Smart Open: Only if not already in search panel =====
+    const searchPanel = document.getElementById("inventory-search-panel");
+    if (searchPanel && !searchPanel.classList.contains("open")) {
+      openPanelById("inventory-search-panel");
+    }
+
+    // Always scroll to top nicely after any match click
+    scrollPanel();
   });
 }
 
