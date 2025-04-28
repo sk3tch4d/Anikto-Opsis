@@ -40,7 +40,9 @@ function updateSavedPanel() {
   }
 
   savedItems.forEach(clone => {
-    savedPanel.appendChild(clone.cloneNode(true)); // Insert a fresh clone
+    const newClone = clone.cloneNode(true);
+    attachLocalToggleHandlers(newClone);
+    savedPanel.appendChild(newClone);
   });
 }
 
@@ -53,7 +55,8 @@ function toggleSaveItem(card, base) {
     card.classList.remove("saved-card");
     showToast("Removed!");
   } else {
-    const clone = card.cloneNode(true); // Deep clone the original card
+    const clone = card.cloneNode(true);
+    attachLocalToggleHandlers(clone);
     savedItems.set(base.Num, clone);
     card.classList.add("saved-card");
     showToast("Saved!");
@@ -95,12 +98,29 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
 
   wrapper.appendChild(container);
 
+  // Local click binding
   toggle.addEventListener("click", () => {
     wrapper.classList.toggle("show");
     toggle.classList.toggle("toggle-open");
   });
 
   return { toggle, wrapper };
+}
+
+// ==============================
+// HELPER: Attach Toggle Handlers
+// ==============================
+function attachLocalToggleHandlers(card) {
+  const toggles = card.querySelectorAll(".clickable-toggle");
+  toggles.forEach(toggle => {
+    toggle.addEventListener("click", () => {
+      const wrapper = toggle.nextElementSibling;
+      if (wrapper && wrapper.classList.contains("usl-wrapper")) {
+        wrapper.classList.toggle("show");
+        toggle.classList.toggle("toggle-open");
+      }
+    });
+  });
 }
 
 // ==============================
@@ -122,19 +142,13 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   const groupMatch = (base.Group || "").toLowerCase().includes(currentSearch.toLowerCase());
   const costCenterMatch = (base.Cost_Center || "").toLowerCase().includes(currentSearch.toLowerCase());
 
-  const groupLine = groupMatch
-    ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}<br>`
-    : "";
-  const costCenterLine = costCenterMatch
-    ? `<span class="tag-label">Cost Center:</span> ${highlightMatch(base.Cost_Center, currentSearch)}<br>`
-    : "";
+  const groupLine = groupMatch ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}<br>` : "";
+  const costCenterLine = costCenterMatch ? `<span class="tag-label">Cost Center:</span> ${highlightMatch(base.Cost_Center, currentSearch)}<br>` : "";
 
   const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
-
-  // Determine Quantity Label
   const quantityLabel = (currentFilter === "all" && uniqueUSLs.length > 1) ? "Total Quantity" : "Quantity";
-
   const firstUSL = matching.length === 1 ? matching[0].USL : null;
+
   const detailsHTML = `
     <span class="tag-label">Stores Number:</span> 
     <span class="clickable-stat" data-search="${base.Num}" ${firstUSL ? `data-filter="${firstUSL}"` : ""}>${numberHTML}</span><br>
@@ -147,27 +161,21 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
 
   const infoBlock = document.createElement("div");
   infoBlock.innerHTML = detailsHTML;
-
   card.appendChild(infoBlock);
 
-  // Attach Save Toggle on Double Click
   card.addEventListener("dblclick", () => {
     toggleSaveItem(card, base);
   });
 
-  // Only add USLs if the filter is "all"
   if (currentFilter === "all") {
     if (uniqueUSLs.length === 1) {
-      // Single USL — show simple pill
       const singlePill = document.createElement("span");
       singlePill.className = "clickable-match";
       singlePill.textContent = uniqueUSLs[0];
       singlePill.setAttribute("data-filter", uniqueUSLs[0]);
-      singlePill.setAttribute("data-search", base.Num); // <=== NEW!!
+      singlePill.setAttribute("data-search", base.Num);
       card.appendChild(singlePill);
-
     } else if (uniqueUSLs.length > 1) {
-      // Multiple USLs — show toggle list
       const { toggle, wrapper: uslWrapper } = createToggleList({
         label: "USLs",
         items: uniqueUSLs,
@@ -201,7 +209,6 @@ export function populateInventoryStats(results) {
 
   const uniqueNums = [...new Set(results.map(item => item.Num))];
 
-  // ========== STATS SUMMARY BLOCK ==========
   const summaryContainer = document.createElement("div");
   summaryContainer.className = "compare-card";
 
@@ -214,7 +221,6 @@ export function populateInventoryStats(results) {
   const uniqueNumsCount = uniqueNums.length;
 
   if (uniqueNumsCount <= 3) {
-    // Show matches directly
     const matchContainer = document.createElement("div");
     matchContainer.className = "clickable-match-container";
 
@@ -227,9 +233,7 @@ export function populateInventoryStats(results) {
     });
 
     liMatches.appendChild(matchContainer);
-
   } else {
-    // Show matches with toggle
     const matchesToggle = document.createElement("span");
     matchesToggle.className = "tag-label tag-toggle clickable-toggle";
     matchesToggle.innerHTML = `Matches (${uniqueNumsCount}) <span class="chevron">▼</span>`;
@@ -262,7 +266,6 @@ export function populateInventoryStats(results) {
   summaryContainer.appendChild(liMatches);
   statsBox.appendChild(summaryContainer);
 
-  // ========== PER-ITEM CARDS ==========
   uniqueNums.forEach(num => {
     const matching = results.filter(r => r.Num === num);
     if (!matching.length) return;
@@ -272,7 +275,6 @@ export function populateInventoryStats(results) {
     statsBox.appendChild(card);
   });
 
-  // ====== Show "No Results Found" if none ======
   if (!uniqueNums.length) {
     const noResults = document.createElement("div");
     noResults.className = "no-results";
