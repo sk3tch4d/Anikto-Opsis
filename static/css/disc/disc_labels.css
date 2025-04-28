@@ -4,7 +4,17 @@
 
 
 /* ============================== */
-/* TOAST                          */
+/* TIMESTAMPS                     */
+/* ============================== */
+.search-timestamp {
+  margin-bottom: 0.4rem;
+  border: 1px solid #202225;
+  text-align: center;
+  font-size: 0.95rem !important;;
+}
+
+/* ============================== */
+/* TOASTS                         */
 /* ============================== */
 .toast {
   position: fixed;
@@ -35,7 +45,7 @@
 }
 
 /* ============================== */
-/* TAG LABEL                      */
+/* TAG LABELS                     */
 /* ============================== */
 .tag-label {
   color: #9393ec;
@@ -43,7 +53,7 @@
 }
 
 /* ============================== */
-/* TAG TOGGLE                     */
+/* TAG TOGGLES                    */
 /* ============================== */
 .tag-toggle {
   display: inline-block;
