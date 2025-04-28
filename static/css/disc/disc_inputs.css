@@ -24,10 +24,15 @@ input.full-width {
   outline: none;
   text-align: center;
   box-sizing: border-box;
-  transition: border 0.2s ease-in-out;
+  transition: border 0.2s ease-in-out, font-size 0.4s ease;
 }
 input.full-width:focus {
   border-color: #5c7aff;
+  font-size: 1.2rem;
+}
+input.full-width:hover {
+  border-color: #5c7aff;
+  font-size: 1.2rem;
 }
 
 /* ============================= */
@@ -60,13 +65,17 @@ select.input.full-width {
   outline: none;
   text-align: center;
   box-sizing: border-box;
-  transition: border 0.2s ease-in-out;
+  transition: border 0.2s ease-in-out, font-size 0.4s ease;
   appearance: none;
 }
 select.input.full-width:focus {
   border-color: #5c7aff;
+  font-size: 1.1rem;
 }
-
+select.input.full-width:hover {
+  border-color: #5c7aff;
+  font-size: 1.1rem;
+}
 /* ============================= */
 /* INPUT: SORT BUTTON            */
 /* ============================= */
