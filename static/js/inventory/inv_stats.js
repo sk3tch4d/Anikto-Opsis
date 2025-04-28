@@ -158,7 +158,10 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   card.className = "compare-card";
 
   const numberHTML = highlightMatch(base.Num + old, currentSearch);
-  const descHTML = highlightMatch(base.Description, currentSearch);
+  //const descHTML = highlightMatch(base.Description, currentSearch);
+  // Define Desc + <br> if not null
+  const descHTML = (highlightMatch(base.Description, currentSearch) || '').replace(/^(?!$)/, '$&<br>');
+  
   const binInfo = matching.length === 1 && matching[0].Bin
     ? `  <span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
     : "";
