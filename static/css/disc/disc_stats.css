@@ -33,22 +33,19 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   line-height: 1.6;
-  margin-top: 6px;
+  margin-top: 4px;
 }
-
 .clickable-match {
   color: #9aaae4;
   cursor: pointer;
-  padding: 6px 18px;
+  padding: 0.36rem 1.2rem;
   background-color: #3a3f5c;
-  border: 1px solid #222;
-  border-radius: 8px;
+  border-radius: 20px;
   font-weight: bold;
-  transition: background-color 0.3s ease, color 0.4s ease;
+  transition: background-color 0.5s ease, color 1s ease;
 }
-
 .clickable-match:hover {
   background-color: #49538b;
   color: #ccc;
