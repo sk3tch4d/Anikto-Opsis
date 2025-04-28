@@ -1,5 +1,6 @@
 // ==============================
-// INV_SEARCH.JS — Inventory Search Logic
+// INV_SEARCH.JS
+// Inventory Search Logic
 // ==============================
 
 import { populateInventoryStats } from "./inv_stats.js";
