@@ -1,5 +1,10 @@
 /* ============================= */
-/* CLICKABLE-STATS               */
+/* DISC_STATS.CSS                */
+/* ============================= */
+
+
+/* ============================= */
+/* CLICKABLE-STAT                */
 /* ============================= */
 .panel-body .clickable-stat {
   color: #b3b3ff !important;
@@ -22,7 +27,7 @@
 }
 
 /* ============================= */
-/* CLICKABLE-MATCH (for tags/pills) */
+/* CLICKABLE-MATCH  (tags/pills) */
 /* ============================= */
 .clickable-match-container {
   display: flex;
@@ -34,16 +39,17 @@
 }
 
 .clickable-match {
-  color: #7289da;
+  color: #9aaae4;
   cursor: pointer;
-  padding: 4px 10px;
+  padding: 6px 18px;
   background-color: #3a3f5c;
-  border-radius: 6px;
+  border: 1px solid #222;
+  border-radius: 8px;
   font-weight: bold;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.4s ease;
 }
 
 .clickable-match:hover {
   background-color: #49538b;
-  color: #ffffff;
+  color: #ccc;
 }
