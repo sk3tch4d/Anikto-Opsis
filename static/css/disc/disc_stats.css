@@ -40,10 +40,12 @@
 .clickable-match {
   color: #9aaae4;
   cursor: pointer;
-  padding: 0.36rem 1.2rem;
+  padding: 0.2rem 1.2rem;
   background-color: #3a3f5c;
   border-radius: 20px;
   font-weight: bold;
+  margin: 0.5rem 0 0.15rem;
+  display: inline-block;
   transition: background-color 0.5s ease, color 1s ease;
 }
 .clickable-match:hover {
