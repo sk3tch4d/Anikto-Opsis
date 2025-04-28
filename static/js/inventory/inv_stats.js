@@ -91,18 +91,30 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
 
   card.appendChild(infoBlock);
 
-  // Only add the toggle list if the filter is "all"
+  // Only add USLs if the filter is "all"
   if (currentFilter === "all") {
-    const { toggle, wrapper: uslWrapper } = createToggleList({
-      label: "USLs",
-      items: matching.map(item => item.USL),
-      itemAttributes: {
-        "data-filter": usl => usl,
-      },
-      searchableValue: base.Num,
-    });
-    card.appendChild(toggle);
-    card.appendChild(uslWrapper);
+    const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
+
+    if (uniqueUSLs.length === 1) {
+      // Single USL — show simple pill
+      const singlePill = document.createElement("span");
+      singlePill.className = "clickable-match";
+      singlePill.textContent = uniqueUSLs[0];
+      singlePill.setAttribute("data-filter", uniqueUSLs[0]);
+      card.appendChild(singlePill);
+    } else if (uniqueUSLs.length > 1) {
+      // Multiple USLs — show toggle list
+      const { toggle, wrapper: uslWrapper } = createToggleList({
+        label: "USLs",
+        items: uniqueUSLs,
+        itemAttributes: {
+          "data-filter": usl => usl,
+        },
+        searchableValue: base.Num,
+      });
+      card.appendChild(toggle);
+      card.appendChild(uslWrapper);
+    }
   }
 
   return card;
