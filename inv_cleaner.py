@@ -36,7 +36,7 @@ COLUMN_RENAMES = {
 REMOVE_COLUMNS = [
     "StL", "Mat", "Pl", "Plnt", "Un.1", "Un.2",
     "Latex/Expiry Information", "Person responsible",
-    "Stge loc. descr.", "MRPC", "Type", "Plant", "Del, 
+    "Stge loc. descr.", "MRPC", "Type", "Plant", "Del", 
     "Last Order Price", "Curr.", "Per", "Last PO",
     "Conv.", "=", "OPUn", "OUn"
 ]
