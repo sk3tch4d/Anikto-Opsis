@@ -65,7 +65,7 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   const numberHTML = highlightMatch(base.Num + old, currentSearch);
   const descHTML = highlightMatch(base.Description, currentSearch);
   const binInfo = matching.length === 1 && matching[0].Bin
-    ? `<span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
+    ? `  <span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
     : "";
 
   const groupMatch = (base.Group || "").toLowerCase().includes(currentSearch.toLowerCase());
