@@ -2,12 +2,15 @@
 /* CLICKABLE-STATS               */
 /* ============================= */
 .panel-body .clickable-stat {
-  color: #7289da !important;
+  color: #b3b3ff !important;
+  font-size: 0.96rem;
+  font-weight: bold;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 .panel-body .clickable-stat:hover {
-  color: #a3b3f0 !important;
+  color: #ccccff !important;
+  font-size: 0.99rem;
 }
 .clickable-stat-container {
   display: flex;
