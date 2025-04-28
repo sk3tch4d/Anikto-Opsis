@@ -65,7 +65,7 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   const numberHTML = highlightMatch(base.Num + old, currentSearch);
   const descHTML = highlightMatch(base.Description, currentSearch);
   const binInfo = matching.length === 1 && matching[0].Bin
-    ? `<br><span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
+    ? `<span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
     : "";
 
   const groupMatch = (base.Group || "").toLowerCase().includes(currentSearch.toLowerCase());
@@ -87,7 +87,7 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
     <span class="tag-label">Stores Number:</span> <span class="clickable-stat" data-search="${base.Num}">${numberHTML}</span><br>
     ${descHTML}<br>
     <span class="tag-label">${quantityLabel}:</span> ${totalQty} ${binInfo}<br>
-    ${groupLine}<br>
+    ${groupLine}
     ${costCenterLine}
   `;
 
@@ -135,8 +135,8 @@ export function populateInventoryStats(results) {
   const searchInput = document.getElementById("inventory-search");
   const currentSearch = searchInput?.value.trim() || "(None)";
 
-  const filterInput = document.getElementById("usl-filter"); // <== your updated id here!
-  const currentFilter = (filterInput?.value.trim().toLowerCase()) || "all"; // Normalize to lowercase
+  const filterInput = document.getElementById("usl-filter");
+  const currentFilter = (filterInput?.value.trim().toLowerCase()) || "all";
 
   const uniqueNums = [...new Set(results.map(item => item.Num))];
 
@@ -149,34 +149,53 @@ export function populateInventoryStats(results) {
   summaryContainer.appendChild(liResults);
 
   const liMatches = document.createElement("div");
+  const uniqueNumsCount = uniqueNums.length;
 
-  const matchesToggle = document.createElement("span");
-  matchesToggle.className = "tag-label tag-toggle clickable-toggle";
-  matchesToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
+  if (uniqueNumsCount <= 3) {
+    // Show matches directly
+    const matchContainer = document.createElement("div");
+    matchContainer.className = "clickable-match-container";
 
-  const matchesWrapper = document.createElement("div");
-  matchesWrapper.className = "usl-wrapper";
+    uniqueNums.forEach(num => {
+      const span = document.createElement("span");
+      span.className = "clickable-match";
+      span.setAttribute("data-search", num);
+      span.textContent = num;
+      matchContainer.appendChild(span);
+    });
 
-  const matchContainer = document.createElement("div");
-  matchContainer.className = "clickable-match-container";
+    liMatches.appendChild(matchContainer);
 
-  uniqueNums.forEach(num => {
-    const span = document.createElement("span");
-    span.className = "clickable-match";
-    span.setAttribute("data-search", num);
-    span.textContent = num;
-    matchContainer.appendChild(span);
-  });
+  } else {
+    // Show matches with toggle
+    const matchesToggle = document.createElement("span");
+    matchesToggle.className = "tag-label tag-toggle clickable-toggle";
+    matchesToggle.innerHTML = `Matches (${uniqueNumsCount}) <span class="chevron">▼</span>`;
 
-  matchesWrapper.appendChild(matchContainer);
+    const matchesWrapper = document.createElement("div");
+    matchesWrapper.className = "usl-wrapper";
 
-  matchesToggle.addEventListener("click", () => {
-    matchesWrapper.classList.toggle("show");
-    matchesToggle.classList.toggle("toggle-open");
-  });
+    const matchContainer = document.createElement("div");
+    matchContainer.className = "clickable-match-container";
 
-  liMatches.appendChild(matchesToggle);
-  liMatches.appendChild(matchesWrapper);
+    uniqueNums.forEach(num => {
+      const span = document.createElement("span");
+      span.className = "clickable-match";
+      span.setAttribute("data-search", num);
+      span.textContent = num;
+      matchContainer.appendChild(span);
+    });
+
+    matchesWrapper.appendChild(matchContainer);
+
+    matchesToggle.addEventListener("click", () => {
+      matchesWrapper.classList.toggle("show");
+      matchesToggle.classList.toggle("toggle-open");
+    });
+
+    liMatches.appendChild(matchesToggle);
+    liMatches.appendChild(matchesWrapper);
+  }
 
   summaryContainer.appendChild(liMatches);
   statsBox.appendChild(summaryContainer);
