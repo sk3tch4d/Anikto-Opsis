@@ -1,12 +1,6 @@
 # ==============================
 # ROUTES.PY — ARGX MAIN ROUTE HANDLER
 # ==============================
-# This module defines all Flask routes for:
-# - Index rendering
-# - File uploads (PDF and XLSX)
-# - Data exports and imports
-# - Shift lookup API endpoints
-# ==============================
 
 import os
 import re
@@ -88,19 +82,16 @@ def register_routes(app):
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
-
-
     # ==============================
     # GET/POST INDEX FILE HANDLING
     # ==============================
     @app.route("/", methods=["GET"])
     def index():
         return render_template("index.html")
-    
+
     @app.route("/", methods=["POST"])
     def post_index():
         return process_index_upload()
-
 
     # ==============================
     # Export Routes
@@ -134,7 +125,7 @@ def register_routes(app):
         return jsonify(result), status
 
     # ==============================
-    # Download Route
+    # Download Route (merged and logs)
     # ==============================
     @app.route("/download/<filename>")
     def download(filename):
