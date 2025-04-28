@@ -114,29 +114,32 @@ def merge_inventory_final(main_stream, list_streams, allow_new_columns=True):
                     "Fields": "ALL"
                 })
 
-        # ==============================
-        # HANDLE NEW ROWS
-        # ==============================
-        if new_rows:
-            new_rows_df = pd.DataFrame(new_rows)
-            for col in new_rows_df.columns:
-                if col not in main_df.columns:
-                    main_df[col] = None
-            main_df = pd.concat([main_df, new_rows_df], ignore_index=True)
-    
-        today = datetime.now().strftime("%Y-%m-%d")
-        base_name = os.path.splitext(os.path.basename(main_stream))[0]
-        merged_filename = f"{base_name}_merged_final_{today}.csv"
-        merged_path = os.path.join("/tmp", merged_filename)
-    
-        main_df.drop(columns=['merge_key']).to_csv(merged_path, index=False)
-    
-        log_df = pd.DataFrame(changes_log)
-        log_filename = f"{base_name}_log_final_{today}.csv"
-        log_path = os.path.join("/tmp", log_filename)
-    
-        log_df.to_csv(log_path, index=False)
-    
-        preview_log = log_df.head()
-    
-        return merged_path, merged_filename, log_path, log_filename, preview_log
+    # ==============================
+    # HANDLE NEW ROWS
+    # ==============================
+    if new_rows:
+        new_rows_df = pd.DataFrame(new_rows)
+        for col in new_rows_df.columns:
+            if col not in main_df.columns:
+                main_df[col] = None
+        main_df = pd.concat([main_df, new_rows_df], ignore_index=True)
+
+    # ==============================
+    # SAVE FINAL MERGED FILE
+    # ==============================
+    today = datetime.now().strftime("%Y-%m-%d")
+    base_name = os.path.splitext(os.path.basename(main_stream))[0]
+    merged_filename = f"{base_name}_merged_final_{today}.csv"
+    merged_path = os.path.join("/tmp", merged_filename)
+
+    main_df.drop(columns=['merge_key']).to_csv(merged_path, index=False)
+
+    log_df = pd.DataFrame(changes_log)
+    log_filename = f"{base_name}_log_final_{today}.csv"
+    log_path = os.path.join("/tmp", log_filename)
+
+    log_df.to_csv(log_path, index=False)
+
+    preview_log = log_df.head()
+
+    return merged_path, merged_filename, log_path, log_filename, preview_log
