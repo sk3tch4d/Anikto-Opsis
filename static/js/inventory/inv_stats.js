@@ -132,7 +132,7 @@ export function populateInventoryStats(results) {
   const searchInput = document.getElementById("inventory-search");
   const currentSearch = searchInput?.value.trim() || "(None)";
 
-  const filterInput = document.getElementById("inventory-filter");
+  const filterInput = document.getElementById("usl-filter");
   const currentFilter = (filterInput?.value.trim().toLowerCase()) || "all"; // Normalize to lowercase
 
   const uniqueNums = [...new Set(results.map(item => item.Num))];
