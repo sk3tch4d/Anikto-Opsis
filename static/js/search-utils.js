@@ -34,22 +34,26 @@ export function setupParseStats() {
     if (matchTarget) {
       const searchValue = matchTarget.getAttribute("data-search");
       const filterValue = matchTarget.getAttribute("data-filter");
-
-      if (filterValue && uslFilter) {
-        uslFilter.value = filterValue;
+    
+      if (uslFilter) {
+        if (filterValue) {
+          uslFilter.value = filterValue;
+        } else {
+          uslFilter.value = "all"; // Force ALL if missing
+        }
         uslFilter.dispatchEvent(new Event("change"));
       }
-
+    
       if (searchValue && searchInput) {
         searchInput.value = searchValue;
         searchInput.dispatchEvent(new Event("input"));
       }
-
-      // Open Search Panel smart
+    
       const searchPanel = document.getElementById("inventory-search-panel");
       if (searchPanel && !searchPanel.classList.contains("open")) {
         openPanelById("inventory-search-panel");
       }
+    
       scrollPanel();
     }
 
