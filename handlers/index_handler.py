@@ -192,4 +192,4 @@ def process_index_upload():
     # ==============================
     # No Valid Files Uploaded
     # ==============================
-    return render_template("index.html", error="No valid files selected or uploaded.")", error="No valid files selected or uploaded.")
+    return render_template("index.html", error="No valid files selected or uploaded.")
