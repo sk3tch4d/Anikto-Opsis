@@ -62,6 +62,18 @@
   background-color: #58608d;
   color: #ddd;
   border-radius: 16px;
+  animation:
+    bounce 320ms
+    alternate infinite
+    cubic-bezier(.2, .65, .6, 1);
+}
+@keyframes bounce {
+  from {
+    transform: translateY(1px);
+  }
+  to {
+    transform: translateY(-3px);
+  }
 }
 
 /* ============================== */
