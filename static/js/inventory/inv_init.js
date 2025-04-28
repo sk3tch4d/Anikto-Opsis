@@ -46,11 +46,13 @@ export function initializeInventoryApp() {
   // ==============================
   // TOGGLE SORT DIRECTION
   // ==============================
-  sortDirButton.addEventListener("click", () => {
-    sortDirection = sortDirection === "desc" ? "asc" : "desc";
-    sortDirButton.textContent = sortDirection === "desc" ? "↓" : "↑";
-    doSearch();
-  });
+  if (sortDirButton) {
+    sortDirButton.addEventListener("click", () => {
+      sortDirection = sortDirection === "desc" ? "asc" : "desc";
+      sortDirButton.textContent = sortDirection === "desc" ? "↓" : "↑";
+      doSearch();
+    });
+  }
 
   // ==============================
   // MAIN SEARCH FUNCTION
