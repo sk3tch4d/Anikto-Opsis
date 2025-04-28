@@ -134,8 +134,11 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   // Determine Quantity Label
   const quantityLabel = (currentFilter === "all" && uniqueUSLs.length > 1) ? "Total Quantity" : "Quantity";
 
+  const firstUSL = matching.length === 1 ? matching[0].USL : null;
   const detailsHTML = `
-    <span class="tag-label">Stores Number:</span> <span class="clickable-stat" data-search="${base.Num}">${numberHTML}</span><br>
+    <span class="tag-label">Stores Number:</span> 
+    <span class="clickable-stat" data-search="${base.Num}" ${firstUSL ? `data-filter="${firstUSL}"` : ""}>${numberHTML}</span><br>
+
     ${descHTML}<br>
     <span class="tag-label">${quantityLabel}:</span> ${totalQty} ${binInfo}<br>
     ${groupLine}
