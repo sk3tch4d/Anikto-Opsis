@@ -183,7 +183,7 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   const detailsHTML = `
     <span class="tag-label">Stores Number:</span> 
     <span class="clickable-stat" data-search="${base.Num}" ${firstUSL ? `data-filter="${firstUSL}"` : ""}>${numberHTML}</span><br>
-    ${descHTML}<br>
+    ${descHTML}
     <span class="tag-label">${quantityLabel}:</span> ${totalQty} ${binInfo}<br>
     ${groupLine}
     ${costCenterLine}
