@@ -2,6 +2,28 @@
 /* DISC_LABELS.CSS                */
 /* ============================== */
 
+/* ==== TOAST ==== */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, bottom 0.4s ease;
+  z-index: 1000;
+}
+
+.toast.show {
+  opacity: 1;
+  bottom: 40px;
+}
+
+
 /* ==== SAVED CARD ==== */
 .saved-card {
   border: 2px solid #00c853;
