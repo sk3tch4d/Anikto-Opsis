@@ -24,13 +24,14 @@ export function searchFromStat(inputId, value) {
 export function setupParseStats() {
   let pressTimer = null;
 
+  // ====== Normal Click to Search ======
   document.addEventListener("click", function (e) {
     const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
 
-    const searchInput = document.getElementById("inventory-search");
-    const uslFilter = document.getElementById("usl-filter");
-
     if (matchTarget) {
+      const searchInput = document.getElementById("inventory-search");
+      const uslFilter = document.getElementById("usl-filter");
+
       const searchValue = matchTarget.getAttribute("data-search");
       const filterValue = matchTarget.getAttribute("data-filter");
 
@@ -43,9 +44,11 @@ export function setupParseStats() {
         uslFilter.dispatchEvent(new Event("change"));
       }
 
-      if (searchValue && searchInput) {
-        searchInput.value = searchValue;
-        searchInput.dispatchEvent(new Event("input"));
+      if (searchInput) {
+        if (searchValue) {
+          searchInput.value = searchValue;
+          searchInput.dispatchEvent(new Event("input"));
+        }
       }
 
       const searchPanel = document.getElementById("inventory-search-panel");
@@ -57,45 +60,41 @@ export function setupParseStats() {
     }
   }, { passive: true });
 
-  // ==============================
-  // LONG PRESS RESET LOGIC
-  // ==============================
-  const searchInput = document.getElementById("inventory-search");
-  const uslFilter = document.getElementById("usl-filter");
+  // ====== Long Press Reset ======
+  document.addEventListener("mousedown", startLongPress);
+  document.addEventListener("touchstart", startLongPress);
+  document.addEventListener("mouseup", clearLongPress);
+  document.addEventListener("touchend", clearLongPress);
+  document.addEventListener("mouseleave", clearLongPress);
 
-  if (searchInput) {
-    searchInput.addEventListener("mousedown", startLongPressInput);
-    searchInput.addEventListener("touchstart", startLongPressInput);
-    searchInput.addEventListener("mouseup", clearLongPress);
-    searchInput.addEventListener("touchend", clearLongPress);
-    searchInput.addEventListener("mouseleave", clearLongPress);
-  }
+  function startLongPress(e) {
+    const inputMatch = e.target.closest("#inventory-search");
+    const filterMatch = e.target.closest("#usl-filter");
 
-  if (uslFilter) {
-    uslFilter.addEventListener("mousedown", startLongPressFilter);
-    uslFilter.addEventListener("touchstart", startLongPressFilter);
-    uslFilter.addEventListener("mouseup", clearLongPress);
-    uslFilter.addEventListener("touchend", clearLongPress);
-    uslFilter.addEventListener("mouseleave", clearLongPress);
-  }
+    if (inputMatch) {
+      pressTimer = setTimeout(() => {
+        const searchInput = document.getElementById("inventory-search");
+        if (searchInput) {
+          searchInput.value = "";
+          searchInput.dispatchEvent(new Event("input"));
+          triggerVibration();
+          showToast("Search cleared");
+        }
+      }, 600);
+    }
 
-  function startLongPressInput() {
-    pressTimer = setTimeout(() => {
-      searchInput.value = "";
-      searchInput.dispatchEvent(new Event("input"));
-      triggerVibration();
-      showToast("Search cleared");
-    }, 600);
-  }
-
-  function startLongPressFilter() {
-    pressTimer = setTimeout(() => {
-      uslFilter.value = "All";
-      uslFilter.dispatchEvent(new Event("change"));
-      uslFilter.blur(); // force blur to refresh UI
-      triggerVibration();
-      showToast("Filter reset");
-    }, 600);
+    if (filterMatch) {
+      pressTimer = setTimeout(() => {
+        const uslFilter = document.getElementById("usl-filter");
+        if (uslFilter) {
+          uslFilter.value = "All";
+          uslFilter.dispatchEvent(new Event("change"));
+          uslFilter.blur();
+          triggerVibration();
+          showToast("Filter reset");
+        }
+      }, 600);
+    }
   }
 
   function clearLongPress() {
@@ -119,7 +118,7 @@ export function highlightMatch(text, term) {
 // ==============================
 function triggerVibration() {
   if (navigator.vibrate) {
-    navigator.vibrate(30); // small short vibration (30ms)
+    navigator.vibrate(50); // Slightly longer vibration (better feedback)
   }
 }
 
