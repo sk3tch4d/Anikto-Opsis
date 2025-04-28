@@ -163,7 +163,9 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
       singlePill.className = "clickable-match";
       singlePill.textContent = uniqueUSLs[0];
       singlePill.setAttribute("data-filter", uniqueUSLs[0]);
+      singlePill.setAttribute("data-search", base.Num); // <=== NEW!!
       card.appendChild(singlePill);
+
     } else if (uniqueUSLs.length > 1) {
       // Multiple USLs — show toggle list
       const { toggle, wrapper: uslWrapper } = createToggleList({
