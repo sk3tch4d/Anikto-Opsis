@@ -2,6 +2,12 @@
 /* DISC_LABELS.CSS                */
 /* ============================== */
 
+/* ==== SAVED CARD ==== */
+.saved-card {
+  border: 2px solid #00c853;
+  box-shadow: 0 0 10px #00c853;
+  transition: all 0.3s ease;
+}
 
 /* ==== TAG LABEL ==== */
 .tag-label {
