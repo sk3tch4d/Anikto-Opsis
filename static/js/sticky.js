@@ -1,11 +1,12 @@
-// ========================
-// Sticky Bar Scroll Fading
-// ========================
+// ==============================
+// STICKY.JS 
+// Sticky Bar, Scroll Fading
+// ==============================
 
 
-// ------------------------
-// Apply fade effect on scroll
-// ------------------------
+// ==============================
+// APPLY FADE ON SCROLL
+// ==============================
 export function fadeOnScroll(stickyBar, scrollContainer, timeout = 150) {
   let scrollTimeout;
 
@@ -19,9 +20,9 @@ export function fadeOnScroll(stickyBar, scrollContainer, timeout = 150) {
   });
 }
 
-// ------------------------
-// Initialize all sticky bars
-// ------------------------
+// ==============================
+// INIT: STICKY BARS
+// ==============================
 export function initStickyBars() {
   document.querySelectorAll(".sticky-bar").forEach(sticky => {
     const scrollContainer = sticky.closest(".panel")?.querySelector(".scrollable-panel");
