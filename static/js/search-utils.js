@@ -39,7 +39,7 @@ export function setupParseStats() {
         if (filterValue) {
           uslFilter.value = filterValue;
         } else {
-          uslFilter.value = "all"; // Force ALL if missing
+          uslFilter.value = "All"; // Force ALL if missing
         }
         uslFilter.dispatchEvent(new Event("change"));
       }
