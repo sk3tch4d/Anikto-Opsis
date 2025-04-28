@@ -28,21 +28,38 @@ function showToast(message) {
 }
 
 // ==============================
+// HELPER: ATTACH LOCAL TOGGLE HANDLERS
+// ==============================
+function attachLocalToggleHandlers(container) {
+  container.querySelectorAll(".clickable-toggle").forEach(toggle => {
+    toggle.addEventListener("click", () => {
+      const wrapper = toggle.nextElementSibling;
+      if (wrapper && wrapper.classList.contains("usl-wrapper")) {
+        wrapper.classList.toggle("show");
+        toggle.classList.toggle("toggle-open");
+      }
+    });
+  });
+}
+
+// ==============================
 // HELPER: UPDATE SAVED PANEL
 // ==============================
 function updateSavedPanel() {
   const savedPanel = document.querySelector("#inventory-saved-panel .panel-body");
   savedPanel.innerHTML = "";
 
-  if (savedItems.size === 0) {
+  const cards = Array.from(savedItems.values()).reverse(); // Newest first
+
+  if (cards.length === 0) {
     savedPanel.innerHTML = "<p>No items saved yet.</p>";
     return;
   }
 
-  savedItems.forEach(clone => {
-    const newClone = clone.cloneNode(true);
-    attachLocalToggleHandlers(newClone);
-    savedPanel.appendChild(newClone);
+  cards.forEach(clone => {
+    const freshClone = clone.cloneNode(true);
+    attachLocalToggleHandlers(freshClone); // ✅ Rebind toggles
+    savedPanel.appendChild(freshClone);
   });
 }
 
@@ -56,7 +73,6 @@ function toggleSaveItem(card, base) {
     showToast("Removed!");
   } else {
     const clone = card.cloneNode(true);
-    attachLocalToggleHandlers(clone);
     savedItems.set(base.Num, clone);
     card.classList.add("saved-card");
     showToast("Saved!");
@@ -98,29 +114,13 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
 
   wrapper.appendChild(container);
 
-  // Local click binding
+  // ===== Local toggle binding
   toggle.addEventListener("click", () => {
     wrapper.classList.toggle("show");
     toggle.classList.toggle("toggle-open");
   });
 
   return { toggle, wrapper };
-}
-
-// ==============================
-// HELPER: Attach Toggle Handlers
-// ==============================
-function attachLocalToggleHandlers(card) {
-  const toggles = card.querySelectorAll(".clickable-toggle");
-  toggles.forEach(toggle => {
-    toggle.addEventListener("click", () => {
-      const wrapper = toggle.nextElementSibling;
-      if (wrapper && wrapper.classList.contains("usl-wrapper")) {
-        wrapper.classList.toggle("show");
-        toggle.classList.toggle("toggle-open");
-      }
-    });
-  });
 }
 
 // ==============================
@@ -142,17 +142,21 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   const groupMatch = (base.Group || "").toLowerCase().includes(currentSearch.toLowerCase());
   const costCenterMatch = (base.Cost_Center || "").toLowerCase().includes(currentSearch.toLowerCase());
 
-  const groupLine = groupMatch ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}<br>` : "";
-  const costCenterLine = costCenterMatch ? `<span class="tag-label">Cost Center:</span> ${highlightMatch(base.Cost_Center, currentSearch)}<br>` : "";
+  const groupLine = groupMatch
+    ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}<br>`
+    : "";
+  const costCenterLine = costCenterMatch
+    ? `<span class="tag-label">Cost Center:</span> ${highlightMatch(base.Cost_Center, currentSearch)}<br>`
+    : "";
 
   const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
-  const quantityLabel = (currentFilter === "all" && uniqueUSLs.length > 1) ? "Total Quantity" : "Quantity";
-  const firstUSL = matching.length === 1 ? matching[0].USL : null;
 
+  const quantityLabel = (currentFilter === "all" && uniqueUSLs.length > 1) ? "Total Quantity" : "Quantity";
+
+  const firstUSL = matching.length === 1 ? matching[0].USL : null;
   const detailsHTML = `
     <span class="tag-label">Stores Number:</span> 
     <span class="clickable-stat" data-search="${base.Num}" ${firstUSL ? `data-filter="${firstUSL}"` : ""}>${numberHTML}</span><br>
-
     ${descHTML}<br>
     <span class="tag-label">${quantityLabel}:</span> ${totalQty} ${binInfo}<br>
     ${groupLine}
@@ -161,6 +165,7 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
 
   const infoBlock = document.createElement("div");
   infoBlock.innerHTML = detailsHTML;
+
   card.appendChild(infoBlock);
 
   card.addEventListener("dblclick", () => {
@@ -173,7 +178,7 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
       singlePill.className = "clickable-match";
       singlePill.textContent = uniqueUSLs[0];
       singlePill.setAttribute("data-filter", uniqueUSLs[0]);
-      singlePill.setAttribute("data-search", base.Num);
+      singlePill.setAttribute("data-search", base.Num); // Important
       card.appendChild(singlePill);
     } else if (uniqueUSLs.length > 1) {
       const { toggle, wrapper: uslWrapper } = createToggleList({
@@ -233,6 +238,7 @@ export function populateInventoryStats(results) {
     });
 
     liMatches.appendChild(matchContainer);
+
   } else {
     const matchesToggle = document.createElement("span");
     matchesToggle.className = "tag-label tag-toggle clickable-toggle";
