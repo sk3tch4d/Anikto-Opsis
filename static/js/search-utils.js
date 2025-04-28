@@ -38,7 +38,7 @@ export function setupParseStats() {
         if (filterValue && Array.from(uslFilter.options).some(opt => opt.value === filterValue)) {
           uslFilter.value = filterValue;
         } else {
-          uslFilter.value = "All"; // fallback
+          uslFilter.value = "All";
         }
         uslFilter.dispatchEvent(new Event("change"));
       }
@@ -81,21 +81,33 @@ export function setupParseStats() {
 
   function startLongPressInput(e) {
     pressTimer = setTimeout(() => {
-      searchInput.value = "";
-      searchInput.dispatchEvent(new Event("input"));
+      if (searchInput) {
+        searchInput.value = "";
+        searchInput.dispatchEvent(new Event("input"));
+      }
+      triggerVibration();
     }, 600);
   }
 
   function startLongPressFilter(e) {
     pressTimer = setTimeout(() => {
-      uslFilter.value = "All";
-      uslFilter.dispatchEvent(new Event("change"));
+      if (uslFilter) {
+        uslFilter.value = "All";
+        uslFilter.dispatchEvent(new Event("change"));
+      }
+      triggerVibration();
     }, 600);
   }
 
   function clearLongPress() {
     clearTimeout(pressTimer);
     pressTimer = null;
+  }
+
+  function triggerVibration() {
+    if (navigator.vibrate) {
+      navigator.vibrate(100); // short buzz!
+    }
   }
 }
 
