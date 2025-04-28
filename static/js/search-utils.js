@@ -34,18 +34,18 @@ function findClosestBySelector(element, selector) {
 // PARSE TO SEARCH MODULE (Event Delegation)
 // ==============================
 export function setupParseStats() {
+  let pressTimer = null; // ====== For Long Press Detection
+
   document.addEventListener("click", function(e) {
     const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
-    const toggleTarget = e.target.closest(".clickable-toggle"); // closest() for toggles
 
     const searchInput = document.getElementById("inventory-search");
     const uslFilter = document.getElementById("usl-filter");
 
-    // ====== Match clicked (searching) ======
     if (matchTarget) {
       const searchValue = matchTarget.getAttribute("data-search");
       const filterValue = matchTarget.getAttribute("data-filter");
-    
+
       if (uslFilter) {
         if (filterValue && Array.from(uslFilter.options).some(opt => opt.value === filterValue)) {
           uslFilter.value = filterValue;
@@ -54,30 +54,45 @@ export function setupParseStats() {
         }
         uslFilter.dispatchEvent(new Event("change"));
       }
-    
+
       if (searchValue && searchInput) {
         searchInput.value = searchValue;
         searchInput.dispatchEvent(new Event("input"));
       }
-    
+
       const searchPanel = document.getElementById("inventory-search-panel");
       if (searchPanel && !searchPanel.classList.contains("open")) {
         openPanelById("inventory-search-panel");
       }
-    
+
       scrollPanel();
     }
-
-    // ====== Toggle clicked (expand/collapse) ======
-    if (toggleTarget) {
-      const wrapper = toggleTarget.nextElementSibling;
-      if (wrapper && wrapper.classList.contains("usl-wrapper")) {
-        wrapper.classList.toggle("show");
-        toggleTarget.classList.toggle("toggle-open");
-      }
-    }
   }, { passive: true });
+
+  // ====== Long Press Logic ======
+  document.addEventListener("mousedown", (e) => {
+    if (e.target.closest(".clickable-match, .clickable-stat")) {
+      pressTimer = setTimeout(() => {
+        const searchInput = document.getElementById("inventory-search");
+        const uslFilter = document.getElementById("usl-filter");
+
+        if (searchInput) {
+          searchInput.value = "";
+          searchInput.dispatchEvent(new Event("input"));
+        }
+
+        if (uslFilter) {
+          uslFilter.value = "All";
+          uslFilter.dispatchEvent(new Event("change"));
+        }
+      }, 600); // 600ms = long press
+    }
+  });
+
+  document.addEventListener("mouseup", () => clearTimeout(pressTimer));
+  document.addEventListener("mouseleave", () => clearTimeout(pressTimer));
 }
+
 
 // ==============================
 // MATCH HIGHLIGHTING
