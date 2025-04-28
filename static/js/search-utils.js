@@ -6,7 +6,7 @@
 import { openPanelById, scrollPanel } from "./panels.js";
 
 // ==============================
-// SEARCH FROM STAT
+// TRIGGER SEARCH FROM STAT
 // ==============================
 export function searchFromStat(inputId, value) {
   const input = document.getElementById(inputId);
@@ -23,54 +23,59 @@ export function searchFromStat(inputId, value) {
 // ==============================
 export function setupParseStats() {
   let pressTimer = null;
-  let pressTarget = null; // new
+  let longPressTriggered = false;
 
-  document.addEventListener("click", function (e) {
-    const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
-
-    const searchInput = document.getElementById("inventory-search");
-    const uslFilter = document.getElementById("usl-filter");
-
-    if (matchTarget) {
-      const searchValue = matchTarget.getAttribute("data-search");
-      const filterValue = matchTarget.getAttribute("data-filter");
-
-      if (uslFilter) {
-        if (filterValue && Array.from(uslFilter.options).some(opt => opt.value === filterValue)) {
-          uslFilter.value = filterValue;
-        } else {
-          uslFilter.value = "All";
-        }
-        uslFilter.dispatchEvent(new Event("change"));
-      }
-
-      if (searchValue && searchInput) {
-        searchInput.value = searchValue;
-        searchInput.dispatchEvent(new Event("input"));
-      }
-
-      const searchPanel = document.getElementById("inventory-search-panel");
-      if (searchPanel && !searchPanel.classList.contains("open")) {
-        openPanelById("inventory-search-panel");
-      }
-
-      scrollPanel();
-    }
-  }, { passive: true });
-
-  // ====== Long Press Logic ======
   document.addEventListener("mousedown", startLongPress);
   document.addEventListener("touchstart", startLongPress);
   document.addEventListener("mouseup", clearLongPress);
   document.addEventListener("touchend", clearLongPress);
   document.addEventListener("mouseleave", clearLongPress);
 
-  function startLongPress(e) {
-    const match = e.target.closest(".clickable-match, .clickable-stat");
-    if (!match) return;
+  document.addEventListener("click", function (e) {
+    // If a long press already happened, cancel click
+    if (longPressTriggered) {
+      longPressTriggered = false;
+      return;
+    }
 
-    pressTarget = match; // Save starting target
+    const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
+    if (!matchTarget) return;
+
+    const searchInput = document.getElementById("inventory-search");
+    const uslFilter = document.getElementById("usl-filter");
+
+    const searchValue = matchTarget.getAttribute("data-search");
+    const filterValue = matchTarget.getAttribute("data-filter");
+
+    if (uslFilter) {
+      if (filterValue && Array.from(uslFilter.options).some(opt => opt.value === filterValue)) {
+        uslFilter.value = filterValue;
+      } else {
+        uslFilter.value = "All";
+      }
+      uslFilter.dispatchEvent(new Event("change"));
+    }
+
+    if (searchValue && searchInput) {
+      searchInput.value = searchValue;
+      searchInput.dispatchEvent(new Event("input"));
+    }
+
+    const searchPanel = document.getElementById("inventory-search-panel");
+    if (searchPanel && !searchPanel.classList.contains("open")) {
+      openPanelById("inventory-search-panel");
+    }
+
+    scrollPanel();
+  }, { passive: true });
+
+  function startLongPress(e) {
+    const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
+    if (!matchTarget) return;
+
     pressTimer = setTimeout(() => {
+      longPressTriggered = true; // Mark that long press succeeded
+
       const searchInput = document.getElementById("inventory-search");
       const uslFilter = document.getElementById("usl-filter");
 
@@ -78,19 +83,17 @@ export function setupParseStats() {
         searchInput.value = "";
         searchInput.dispatchEvent(new Event("input"));
       }
+
       if (uslFilter) {
         uslFilter.value = "All";
         uslFilter.dispatchEvent(new Event("change"));
       }
-    }, 600);
+    }, 600); // 600ms long press
   }
 
-  function clearLongPress(e) {
-    if (pressTimer) {
-      clearTimeout(pressTimer);
-      pressTimer = null;
-    }
-    pressTarget = null;
+  function clearLongPress() {
+    clearTimeout(pressTimer);
+    pressTimer = null;
   }
 }
 
