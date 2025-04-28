@@ -151,34 +151,41 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
 // HELPER: CREATE ITEM CARD
 // ==============================
 function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
+  // Set Old
   const old = base.Old?.trim() ? ` (Old: ${base.Old})` : "";
+  // Set Totoal Quantity
   const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
-
+  // Set Class
   const card = document.createElement("div");
   card.className = "compare-card";
-
+  // Set Numbers
   const numberHTML = highlightMatch(base.Num + old, currentSearch);
-  //const descHTML = highlightMatch(base.Description, currentSearch);
+  
   // Define Desc + <br> if not null
+  //const descHTML = highlightMatch(base.Description, currentSearch);
   const descHTML = (highlightMatch(base.Description, currentSearch) || '').replace(/^(?!$)/, '$&<br>');
   
+  // Set Bin - Bin Match
   const binInfo = matching.length === 1 && matching[0].Bin
     ? `  <span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
     : "";
-
+  // Set Group
   const groupMatch = (base.Group || "").toLowerCase().includes(currentSearch.toLowerCase());
-  const costCenterMatch = (base.Cost_Center || "").toLowerCase().includes(currentSearch.toLowerCase());
-
+  // Check Group - Group Match
   const groupLine = groupMatch
     ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}<br>`
     : "";
+  // Set Cost Center
+  const costCenterMatch = (base.Cost_Center || "").toLowerCase().includes(currentSearch.toLowerCase());
+  // Check Cost Center
   const costCenterLine = costCenterMatch
     ? `<span class="tag-label">Cost Center:</span> ${highlightMatch(base.Cost_Center, currentSearch)}<br>`
     : "";
-
+  // Set Unique USLs
   const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
+  // Set Quantity
   const quantityLabel = (currentFilter === "all" && uniqueUSLs.length > 1) ? "Total Quantity" : "Quantity";
-
+  
   const firstUSL = matching.length === 1 ? matching[0].USL : null;
   const detailsHTML = `
     <span class="tag-label">Stores Number:</span> 
