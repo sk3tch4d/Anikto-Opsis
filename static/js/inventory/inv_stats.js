@@ -13,7 +13,7 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 // ==============================
 // GLOBAL: SAVED ITEMS
 // ==============================
-const savedItems = new Set();
+const savedItems = new Map();
 
 // ==============================
 // HELPER: SHOW TOAST
@@ -39,29 +39,22 @@ function updateSavedPanel() {
     return;
   }
 
-  const ul = document.createElement("ul");
-  ul.style.listStyle = "none";
-  ul.style.paddingLeft = "0";
-
-  savedItems.forEach(id => {
-    const li = document.createElement("li");
-    li.textContent = id;
-    ul.appendChild(li);
+  savedItems.forEach(clone => {
+    savedPanel.appendChild(clone.cloneNode(true)); // Insert a fresh clone
   });
-
-  savedPanel.appendChild(ul);
 }
 
 // ==============================
 // HELPER: TOGGLE SAVE ITEM
 // ==============================
-function toggleSaveItem(card, itemId) {
-  if (savedItems.has(itemId)) {
-    savedItems.delete(itemId);
+function toggleSaveItem(card, base) {
+  if (savedItems.has(base.Num)) {
+    savedItems.delete(base.Num);
     card.classList.remove("saved-card");
     showToast("Removed!");
   } else {
-    savedItems.add(itemId);
+    const clone = card.cloneNode(true); // Deep clone the original card
+    savedItems.set(base.Num, clone);
     card.classList.add("saved-card");
     showToast("Saved!");
   }
@@ -156,7 +149,7 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
 
   // Attach Save Toggle on Double Click
   card.addEventListener("dblclick", () => {
-    toggleSaveItem(card, base.Num);
+    toggleSaveItem(card, base);
   });
 
   // Only add USLs if the filter is "all"
