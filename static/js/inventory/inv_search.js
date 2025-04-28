@@ -57,7 +57,11 @@ function restoreScrollPosition(key = "inventoryScrollTop", delay = SCROLL_RESTOR
   const savedScroll = localStorage.getItem(key);
   if (savedScroll) {
     setTimeout(() => {
-      window.scrollTo(0, parseInt(savedScroll));
+      window.scroll({
+        top: parseInt(savedScroll),
+        behavior: "smooth"
+      });
+
       DEBUG_MODE && console.log(`[DEBUG] Restored scroll position: ${savedScroll}px`);
     }, delay);
   }
