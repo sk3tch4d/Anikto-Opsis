@@ -11,7 +11,7 @@
   font-size: 1rem;
   font-weight: bold;
   padding: 0.72rem 1.2rem;
-  background-color: #2a2c3f;
+  background-color: #3d405c;
   color: #ccc;
   border: 1px solid #2f3136;
   border-radius: 10px;
@@ -23,7 +23,7 @@
   user-select: none;
 }
 .button:hover {
-  background-color: #3d405c;
+  background-color: #52567a;
   transform: translateY(-2px);
 }
 button:focus {
