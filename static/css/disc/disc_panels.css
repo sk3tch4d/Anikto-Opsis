@@ -12,7 +12,6 @@
   width: clamp(320px, 85vw, 480px);
   box-sizing: border-box;
 }
-
 .panel.open {
   box-shadow: 0 0 10px rgba(0,0,0,0.4);
   border-radius: 10px;
@@ -31,22 +30,22 @@
   color: #cccccc;
   border-radius: 10px;
   text-align: center;
+  user-select: none;
   transition: background 0.2s ease, color 0.2s ease;
 }
-
 .panel.open > .panel-header {
   background-color: #1f202e;
   color: #ddd;
   border-radius: 8px 8px 0 0;
+  user-select: none;
 }
-
 .panel-header:hover {
   background-color: #3d405c;
   animation: panel-bounce 0.4s cubic-bezier(0.25, 1.5, 0.5, 1);
 }
-
 .panel-header:focus {
   outline: none;
+  user-select: none;
 }
 
 /* ============================= */
@@ -129,7 +128,6 @@
   width: 100%;
   box-sizing: border-box;
 }
-
 .panel-body .file-action.uploaded:hover {
   background-color: #32353a;
 }
@@ -146,7 +144,6 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
 .panel.open .scrollable-panel {
   max-height: 82vh;
   opacity: 1;
@@ -155,7 +152,6 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
 }
-
 .scrollable-panel::-webkit-scrollbar {
   display: none;
 }
