@@ -36,7 +36,8 @@
   transition: background 0.4s ease, color 0.3s ease;
 }
 .panel-header:hover {
-  background-color: #5a5dcf;
+  background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
+  background-size: 160%;
   color: #060614;
 }
 .panel-header:focus {
@@ -48,7 +49,8 @@
 /* PANEL HEADER: OPEN            */
 /* ============================= */
 .panel.open > .panel-header {
-  background-color: #52567a;
+  background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
+  background-size: 200%;
   color: #ddd;
   border-radius: 8px 8px 0 0;
 }
