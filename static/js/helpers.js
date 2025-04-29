@@ -18,4 +18,6 @@ export function removeFocus(target) {
       target.blur();
     }
   }, 0); // Run blur AFTER the click/touch finishes
+
+  console.log('Trying to blur:', target);
 }
