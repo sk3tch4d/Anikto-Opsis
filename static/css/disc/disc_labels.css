@@ -61,7 +61,7 @@
   color: #9aaae4;
   padding: 4.2px 14px;
   margin: 12px 0 0.8px 0;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   font-weight: bold;
   font-size: 0.88rem;
@@ -112,12 +112,12 @@
   transition: max-height 0.25s ease, opacity 0.25s ease;
 }
 .usl-wrapper.show {
-  max-height: 500px;
+  max-height: 2000px;
   opacity: 1;
   background-color: #232529;
   /*box-shadow: inset 0 0 0.4rem 0.1rem #0d0c0d;*/
   color: #7289da;
-  padding: 12px 14px;
+  padding: 0.8rem 0.2rem 0.6rem;
   border-radius: 8px;
   transition: background-color 0.5s ease;
 }
