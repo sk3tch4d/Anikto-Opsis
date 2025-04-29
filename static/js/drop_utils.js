@@ -59,6 +59,9 @@ function updateGenerateButtonText() {
   const match = typeMatchers.find(t => allFiles.some(t.match));
   generateBtn.textContent = match ? match.label : "Generate";
   generateBtn.disabled = false;
+
+  // Focus the button after updating text
+  generateBtn.focus();
 }
 
 // ==============================
