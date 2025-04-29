@@ -4,7 +4,7 @@
 
 
 /* ============================= */
-/* BUTTON                        */
+/* BUTTONS                        */
 /* ============================= */
 .button {
   font-family: inherit;
@@ -25,6 +25,15 @@
   background-color: #3d405c;
   transform: translateY(-2px);
 }
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #7289da; /* soft colored border */
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .button.full-width {
   padding: 0.85rem;
   font-size: 0.95rem;
@@ -33,11 +42,7 @@
   max-width: 500px;
   box-sizing: border-box;
 }
-/* Button Disabled */
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+
 .button-wrapper {
   display: flex;
   justify-content: center;
