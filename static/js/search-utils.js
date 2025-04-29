@@ -79,7 +79,6 @@ export function setupParseStats() {
         if (searchInput) {
           searchInput.value = "";
           searchInput.dispatchEvent(new Event("input"));
-          removeFocus(searchInput);
           triggerVibration();
           showToast("Search cleared");
         }
