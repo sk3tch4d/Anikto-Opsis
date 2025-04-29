@@ -31,11 +31,12 @@
 /* ============================= */
 .clickable-match-container {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
+  justify-content: center;
   line-height: 1.6;
   margin-top: 4px;
+  padding: 5px 10px;
 }
 .clickable-match {
   color: #9aaae4;
@@ -44,8 +45,9 @@
   background-color: #3a3f5c;
   border-radius: 0.4rem;
   font-weight: bold;
-  margin: 0.5rem 0.08rem 0.15rem;
+  margin: 0; /* removed weird margin */
   min-width: 100px;
+  text-align: center;
   display: inline-block;
   transition: background-color 0.5s ease, color 1s ease;
 }
