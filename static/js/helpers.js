@@ -2,6 +2,27 @@
 // HELPERS.JS
 // ==============================
 
+
+// ==============================
+// SET VISIBILITY: ELEMENTID
+// Smart: Remember Element Value
+// ==============================
+export function setVisibility(elementId, show) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+
+  if (show) {
+    // Restore the original display if we stored it
+    element.style.display = element.dataset.originalDisplay || 'block';
+  } else {
+    // Store the original display only the first time
+    if (!element.dataset.originalDisplay) {
+      element.dataset.originalDisplay = window.getComputedStyle(element).display;
+    }
+    element.style.display = 'none';
+  }
+}
+
 // ==============================
 // REMOVE FOCUS: element, selector, or event
 // ==============================
