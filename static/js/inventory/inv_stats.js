@@ -28,11 +28,21 @@ function showToast(message) {
 }
 
 // ==============================
+// HELPER: JOIN CONTENT <div>
+// ==============================
+function joinAsDivs(...lines) {
+  return lines
+    .filter(line => line && line.trim() !== "")
+    .map(line => `<div class="inventory-line">${line}</div>`)
+    .join("");
+}
+
+// ==============================
 // HELPER: HAPTIC FEEDBACK
 // ==============================
 function vibrateShort() {
   if (navigator.vibrate) {
-    navigator.vibrate(50); // Short pulse
+    navigator.vibrate(65);
   }
 }
 
@@ -72,7 +82,7 @@ function updateSavedPanel() {
   const savedPanel = document.querySelector("#inventory-saved-panel .panel-body");
   savedPanel.innerHTML = "";
 
-  const cards = Array.from(savedItems.values()).reverse(); // Newest first
+  const cards = Array.from(savedItems.values()).reverse();
 
   if (cards.length === 0) {
     savedPanel.innerHTML = "<p>No items saved yet.</p>";
@@ -81,7 +91,7 @@ function updateSavedPanel() {
 
   cards.forEach(clone => {
     const freshClone = clone.cloneNode(true);
-    attachLocalToggleHandlers(freshClone); // ✅ Rebind toggles
+    attachLocalToggleHandlers(freshClone);
     savedPanel.appendChild(freshClone);
   });
 }
@@ -100,8 +110,8 @@ function toggleSaveItem(card, base) {
     card.classList.add("saved-card");
     showToast("Saved!");
   }
-  vibrateShort(); // ✅ Short vibration on save/remove
-  clearTextSelection(); // ✅ Clear accidental text highlight
+  vibrateShort();
+  clearTextSelection();
   updateSavedPanel();
 }
 
@@ -159,36 +169,40 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
 
   const numberHTML = highlightMatch(base.Num + old, currentSearch);
   const descHTML = highlightMatch(base.Description, currentSearch);
+
   const binInfo = matching.length === 1 && matching[0].Bin
-    ? `  <span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
+    ? `<span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
     : "";
 
   const groupMatch = (base.Group || "").toLowerCase().includes(currentSearch.toLowerCase());
   const costCenterMatch = (base.Cost_Center || "").toLowerCase().includes(currentSearch.toLowerCase());
 
   const groupLine = groupMatch
-    ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}<br>`
+    ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}`
     : "";
+
   const costCenterLine = costCenterMatch
-    ? `<span class="tag-label">Cost Center:</span> ${highlightMatch(base.Cost_Center, currentSearch)}<br>`
+    ? `<span class="tag-label">Cost Center:</span> ${highlightMatch(base.Cost_Center, currentSearch)}`
     : "";
 
   const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
   const quantityLabel = (currentFilter === "all" && uniqueUSLs.length > 1) ? "Total Quantity" : "Quantity";
 
   const firstUSL = matching.length === 1 ? matching[0].USL : null;
-  const detailsHTML = `
-    <span class="tag-label">Stores Number:</span> 
-    <span class="clickable-stat" data-search="${base.Num}" ${firstUSL ? `data-filter="${firstUSL}"` : ""}>${numberHTML}</span><br>
-    ${descHTML}<br>
-    <span class="tag-label">${quantityLabel}:</span> ${totalQty} ${binInfo}<br>
-    ${groupLine}
-    ${costCenterLine}
-  `;
+
+  const detailsHTML = joinAsDivs(
+    `<span class="tag-label">Stores Number:</span> 
+     <span class="clickable-stat" data-search="${base.Num}" ${firstUSL ? `data-filter="${firstUSL}"` : ""}>
+       ${numberHTML}
+     </span>`,
+    descHTML,
+    `<span class="tag-label">${quantityLabel}:</span> ${totalQty} ${binInfo}`,
+    groupLine,
+    costCenterLine
+  );
 
   const infoBlock = document.createElement("div");
   infoBlock.innerHTML = detailsHTML;
-
   card.appendChild(infoBlock);
 
   card.addEventListener("dblclick", () => {
@@ -237,7 +251,7 @@ export function populateInventoryStats(results) {
 
   const uniqueNums = [...new Set(results.map(item => item.Num))];
 
-  const fragment = document.createDocumentFragment(); // 🛠️ Batch changes here
+  const fragment = document.createDocumentFragment();
 
   const summaryContainer = document.createElement("div");
   summaryContainer.className = "compare-card";
@@ -293,7 +307,7 @@ export function populateInventoryStats(results) {
   }
 
   summaryContainer.appendChild(liMatches);
-  fragment.appendChild(summaryContainer); // 🛠️ Add summary to fragment first
+  fragment.appendChild(summaryContainer);
 
   uniqueNums.forEach(num => {
     const matching = results.filter(r => r.Num === num);
@@ -301,18 +315,17 @@ export function populateInventoryStats(results) {
 
     const base = matching[0];
     const card = createInventoryItemCard(matching, base, currentSearch, currentFilter);
-    fragment.appendChild(card); // 🛠️ Batch all cards to fragment
+    fragment.appendChild(card);
   });
 
   if (!uniqueNums.length) {
     const noResults = document.createElement("div");
     noResults.className = "no-results";
     noResults.textContent = "No results found.";
-    fragment.appendChild(noResults); // 🛠️ Even no-results goes into fragment
+    fragment.appendChild(noResults);
   }
 
-  statsBox.appendChild(fragment); // 🛠️ ONE DOM hit here
+  statsBox.appendChild(fragment);
 
   setupParseStats();
 }
-
