@@ -136,13 +136,12 @@ export function togglePanel(header) {
 function closePanel(panel) {
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
+  
   panel.classList.remove('open');
   header?.classList.remove('open');
   body?.classList.remove('open');
-
-  setTimeout(() => {
-    document.getElementById('mobile-focus-reset')?.focus();
-  }, 10);
+  // FOCUS HEADER
+  document.getElementById('typed-header)?.focus();
 }
 
 // ==============================
