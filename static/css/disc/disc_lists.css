@@ -13,12 +13,11 @@ li {
   border-radius: 10px;
   text-align: center;
   font-size: 0.9em;
-  font-weight: normal !important;
   border: 1px solid #1c1e22;
   box-shadow: 0 1px 0 0.5px #1c1e22;
-  color: #886eaa;
+  color: #d0d0e1;
   font-family: 'Segoe UI', Tahoma, sans-serif;
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 .li:hover {
   color: #ddd;
