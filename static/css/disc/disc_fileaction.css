@@ -8,16 +8,16 @@
   display: block;
   width: 100%;
   padding: 0.5rem 1rem;
-  background-color: #26282c;
+  background-color: #3d405c;
   color: #ccc !important;
-  border: 1px solid #7289da;
-  border-radius: 10px;
-  font-size: 1rem;
+  border: 2.6px solid #1f202e;
+  border-radius: 12px;
+  font-size: 0.99rem;
   text-align: center;
   cursor: pointer;
   box-sizing: border-box;
   margin: 0 0 0.75rem;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.4s ease, color 0.6s ease;
   text-decoration: none;
   font-weight: normal;
 }
@@ -25,10 +25,11 @@
 /* -- Hover + Focus States -- */
 .file-action:hover,
 .file-action:focus {
-  background-color: #32353a;
-  color: #fff;
+  background-color: #52567a;
+  color: #eee;
   text-decoration: none;
   outline: none;
+  font-size: 1rem;
 }
 
 /* -- Visited State -- */
