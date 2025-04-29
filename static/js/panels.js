@@ -144,7 +144,7 @@ function closePanel(panel) {
   // FOCUS HEADER
   setTimeout(() => {
     document.getElementById('typed-header')?.focus();
-  }, 10);
+  }, 100);
 }
 
 // ==============================
