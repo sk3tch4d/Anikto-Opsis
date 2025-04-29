@@ -23,7 +23,7 @@
 /* PANEL HEADER                  */
 /* ============================= */
 .panel-header {
-  background-color: #2f3237;
+  background-color: #2a2c3f;
   padding: 0.65rem 1rem;
   cursor: pointer;
   font-size: 0.95rem;
@@ -35,13 +35,13 @@
 }
 
 .panel.open > .panel-header {
-  background-color: #525760;
-  color: #ffffff;
+  background-color: #1f202e;
+  color: #ddd;
   border-radius: 8px 8px 0 0;
 }
 
 .panel-header:hover {
-  background-color: #3a3d42;
+  background-color: #3d405c;
   animation: panel-bounce 0.4s cubic-bezier(0.25, 1.5, 0.5, 1);
 }
 
@@ -69,7 +69,7 @@
 /* PANEL BODY / TOGGLE BEHAVIOR  */
 /* ============================= */
 .panel-body {
-  background-color: #2f3136;
+  background-color: #292b3d;
   max-height: 0;
   overflow: hidden;
   padding: 0;
