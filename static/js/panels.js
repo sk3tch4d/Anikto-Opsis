@@ -140,8 +140,11 @@ function closePanel(panel) {
   panel.classList.remove('open');
   header?.classList.remove('open');
   body?.classList.remove('open');
+  
   // FOCUS HEADER
-  document.getElementById('typed-header)?.focus();
+  setTimeout(() => {
+    document.getElementById('typed-header')?.focus();
+  }, 10);
 }
 
 // ==============================
