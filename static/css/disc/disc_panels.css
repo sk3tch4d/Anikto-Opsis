@@ -1,5 +1,5 @@
 /* ============================= */
-/* DISC PANELS                   */
+/* DISC_PANELS.CSS               */
 /* ============================= */
 
 
@@ -12,6 +12,10 @@
   width: clamp(320px, 85vw, 480px);
   box-sizing: border-box;
 }
+
+/* ============================= */
+/* PANEL: OPEN                   */
+/* ============================= */
 .panel.open {
   box-shadow: 0 0 10px rgba(0,0,0,0.4);
   border-radius: 10px;
@@ -22,7 +26,7 @@
 /* PANEL HEADER                  */
 /* ============================= */
 .panel-header {
-  background-color: #2a2c3f;
+  background-color: #3d405c;
   padding: 0.65rem 1rem;
   cursor: pointer;
   font-size: 0.95rem;
@@ -30,26 +34,27 @@
   color: #cccccc;
   border-radius: 10px;
   text-align: center;
-  user-select: none;
   transition: background 0.2s ease, color 0.2s ease;
 }
-.panel.open > .panel-header {
-  background-color: #1f202e;
-  color: #ddd;
-  border-radius: 8px 8px 0 0;
-  user-select: none;
-}
 .panel-header:hover {
-  background-color: #3d405c;
+  background-color: #52567a;
   animation: panel-bounce 0.4s cubic-bezier(0.25, 1.5, 0.5, 1);
 }
 .panel-header:focus {
   outline: none;
-  user-select: none;
 }
 
 /* ============================= */
-/* PANEL - NO SHADOW             */
+/* PANEL HEADER: OPEN            */
+/* ============================= */
+.panel.open > .panel-header {
+  background-color: #52567a;
+  color: #ddd;
+  border-radius: 8px 8px 0 0;
+}
+
+/* ============================= */
+/* PANEL: NO SHADOW              */
 /* ============================= */
 /* Remove box shadow from specific panels */
 .panel.no-shadow {
@@ -65,15 +70,19 @@
 }
 
 /* ============================= */
-/* PANEL BODY / TOGGLE BEHAVIOR  */
+/* PANEL BODY                    */
 /* ============================= */
 .panel-body {
-  background-color: #292b3d;
+  background-color: #33364d;
   max-height: 0;
   overflow: hidden;
   padding: 0;
   transition: max-height 0.2s ease, padding 0.2s ease;
 }
+
+/* ============================= */
+/* PANEL BODY: OPEN              */
+/* ============================= */
 .panel-body.open {
   border-top: 1px solid #232529;
   border-bottom: 1px solid #232529;
@@ -100,6 +109,9 @@
   transition: background 0.2s ease;
 }
 
+/* ============================= */
+/* PANEL BODY: LABEL HOVER       */
+/* ============================= */
 .panel-body label:hover {
   background: #2a2d33;
 }
@@ -128,6 +140,7 @@
   width: 100%;
   box-sizing: border-box;
 }
+
 .panel-body .file-action.uploaded:hover {
   background-color: #32353a;
 }
@@ -144,6 +157,7 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .panel.open .scrollable-panel {
   max-height: 82vh;
   opacity: 1;
@@ -152,6 +166,7 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
 }
+
 .scrollable-panel::-webkit-scrollbar {
   display: none;
 }
