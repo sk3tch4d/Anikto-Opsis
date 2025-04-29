@@ -26,6 +26,7 @@
   background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
   background-size: 160%;
   transform: translateY(-2px);
+  color: #060614;
 }
 button:focus {
   outline: none;
