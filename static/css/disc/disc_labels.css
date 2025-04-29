@@ -10,7 +10,8 @@
   margin-bottom: 0.4rem;
   border: 1px solid #202225;
   text-align: center;
-  font-size: 0.95rem !important;;
+  font-size: 0.95rem !important;
+  user-select: none;
 }
 
 /* ============================== */
@@ -42,6 +43,7 @@
   border: 2px solid #00c853;
   box-shadow: 0 0 10px #00c853;
   transition: all 0.3s ease;
+  user-select: none;
 }
 
 /* ============================== */
@@ -50,6 +52,7 @@
 .tag-label {
   color: #9393ec;
   font-size: 1rem;
+  user-select: none;
 }
 
 /* ============================== */
@@ -93,6 +96,7 @@
   display: inline-block;
   margin-left: 6px;
   color: #bbb;
+  user-select: none;
   transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 .toggle-open .chevron {
