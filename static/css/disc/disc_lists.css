@@ -5,15 +5,26 @@ ul {
   width: 100%;
   max-width: 500px;
 }
+
+
 li {
-  background-color: #232529;
+  background-color: #1f202e;
   margin-bottom: 0.4rem;
   padding: 0.5rem;
   border-radius: 10px;
-  border: 1px solid #202225;
   text-align: center;
   font-size: 0.9em;
+  border: 1px solid #1c1e22;
+  box-shadow: 0 1px 0 0.5px #1c1e22;
+  color: #d0d0e1;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  transition: transform 0.2s ease;
 }
+.li:hover {
+  color: #ddd;
+}
+
+
 ul.downloads {
   list-style: none;
   padding: 0;
