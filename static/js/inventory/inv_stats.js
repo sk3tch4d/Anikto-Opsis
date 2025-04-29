@@ -85,7 +85,7 @@ function updateSavedPanel() {
   const cards = Array.from(savedItems.values()).reverse();
 
   if (cards.length === 0) {
-    savedPanel.innerHTML = "<p>No items saved yet.</p>";
+    savedPanel.innerHTML = "<p>No items saved yet.</p><br><br><p>Double click a tile to save!</p>";
     return;
   }
 
