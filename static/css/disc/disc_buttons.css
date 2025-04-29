@@ -20,6 +20,7 @@
   transition: all 0.2s ease-in-out
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   margin-top: 2rem;
+  user-select: none;
 }
 .button:hover {
   background-color: #3d405c;
@@ -27,6 +28,7 @@
 }
 button:focus {
   outline: none;
+  user-select: none;
   box-shadow: 0 0 0 2px #7289da; /* soft colored border */
 }
 button:disabled {
@@ -41,6 +43,7 @@ button:disabled {
   width: 100%;
   max-width: 500px;
   box-sizing: border-box;
+  user-select: none;
 }
 
 .button-wrapper {
@@ -55,6 +58,7 @@ button:disabled {
 /* ============================= */
 .label-button {
   display: block;
+  user-select: none;
   width: 100%;
   max-width: 500px;
   padding: 0.8rem 1rem;
