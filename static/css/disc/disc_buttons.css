@@ -1,9 +1,17 @@
+/* ============================= */
+/* DISC_BUTTONS                  */
+/* ============================= */
+
+
+/* ============================= */
+/* BUTTON                        */
+/* ============================= */
 .button {
   font-family: inherit;
   font-size: 1rem;
   font-weight: bold;
   padding: 0.72rem 1.2rem;
-  background-color: #3b3e45;
+  background-color: #2a2c3f;
   color: #ccc;
   border: 1px solid #2f3136;
   border-radius: 10px;
@@ -14,7 +22,7 @@
   margin-top: 2rem;
 }
 .button:hover {
-  background-color: #50545b;
+  background-color: #3d405c;
   transform: translateY(-2px);
 }
 .button.full-width {
@@ -37,7 +45,9 @@ button:disabled {
   overflow: hidden; 
 }
 
-
+/* ============================= */
+/* LABEL BUTTON                  */
+/* ============================= */
 .label-button {
   display: block;
   width: 100%;
