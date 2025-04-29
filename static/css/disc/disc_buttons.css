@@ -11,7 +11,7 @@
   font-size: 1rem;
   font-weight: bold;
   padding: 0.72rem 1.2rem;
-  background-color: #3d405c;
+  background-color: #33364d;
   color: #ccc;
   border: 1px solid #2f3136;
   border-radius: 10px;
@@ -23,7 +23,8 @@
   user-select: none;
 }
 .button:hover {
-  background-color: #52567a;
+  background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
+  background-size: 160%;
   transform: translateY(-2px);
 }
 button:focus {
