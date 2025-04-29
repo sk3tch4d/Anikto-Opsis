@@ -26,21 +26,22 @@
 /* PANEL HEADER                  */
 /* ============================= */
 .panel-header {
-  background-color: #3d405c;
+  background-color: #33364d;
   padding: 0.65rem 1rem;
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: bold;
   color: #cccccc;
   text-align: center;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background 0.4s ease, color 0.3s ease;
 }
 .panel-header:hover {
-  background-color: #52567a;
-  animation: hover-bounce 0.4s cubic-bezier(0.25, 1.5, 0.5, 1);
+  background-color: #5a5dcf;
+  color: #060614;
 }
 .panel-header:focus {
   outline: none;
+  animation: hover-bounce 0.4s cubic-bezier(0.25, 1.5, 0.5, 1);
 }
 
 /* ============================= */
