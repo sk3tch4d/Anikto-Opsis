@@ -1,11 +1,13 @@
-/* ======================= */
-/* DISC_CARDS.CSS          */
-/* ======================= */
+/* ============================= */
+/* DISC_CARDS.CSS                */
+/* ============================= */
 
 
-/* ==== COMPARE CARD ==== */
+/* ============================= */
+/* COMPARE CARD                  */
+/* ============================= */
 .compare-card {
-  background: #232529;
+  background: #1f202e;
   padding: 0.6rem 1.1rem;
   border-radius: 9px;
   margin-bottom: 0.85rem;
@@ -21,7 +23,9 @@
   color: #ddd;
 }
 
-/* ==== COMPARE DELTA ==== */
+/* ============================= */
+/* COMPARE DELTA                 */
+/* ============================= */
 .compare-delta .full-span {
   grid-column: span 2;
 }
