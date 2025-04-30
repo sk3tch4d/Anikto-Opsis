@@ -38,11 +38,9 @@
   position: relative;
 }
 
-
 /* ==============================
    TYPED TEXT (INSIDE HEADER ONLY)
    ============================== */
-
 #typed-header #typed-text {
   background-image: linear-gradient(135deg, #5a5dcf, #765bc8, #5a5dcf);
   background-size: 200%;
@@ -51,27 +49,22 @@
   -webkit-text-fill-color: transparent;
 }
 #typed-header #typed-text:hover {
-  background-image: linear-gradient(175deg, #5a5dcf, #765bc8, #5a5dcf);
   animation: gradientShift 1s ease infinite;
-}
 
 /* ==============================
    BLINKING CURSOR
    ============================== */
-
 #typed-header::after {
   content: "|";
   position: absolute;
   right: -10px;
   animation: blink 0.7s infinite;
-  color: #9ea7e1;
+  color: #5a5dcf;
 }
-
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0; }
 }
-
 
 /* ==============================
    GRADIENT SHIFT BACKGROUND
