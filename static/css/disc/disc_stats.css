@@ -48,9 +48,12 @@
   color: #9aaae4;
   cursor: pointer;
   padding: 0.2rem 1.2rem;
-  background-color: #3a3f5c;
-  border-radius: 0.4rem;
+  background-image: linear-gradient(25deg, #5a5dcf, #7f5ac8);
+  background-size: 260%;
+  color: #0a0b0f;
+  border-radius: 0.6rem;
   font-weight: bold;
+  border: 2px solid  #1f202e;
   margin: 0; /* removed weird margin */
   min-width: 100px;
   text-align: center;
@@ -58,6 +61,8 @@
   transition: background-color 0.5s ease, color 1s ease;
 }
 .clickable-match:hover {
-  background-color: #49538b;
-  color: #ccc;
+  background-image: linear-gradient(125deg, #7578d7, #9779d2);
+  background-size: 120%;
+  color: #0b0613;
+  transition: color 0.2s ease;
 }
