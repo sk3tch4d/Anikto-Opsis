@@ -67,7 +67,7 @@ export function scrollPanel(header = null, yOffset = -14, delay = 10) {
 }
 
 // ==============================
-// OBSERVE PANEL GROWTH (final fix)
+// OBSERVE PANEL GROWTH (final robust version)
 // ==============================
 function observePanelGrowth(panel) {
   const header = panel.querySelector('.panel-header');
@@ -77,17 +77,24 @@ function observePanelGrowth(panel) {
   let previousHeight = body.offsetHeight;
   let initialHeaderTop = header.getBoundingClientRect().top;
 
+  // 1. Delayed scroll after panel is open + content has rendered
+  const delayedScroll = () => {
+    const currentTop = header.getBoundingClientRect().top;
+    if (currentTop > initialHeaderTop + 1) {
+      scrollPanel(header);
+    }
+  };
+  setTimeout(delayedScroll, 50);
+
+  // 2. Ongoing resize observation for dynamic growth
   const observer = new ResizeObserver(entries => {
     for (const entry of entries) {
       const newHeight = entry.contentRect.height;
-
       if (newHeight > previousHeight) {
         const currentHeaderTop = header.getBoundingClientRect().top;
-
         if (currentHeaderTop > initialHeaderTop + 1) {
           requestAnimationFrame(() => scrollPanel(header));
         }
-
         previousHeight = newHeight;
       }
     }
@@ -259,4 +266,4 @@ function setupTouchListeners(body, panelId, panel, header) {
   body.addEventListener('touchend', () => {
     startY = null;
   });
-      }
+            }
