@@ -67,7 +67,7 @@ export function scrollPanel(header = null, yOffset = -14, delay = 10) {
 }
 
 // ==============================
-// OBSERVE PANEL GROWTH
+// OBSERVE PANEL GROWTH (final fix)
 // ==============================
 function observePanelGrowth(panel) {
   const header = panel.querySelector('.panel-header');
@@ -75,18 +75,21 @@ function observePanelGrowth(panel) {
   if (!header || !body) return;
 
   let previousHeight = body.offsetHeight;
+  let initialHeaderTop = header.getBoundingClientRect().top;
 
   const observer = new ResizeObserver(entries => {
     for (const entry of entries) {
       const newHeight = entry.contentRect.height;
-      const headerRect = header.getBoundingClientRect();
-      const headerOutOfView = headerRect.top < 0 || headerRect.top > window.innerHeight * 0.25;
 
-      if (newHeight > previousHeight && headerOutOfView) {
-        requestAnimationFrame(() => scrollPanel(header));
+      if (newHeight > previousHeight) {
+        const currentHeaderTop = header.getBoundingClientRect().top;
+
+        if (currentHeaderTop > initialHeaderTop + 1) {
+          requestAnimationFrame(() => scrollPanel(header));
+        }
+
+        previousHeight = newHeight;
       }
-
-      previousHeight = newHeight;
     }
   });
 
@@ -256,4 +259,4 @@ function setupTouchListeners(body, panelId, panel, header) {
   body.addEventListener('touchend', () => {
     startY = null;
   });
-}
+      }
