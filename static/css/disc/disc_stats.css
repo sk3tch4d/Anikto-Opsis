@@ -10,6 +10,38 @@
 }
 
 /* ============================= */
+/* CLICKABLE-NUM                */
+/* ============================= */
+.panel-body .clickable-num {
+  border-radius: 30rem;
+  color: #7578d7;
+  cursor: pointer;
+  padding: 0.07rem;
+  margin: 0; /* removed weird margin */
+  min-width: 100px;
+  text-align: center;
+  font-weight: bold;
+  display: inline-block;
+  transition: color 0.2s ease;
+}
+.panel-body .clickable-num:hover {
+  color: #eee;
+  background-image: linear-gradient(25deg, #5a5dcf, #7f5ac8);
+  background-size: 260%;
+  transition: color 0.2s ease;
+}
+
+.clickable-num-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  line-height: 1.6;
+  margin-top: 4px;
+  padding: 5px 10px;
+}
+
+/* ============================= */
 /* CLICKABLE-STAT                */
 /* ============================= */
 .panel-body .clickable-stat {
