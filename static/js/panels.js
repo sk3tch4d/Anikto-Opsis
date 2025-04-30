@@ -74,8 +74,20 @@ function observePanelGrowth(panel) {
   const body = panel.querySelector('.panel-body');
   if (!header || !body) return;
 
-  const observer = new ResizeObserver(() => {
-    requestAnimationFrame(() => scrollPanel(header));
+  let previousHeight = body.offsetHeight;
+
+  const observer = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const newHeight = entry.contentRect.height;
+      const headerRect = header.getBoundingClientRect();
+      const headerOutOfView = headerRect.top < 0 || headerRect.top > window.innerHeight * 0.25;
+
+      if (newHeight > previousHeight && headerOutOfView) {
+        requestAnimationFrame(() => scrollPanel(header));
+      }
+
+      previousHeight = newHeight;
+    }
   });
 
   observer.observe(body);
