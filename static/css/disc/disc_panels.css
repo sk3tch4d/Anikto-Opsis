@@ -63,7 +63,7 @@
   background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
   background-size: 200%;
   color: #060614;
-  font-size: 1.1rem;
+  font-size: 1rem;
   border-radius: 18px 18px 0 0;
 }
 .panel.open > .panel-header:hover {
