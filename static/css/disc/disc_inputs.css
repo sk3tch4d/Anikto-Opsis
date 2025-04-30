@@ -27,11 +27,11 @@ input.full-width {
   transition: border 0.2s ease-in-out, font-size 0.4s ease;
 }
 input.full-width:focus {
-  border-color: #5c7aff;
+  border-color: #5d5df8;
   font-size: 1.2rem;
 }
 input.full-width:hover {
-  border-color: #5c7aff;
+  border-color: #5d5df8;
   font-size: 1.2rem;
 }
 
