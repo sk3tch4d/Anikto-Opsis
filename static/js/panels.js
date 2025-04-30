@@ -40,7 +40,6 @@ function disableBodyLock() {
 // SCROLL TO HEADER
 // ==============================
 export function scrollPanel(header = null, yOffset = -14, delay = 10) {
-  
   if (!header) {
     console.warn('scrollPanel: No header found to scroll. Defaulted');
     const openPanel = document.querySelector('.panel.open');
@@ -52,15 +51,10 @@ export function scrollPanel(header = null, yOffset = -14, delay = 10) {
   const headerRect = header.getBoundingClientRect();
   const scrollTarget = headerRect.top + window.pageYOffset + yOffset;
 
-  console.log('[DEBUG] headerRect.top:', headerRect.top);
-  console.log('[DEBUG] pageYOffset:', window.pageYOffset);
-  console.log('[DEBUG] Final Scroll Target (y):', scrollTarget);
-
   setTimeout(() => {
     window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
   }, delay);
 }
-
 
 // ==============================
 // OPEN PANEL
@@ -82,21 +76,21 @@ export function openPanel(panelId) {
     header?.classList.add("open");
     body?.classList.add("open");
 
+    panel.setAttribute("aria-expanded", "true");
+
     if (!wasOpen) {
       const onTransitionEnd = (e) => {
         if (e.propertyName !== 'max-height') return;
         body.removeEventListener('transitionend', onTransitionEnd);
-      
         requestAnimationFrame(() => {
           scrollPanel(header);
-
-          // Delay lock enough to let scroll visually apply
+          const computedStyle = window.getComputedStyle(body);
+          const duration = parseFloat(computedStyle.transitionDuration) * 1000;
           setTimeout(() => {
             enableBodyLock();
-          }, 500);
+          }, duration);
         });
       };
-
       body.addEventListener('transitionend', onTransitionEnd);
     } else {
       enableBodyLock();
@@ -117,8 +111,15 @@ export function openPanelById(panelId) {
 // TOGGLE PANEL
 // ==============================
 export function togglePanel(header) {
+  if (!header) {
+    console.warn('togglePanel: No header provided');
+    return;
+  }
   const panel = header.closest('.panel');
-  if (!panel) return;
+  if (!panel) {
+    console.warn('togglePanel: Header not inside a .panel');
+    return;
+  }
 
   const isOpen = panel.classList.contains('open');
   if (isOpen) {
@@ -136,12 +137,12 @@ export function togglePanel(header) {
 function closePanel(panel) {
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
-  
+
   panel.classList.remove('open');
   header?.classList.remove('open');
   body?.classList.remove('open');
-  
-  // FOCUS HEADER
+  panel.setAttribute("aria-expanded", "false");
+
   setTimeout(() => {
     document.getElementById('typed-header')?.focus();
   }, 100);
@@ -159,6 +160,7 @@ export function collapseAllPanels({ excludeSelector = null } = {}) {
 
     body.classList.remove('open');
     panel?.classList.remove('open');
+    panel?.setAttribute("aria-expanded", "false");
   });
 }
 
@@ -168,14 +170,17 @@ export function collapseAllPanels({ excludeSelector = null } = {}) {
 function setupTouchListeners(body, panelId, panel, header) {
   if (nonClosablePanels.includes(panelId)) return;
 
+  body.removeEventListener('click', body.__panelClickListener || (() => {}));
+
   const closePanelOnTouch = (event) => {
     const target = event.target;
-    const isInteractive = nonClosableElements.includes(target.tagName);
+    const isInteractive = nonClosableElements.includes(target.tagName) || target.hasAttribute('contenteditable');
     const isIgnored = target.closest('[panel-ignore-close], .downloads, .file-action');
     const isInsideHeader = header.contains(target);
     const isDateInput = panelId === 'scheduled' && (
       target.closest('#working-date') || target.closest('.custom-date-display')
     );
+
     if (!isInteractive && !isInsideHeader && !isIgnored && !isDateInput) {
       closePanel(panel);
       body.removeEventListener('click', closePanelOnTouch);
@@ -183,6 +188,7 @@ function setupTouchListeners(body, panelId, panel, header) {
   };
 
   body.addEventListener('click', closePanelOnTouch);
+  body.__panelClickListener = closePanelOnTouch;
 
   let startY = null;
   const scrollable = body.querySelector('.scrollable-fill') || body;
