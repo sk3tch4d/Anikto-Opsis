@@ -44,13 +44,16 @@
    ============================== */
 
 #typed-header #typed-text {
-  background: linear-gradient(90deg, #4f60c9, #7289da, #4f60c9, #7683d5);
-  background-size: 600% 600%;
+  background-image: linear-gradient(135deg, #5a5dcf, #765bc8, #5a5dcf);
+  background-size: 200%;
   animation: gradientShift 12s ease infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
+#typed-header #typed-text:hover {
+  background-image: linear-gradient(175deg, #5a5dcf, #765bc8, #5a5dcf);
+  animation: gradientShift 1s ease infinite;
+}
 
 /* ==============================
    BLINKING CURSOR
