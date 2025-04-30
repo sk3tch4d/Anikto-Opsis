@@ -67,7 +67,7 @@ export function scrollPanel(header = null, yOffset = -14, delay = 10) {
 }
 
 // ==============================
-// OBSERVE PANEL GROWTH (final robust version)
+// OBSERVE PANEL GROWTH (final fix with scroll detection)
 // ==============================
 function observePanelGrowth(panel) {
   const header = panel.querySelector('.panel-header');
@@ -76,28 +76,24 @@ function observePanelGrowth(panel) {
 
   let previousHeight = body.offsetHeight;
   let initialHeaderTop = header.getBoundingClientRect().top;
+  let previouslyScrollable = false;
 
-  // 1. Delayed scroll after panel is open + content has rendered
-  const delayedScroll = () => {
+  const scrollIfNeeded = () => {
     const currentTop = header.getBoundingClientRect().top;
-    if (currentTop > initialHeaderTop + 1) {
-      scrollPanel(header);
-    }
-  };
-  setTimeout(delayedScroll, 50);
+    const isNowScrollable = body.scrollHeight > window.innerHeight;
 
-  // 2. Ongoing resize observation for dynamic growth
-  const observer = new ResizeObserver(entries => {
-    for (const entry of entries) {
-      const newHeight = entry.contentRect.height;
-      if (newHeight > previousHeight) {
-        const currentHeaderTop = header.getBoundingClientRect().top;
-        if (currentHeaderTop > initialHeaderTop + 1) {
-          requestAnimationFrame(() => scrollPanel(header));
-        }
-        previousHeight = newHeight;
-      }
+    if (isNowScrollable && (!previouslyScrollable || currentTop > initialHeaderTop + 1)) {
+      scrollPanel(header);
+      previouslyScrollable = true;
     }
+
+    previousHeight = body.offsetHeight;
+  };
+
+  setTimeout(scrollIfNeeded, 100);
+
+  const observer = new ResizeObserver(() => {
+    requestAnimationFrame(scrollIfNeeded);
   });
 
   observer.observe(body);
@@ -266,4 +262,4 @@ function setupTouchListeners(body, panelId, panel, header) {
   body.addEventListener('touchend', () => {
     startY = null;
   });
-            }
+}
