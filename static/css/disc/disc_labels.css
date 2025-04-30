@@ -40,7 +40,7 @@
 /* SAVED CARD                     */
 /* ============================== */
 .saved-card {
-  border: 2.2px solid #6700fb;
+  border: 2px solid #6700fb;
   transition: all 0.3s ease;
   user-select: none;
 }
