@@ -62,6 +62,7 @@ function updateGenerateButtonText() {
 
   // Focus the button after updating text
   generateBtn.focus();
+  generateBtn.classList.add("select");
 }
 
 // ==============================
