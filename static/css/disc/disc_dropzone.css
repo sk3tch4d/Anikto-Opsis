@@ -4,7 +4,7 @@
   justify-content: center;
   flex-direction: column;
 
-  border: 0.18rem dashed #7289da;
+  border: 0.18rem dashed #8080ff;
   border-radius: 10px;
   padding: 3rem 2.6rem;
 
@@ -17,7 +17,7 @@
   text-align: center;
   margin: 2rem auto 3rem;
 
-  animation: pulse-glow 3s ease-in-out infinite;
+  animation: pulse-glow 2.8s ease-in-out infinite;
 }
 
 .drop-zone:hover {
@@ -25,7 +25,7 @@
 }
 .drop-zone.active {
   background-color: rgba(114, 137, 218, 0.1);
-  border-color: #7289da;
+  border-color: #9999ff;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 .drop-zone.drag-over {
@@ -149,18 +149,18 @@ input[type="file"] {
 @keyframes pulse-glow {
   0% {
     box-shadow: 
-      0 0 10px rgba(114, 137, 218, 0.1), 
-      inset 0 0 6px rgba(114, 137, 218, 0.1);
+      0 0 10px rgba(102, 102, 255, 0.3), 
+      inset 0 0 6px rgba(102, 102, 255, 0.3);
   }
   50% {
     box-shadow: 
-      0 0 24px rgba(114, 137, 218, 0.3), 
-      inset 0 0 18px rgba(114, 137, 218, 0.2);
+      0 0 26px rgba(102, 102, 255, 0.3), 
+      inset 0 0 22px rgba(102, 102, 255, 0.3);
   }
   100% {
     box-shadow: 
-      0 0 10px rgba(114, 137, 218, 0.1), 
-      inset 0 0 6px rgba(114, 137, 218, 0.1);
+      0 0 10px rgba(102, 102, 255, 0.3), 
+      inset 0 0 6px rgba(102, 102, 255, 0.3);
   }
 }
 
