@@ -28,11 +28,11 @@ input.full-width {
 }
 input.full-width:focus {
   border-color: #5d5df8;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 input.full-width:hover {
   border-color: #5d5df8;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 /* ============================= */
@@ -69,11 +69,11 @@ select.input.full-width {
   appearance: none;
 }
 select.input.full-width:focus {
-  border-color: #5c7aff;
+  border-color: #5d5df8;
   font-size: 1.1rem;
 }
 select.input.full-width:hover {
-  border-color: #5c7aff;
+  border-color: #5d5df8;
   font-size: 1.1rem;
 }
 /* ============================= */
