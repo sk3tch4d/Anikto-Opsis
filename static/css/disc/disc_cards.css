@@ -7,7 +7,8 @@
 /* COMPARE CARD                  */
 /* ============================= */
 .compare-card {
-  background: #292b3d;
+  border: 2px solid #1f1f2e;
+  background: #29293d; /*#292b3d;*/
   padding: 0.6rem 1.1rem;
   border-radius: 9px;
   margin-bottom: 0.85rem;
