@@ -39,8 +39,8 @@
 
 .bounce-ball {
   display: inline-block;
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   margin: 0 8px;
   border-radius: 50%;
   background: #7289da;
