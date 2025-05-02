@@ -144,7 +144,7 @@ export const doInventorySearch = debounce(function({
 
   const key = generateSearchKey({ term, usl, sort, dir: sortDirection });
 
-  LoaderManager.run('spinner', async () => {
+  LoaderManager.run('bounce', async () => {
     noResults.style.display = "none";
 
     if (currentFetchController) currentFetchController.abort();
