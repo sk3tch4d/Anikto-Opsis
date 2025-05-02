@@ -198,9 +198,12 @@ export const doInventorySearch = debounce(function({
     } finally {
       restoreScrollPosition();
     }
+
+  }, {
+    id: 'inventory-loader',
+    parent: document.querySelector('#inventory-search-panel .panel-body')
   });
 
   const header = document.querySelector('#inventory-search-panel .panel-header');
   scrollPanel(header);
 }, DEBOUNCE_DELAY);
-
