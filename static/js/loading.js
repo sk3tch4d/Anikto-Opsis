@@ -1,129 +1,38 @@
 // ==============================
-// LOADING.JS — Loading Animation
+// LOADING.JS — Loading Spinner Control
 // ==============================
 
+
 // ==============================
-// LOADER FUNCTIONS — Internal
+// LOADING TOGGLER
 // ==============================
+export function toggleLoadingState(isLoading, { show, hide } = {}) {
+  if (!show || !hide) return;
 
-function insertLoaderSmart(wrapper, parent) {
-  const stickyBar = parent.querySelector('.sticky-bar');
-  const fallbackTarget = parent.querySelector('ul') || parent.firstChild;
-
-  if (stickyBar && stickyBar.nextSibling) {
-    parent.insertBefore(wrapper, stickyBar.nextSibling);
-  } else if (fallbackTarget) {
-    parent.insertBefore(wrapper, fallbackTarget);
-  } else {
-    parent.appendChild(wrapper);
-  }
-}
-
-function isIndexPage() {
-  return Boolean(document.querySelector('#typed-text'));
-}
-
-function createSpinnerLoader({ id = 'loading-spinner', parent = document.body } = {}) {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'loading spinner';
-  wrapper.id = id;
-
-  // Full content if on index page
-  if (isIndexPage()) {
-    const quote = document.createElement('div');
-    quote.className = 'quote-text';
-    quote.textContent = '"Patience is key..."';
-
-    const spinner = document.createElement('div');
-    spinner.className = 'spinner';
-
-    const upText = document.createElement('div');
-    upText.className = 'up-text';
-    upText.textContent = 'Loading your data...';
-
-    wrapper.appendChild(quote);
-    wrapper.appendChild(spinner);
-    wrapper.appendChild(upText);
-
-    const typedHeader = document.querySelector('#typed-text')?.parentNode;
-    if (typedHeader?.parentNode) {
-      typedHeader.parentNode.insertBefore(wrapper, typedHeader.nextSibling);
-    } else {
-      parent.appendChild(wrapper);
-    }
-  } else {
-    // Minimal loader elsewhere
-    const spinner = document.createElement('div');
-    spinner.className = 'spinner';
-    wrapper.appendChild(spinner);
-    insertLoaderSmart(wrapper, parent);
-  }
-
-  return wrapper;
-}
-
-function createBounceLoader({ id = 'loading-bounce', parent = document.body } = {}) {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'loading bounce';
-  wrapper.id = id;
-
-  ['one', 'two', 'three'].forEach(num => {
-    const ball = document.createElement('div');
-    ball.className = `bounce-ball ${num}`;
-    wrapper.appendChild(ball);
+  show.forEach(el => {
+    if (el) el.style.display = isLoading ? "block" : "none";
   });
 
-  insertLoaderSmart(wrapper, parent);
-
-  return wrapper;
-}
-
-function detectLoaderTypeFromDOM() {
-  if (document.querySelector('#loading-bounce')) return 'bounce';
-  if (document.querySelector('#loading-spinner')) return 'spinner';
-  return 'spinner'; // fallback default
+  hide.forEach(el => {
+    if (el) el.style.display = isLoading ? "none" : "block";
+  });
 }
 
 // ==============================
-// LOADER MANAGER — Public API
+// LOADING WRAPPER
 // ==============================
+export function withLoadingToggle({ show, hide }, task = () => {}) {
+  const run = () => {
+    toggleLoadingState(true, { show, hide });
 
-export const LoaderManager = {
-  create(type = 'spinner', options = {}) {
-    switch (type) {
-      case 'bounce':
-        return createBounceLoader(options);
-      case 'spinner':
-      default:
-        return createSpinnerLoader(options);
-    }
-  },
-
-  remove(type = 'spinner', id) {
-    const loaderId = id || `loading-${type}`;
-    const el = document.getElementById(loaderId);
-    if (el && el.parentNode) el.parentNode.removeChild(el);
-  },
-
-  toggle(type = 'spinner', isVisible = true, id) {
-    const loaderId = id || `loading-${type}`;
-    const el = document.getElementById(loaderId);
-    if (el) el.style.display = isVisible ? 'block' : 'none';
-  },
-
-  run(typeOrTask = 'spinner', taskOrOptions = () => {}, maybeOptions = {}) {
-    let type = typeof typeOrTask === 'string' ? typeOrTask : undefined;
-    let task = typeof typeOrTask === 'function' ? typeOrTask : taskOrOptions;
-    let options = typeof taskOrOptions === 'object' ? taskOrOptions : maybeOptions;
-
-    if (!type) type = detectLoaderTypeFromDOM();
-
-    this.create(type, options);
-    this.toggle(type, true, options.id);
-
-    return Promise.resolve(task()).finally(() => {
-      this.toggle(type, false, options.id);
-      this.remove(type, options.id);
+    Promise.resolve(task()).finally(() => {
+      toggleLoadingState(false, { show, hide });
     });
+  };
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    run();
+  } else {
+    document.addEventListener("DOMContentLoaded", run);
   }
-};
+}
