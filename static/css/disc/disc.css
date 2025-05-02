@@ -1,22 +1,25 @@
-@import url('disc_autocomplete.css');
-@import url('disc_base.css');
-@import url('disc_headings.css');
-@import url('disc_buttons.css');
-@import url('disc_panels.css');
-@import url('disc_labels.css');
-@import url('disc_lists.css');
-@import url('disc_links.css');
-@import url('disc_dropzone.css');
-@import url('disc_inputs.css');
-@import url('disc_badges.css');
-@import url('disc_spinner.css');
-@import url('disc_fileaction.css');
-@import url('disc_typing.css');
-@import url('disc_responsive.css');
+/* ============================== */
+/* DISC.CSS - IMPORTS             */
+/* ============================== */
+
 @import url('disc_animations.css');
-@import url('disc_utils.css');
-@import url('disc_stats.css');
-@import url('disc_search.css');
-@import url('disc_status-dot.css');
+@import url('disc_autocomplete.css');
+@import url('disc_badges.css');
+@import url('disc_base.css');
+@import url('disc_buttons.css');
 @import url('disc_cards.css');
-@import url('disc_text.css');
+@import url('disc_dropzone.css');
+@import url('disc_fileaction.css');
+@import url('disc_headings.css');
+@import url('disc_inputs.css');
+@import url('disc_labels.css');
+@import url('disc_links.css');
+@import url('disc_lists.css');
+@import url('disc_panels.css');
+@import url('disc_responsive.css');
+@import url('disc_search.css');
+@import url('disc_spinner.css');
+@import url('disc_stats.css');
+@import url('disc_status-dot.css');
+@import url('disc_typing.css');
+@import url('disc_utils.css');
