@@ -2,10 +2,19 @@
 // LOADING.JS — Loading Animation
 // ==============================
 
-
 // ==============================
 // LOADER FUNCTIONS — Internal
 // ==============================
+
+function insertLoaderSmart(wrapper, parent) {
+  const stickyBar = parent.querySelector('.sticky-bar');
+  if (stickyBar && stickyBar.nextSibling) {
+    parent.insertBefore(wrapper, stickyBar.nextSibling);
+  } else {
+    parent.insertBefore(wrapper, parent.firstChild); // fallback to top
+  }
+}
+
 function createSpinnerLoader({ id = 'loading-spinner', parent = document.body } = {}) {
   const wrapper = document.createElement('div');
   wrapper.className = 'loading spinner';
@@ -15,7 +24,7 @@ function createSpinnerLoader({ id = 'loading-spinner', parent = document.body } 
   spinner.className = 'spinner';
 
   wrapper.appendChild(spinner);
-  parent.insertBefore(wrapper, parent.firstChild);
+  insertLoaderSmart(wrapper, parent);
 
   return wrapper;
 }
@@ -31,7 +40,8 @@ function createBounceLoader({ id = 'loading-bounce', parent = document.body } = 
     wrapper.appendChild(ball);
   });
 
-  parent.insertBefore(wrapper, parent.firstChild);
+  insertLoaderSmart(wrapper, parent);
+
   return wrapper;
 }
 
@@ -68,12 +78,10 @@ export const LoaderManager = {
   },
 
   run(typeOrTask = 'spinner', taskOrOptions = () => {}, maybeOptions = {}) {
-    // Handle optional config
     let type = typeof typeOrTask === 'string' ? typeOrTask : undefined;
     let task = typeof typeOrTask === 'function' ? typeOrTask : taskOrOptions;
     let options = typeof taskOrOptions === 'object' ? taskOrOptions : maybeOptions;
 
-    // Auto-detect loader type if none is specified
     if (!type) type = detectLoaderTypeFromDOM();
 
     this.create(type, options);
