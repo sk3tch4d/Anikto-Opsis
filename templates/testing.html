@@ -91,7 +91,15 @@
               <button class="input sort-button" type="button" style="flex: 0 0 auto;">↓</button>
             </div>
           </div>
-          <div class="loading spinner"></div>
+          <!-- Loading Spinner -->
+          <div class="loading spinner" id="loading-spinner">
+            <div class="spinner"></div>
+          </div>
+          
+          <!-- Trigger Buttons for Demo -->
+          <button onclick="showSpinner()">Show Spinner</button>
+          <button onclick="hideSpinner()">Hide Spinner</button>
+
         </div>
       </div>
 
@@ -337,7 +345,14 @@
 
     </div>
   </div>
-
+  <script>
+  function showSpinner() {
+    document.getElementById('loading-spinner').style.display = 'block';
+  }
+  function hideSpinner() {
+    document.getElementById('loading-spinner').style.display = 'none';
+  }
+</script>
   <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=1) }}"></script>
 </body>
 </html>
