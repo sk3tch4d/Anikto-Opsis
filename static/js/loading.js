@@ -15,8 +15,12 @@ function insertLoaderSmart(wrapper, parent) {
   } else if (fallbackTarget) {
     parent.insertBefore(wrapper, fallbackTarget);
   } else {
-    parent.appendChild(wrapper); // worst case fallback
+    parent.appendChild(wrapper);
   }
+}
+
+function isIndexPage() {
+  return Boolean(document.querySelector('#typed-text'));
 }
 
 function createSpinnerLoader({ id = 'loading-spinner', parent = document.body } = {}) {
@@ -24,11 +28,36 @@ function createSpinnerLoader({ id = 'loading-spinner', parent = document.body } 
   wrapper.className = 'loading spinner';
   wrapper.id = id;
 
-  const spinner = document.createElement('div');
-  spinner.className = 'spinner';
+  // Full content if on index page
+  if (isIndexPage()) {
+    const quote = document.createElement('div');
+    quote.className = 'quote-text';
+    quote.textContent = '"Patience is key..."';
 
-  wrapper.appendChild(spinner);
-  insertLoaderSmart(wrapper, parent);
+    const spinner = document.createElement('div');
+    spinner.className = 'spinner';
+
+    const upText = document.createElement('div');
+    upText.className = 'up-text';
+    upText.textContent = 'Loading your data...';
+
+    wrapper.appendChild(quote);
+    wrapper.appendChild(spinner);
+    wrapper.appendChild(upText);
+
+    const typedHeader = document.querySelector('#typed-text')?.parentNode;
+    if (typedHeader?.parentNode) {
+      typedHeader.parentNode.insertBefore(wrapper, typedHeader.nextSibling);
+    } else {
+      parent.appendChild(wrapper);
+    }
+  } else {
+    // Minimal loader elsewhere
+    const spinner = document.createElement('div');
+    spinner.className = 'spinner';
+    wrapper.appendChild(spinner);
+    insertLoaderSmart(wrapper, parent);
+  }
 
   return wrapper;
 }
