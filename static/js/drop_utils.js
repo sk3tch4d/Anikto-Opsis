@@ -3,7 +3,7 @@
 // Handles Button/Loading Text
 // ==============================
 
-import { toggleLoadingState } from './loading.js';
+import { LoaderManager } from './loading.js';
 import { displayRandomQuote } from './quotes.js';
 
 // ==============================
@@ -127,12 +127,19 @@ function detectFileTypeKey() {
 // START FORM LOADING UI
 // ==============================
 export function startFormLoadingUI() {
-  toggleLoadingState(true, {
-    show: [document.getElementById("loading")],
-    hide: [document.getElementById("upload-form")]
-  });
-
   const typeKey = detectFileTypeKey();
-  updateGenText(typeKey);
-  displayRandomQuote();
+  const uploadForm = document.getElementById("upload-form");
+
+  LoaderManager.run('spinner', async () => {
+    updateGenText(typeKey);
+    displayRandomQuote();
+    if (uploadForm) uploadForm.style.display = 'none';
+
+    // Optional: wait briefly to give the user visual feedback
+    await new Promise(resolve => setTimeout(resolve, 300));
+  }, {
+    id: 'form-loading-spinner',
+    parent: document.body
+  });
 }
+
