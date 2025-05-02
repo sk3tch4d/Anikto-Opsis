@@ -109,10 +109,26 @@ export function setupParseStats() {
 // MATCH HIGHLIGHTING
 // ==============================
 export function highlightMatch(text, term) {
-  if (!term) return text;
-  const safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  if (!term || !text) return escapeHtml(text);
+
+  const safeText = escapeHtml(text);
+  const safeTerm = escapeRegExp(term);
+
   const regex = new RegExp(`(${safeTerm})`, "ig");
-  return text.replace(regex, `<span class="highlight">$1</span>`);
+  return safeText.replace(regex, `<span class="highlight">$1</span>`);
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 // ==============================
