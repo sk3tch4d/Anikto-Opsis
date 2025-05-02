@@ -78,17 +78,22 @@
       <!-- ============================= -->
       <!-- PANEL: Full Results -->
       <!-- ============================= -->
-      <div class="panel panel-animate" id="inventory-stats-panel">
-        <div class="panel-header" onclick="togglePanel(this)">Full Results</div>
+      <div class="panel panel-animate" id="testing-loading">
+        <div class="panel-header" onclick="togglePanel(this)">Loading..</div>
         <div class="panel-body scrollable-panel">
+
           <!-- Loading Spinner -->
           <div class="loading spinner" id="loading-spinner">
             <div class="spinner"></div>
           </div>
+
           <!-- Loading Bounce -->
           <div class="loading bounce" id="loading-bounce">
-            <div class="bounce"></div>
-          </div>          
+            <div class="bounce-ball one"></div>
+            <div class="bounce-ball two"></div>
+            <div class="bounce-ball three"></div>
+          </div>
+
           <!-- Trigger Buttons for Demo -->
           <button class="button full-width" onclick="showSpinner()">Show Spinner</button>
           <button class="button full-width" onclick="showBounce()">Show Bounce</button>
