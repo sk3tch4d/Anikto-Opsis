@@ -44,7 +44,7 @@
   height: 58px;
   border-radius: 50%;
   box-shadow: 0 0 18px 2px rgba(0,0,0,0.4);
-  background-image: linear-graadient(135deg, #5a5dcf, #7f5ac8);
+  background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
   background-size: 160%;
   animation: bounce alternate infinite cubic-bezier(.2, .65, .6, 1);
 }
