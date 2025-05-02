@@ -13,11 +13,11 @@ export function renderInventoryResults(data, term, resultsList) {
   if (!Array.isArray(data) || !resultsList) return;
   if (data.length === 0) return;
 
-  resultsList.innerHTML = ""; // clear prev results
+  resultsList.innerHTML = ""; // clear previous results
 
   data.forEach(item => {
-    const li = document.createElement("li");
-    let html = "";
+    const card = document.createElement("div");
+    card.className = "compare-card";
 
     const numStr = String(item.Num ?? "");
     const oldStr = String(item.Old ?? "");
@@ -25,6 +25,8 @@ export function renderInventoryResults(data, term, resultsList) {
     // ==============================
     // BUILD NUMBER FIELD
     // ==============================
+    let html = "";
+
     if (term) {
       const numMatch = numStr.toLowerCase().includes(term);
       const oldMatch = oldStr.toLowerCase().includes(term);
@@ -75,12 +77,11 @@ export function renderInventoryResults(data, term, resultsList) {
       html += `<span class="tag-label">Group:</span> ${highlightMatch(item.Group, term)}`;
     }
 
-    li.innerHTML = html;
-    resultsList.appendChild(li);
+    card.innerHTML = html;
+    resultsList.appendChild(card);
   });
 
   // Adjust Search Window
   const header = document.querySelector('#inventory-search-panel .panel-header');
   scrollPanel(header);
-
 }
