@@ -14,7 +14,7 @@ export async function fetchWorkingOnDate() {
   const dateStr = dateInput.value;
   if (resultsDiv) resultsDiv.innerHTML = "";
 
-  await LoaderManager.run('spinner', async () => {
+  await LoaderManager.run('bounce', async () => {
     // Inject a temporary message into the loader
     const loaderEl = document.getElementById('working-date-loader');
     if (loaderEl) {
