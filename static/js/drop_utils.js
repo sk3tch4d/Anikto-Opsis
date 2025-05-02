@@ -4,7 +4,6 @@
 // ==============================
 
 import { LoaderManager } from './loading.js';
-import { initTypewriter } from './drop_utils.js';
 import { displayRandomQuote } from './quotes.js';
 
 // ==============================
