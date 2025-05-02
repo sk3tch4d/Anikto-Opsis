@@ -4,6 +4,7 @@
 // ==============================
 
 import { LoaderManager } from './loading.js';
+import { initTypewriter } from './drop_utils.js';
 import { displayRandomQuote } from './quotes.js';
 
 // ==============================
@@ -130,16 +131,17 @@ export function startFormLoadingUI() {
   const typeKey = detectFileTypeKey();
   const uploadForm = document.getElementById("upload-form");
 
-  LoaderManager.run('spinner', async () => {
-    updateGenText(typeKey);
-    displayRandomQuote();
-    if (uploadForm) uploadForm.style.display = 'none';
-
-    // Optional: wait briefly to give the user visual feedback
-    await new Promise(resolve => setTimeout(resolve, 300));
-  }, {
+  // Create and show the spinner manually
+  LoaderManager.create('spinner', {
     id: 'form-loading-spinner',
     parent: document.body
   });
-}
+  LoaderManager.toggle('spinner', true, 'form-loading-spinner');
 
+  // Show status and quote updates
+  updateGenText(typeKey);
+  displayRandomQuote();
+
+  // Hide form UI while loader is active
+  if (uploadForm) uploadForm.style.display = 'none';
+}
