@@ -15,7 +15,7 @@ function createSpinnerLoader({ id = 'loading-spinner', parent = document.body } 
   spinner.className = 'spinner';
 
   wrapper.appendChild(spinner);
-  parent.appendChild(wrapper);
+  parent.insertBefore(wrapper, parent.firstChild);
 
   return wrapper;
 }
@@ -31,7 +31,7 @@ function createBounceLoader({ id = 'loading-bounce', parent = document.body } = 
     wrapper.appendChild(ball);
   });
 
-  parent.appendChild(wrapper);
+  parent.insertBefore(wrapper, parent.firstChild);
   return wrapper;
 }
 
