@@ -8,10 +8,14 @@
 
 function insertLoaderSmart(wrapper, parent) {
   const stickyBar = parent.querySelector('.sticky-bar');
+  const fallbackTarget = parent.querySelector('ul') || parent.firstChild;
+
   if (stickyBar && stickyBar.nextSibling) {
     parent.insertBefore(wrapper, stickyBar.nextSibling);
+  } else if (fallbackTarget) {
+    parent.insertBefore(wrapper, fallbackTarget);
   } else {
-    parent.insertBefore(wrapper, parent.firstChild); // fallback to top
+    parent.appendChild(wrapper); // worst case fallback
   }
 }
 
@@ -54,6 +58,7 @@ function detectLoaderTypeFromDOM() {
 // ==============================
 // LOADER MANAGER — Public API
 // ==============================
+
 export const LoaderManager = {
   create(type = 'spinner', options = {}) {
     switch (type) {
