@@ -1,33 +1,22 @@
 /* ==============================
-   TYPED HEADER ANIMATION STYLES
+   TYPED HEADER CONTAINER
    ============================== */
-
 #typed-header {
-  /* --- Layout & Font --- */
+  display: inline-block;
+  position: relative;
   margin: 1rem auto;
-  font-size: 2.0rem;
+  font-size: 2rem;
   font-weight: 800;
   letter-spacing: 1px;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
-  display: inline-block;
-  position: relative;
 }
-
-#typed-header span {
-  /* --- Animated Text Content --- */
-  display: inline-block;
-  font-size: 2rem;
-  font-weight: bold;
-}
-
 
 /* ==============================
-   TYPED TEXT DEFAULT (NO STYLING)
+   TYPED TEXT WITH GRADIENT ANIMATION
    ============================== */
-
-#typed-text {
+#typed-header #typed-text {
   display: inline-block;
   min-width: 12ch;
   min-height: 1.2em;
@@ -36,39 +25,39 @@
   font-weight: inherit;
   font-size: inherit;
   position: relative;
-}
 
-/* ==============================
-   TYPED TEXT (INSIDE HEADER ONLY)
-   ============================== */
-#typed-header #typed-text {
-  background-image: linear-gradient(135deg, #5a5dcf, #765bc8, #5a5dcf);
+  background: linear-gradient(135deg, #5a5dcf, #765bc8, #5a5dcf);
   background-size: 200%;
+  background-position: 0% 50%;
   animation: gradientShift 12s ease infinite;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-#typed-header #typed-text:hover {
-  animation: gradientShift 1s ease infinite;
 
 /* ==============================
-   BLINKING CURSOR
+   ANIMATED GRADIENT BAR CURSOR
    ============================== */
 #typed-header::after {
-  content: "|";
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
   position: absolute;
-  right: -10px;
-  animation: blink 0.7s infinite;
-  color: #5a5dcf;
+  right: -6px;
+  top: 0;
+  background: linear-gradient(135deg, #5a5dcf, #765bc8, #5a5dcf);
+  background-size: 200%;
+  background-position: 0% 50%;
+  animation: blinkBar 0.8s steps(1) infinite, gradientShift 12s ease infinite;
 }
-@keyframes blink {
+
+/* ==============================
+   ANIMATIONS
+   ============================== */
+@keyframes blinkBar {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0; }
 }
-
-/* ==============================
-   GRADIENT SHIFT BACKGROUND
-   ============================== */
 
 @keyframes gradientShift {
   0%   { background-position: 0% 50%; }
