@@ -1,6 +1,5 @@
 // ==============================
-// SCHEDULE.JS
-// ARG Shedule Logic
+// SCHEDULE.JS - ARG HANDLING
 // ==============================
 
 // ==============================
@@ -9,41 +8,51 @@
 export async function fetchWorkingOnDate() {
   const dateInput = document.getElementById('working-date');
   const resultsDiv = document.getElementById('working-date-results');
-  const loadingDiv = document.getElementById('working-date-loading');
 
   if (!dateInput || !dateInput.value) return;
 
   const dateStr = dateInput.value;
   if (resultsDiv) resultsDiv.innerHTML = "";
-  if (loadingDiv) loadingDiv.style.display = "block";
 
-  try {
-    const response = await fetch(`/api/working_on_date?date=${dateStr}`);
-    const data = await response.json();
-    const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
-    let html = '';
-
-    if (data.error) {
-      html = `<p class="error">${data.error}</p>`;
-    } else {
-      ['Day', 'Evening', 'Night'].forEach(type => {
-        if (data[type]?.length) {
-          html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><ul>`;
-          data[type].forEach(([name, shift]) => {
-            html += `<li>${name} (${shift})</li>`;
-          });
-          html += `</ul>`;
-        }
-      });
-      if (!html) html = "<p>No employees scheduled for this date.</p>";
+  await LoaderManager.run('spinner', async () => {
+    // Inject a temporary message into the loader
+    const loaderEl = document.getElementById('working-date-loader');
+    if (loaderEl) {
+      const msg = document.createElement('p');
+      msg.textContent = 'Fetching schedule...';
+      msg.style.marginTop = '0.5rem';
+      loaderEl.appendChild(msg);
     }
 
-    if (resultsDiv) resultsDiv.innerHTML = html;
-  } catch (err) {
-    if (resultsDiv) resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
-  } finally {
-    if (loadingDiv) loadingDiv.style.display = "none";
-  }
+    try {
+      const response = await fetch(`/api/working_on_date?date=${dateStr}`);
+      const data = await response.json();
+      const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
+      let html = '';
+
+      if (data.error) {
+        html = `<p class="error">${data.error}</p>`;
+      } else {
+        ['Day', 'Evening', 'Night'].forEach(type => {
+          if (data[type]?.length) {
+            html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><ul>`;
+            data[type].forEach(([name, shift]) => {
+              html += `<li>${name} (${shift})</li>`;
+            });
+            html += `</ul>`;
+          }
+        });
+        if (!html) html = "<p>No employees scheduled for this date.</p>";
+      }
+
+      if (resultsDiv) resultsDiv.innerHTML = html;
+    } catch (err) {
+      if (resultsDiv) resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
+    }
+  }, {
+    id: 'working-date-loader',
+    parent: document.querySelector('#scheduled-search-panel .panel-body')
+  });
 }
 
 // ==============================
