@@ -13,6 +13,13 @@
   font-weight: inherit;
   font-size: inherit;
   vertical-align: top;
+  /* Reset styles in case inherited from #typed-header */
+  color: #bbc;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+}
+
 }
 
 #typed-header {
