@@ -7,21 +7,27 @@
 /* LI                            */
 /* ============================= */
 li {
-  background-color: #1f202e;
-  margin-bottom: 0.4rem;
-  padding: 0.5rem;
-  border-radius: 10px;
+  background: #29293d; /*#292b3d;*/
+  border: 2px solid #1f1f2e;
+  border-radius: 22px;
+  margin-bottom: 0.64rem;
+  padding: 0.5rem; 
+  box-shadow: inset 0px 0.8px 5px #1c1e22;
+  color: #b1b1cd;
   text-align: center;
-  font-size: 0.9em;
-  border: 1px solid #1c1e22;
-  box-shadow: 0 1px 0 0.5px #1c1e22;
-  color: #d0d0e1;
+  font-size: 0.92rem;
   font-family: 'Segoe UI', Tahoma, sans-serif;
-  transition: transform 0.2s ease;
+  transition: transform 0.4s ease, color 0.4s ease;
 }
-.li:hover {
-  color: #ddd;
+/* ============================= */
+/* LI: HOVER                     */
+/* ============================= */
+li:hover {
+  color: #e0e0eb;
+  font-size: 0.922rem;
+  border-radius: 22px;
 }
+
 
 /* ============================= */
 /* UL                            */
@@ -43,10 +49,18 @@ ul.downloads {
   margin: 0;
   width: 100%;
 }
+
+/* ============================= */
+/* UL.DOWNLOADS: LI              */
+/* ============================= */
 ul.downloads li {
   padding: 0;
   margin: 0 0 0.5rem 0;
 }
+
+/* ============================= */
+/* UL.DOWNLOADS: LI BUTTON       */
+/* ============================= */
 ul.downloads li > .button {
   all: unset;
   display: block;
@@ -61,6 +75,10 @@ ul.downloads li > .button {
   box-sizing: border-box;
   transition: background-color 0.2s ease;
 }
+
+/* ============================= */
+/* UL.DOWNLOADS:LI .BUTTON:HOVER */
+/* ============================= */
 ul.downloads li > .button:hover {
   background-color: #50545b;
 }
