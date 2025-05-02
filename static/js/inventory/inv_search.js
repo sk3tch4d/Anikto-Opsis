@@ -198,5 +198,4 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
   // Adjust Search Window
   const header = document.querySelector('#inventory-search-panel .panel-header');
   scrollPanel(header);
-
 }, DEBOUNCE_DELAY);
