@@ -81,16 +81,6 @@
       <div class="panel panel-animate" id="inventory-stats-panel">
         <div class="panel-header" onclick="togglePanel(this)">Full Results</div>
         <div class="panel-body scrollable-panel">
-          <div class="sticky-bar">
-            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-              <select class="input full-width" style="flex: 1;">
-                <option value="QTY">Quantity</option>
-                <option value="USL">USL</option>
-                <option value="Num">Number</option>
-              </select>
-              <button class="input sort-button" type="button" style="flex: 0 0 auto;">↓</button>
-            </div>
-          </div>
           <!-- Loading Spinner -->
           <div class="loading spinner" id="loading-spinner">
             <div class="spinner"></div>
@@ -100,8 +90,8 @@
             <div class="bounce"></div>
           </div>          
           <!-- Trigger Buttons for Demo -->
-          <button onclick="showSpinner()">Show Spinner</button>
-          <button onclick="showBounce()">Show Bounce</button>
+          <button class="button full-width" onclick="showSpinner()">Show Spinner</button>
+          <button class="button full-width" onclick="showBounce()">Show Bounce</button>
 
         </div>
       </div>
@@ -350,10 +340,12 @@
   </div>
   <script>
   function showSpinner() {
+    document.getElementById('loading-bounce').style.display = 'none';
     document.getElementById('loading-spinner').style.display = 'block';
   }
-  function hideSpinner() {
+  function showBounce() {
     document.getElementById('loading-spinner').style.display = 'none';
+    document.getElementById('loading-bounce').style.display = 'block';
   }
 </script>
   <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=1) }}"></script>
