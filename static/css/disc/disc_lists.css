@@ -7,8 +7,8 @@
 /* LI                            */
 /* ============================= */
 li {
-  /*background: #29293d; /*#292b3d;*/
-  background: linear-gradient(15deg, #29293d, #2b2b3b);
+  background: #292b3d; /*#292b3d;*/
+  background: linear-gradient(15deg, #292b3d, #232531);
   background-size: 160%;
   border: 2px solid #1f1f2e;
   border-radius: 20px;
@@ -25,11 +25,12 @@ li {
 /* LI: HOVER                     */
 /* ============================= */
 li:hover {
+  background: linear-gradient(15deg, #2e3042, #252632);
+  background-size: 160%;
   color: #e0e0eb;
   font-size: 0.922rem;
   border-radius: 24px;
 }
-
 
 
 /* ============================= */
