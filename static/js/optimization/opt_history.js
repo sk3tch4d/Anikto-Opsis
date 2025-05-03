@@ -17,6 +17,11 @@ function formatFriendlyTimestamp(date) {
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ` at ${time}`;
 }
 
+const HISTORY_KEY = "optimization_search_history";
+
+// ==============================
+// ADD SEARCH TO HISTORY
+// ==============================
 export function addOptimizationSearchToHistory(term, cartFilter, results) {
   const container = document.getElementById("search-history-list");
   if (!container || !results.length) return;
@@ -25,18 +30,34 @@ export function addOptimizationSearchToHistory(term, cartFilter, results) {
   const now = new Date();
   const friendlyTimestamp = formatFriendlyTimestamp(now);
 
-  // Init global history cache
-  window.optimizationSearchHistory = window.optimizationSearchHistory || [];
+  // Load existing history
+  let history = [];
+  try {
+    history = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+  } catch {
+    history = [];
+  }
 
-  // Save this search to memory
-  window.optimizationSearchHistory.unshift({
+  // Push new entry
+  const newEntry = {
     timestamp: friendlyTimestamp,
     search: term,
     filter: cartFilter || "All",
     matches: uniqueMaterials.join(", ")
-  });
+  };
+  history.unshift(newEntry);
 
-  // ===== Build Card =====
+  // Save updated
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+
+  // Add to DOM
+  renderEntry(container, newEntry, uniqueMaterials);
+}
+
+// ==============================
+// RENDER SINGLE ENTRY
+// ==============================
+function renderEntry(container, entry, materialList = []) {
   const card = document.createElement("div");
   card.className = "compare-card";
 
@@ -45,16 +66,16 @@ export function addOptimizationSearchToHistory(term, cartFilter, results) {
   timeLine.style.fontSize = "0.75em";
   timeLine.style.color = "#888";
   timeLine.style.marginBottom = "4px";
-  timeLine.textContent = friendlyTimestamp;
+  timeLine.textContent = entry.timestamp;
   card.appendChild(timeLine);
 
   const header = document.createElement("div");
-  header.innerHTML = `<span class="tag-label">Search:</span> ${term}<br><span class="tag-label">Filter:</span> ${cartFilter || "All"}`;
+  header.innerHTML = `<span class="tag-label">Search:</span> ${entry.search}<br><span class="tag-label">Filter:</span> ${entry.filter}`;
   card.appendChild(header);
 
   const matchesToggle = document.createElement("span");
   matchesToggle.className = "tag-label tag-toggle clickable-toggle";
-  matchesToggle.innerHTML = `Matches (${uniqueMaterials.length}) <span class="chevron">▼</span>`;
+  matchesToggle.innerHTML = `Matches (${materialList.length || entry.matches.split(",").length}) <span class="chevron">▼</span>`;
 
   const matchesWrapper = document.createElement("div");
   matchesWrapper.className = "usl-wrapper";
@@ -62,11 +83,13 @@ export function addOptimizationSearchToHistory(term, cartFilter, results) {
   const matchContainer = document.createElement("div");
   matchContainer.className = "clickable-match-container";
 
-  uniqueMaterials.forEach(material => {
+  const matchItems = materialList.length ? materialList : (entry.matches || "").split(",");
+
+  matchItems.forEach(material => {
     const span = document.createElement("span");
     span.className = "clickable-match";
-    span.setAttribute("data-value", material);
-    span.textContent = material;
+    span.setAttribute("data-value", material.trim());
+    span.textContent = material.trim();
     matchContainer.appendChild(span);
   });
 
@@ -84,9 +107,19 @@ export function addOptimizationSearchToHistory(term, cartFilter, results) {
 }
 
 // ==============================
-// SETUP PANEL INIT
+// INIT HISTORY PANEL
 // ==============================
 export function setupHistory() {
   const container = document.getElementById("search-history-list");
   container.innerHTML = "<p style='text-align:center;'>Search something to begin logging history.</p>";
+
+  try {
+    const stored = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+    for (const entry of stored.reverse()) {
+      const matchList = (entry.matches || "").split(",");
+      renderEntry(container, entry, matchList);
+    }
+  } catch {
+    // ignore
+  }
 }
