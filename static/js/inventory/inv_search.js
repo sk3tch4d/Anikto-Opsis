@@ -1,13 +1,13 @@
 // ==============================
-// OPT_SEARCH.JS
-// Optimization Search Logic
+// INV_SEARCH.JS
+// Inventory Search Logic
 // ==============================
 
-import { populateOptimizationStats } from "./opt_stats.js";
-import { renderOptimizationResults } from "./opt_results.js";
-import { addOptimizationSearchToHistory } from "./opt_history.js";
+import { populateInventoryStats } from "./inv_stats.js";
+import { renderInventoryResults } from "./inv_results.js";
+import { addSearchToHistory } from "./inv_history.js";
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
-import { scrollPanel } from "../panels.js";
+import { scrollPanel } from '../panels.js';
 
 // ==============================
 // DEBUGGING
@@ -27,27 +27,27 @@ const MAX_CACHE_SIZE = 20;
 // ==============================
 // URL BUILDER
 // ==============================
-function buildSearchUrl({ term, cart, sort, dir }) {
+function buildSearchUrl({ term, usl, sort, dir }) {
   const params = new URLSearchParams({
     term: term.trim().toLowerCase(),
-    cart,
+    usl,
     sort,
     dir
   });
-  return `/optimization-search?${params}`;
+  return `/inventory-search?${params}`;
 }
 
 // ==============================
 // ELEMENTS
 // ==============================
 const elements = {
-  stats: document.getElementById("optimization-stats")
+  stats: document.getElementById("inventory-stats")
 };
 
 // ==============================
 // BOUNCE LOADER
 // ==============================
-const bounceLoader = createBounceLoader(document.querySelector("#optimization-search-panel .panel-body"));
+const bounceLoader = createBounceLoader(document.querySelector("#inventory-search-panel .panel-body"));
 
 // ==============================
 // FETCH ABORT CONTROLLER
@@ -57,7 +57,7 @@ let currentFetchController = null;
 // ==============================
 // SCROLL RESTORE
 // ==============================
-function restoreScrollPosition(key = "optimizationScrollTop", delay = SCROLL_RESTORE_DELAY) {
+function restoreScrollPosition(key = "inventoryScrollTop", delay = SCROLL_RESTORE_DELAY) {
   const savedScroll = localStorage.getItem(key);
   if (savedScroll) {
     setTimeout(() => {
@@ -65,6 +65,7 @@ function restoreScrollPosition(key = "optimizationScrollTop", delay = SCROLL_RES
         top: parseInt(savedScroll),
         behavior: "smooth"
       });
+
       DEBUG_MODE && console.log(`[DEBUG] Restored scroll position: ${savedScroll}px`);
     }, delay);
   }
@@ -99,8 +100,8 @@ async function fetchWithRetry(url, options = {}, retries = FETCH_RETRIES, delay 
 // ==============================
 const searchCache = new Map();
 
-function generateSearchKey({ term, cart, sort, dir }) {
-  return `${term}|${cart}|${sort}|${dir}`;
+function generateSearchKey({ term, usl, sort, dir }) {
+  return `${term}|${usl}|${sort}|${dir}`;
 }
 
 function updateSearchCache(key, data) {
@@ -123,21 +124,14 @@ function debounce(fn, wait) {
 }
 
 // ==============================
-// MAIN SEARCH FUNCTION
+// SEARCH LOGIC
 // ==============================
-export const doOptimizationSearch = debounce(function ({
-  searchInput,
-  cartFilter,
-  sortBy,
-  sortDirButton,
-  resultsList,
-  noResults,
-  sortDirection
-}) {
+export const doInventorySearch = debounce(function({ searchInput, uslFilter, sortBy, sortDirButton, resultsList, noResults, sortDirection }) {
   const term = searchInput.value.trim().toLowerCase();
-  const cart = cartFilter.value;
-  const sort = sortBy?.value || "rop";
+  const usl = uslFilter.value;
+  const sort = sortBy.value;
 
+  // Validate search term
   if (!term) {
     resultsList.innerHTML = "";
     elements.stats.innerHTML = "";
@@ -146,7 +140,7 @@ export const doOptimizationSearch = debounce(function ({
     return;
   }
 
-  const key = generateSearchKey({ term, cart, sort, dir: sortDirection });
+  const key = generateSearchKey({ term, usl, sort, dir: sortDirection });
 
   withLoadingToggle(
     {
@@ -156,18 +150,22 @@ export const doOptimizationSearch = debounce(function ({
     () => {
       noResults.style.display = "none";
 
-      if (currentFetchController) currentFetchController.abort();
+      // Cancel any previous fetch
+      if (currentFetchController) {
+        currentFetchController.abort();
+      }
       currentFetchController = new AbortController();
 
+      // Use cache if available
       if (searchCache.has(key)) {
         const cached = searchCache.get(key);
-        renderOptimizationResults(cached, term, resultsList);
-        populateOptimizationStats(cached);
-        addOptimizationSearchToHistory(searchInput.value.trim(), cart, cached);
+        renderInventoryResults(cached, term, resultsList);
+        populateInventoryStats(cached);
+        addSearchToHistory(searchInput.value.trim(), uslFilter.value, cached);
         return;
       }
 
-      return fetchWithRetry(buildSearchUrl({ term, cart, sort, dir: sortDirection }), {}, FETCH_RETRIES, FETCH_RETRY_DELAY, currentFetchController)
+      return fetchWithRetry(buildSearchUrl({ term, usl, sort, dir: sortDirection }), {}, FETCH_RETRIES, FETCH_RETRY_DELAY, currentFetchController)
         .then(res => res.json())
         .then(data => {
           if (!data || !data.length) {
@@ -178,10 +176,10 @@ export const doOptimizationSearch = debounce(function ({
             return;
           }
 
-          populateOptimizationStats(data);
-          renderOptimizationResults(data, term, resultsList);
-          window.optimizationSearchResults = data;
-          addOptimizationSearchToHistory(searchInput.value.trim(), cart, data);
+          populateInventoryStats(data);
+          renderInventoryResults(data, term, resultsList);
+          window.inventorySearchResults = data;
+          addSearchToHistory(searchInput.value.trim(), uslFilter.value, data);
           updateSearchCache(key, data);
         })
         .catch(err => {
@@ -201,5 +199,7 @@ export const doOptimizationSearch = debounce(function ({
     }
   );
 
-  scrollPanel(document.querySelector("#optimization-search-panel .panel-header"));
+  // Adjust Search Window
+  const header = document.querySelector('#inventory-search-panel .panel-header');
+  scrollPanel(header);
 }, DEBOUNCE_DELAY);
