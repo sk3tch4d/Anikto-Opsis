@@ -59,6 +59,7 @@ button:disabled {
   user-select: none;
 }
 
+
 /* ============================= */
 /* BUTTON: PANEL                 */
 /* ============================= */
@@ -71,25 +72,37 @@ button:disabled {
   user-select: none;
   background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
   background-size: 160%;
-  border-radius: 22px;
+  border-radius: 20px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
   transform: translateY(-2px);
   color: #060614;
   transition: 
     background-image 1s ease,
     background-size 1s ease,
-    background-position 0.6s ease,
-    font-size 1s ease,
-    color 0.4s ease,
-    border-radius 0.4s ease;
+    background-position 0.8s ease,
+    font-size 1.2s ease,
+    color 0.6s ease,
+    border-radius 0.8s ease;
 }
+
+/* ============================= */
+/* BUTTON: PANEL HOVER           */
+/* ============================= */
 .button.panel:hover {
   background-image: linear-gradient(165deg, #6165d1, #9779d2);
   background-size: 180%;
   color: #0c0c27;
-  font-size: 0.97rem;
-  border: 1px solid #000;
+  font-size: 0.965rem;
+  border: 1.2px solid #25174f;
+  border-radius: 24px;
+  box-shadow: 0 0 4.4px rgba(0, 0, 0, 0.8);
 }
 
+button:focus {
+  outline: none;
+  user-select: none;
+  box-shadow: 0 0 0 2px #7289da; /* soft colored border */
+}
 
 /* ============================= */
 /* LABEL BUTTON                  */
