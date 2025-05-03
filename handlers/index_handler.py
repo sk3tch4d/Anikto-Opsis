@@ -65,41 +65,58 @@ def process_index_upload():
     # ==============================
     if len(xlsx_files) == 1:
         file = xlsx_files[0]
+        fname_lower = file.filename.lower()
+        fname_upper = file.filename.upper()
+        is_valid_usl_inventory = False
 
         # ==============================
         # 1. USL Inventory Match: e.g., KG01-INTA-*.xlsx
         # ==============================
-        if re.match(USL_OPT_REGEX, file.filename.upper()):
-            match = re.match(r"KG01-([A-Z]+)", file.filename.upper())
+        if re.match(USL_OPT_REGEX, fname_upper):
+            match = re.match(r"KG01-([A-Z]+)", fname_upper)
             if match:
                 usl_code = match.group(1)
+                try:
+                    with open("static/usl_list.json") as f:
+                        usl_list = json.load(f)
+                        valid_usls = {entry["usl"] for entry in usl_list}
+                    if usl_code in valid_usls:
+                        is_valid_usl_inventory = True
+                except Exception as e:
+                    app.logger.error(f"Error loading USL list: {e}")
 
-                with open("static/usl_list.json") as f:
-                    usl_list = json.load(f)
-                    valid_usls = {entry["usl"] for entry in usl_list}
+        if is_valid_usl_inventory:
+            save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
+            file.save(save_path)
 
-                if usl_code in valid_usls:
-                    save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
-                    file.save(save_path)
+            from inv_optimizer import suggest_rop_roq
+            df = load_inventory_data(path=save_path)
+            df = suggest_rop_roq(df)
+            config.INVENTORY_DF = df
 
-                    from inv_optimizer import suggest_rop_roq
-                    df = load_inventory_data(path=save_path)
-                    df = suggest_rop_roq(df)
-                    config.INVENTORY_DF = df
-
-                    return render_template("inventory.html", table=[])
+            return render_template("inventory.html", table=[])
 
         # ==============================
         # 2. Seniority Match
         # ==============================
-        elif re.search(SENIORITY_REGEX, file.filename.lower(), re.IGNORECASE):
+        elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
             save_path = os.path.join("/tmp", "seniority_uploaded.xlsx")
             file.save(save_path)
             seniority_df = load_seniority_file(save_path)
             return render_template("seniority.html", table=seniority_df.to_dict(orient="records"))
 
         # ==============================
-        # 3. Fallback: Clean unknown .xlsx
+        # 3. Catalog Match
+        # ==============================
+        elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
+            save_path = os.path.join("/tmp", "catalog_uploaded.xlsx")
+            file.save(save_path)
+            df = load_inventory_data(path=save_path)
+            config.INVENTORY_DF = df
+            return render_template("inventory.html", table=[])
+
+        # ==============================
+        # 4. Fallback: Clean unknown .xlsx
         # ==============================
         else:
             cleaned_path, cleaned_filename = clean_xlsx_and_save(file)
