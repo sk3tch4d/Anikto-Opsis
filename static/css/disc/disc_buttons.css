@@ -64,15 +64,15 @@ button:disabled {
 /* BUTTON: PANEL                 */
 /* ============================= */
 .button.panel {
-  padding: 0.85rem;
-  font-size: 0.95rem;
+  padding: 0.6rem;
+  font-size: 0.9rem;
   font-weight: bold;
   width: 100%;
   max-width: 500px;
   user-select: none;
-  background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
+  background-image: linear-gradient(135deg, #6165d1, #9779d2);
   background-size: 160%;
-  border-radius: 20px;
+  border-radius: 16px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
   transform: translateY(-2px);
   color: #060614;
@@ -89,13 +89,11 @@ button:disabled {
 /* BUTTON: PANEL HOVER           */
 /* ============================= */
 .button.panel:hover {
-  background-image: linear-gradient(165deg, #6165d1, #9779d2);
+  background-image: linear-gradient(165deg, #7578d7, #9779d2);
   background-size: 180%;
   color: #0c0c27;
-  font-size: 0.965rem;
-  border: 1.2px solid #25174f;
-  border-radius: 24px;
-  box-shadow: 0 0 4.4px rgba(0, 0, 0, 0.8);
+  font-size: 0.93rem;
+  border-radius: 18px;
 }
 
 /* ============================= */
