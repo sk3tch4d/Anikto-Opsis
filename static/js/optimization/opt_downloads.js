@@ -35,16 +35,20 @@ export function setupDownloads() {
   };
 
   downloadSearchBtn.addEventListener("click", () => {
-    download("optimization_search.csv", window.lastSearchResults || []);
+    const data = window.lastSearchResults || [];
+    if (!data.length) return alert("No search results to download.");
+    download("optimization_search.csv", data);
   });
 
   downloadHistoryBtn.addEventListener("click", () => {
-    const history = JSON.parse(localStorage.getItem("optimization-history") || "[]");
+    const history = JSON.parse(localStorage.getItem("optimization_search_history") || "[]");
+    if (!history.length) return alert("No search history.");
     download("optimization_history.csv", history);
   });
 
   downloadSavedBtn.addEventListener("click", () => {
-    const saved = JSON.parse(localStorage.getItem("optimization-saved") || "[]");
+    const saved = JSON.parse(localStorage.getItem("optimization_saved_items") || "[]");
+    if (!saved.length) return alert("No saved items.");
     download("optimization_saved.csv", saved);
   });
 }
