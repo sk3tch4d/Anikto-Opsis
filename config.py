@@ -2,12 +2,16 @@
 # CONFIG.PY — GLOBAL SETTINGS
 # ==============================
 
-# Shared global DataFrames
+# ==============================
+# GLOBAL DATAFRAMES
+# ==============================
 INVENTORY_DF = None
+INVENTORY_PATH = None
 OPTIMIZATION_DF = None
+OPTIMIZATION_PATH = None
 
 # ==============================
-# REGEX MATCHERS (Shared Patterns)
+# GLOBAL REGEX MATCHERS
 # ==============================
 CATALOG_REGEX = r"(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$"
 ARG_REGEX = r"(arg|flowsheet).*?\.(pdf)$"
@@ -16,7 +20,7 @@ USL_OPT_REGEX = r"^KG01-[A-Z0-9]{1,4}-.*\.xlsx$"
 VALID_EXTENSIONS = r"\.(pdf|xlsx|db)$"
 
 # ==============================
-# SETTINGS
+# GLOBAL SETTINGS
 # ==============================
 UPLOAD_FOLDER = "/tmp"
 MAX_PDFS = 30
