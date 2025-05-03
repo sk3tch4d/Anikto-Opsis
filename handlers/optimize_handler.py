@@ -44,27 +44,32 @@ def handle():
             return render_template("index.html", error=f"USL '{usl_code}' not recognized.")
 
         # ==============================
-        # Save file with datetime in filename
+        # Save uploaded file (raw)
         # ==============================
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        save_path = os.path.join("/tmp", f"optimization_{usl_code}_{timestamp}.xlsx")
-        file.save(save_path)
+        raw_path = os.path.join("/tmp", f"optimization_{usl_code}_{timestamp}_raw.xlsx")
+        file.save(raw_path)
 
         # ==============================
         # Load + Optimize
         # ==============================
-        df = load_inventory_data(path=save_path)
+        df = load_inventory_data(path=raw_path)
         df = suggest_rop_roq(df)
-        df.to_excel(save_path, index=False)
+
+        # ==============================
+        # Save optimized result to NEW file
+        # ==============================
+        opt_path = os.path.join("/tmp", f"optimization_{usl_code}_{timestamp}_optimized.xlsx")
+        df.to_excel(opt_path, index=False)
 
         # ==============================
         # Store in shared config + Render
         # ==============================
         import config
         config.OPTIMIZATION_DF = df
-        config.OPTIMIZATION_PATH = save_path
+        config.OPTIMIZATION_PATH = opt_path
 
-        return render_template("optimization.html", table=df.to_dict(orient="records"), download_file=os.path.basename(save_path))
+        return render_template("optimization.html", table=df.to_dict(orient="records"), download_file=os.path.basename(opt_path))
 
     except Exception as e:
         app.logger.error(f"Optimize handler failed: {e}")
