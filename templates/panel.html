@@ -20,8 +20,8 @@
         <div class="panel-header">Access Panel</div>
         <div class="panel-body open">
           <form id="admin-login-form">
-            <input type="password" id="adpw" class="input full-width" placeholder="••••••••" />
-            <button id="admin-login" class="button full-width" type="submit">Login</button>
+            <input type="password" id="adpw" class="input panel" placeholder="••••••••" />
+            <button id="admin-login" class="button panel" type="submit">Login</button>
           </form>  
           <p id="login-error" class="error-text" style="display: none;">Incorrect password. Try again.</p>
         </div>
@@ -36,8 +36,8 @@
           <div class="panel-body">
             <!-- Export Buttons -->
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <a href="/export/shifts.csv" class="button full-width">Export as CSV</a>
-              <a href="/export/shifts.json" class="button full-width">Export as JSON</a>
+              <a href="/export/shifts.csv" class="button panel">Export as CSV</a>
+              <a href="/export/shifts.json" class="button panel">Export as JSON</a>
             </div>
     
             <hr style="margin: 1rem 0; border: 0; border-top: 1px solid #444;" />
@@ -49,7 +49,7 @@
                   Choose JSON File
                   <input type="file" id="json-upload" accept=".json" required />
                 </label>
-                <button type="submit" class="button full-width">Import JSON</button>
+                <button type="submit" class="button panel">Import JSON</button>
               </div>
             </form>
     
@@ -88,7 +88,7 @@
         <!-- Back to Main -->
         <div class="panel panel-animate no-shadow">
           <form action="{{ url_for('index') }}" method="get" class="button-form">
-            <button type="submit" class="button full-width">Back to Main</button>
+            <button type="submit" class="button panel">Back to Main</button>
           </form>
         </div>
 
