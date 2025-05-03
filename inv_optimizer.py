@@ -1,5 +1,5 @@
 # ==============================
-# INV_OPTOMIZER.PY
+# INV_OPTIMIZER.PY
 # ==============================
 
 import pandas as pd
@@ -40,8 +40,8 @@ def suggest_rop_roq(df):
             roq_range_max = int(0.25 * rounded_rop)
             valid_roqs = [d for d in all_factors if roq_range_min <= d <= roq_range_max]
 
-            if rounded_rop <= 10:
-                valid_roqs = [1] + valid_roqs
+            if rounded_rop <= 10 and 1 not in valid_roqs:
+                valid_roqs.insert(0, 1)
 
             if pd.notna(prev_roq) and valid_roqs:
                 suggested_roq = min(valid_roqs, key=lambda x: abs(x - prev_roq))
@@ -51,7 +51,8 @@ def suggest_rop_roq(df):
                 suggested_roq = None
 
             return pd.Series([rounded_rop, suggested_roq])
-        except Exception:
+        except Exception as e:
+            print(f"Optimization error in row: {row.get('sku', 'N/A')} — {e}")
             return pd.Series([None, None])
 
     df[['site_sug_rop', 'site_sug_roq']] = df.apply(strategic_suggested_rop_roq, axis=1)
