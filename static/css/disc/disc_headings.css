@@ -12,7 +12,7 @@ h1 {
   font-weight: 600;
   margin-bottom: 1.5rem;
   text-align: center;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.1px;
 }
 
 /* ============================== */
@@ -20,7 +20,7 @@ h1 {
 /* ============================== */
 h2 {
   font-size: 1.6rem;
-  color: #ffffff;
+  color: #d0d0e1;
   text-align: center;
   margin-bottom: 0.75rem;
 }
@@ -29,7 +29,7 @@ h2 {
 /* HEADING 3                      */
 /* ============================== */
 h3 {
-  color: #ccc;
+  color: #c1c1d7;
   margin: 1.2rem 0 0.2rem;
   text-align: center;
 }
