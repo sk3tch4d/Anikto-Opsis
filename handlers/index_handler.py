@@ -26,6 +26,11 @@ def process_index_upload():
         fname_lower = fname.lower()
         fname_upper = fname.upper()
 
+        print(f"DEBUG: file = {file}")
+        print(f"DEBUG: fname = {fname}")
+        print(f"DEBUG: fname_lower = {fname_lower}")
+        print(f"DEBUG: fname_upper = {fname_upper}")
+        
         if fname.endswith(".pdf"):
             from report import process_report
             save_path = f"/tmp/{fname}"
@@ -33,7 +38,7 @@ def process_index_upload():
             output_files, stats = process_report([save_path])
             return render_template("arg.html", outputs=[fname], stats=stats)
 
-        if re.match(USL_OPT_REGEX, fname_upper):
+        if re.match(USL_OPT_REGEX, fname, re.IGNORECASE):
             return handle_optimize()
 
         if re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
@@ -43,9 +48,6 @@ def process_index_upload():
             return handle_inventory()
 
         return handle_cleaner()
-
-        print(f"DEBUG: fname = {fname}")
-        print(f"DEBUG: fname_upper = {fname_upper}")
 
     except Exception as e:
         return render_template("index.html", error=f"Unexpected error during routing: {str(e)}")
