@@ -117,7 +117,7 @@
       <div class="panel panel-animate no-shadow" id="downloads">
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
         <div class="panel-body">
-          <ul class="downloads">
+          <div class="downloads">
             <form action="/download/opt-search-results.csv" method="get">
               <button type="submit" class="button panel">Download Search</button>
             </form>
@@ -127,7 +127,7 @@
             <form action="{{ url_for('download', filename=download_file) }}" method="get">
               <button type="submit" class="button panel">Download Report</button>
             </form>
-          </ul>
+          </div>
         </div>
       </div>
 
