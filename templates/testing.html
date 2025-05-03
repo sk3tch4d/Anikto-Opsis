@@ -327,7 +327,7 @@
             <button type="button" class="button panel">Download Data</button>
             <button type="button" class="button panel">Download Reports</button>
             <button type="button" class="button panel">Download Heatmaps</button>
-            <button type="button" class="button panel">Download Files</button>
+            <button type="button" class="button panel" id="outline-toggle">Outline Toggle</button>
           </ul>
         </div>
       </div>
@@ -344,15 +344,41 @@
     </div>
   </div>
   <script>
-  function showSpinner() {
-    document.getElementById('loading-bounce').style.display = 'none';
-    document.getElementById('loading-spinner').style.display = 'block';
-  }
-  function showBounce() {
-    document.getElementById('loading-spinner').style.display = 'none';
-    document.getElementById('loading-bounce').style.display = 'block';
-  }
-</script>
+    function showSpinner() {
+      document.getElementById('loading-bounce').style.display = 'none';
+      document.getElementById('loading-spinner').style.display = 'block';
+    }
+  
+    function showBounce() {
+      document.getElementById('loading-spinner').style.display = 'none';
+      document.getElementById('loading-bounce').style.display = 'block';
+    }
+  
+    const toggleBtn = document.getElementById('outline-toggle');
+    let debugStylesheet;
+  
+    // Restore state from localStorage if present
+    if (localStorage.getItem('debug-outline') === 'on') {
+      debugStylesheet = document.createElement('style');
+      debugStylesheet.id = 'debug-outline-style';
+      debugStylesheet.textContent = `* { outline: 1px solid red !important; }`;
+      document.head.appendChild(debugStylesheet);
+    }
+  
+    toggleBtn.addEventListener('click', () => {
+      if (!debugStylesheet) {
+        debugStylesheet = document.createElement('style');
+        debugStylesheet.id = 'debug-outline-style';
+        debugStylesheet.textContent = `* { outline: 1px solid red !important; }`;
+        document.head.appendChild(debugStylesheet);
+        localStorage.setItem('debug-outline', 'on');
+      } else {
+        debugStylesheet.remove();
+        debugStylesheet = null;
+        localStorage.removeItem('debug-outline');
+      }
+    });
+  </script>
   <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=1) }}"></script>
 </body>
 </html>
