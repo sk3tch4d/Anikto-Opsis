@@ -51,9 +51,14 @@ def handle():
         file.save(raw_path)
 
         # ==============================
-        # Load + Optimize
+        # Load + Normalize Columns + Optimize
         # ==============================
         df = load_inventory_data(path=raw_path)
+
+        # Normalize headers: lower + replace spaces
+        df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
+
+        # Run optimization
         df = suggest_rop_roq(df)
 
         # ==============================
