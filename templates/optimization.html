@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Optimization Report</title>
+  <title>USL Optimization</title>
   <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
 </head>
 <body>
   <h1 id="typed-header">
-    <span id="typed-text" data-title="Optimization Report|Anikto Opsis"></span>
+    <span id="typed-text" data-title="USL Optimization|Anikto Opsis"></span>
   </h1>
   <div id="toast" class="toast"></div>
 
@@ -50,7 +50,7 @@
       </div>
 
       <!-- ============================= -->
-      <!-- PANEL: SEARCH RESULTS -->
+      <!-- PANEL: OPTIMIZATION STATS -->
       <!-- ============================= -->
       <div class="panel panel-animate" id="optimization-stats-panel">
         <div class="panel-header" onclick="togglePanel(this)">Full Results</div>
@@ -77,7 +77,7 @@
       <!-- ============================= -->
       <!-- PANEL: SAVED OPTIMIZATION -->
       <!-- ============================= -->
-      <div class="panel panel-animate" id="optimizationO-saved-panel">
+      <div class="panel panel-animate" id="optimization-saved-panel">
         <div class="panel-header" onclick="togglePanel(this)">Saved Items</div>
         <div class="panel-body scrollable-panel">
           <!--<ul id="optimization-saved-list" style="list-style: none; padding-left: 0;"></ul>-->
@@ -103,7 +103,7 @@
           <ul class="downloads">
             <a class="file-action" id="optimization-search-download">Download Search</a>
             <a class="file-action" id="optimization-history-download">Download Saved Items</a>
-            <a class="file-action" id="optimization-report-download">Download History</a>
+            <a class="file-action" id="optimization-report-download">Download Report</a>
           </ul>
         </div>
       </div>
