@@ -122,7 +122,7 @@
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
         <div class="panel-body">
           {% if outputs %}
-            <ul class="downloads">
+            <div class="downloads">
               {% for file in outputs %}
                 {% if "ARGX" in file %}
                   <button class="button panel" href="{{ url_for('download', filename=file) }}"n">Spreadsheet</button>
@@ -132,7 +132,7 @@
                   <button class="button panel" href="{{ url_for('download', filename=file) }}">{{ file }}</button>
                 {% endif %}
               {% endfor %}
-            </ul>
+            </div>
           {% else %}
             <p>No output files were generated.</p>
           {% endif %}
