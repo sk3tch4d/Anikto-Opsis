@@ -125,11 +125,11 @@
             <ul class="downloads">
               {% for file in outputs %}
                 {% if "ARGX" in file %}
-                  <a href="{{ url_for('download', filename=file) }}" class="file-action">Spreadsheet</a>
+                  <button class="button panel" href="{{ url_for('download', filename=file) }}"n">Spreadsheet</button>
                 {% elif "ARGM" in file %}
-                  <a href="{{ url_for('download', filename=file) }}" class="file-action">Heatmap</a>
+                  <button class="button panel" href="{{ url_for('download', filename=file) }}"">Heatmap</button>
                 {% else %}
-                  <a href="{{ url_for('download', filename=file) }}" class="file-action">{{ file }}</a>
+                  <button class="button panel" href="{{ url_for('download', filename=file) }}">{{ file }}</button>
                 {% endif %}
               {% endfor %}
             </ul>
