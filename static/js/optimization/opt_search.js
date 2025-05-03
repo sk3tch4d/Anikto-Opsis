@@ -135,8 +135,9 @@ export const doOptimizationSearch = debounce(function ({
   sortDirection
 }) {
   const term = searchInput.value.trim().toLowerCase();
-  const cart = cartFilter.value;
-  const sort = sortBy?.value || "rop";
+  const cartRaw = cartFilter.value;
+  const cart = cartRaw === "All" ? "All" : cartRaw.replace("Cart ", ""); // ✅ normalize Cart X to X
+  const sort = sortBy?.value || "rop"; // ✅ safe fallback
 
   if (!term) {
     resultsList.innerHTML = "";
