@@ -5,6 +5,7 @@
 import os
 import re
 import json
+from datetime import datetime
 from flask import request, render_template, current_app as app
 from inventory import load_inventory_data
 from inv_optimizer import suggest_rop_roq
@@ -15,22 +16,22 @@ from inv_optimizer import suggest_rop_roq
 def handle():
     try:
         # ==============================
-        # Grab the uploaded file
+        # Get uploaded file
         # ==============================
         file = request.files.getlist("uploads")[0]
         fname_upper = file.filename.upper()
 
         # ==============================
-        # Validate filename format
+        # Extract USL code from filename
         # ==============================
-        match = re.match(r"KG01-([A-Z]+)", fname_upper)
+        match = re.match(r"KG01-([A-Z0-9]{1,4})", fname_upper)
         if not match:
             return render_template("index.html", error="Invalid USL filename format.")
 
         usl_code = match.group(1)
 
         # ==============================
-        # Check if USL is valid
+        # OPTIONAL: Validate USL code via static JSON (can skip)
         # ==============================
         try:
             with open("static/usl_list.json") as f:
@@ -39,29 +40,29 @@ def handle():
         except Exception as e:
             app.logger.error(f"Failed to load USL list: {e}")
             return render_template("index.html", error="Could not load USL list.")
-
         if usl_code not in valid_usls:
             return render_template("index.html", error=f"USL '{usl_code}' not recognized.")
 
         # ==============================
-        # Save the file
+        # Save file with datetime in filename
         # ==============================
-        save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        save_path = os.path.join("/tmp", f"optimization_{usl_code}_{timestamp}.xlsx")
         file.save(save_path)
 
         # ==============================
-        # Load and optimize
+        # Load + Optimize
         # ==============================
         df = load_inventory_data(path=save_path)
         df = suggest_rop_roq(df)
 
         # ==============================
-        # Store globally and render
+        # Store in shared config + Render
         # ==============================
         import config
-        config.INVENTORY_DF = df
+        config.OPTIMIZATION_DF = df
 
-        return render_template("inventory.html", table=[])
+        return render_template("optimization_result.html", table=df.to_dict(orient="records"))
 
     except Exception as e:
         app.logger.error(f"Optimize handler failed: {e}")
