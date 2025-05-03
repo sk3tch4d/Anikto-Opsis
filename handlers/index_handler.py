@@ -1,4 +1,3 @@
-
 # ==============================
 # INDEX HANDLER: UPLOAD & ROUTE
 # ==============================
@@ -66,18 +65,17 @@ def process_index_upload():
     if len(xlsx_files) == 1:
         fname_lower = xlsx_files[0].filename.lower()
 
-        # 1. Check for Inventory by USL in filename
+        # ==============================
+        # Match USL from filename (e.g., KG01-INTA)
+        # ==============================
         match = re.match(r"KG01-([A-Z]+)", fname_lower.upper())
-                    # ==============================
-            # Match USL from filename (e.g., KG01-INTA)
-            # ==============================
-            if match:
+        if match:
             usl_code = match.group(1)
 
-                            # ==============================
-                # Load and validate against USL list
-                # ==============================
-                with open("static/usl_list.json") as f:
+            # ==============================
+            # Load and validate against USL list
+            # ==============================
+            with open("static/usl_list.json") as f:
                 usl_list = json.load(f)
                 valid_usls = {entry["usl"] for entry in usl_list}
 
@@ -92,8 +90,7 @@ def process_index_upload():
 
                 return render_template("inventory.html", table=[])
 
-        # 2. Check for Seniority
-                # ==============================
+        # ==============================
         # Check for Seniority Upload
         # ==============================
         elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
@@ -102,8 +99,7 @@ def process_index_upload():
             seniority_df = load_seniority_file(save_path)
             return render_template("seniority.html", table=seniority_df.to_dict(orient="records"))
 
-        # 3. Otherwise → Clean it
-                # ==============================
+        # ==============================
         # Fallback to basic cleaning if not inventory/seniority
         # ==============================
         else:
@@ -128,7 +124,6 @@ def process_index_upload():
             file.seek(0, os.SEEK_END)
             size = file.tell()
             file.seek(0)
-
             fallback_sizes[file] = size
 
             if any(keyword in fname_lower for keyword in ["cat", "inv", "catalog", "inventory"]):
