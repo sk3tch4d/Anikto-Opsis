@@ -61,8 +61,9 @@ def handle():
         # ==============================
         import config
         config.OPTIMIZATION_DF = df
+        config.OPTIMIZATION_PATH = save_path
 
-        return render_template("optimization.html", table=df.to_dict(orient="records"))
+        return render_template("optimization.html", table=df.to_dict(orient="records"), download_file=os.path.basename(save_path))
 
     except Exception as e:
         app.logger.error(f"Optimize handler failed: {e}")
