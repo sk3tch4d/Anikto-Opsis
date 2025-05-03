@@ -76,6 +76,7 @@ select.input.full-width:hover {
   border-color: #5d5df8;
   font-size: 1.1rem;
 }
+
 /* ============================= */
 /* INPUT: SORT BUTTON            */
 /* ============================= */
@@ -83,22 +84,28 @@ select.input.full-width:hover {
   width: 2.6rem;
   text-align: center;
   padding: 0.5rem 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
-  background: linear-gradient(-30deg, #232529, #2b2b3b, #232529);
+  color: #bbb;
+  background: linear-gradient(-30deg, #15151e, #292b3d, #1f202e, #292b3d, #1f202e);
   background-size: 600% 600%;
   animation: gradientShift 20s ease infinite;
-  border: 1px solid #7289da;
+  border: 2px solid #6666cc;
   border-radius: 22px;
   box-shadow: inset 0 0 0 1px #1f1f1f;
-  color: #aaa;
-  cursor: pointer;
-  user-select: none;
-  transition: border 0.2s ease-in-out;
+  outline: none;
+  text-align: center;
+  box-sizing: border-box;
+  transition: border 0.2s ease-in-out, font-size 0.4s ease;
+  appearance: none;
 }
 .input.sort-button:focus {
-  outline: none;
-  border-color: #5c7aff;
+  border-color: #5d5df8;
+  font-size: 1.1rem;
+}
+.input.sort-button:hover {
+  border-color: #5d5df8;
+  font-size: 1.1rem;
 }
 
 /* ============================= */
