@@ -3,27 +3,32 @@
 # ==============================
 
 import os
-from flask import render_template, current_app as app
+from flask import request, render_template, current_app as app
 from inventory import load_inventory_data
 
 # ==============================
-# HANDLE STANDARD INVENTORY CATALOG FILE
+# HANDLE CATALOG/COST CENTER INVENTORY FILE
 # ==============================
-def handle(file):
+def handle():
     try:
         # ==============================
-        # Save file to temp path
+        # Get uploaded file
+        # ==============================
+        file = request.files.getlist("uploads")[0]
+
+        # ==============================
+        # Save to temp path
         # ==============================
         save_path = os.path.join("/tmp", "catalog_uploaded.xlsx")
         file.save(save_path)
 
         # ==============================
-        # Load inventory dataframe
+        # Load inventory data
         # ==============================
         df = load_inventory_data(path=save_path)
 
         # ==============================
-        # Store globally and render inventory view
+        # Store in global config and render
         # ==============================
         import config
         config.INVENTORY_DF = df
@@ -31,5 +36,5 @@ def handle(file):
         return render_template("inventory.html", table=[])
 
     except Exception as e:
-        app.logger.error(f"Inventory catalog handler failed: {e}")
-        return render_template("index.html", error="Failed to process inventory catalog file.")
+        app.logger.error(f"Inventory handler failed: {e}")
+        return render_template("index.html", error="Failed to process inventory file.")
