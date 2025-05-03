@@ -1,5 +1,5 @@
 # ==============================
-# CLEANER_HANDLER.PY — XLSX DEFAULT CLEANER FLOW
+# CLEANER_HANDLER.PY — DEFAULT CLEANER FLOW
 # ==============================
 
 import os
@@ -7,7 +7,7 @@ from flask import render_template, current_app as app
 from inv_cleaner import clean_xlsx_and_save
 
 # ==============================
-# PROCESS UNKNOWN XLSX FILE (CLEAN IT)
+# HANDLE UNKNOWN XLSX FILE (CLEAN IT)
 # ==============================
 def handle(file):
     try:
