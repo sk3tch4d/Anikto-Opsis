@@ -5,28 +5,30 @@
 import os
 import re
 import config
-import tempfile
-from config import UPLOAD_FOLDER
+from datetime import datetime
 from flask import (
     request,
     render_template,
     jsonify,
     send_file,
 )
+from config import UPLOAD_FOLDER
 from dataman import (
     export_shifts_csv,
     export_shifts_json,
     import_shifts_from_json,
     import_shifts_from_csv,
 )
-from inv_cleaner import clean_xlsx
+from inv_cleaner import clean_xlsx_and_save
 from report import get_working_on_date, get_shifts_for_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
 from inventory import load_inventory_data, get_inventory_usls, search_inventory
-from datetime import datetime
 from handlers.index_handler import process_index_upload
 
+# ==============================
+# Ensure upload folder exists
+# ==============================
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # ==============================
@@ -40,7 +42,7 @@ def register_routes(app):
         return f"{parts[1]} {parts[0]}" if len(parts) == 2 else value
 
     # ==============================
-    # INVENTORY API
+    # INVENTORY API ROUTES
     # ==============================
     @app.route("/inventory-usls")
     def inventory_usls():
@@ -83,7 +85,7 @@ def register_routes(app):
             return jsonify({"error": str(e)}), 500
 
     # ==============================
-    # GET/POST INDEX FILE HANDLING
+    # INDEX PAGE HANDLING
     # ==============================
     @app.route("/", methods=["GET"])
     def index():
@@ -94,7 +96,7 @@ def register_routes(app):
         return process_index_upload()
 
     # ==============================
-    # Export Routes
+    # SHIFT DATA EXPORT/IMPORT
     # ==============================
     @app.route("/export/shifts.csv")
     def handle_export_csv():
@@ -113,19 +115,19 @@ def register_routes(app):
         return import_shifts_from_csv()
 
     # ==============================
-    # Working Date API
+    # ARG WORKING DATE ENDPOINT
     # ==============================
     @app.route("/api/working_on_date")
     def working_on_date():
         date_str = request.args.get("date")
         if not date_str:
             return jsonify({"error": "Missing date parameter"}), 400
-    
+
         result, status = get_shifts_for_date(date_str)
         return jsonify(result), status
 
     # ==============================
-    # Download Route (merged and logs)
+    # GENERIC DOWNLOAD ROUTE
     # ==============================
     @app.route("/download/<filename>")
     def download(filename):
@@ -136,7 +138,7 @@ def register_routes(app):
             return "File not found", 404
 
     # ==============================
-    # Panel Routes
+    # UI PANEL ROUTES
     # ==============================
     @app.route("/1902")
     def panel():
@@ -151,7 +153,7 @@ def register_routes(app):
         return render_template("testing.html", table=[])
 
     # ==============================
-    # DB Check
+    # DATABASE TEST ROUTE
     # ==============================
     @app.route("/dbcheck")
     def dbcheck():
