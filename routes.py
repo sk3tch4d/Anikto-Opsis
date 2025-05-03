@@ -70,7 +70,7 @@ def register_routes(app):
         cart = request.args.get("cart", "All")
         sort = request.args.get("sort", "site_suggested_rop")
         direction = request.args.get("dir", "desc")
-        results = search_optimization_data(config.OPTIMIZATION_DF, term, cart, sort, direction)
+        results = search_optimization(config.OPTIMIZATION_DF, term, cart, sort, direction)
         return jsonify(results)
 
     @app.route("/clean-inventory-xlsx", methods=["POST"])
