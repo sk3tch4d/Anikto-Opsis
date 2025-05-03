@@ -3,6 +3,7 @@
 // ==============================
 
 import { setupParseStats, highlightMatch } from "../search-utils.js";
+import { scrollPanel } from "../panels.js";
 
 // ==============================
 // DEBUG TOGGLE
@@ -110,4 +111,8 @@ export function setupStats() {
   }
 
   setupParseStats();
+
+  // ✅ Scroll to top of panel like inventory does
+  const header = document.querySelector('#optimization-search-panel .panel-header');
+  if (header) scrollPanel(header);
 }
