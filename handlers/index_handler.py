@@ -24,29 +24,36 @@ def process_index_upload():
         file = uploaded_files[0]
         fname = file.filename
         fname_lower = fname.lower()
-        fname_upper = fname.upper()
 
         print(f"DEBUG: file = {file}")
         print(f"DEBUG: fname = {fname}")
         print(f"DEBUG: fname_lower = {fname_lower}")
-        print(f"DEBUG: fname_upper = {fname_upper}")
-        
-        if fname.endswith(".pdf"):
+
+        # PDF: Flowsheet / ARG
+        if fname_lower.endswith(".pdf"):
             from report import process_report
             save_path = f"/tmp/{fname}"
             file.save(save_path)
             output_files, stats = process_report([save_path])
             return render_template("arg.html", outputs=[fname], stats=stats)
 
+        # USL Optimizer: KG01-XXXX-*.xlsx
         if re.match(USL_OPT_REGEX, fname, re.IGNORECASE):
+            print("DEBUG: Routed to optimize handler")
             return handle_optimize()
 
+        # Seniority List
         if re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
+            print("DEBUG: Routed to seniority handler")
             return handle_seniority()
 
+        # Inventory Catalog
         if re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
+            print("DEBUG: Routed to inventory handler")
             return handle_inventory()
 
+        # Fallback Cleaner
+        print("DEBUG: Routed to cleaner handler")
         return handle_cleaner()
 
     except Exception as e:
