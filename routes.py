@@ -24,7 +24,7 @@ from report import get_working_on_date, get_shifts_for_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
 from inventory import load_inventory_data, get_inventory_usls, search_inventory
-from optimization import search_optimization_data  # ✅ make sure this exists
+from optimization import search_optimization
 from handlers.index_handler import process_index_upload
 
 # ==============================
