@@ -24,6 +24,7 @@ from report import get_working_on_date, get_shifts_for_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
 from inventory import load_inventory_data, get_inventory_usls, search_inventory
+from optimization import search_optimization_data  # ✅ make sure this exists
 from handlers.index_handler import process_index_upload
 
 # ==============================
@@ -60,6 +61,18 @@ def register_routes(app):
         results = search_inventory(config.INVENTORY_DF, term, usl, sort, direction)
         return jsonify(results)
 
+    # ==============================
+    # OPTIMIZATION API ROUTES
+    # ==============================
+    @app.route("/optimization-search")
+    def optimization_search():
+        term = request.args.get("term", "")
+        cart = request.args.get("cart", "All")
+        sort = request.args.get("sort", "site_suggested_rop")
+        direction = request.args.get("dir", "desc")
+        results = search_optimization_data(config.OPTIMIZATION_DF, term, cart, sort, direction)
+        return jsonify(results)
+
     @app.route("/clean-inventory-xlsx", methods=["POST"])
     def clean_inventory_xlsx():
         file = request.files.get('file')
@@ -84,9 +97,6 @@ def register_routes(app):
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
-    # ==============================
-    # INDEX PAGE HANDLING
-    # ==============================
     @app.route("/", methods=["GET"])
     def index():
         return render_template("index.html")
@@ -95,9 +105,6 @@ def register_routes(app):
     def post_index():
         return process_index_upload()
 
-    # ==============================
-    # SHIFT DATA EXPORT/IMPORT
-    # ==============================
     @app.route("/export/shifts.csv")
     def handle_export_csv():
         return export_shifts_csv()
@@ -114,9 +121,6 @@ def register_routes(app):
     def handle_import_csv():
         return import_shifts_from_csv()
 
-    # ==============================
-    # ARG WORKING DATE ENDPOINT
-    # ==============================
     @app.route("/api/working_on_date")
     def working_on_date():
         date_str = request.args.get("date")
@@ -126,9 +130,6 @@ def register_routes(app):
         result, status = get_shifts_for_date(date_str)
         return jsonify(result), status
 
-    # ==============================
-    # GENERIC DOWNLOAD ROUTE
-    # ==============================
     @app.route("/download/<filename>")
     def download(filename):
         file_path = os.path.join("/tmp", filename)
@@ -137,9 +138,6 @@ def register_routes(app):
         else:
             return "File not found", 404
 
-    # ==============================
-    # DOWNLOAD OPTIMIZED FILE ROUTE
-    # ==============================
     @app.route("/download/optimized")
     def download_optimized():
         path = config.OPTIMIZATION_PATH
@@ -147,9 +145,6 @@ def register_routes(app):
             return send_file(path, as_attachment=True, download_name=os.path.basename(path))
         return "Optimized file not available.", 404
 
-    # ==============================
-    # UI PANEL ROUTES
-    # ==============================
     @app.route("/1902")
     def panel():
         return render_template("panel.html")
@@ -162,9 +157,6 @@ def register_routes(app):
     def testing():
         return render_template("testing.html", table=[])
 
-    # ==============================
-    # DATABASE TEST ROUTE
-    # ==============================
     @app.route("/dbcheck")
     def dbcheck():
         try:
