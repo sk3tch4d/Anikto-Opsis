@@ -97,13 +97,19 @@
       <!-- ============================= -->
       <!-- PANEL: DOWNLOADS -->
       <!-- ============================= -->
-      <div class="panel panel-animate" id="downloads">
+      <div class="panel panel-animate no-shadow" id="downloads">
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
         <div class="panel-body">
           <ul class="downloads">
-            <a class="file-action" id="optimization-search-download">Download Search</a>
-            <a class="file-action" id="optimization-history-download">Download Saved Items</a>
-           <button class="button panel" id="optimization-report-download" href="{{ url_for('download_optimized') }}" download>Download Report</button>
+            <form action="/download/opt-search-results.csv" method="get">
+              <button type="submit" class="button panel">Download Search</button>
+            </form>
+            <form action="/download/opt-saved-items.csv" method="get">
+              <button type="submit" class="button panel">Download Saved Items</button>
+            </form>
+            <form action="{{ url_for('download', filename=download_file) }}" method="get">
+              <button type="submit" class="button panel">Download Report</button>
+            </form>
           </ul>
         </div>
       </div>
