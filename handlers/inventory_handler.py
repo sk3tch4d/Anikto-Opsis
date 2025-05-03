@@ -1,5 +1,5 @@
 # ==============================
-# INVENTORY_HANDLER.PY — CATALOG/COST CENTER INVENTORY
+# INVENTORY_HANDLER.PY — CATALOG INVENTORY FLOW
 # ==============================
 
 import os
@@ -7,23 +7,23 @@ from flask import render_template, current_app as app
 from inventory import load_inventory_data
 
 # ==============================
-# PROCESS STANDARD INVENTORY FILE
+# HANDLE STANDARD INVENTORY CATALOG FILE
 # ==============================
 def handle(file):
     try:
         # ==============================
-        # Save uploaded file to /tmp
+        # Save file to temp path
         # ==============================
         save_path = os.path.join("/tmp", "catalog_uploaded.xlsx")
         file.save(save_path)
 
         # ==============================
-        # Load standard inventory data
+        # Load inventory dataframe
         # ==============================
         df = load_inventory_data(path=save_path)
 
         # ==============================
-        # Store for global reference
+        # Store globally and render inventory view
         # ==============================
         import config
         config.INVENTORY_DF = df
