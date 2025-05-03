@@ -4,7 +4,7 @@
 
 export function setupSavedItems() {
   const SAVED_KEY = "optimization_saved_items";
-  const container = document.getElementById("optimization-saved-panel .panel-body");
+  const container = document.querySelector("#optimization-saved-panel .panel-body");  // ✅ fixed selector
   const savedItems = new Map();
 
   // ==============================
