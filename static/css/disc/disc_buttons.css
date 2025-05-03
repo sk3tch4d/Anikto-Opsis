@@ -64,7 +64,8 @@ button:disabled {
 /* BUTTON: PANEL                 */
 /* ============================= */
 .button.panel {
-  padding: 0.6rem;
+  margin: 0.5rem 0;
+  padding: 0.65rem;
   font-size: 0.9rem;
   font-weight: bold;
   width: 100%;
