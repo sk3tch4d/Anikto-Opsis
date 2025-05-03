@@ -58,5 +58,5 @@ def suggest_rop_roq(df):
             print(f"Optimization error in row: {row.get('material', 'N/A')} — {e}")
             return pd.Series([None, None])
 
-    df[['site_sug_rop', 'site_sug_roq']] = df.apply(strategic_suggested_rop_roq, axis=1)
+    df[['site_suggested_rop', 'site_suggested_roq']] = df.apply(strategic_suggested_rop_roq, axis=1)
     return df
