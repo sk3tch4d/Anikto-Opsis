@@ -23,7 +23,7 @@ export function setupResults() {
       return;
     }
     document.getElementById("no-results").style.display = "none";
-
+  
     for (const row of data) {
       const el = document.createElement("li");
       el.className = "inv-card";
@@ -34,10 +34,18 @@ export function setupResults() {
         <div><strong>ROP:</strong> ${row.site_suggested_rop || "-"}</div>
         <div><strong>ROQ:</strong> ${row.site_suggested_roq || "-"}</div>
         <div><strong>Cost:</strong> ${row.ma_price || 0} / ${row.bun_of_measure || "EA"}</div>
+        <button class="button tiny save-btn">Save</button>
       `;
+  
+      // Save button logic
+      el.querySelector(".save-btn").addEventListener("click", () => {
+        window.dispatchEvent(new CustomEvent("optimization:save", { detail: row }));
+      });
+  
       container.appendChild(el);
     }
   };
+
 
   // Bind search event
   window.addEventListener("optimization:search", (e) => {
