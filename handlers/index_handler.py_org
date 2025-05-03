@@ -1,11 +1,9 @@
-
 # ==============================
 # INDEX HANDLER: UPLOAD & ROUTE
 # ==============================
 
 import os
 import re
-import json
 from datetime import datetime
 from flask import request, render_template, current_app as app
 import config
@@ -31,6 +29,9 @@ def process_index_upload():
 
     matched_type = None
 
+    # ==============================
+    # Classify Uploaded Files
+    # ==============================
     for file in uploaded_files:
         ext = os.path.splitext(file.filename)[1].lower()
         fname_lower = file.filename.lower()
@@ -42,6 +43,9 @@ def process_index_upload():
         else:
             other_files.append(file)
 
+    # ==============================
+    # Handle PDFs Normally
+    # ==============================
     if pdf_files and not xlsx_files:
         save_paths = []
         for file in pdf_files:
@@ -57,28 +61,18 @@ def process_index_upload():
             stats=stats
         )
 
+    # ==============================
+    # Handle XLSX Files
+    # ==============================
     if len(xlsx_files) == 1:
         fname_lower = xlsx_files[0].filename.lower()
 
-        # 1. Check for Inventory by USL in filename
-        match = re.match(r"KG01-([A-Z]+)", fname_lower.upper())
-        if match:
-            usl_code = match.group(1)
-
-            with open("static/usl_list.json") as f:
-                usl_list = json.load(f)
-                valid_usls = {entry["usl"] for entry in usl_list}
-
-            if usl_code in valid_usls:
-                save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
-                xlsx_files[0].save(save_path)
-
-                from inv_optimizer import suggest_rop_roq
-                df = load_inventory_data(path=save_path)
-                df = suggest_rop_roq(df)
-                config.INVENTORY_DF = df
-
-                return render_template("inventory.html", table=[])
+        # 1. Check for Inventory
+        if any(keyword in fname_lower for keyword in ["cat", "inv", "catalog", "inventory"]):
+            save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
+            xlsx_files[0].save(save_path)
+            config.INVENTORY_DF = load_inventory_data(path=save_path)
+            return render_template("inventory.html", table=[])
 
         # 2. Check for Seniority
         elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
@@ -98,6 +92,7 @@ def process_index_upload():
             )
 
     elif len(xlsx_files) >= 2:
+        # Multiple XLSX uploaded → Merge
         main_file = None
         main_candidates = []
         fallback_sizes = {}
@@ -144,4 +139,7 @@ def process_index_upload():
             log_download_link=log_download_link
         )
 
+    # ==============================
+    # No Valid Files Uploaded
+    # ==============================
     return render_template("index.html", error="No valid files selected or uploaded.")
