@@ -82,28 +82,26 @@ function createCard(item, term) {
 // ==============================
 // MAIN EXPORT
 // ==============================
-export function setupStats() {
+export function populateOptimizationStats(results) {
   const box = document.getElementById("optimization-stats");
-  if (!box || !window.optimizationData) return;
+  if (!box) return;
 
   const input = document.getElementById("optimization-search");
   const term = input?.value.trim().toLowerCase() || "";
-
-  const list = window.optimizationData;
 
   box.innerHTML = "";
 
   const summary = document.createElement("div");
   summary.className = "compare-card";
-  summary.innerHTML = `<div><span class="tag-label">Results:</span> ${list.length}</div>`;
+  summary.innerHTML = `<div><span class="tag-label">Results:</span> ${results.length}</div>`;
   box.appendChild(summary);
 
-  for (const row of list) {
+  for (const row of results) {
     const card = createCard(row, term);
     box.appendChild(card);
   }
 
-  if (!list.length) {
+  if (!results.length) {
     const empty = document.createElement("div");
     empty.className = "no-results";
     empty.textContent = "No matching results.";
@@ -111,8 +109,4 @@ export function setupStats() {
   }
 
   setupParseStats();
-
-  // ✅ Scroll to top of panel like inventory does
-  const header = document.querySelector('#optimization-search-panel .panel-header');
-  if (header) scrollPanel(header);
 }
