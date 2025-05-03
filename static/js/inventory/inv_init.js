@@ -7,7 +7,7 @@ import { doInventorySearch } from "./inv_search.js";
 import { populateInventoryStats } from "./inv_stats.js";
 import { setupInventoryDownloadSearch, setupInventoryDownloadHistory } from "./inv_downloads.js";
 import { highlightMatch } from '../search-utils.js';
-import { withLoadingToggle } from '../loading.js';
+import { withLoadingToggle, createBounceLoader } from '../loading.js';
 import { scrollPanel } from '../panels.js';
 
 // ==============================
@@ -26,6 +26,11 @@ export function initializeInventoryApp() {
   const resultsList = document.getElementById("inventory-results");
   const noResults = document.getElementById("no-results");
   let sortDirection = "desc";
+
+  // ==============================
+  // BOUNCE LOADER SETUP
+  // ==============================
+  const bounceEl = createBounceLoader(document.querySelector('#inventory-search-panel .panel-body'));
 
   // ==============================
   // FETCH USL FILTER OPTIONS
@@ -58,14 +63,19 @@ export function initializeInventoryApp() {
   // MAIN SEARCH FUNCTION
   // ==============================
   function doSearch() {
-    doInventorySearch({
-      searchInput,
-      uslFilter,
-      sortBy,
-      sortDirButton,
-      resultsList,
-      noResults,
-      sortDirection
+    withLoadingToggle({
+      show: [bounceEl],
+      hide: [resultsList, noResults]
+    }, () => {
+      return doInventorySearch({
+        searchInput,
+        uslFilter,
+        sortBy,
+        sortDirButton,
+        resultsList,
+        noResults,
+        sortDirection
+      });
     });
 
     // Adjust Search Window
@@ -91,7 +101,6 @@ export function initializeInventoryApp() {
   // ==============================
   window.addEventListener("beforeunload", () => {
     localStorage.setItem("inventoryScrollTop", window.scrollY);
-    // Adjust Search Window
     const header = document.querySelector('#inventory-search-panel .panel-header');
     scrollPanel(header);
   });
