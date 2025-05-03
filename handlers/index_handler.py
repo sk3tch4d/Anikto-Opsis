@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 from flask import request, render_template, current_app as app
 import config
-from config import UPLOAD_FOLDER, DEBUG_MODE, CATALOG_REGEX, SENIORITY_REGEX
+from config import UPLOAD_FOLDER, DEBUG_MODE, CATALOG_REGEX, SENIORITY_REGEX, USL_OPT_REGEX
 from inventory import load_inventory_data
 from seniority import load_seniority_file
 from report import process_report
@@ -33,6 +33,7 @@ def process_index_upload():
     for file in uploaded_files:
         ext = os.path.splitext(file.filename)[1].lower()
         fname_lower = file.filename.lower()
+        fname_upper = file.filename.upper()
 
         if ext == '.pdf':
             pdf_files.append(file)
@@ -63,47 +64,45 @@ def process_index_upload():
     # Handle Single XLSX Upload
     # ==============================
     if len(xlsx_files) == 1:
-        fname_lower = xlsx_files[0].filename.lower()
+        file = xlsx_files[0]
 
         # ==============================
-        # Match USL from filename (e.g., KG01-INTA)
+        # 1. USL Inventory Match: e.g., KG01-INTA-*.xlsx
         # ==============================
-        match = re.match(r"KG01-([A-Z]+)", fname_lower.upper())
-        if match:
-            usl_code = match.group(1)
+        if re.match(USL_OPT_REGEX, file.filename.upper()):
+            match = re.match(r"KG01-([A-Z]+)", file.filename.upper())
+            if match:
+                usl_code = match.group(1)
 
-            # ==============================
-            # Load and validate against USL list
-            # ==============================
-            with open("static/usl_list.json") as f:
-                usl_list = json.load(f)
-                valid_usls = {entry["usl"] for entry in usl_list}
+                with open("static/usl_list.json") as f:
+                    usl_list = json.load(f)
+                    valid_usls = {entry["usl"] for entry in usl_list}
 
-            if usl_code in valid_usls:
-                save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
-                xlsx_files[0].save(save_path)
+                if usl_code in valid_usls:
+                    save_path = os.path.join("/tmp", "uploaded_inventory.xlsx")
+                    file.save(save_path)
 
-                from inv_optimizer import suggest_rop_roq
-                df = load_inventory_data(path=save_path)
-                df = suggest_rop_roq(df)
-                config.INVENTORY_DF = df
+                    from inv_optimizer import suggest_rop_roq
+                    df = load_inventory_data(path=save_path)
+                    df = suggest_rop_roq(df)
+                    config.INVENTORY_DF = df
 
-                return render_template("inventory.html", table=[])
+                    return render_template("inventory.html", table=[])
 
         # ==============================
-        # Check for Seniority Upload
+        # 2. Seniority Match
         # ==============================
-        elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
+        elif re.search(SENIORITY_REGEX, file.filename.lower(), re.IGNORECASE):
             save_path = os.path.join("/tmp", "seniority_uploaded.xlsx")
-            xlsx_files[0].save(save_path)
+            file.save(save_path)
             seniority_df = load_seniority_file(save_path)
             return render_template("seniority.html", table=seniority_df.to_dict(orient="records"))
 
         # ==============================
-        # Fallback to basic cleaning if not inventory/seniority
+        # 3. Fallback: Clean unknown .xlsx
         # ==============================
         else:
-            cleaned_path, cleaned_filename = clean_xlsx_and_save(xlsx_files[0])
+            cleaned_path, cleaned_filename = clean_xlsx_and_save(file)
             download_link = f"/download/{cleaned_filename}"
             return render_template(
                 "index.html",
@@ -124,6 +123,7 @@ def process_index_upload():
             file.seek(0, os.SEEK_END)
             size = file.tell()
             file.seek(0)
+
             fallback_sizes[file] = size
 
             if any(keyword in fname_lower for keyword in ["cat", "inv", "catalog", "inventory"]):
