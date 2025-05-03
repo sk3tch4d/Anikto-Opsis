@@ -26,6 +26,8 @@ import { initAdminLogin, initJsonUploadForm, initFileUploadDisplay } from './adm
 import { initializeSeniorityApp } from './seniority/sen_init.js';
 // ----- Inventory -----
 import { initializeInventoryApp } from './inventory/inv_init.js';
+// ----- Optimization -----
+import { initializeOptimizationApp } from './optimization/opt_init.js';
 
 // ==============================
 // DOM-READY INITIALIZATION
@@ -33,40 +35,43 @@ import { initializeInventoryApp } from './inventory/inv_init.js';
 document.addEventListener("DOMContentLoaded", () => {
   // ----- Debug Toggle -----
   if (document.querySelector("#debug-toggle")) initDebugToggle();
-  
+
   // ----- Header -----
   if (document.querySelector("#typed-header")) initTypewriter();
-  
+
   // ----- Panels -----
   if (document.querySelector(".panel")) {
     window.togglePanel = togglePanel;
     collapseAllPanels({ excludeSelector: "#login-panel" });
   }
-  
+
   // ----- Sticky Bars -----
   if (document.querySelector(".sticky-bar")) initStickyBars();
-  
+
   // ----- Dropzone -----
   if (document.querySelector(".drop-zone")) {
     initDropzone();
     refreshDropUI();
     initUpTexts();
   }
-  
+
   // ----- Quotes -----
   if (document.querySelector("#quote")) initQuotes();
-  
+
   // ----- Schedule -----
   if (document.querySelector("#working-date")) initScheduleUI();
-  
+
   // ----- Admin -----
   if (document.querySelector("#adpw")) initAdminLogin();
   if (document.querySelector("#json-upload")) initJsonUploadForm();
   if (document.querySelector("#file-upload-group")) initFileUploadDisplay();
-  
+
   // ----- Seniority -----
   if (document.querySelector("#seniority-search")) initializeSeniorityApp();
-  
+
   // ----- Inventory -----
   if (document.querySelector("#inventory-search")) initializeInventoryApp();
+
+  // ----- Optimization -----
+  if (document.querySelector("#optimization-search")) initializeOptimizationApp();
 });
