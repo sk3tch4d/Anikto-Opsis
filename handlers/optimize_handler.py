@@ -55,6 +55,7 @@ def handle():
         # ==============================
         df = load_inventory_data(path=save_path)
         df = suggest_rop_roq(df)
+        df.to_excel(save_path, index=False)
 
         # ==============================
         # Store in shared config + Render
