@@ -1,58 +1,69 @@
 # ==============================
-# INV_OPTOMIZER.PY
+# OPTIMIZE_HANDLER.PY — USL OPTIMIZER FLOW
 # ==============================
 
-import pandas as pd
-import numpy as np
+import os
+import re
+import json
+from datetime import datetime
+from flask import request, render_template, current_app as app
+from inventory import load_inventory_data
+from inv_optimizer import suggest_rop_roq
 
 # ==============================
-# GENERATE SUGGESTED ROP ROQ
+# HANDLE REQUEST FOR USL OPTIMIZATION
 # ==============================
-def suggest_rop_roq(df):
-    def strategic_suggested_rop_roq(row):
+def handle():
+    try:
+        # ==============================
+        # Get uploaded file
+        # ==============================
+        file = request.files.getlist("uploads")[0]
+        fname_upper = file.filename.upper()
+
+        # ==============================
+        # Extract USL code from filename
+        # ==============================
+        match = re.match(r"KG01-([A-Z0-9]{1,4})", fname_upper)
+        if not match:
+            return render_template("index.html", error="Invalid USL filename format.")
+
+        usl_code = match.group(1)
+
+        # ==============================
+        # OPTIONAL: Validate USL code via static JSON (can skip)
+        # ==============================
         try:
-            # Convert to numeric
-            cart_q = pd.to_numeric(row.get('cart_q'), errors='coerce')
-            cart_a = pd.to_numeric(row.get('cart_a'), errors='coerce')
-            cost_q = pd.to_numeric(row.get('cost_q'), errors='coerce')
-            cost_a = pd.to_numeric(row.get('cost_a'), errors='coerce')
-            prev_rop = pd.to_numeric(row.get('rop'), errors='coerce')
-            prev_roq = pd.to_numeric(row.get('roq'), errors='coerce')
+            with open("static/usl_list.json") as f:
+                usl_list = json.load(f)
+            valid_usls = {entry["usl"] for entry in usl_list}
+        except Exception as e:
+            app.logger.error(f"Failed to load USL list: {e}")
+            return render_template("index.html", error="Could not load USL list.")
+        if usl_code not in valid_usls:
+            return render_template("index.html", error=f"USL '{usl_code}' not recognized.")
 
-            # Estimate daily usage
-            usage_quarterly = np.nanmax([cart_q, cost_q]) / 90 if pd.notna(cart_q) or pd.notna(cost_q) else 0
-            usage_annual = np.nanmax([cart_a, cost_a]) / 365 if pd.notna(cart_a) or pd.notna(cost_a) else 0
-            daily_usage = max(usage_quarterly, usage_annual)
+        # ==============================
+        # Save file with datetime in filename
+        # ==============================
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        save_path = os.path.join("/tmp", f"optimization_{usl_code}_{timestamp}.xlsx")
+        file.save(save_path)
 
-            # Calculate base ROP and adjust with historical
-            raw_rop = daily_usage * 3
-            adjusted_rop = max(raw_rop, prev_rop if pd.notna(prev_rop) else 0)
+        # ==============================
+        # Load + Optimize
+        # ==============================
+        df = load_inventory_data(path=save_path)
+        df = suggest_rop_roq(df)
 
-            # Round ROP to nearest 10 ending in 2
-            rounded_rop = int(np.ceil(adjusted_rop / 10.0) * 10)
-            while str(rounded_rop)[-1] != '2':
-                rounded_rop += 1
+        # ==============================
+        # Store in shared config + Render
+        # ==============================
+        import config
+        config.OPTIMIZATION_DF = df
 
-            # Determine ROQ candidates
-            base = rounded_rop - 2
-            all_factors = [d for d in range(2, base) if base % d == 0]
-            roq_range_min = max(2, int(0.05 * rounded_rop))
-            roq_range_max = int(0.25 * rounded_rop)
-            valid_roqs = [d for d in all_factors if roq_range_min <= d <= roq_range_max]
+        return render_template("optimization_result.html", table=df.to_dict(orient="records"))
 
-            if rounded_rop <= 10:
-                valid_roqs = [1] + valid_roqs
-
-            if pd.notna(prev_roq) and valid_roqs:
-                suggested_roq = min(valid_roqs, key=lambda x: abs(x - prev_roq))
-            elif valid_roqs:
-                suggested_roq = max(valid_roqs)
-            else:
-                suggested_roq = None
-
-            return pd.Series([rounded_rop, suggested_roq])
-        except Exception:
-            return pd.Series([None, None])
-
-    df[['site_sug_rop', 'site_sug_roq']] = df.apply(strategic_suggested_rop_roq, axis=1)
-    return df
+    except Exception as e:
+        app.logger.error(f"Optimize handler failed: {e}")
+        return render_template("index.html", error="Failed to optimize uploaded file.")
