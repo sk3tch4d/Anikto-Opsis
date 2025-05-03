@@ -1,5 +1,6 @@
 // ==============================
-// OPT_SEARCH.JS — Optimization Search Logic
+// OPT_SEARCH.JS
+// Optimization Search Logic
 // ==============================
 
 import { populateOptimizationStats } from "./opt_stats.js";
@@ -26,10 +27,10 @@ const MAX_CACHE_SIZE = 20;
 // ==============================
 // URL BUILDER
 // ==============================
-function buildSearchUrl({ term, usl, sort, dir }) {
+function buildSearchUrl({ term, cart, sort, dir }) {
   const params = new URLSearchParams({
     term: term.trim().toLowerCase(),
-    usl,
+    cart,
     sort,
     dir
   });
@@ -64,6 +65,7 @@ function restoreScrollPosition(key = "optimizationScrollTop", delay = SCROLL_RES
         top: parseInt(savedScroll),
         behavior: "smooth"
       });
+      DEBUG_MODE && console.log(`[DEBUG] Restored scroll position: ${savedScroll}px`);
     }, delay);
   }
 }
@@ -86,6 +88,7 @@ async function fetchWithRetry(url, options = {}, retries = FETCH_RETRIES, delay 
       return await fetchWithTimeout(url, options, FETCH_TIMEOUT, controller);
     } catch (err) {
       if (attempt === retries) throw err;
+      DEBUG_MODE && console.warn(`[DEBUG] Retry ${attempt + 1} failed. Retrying in ${delay}ms...`);
       await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
@@ -96,8 +99,8 @@ async function fetchWithRetry(url, options = {}, retries = FETCH_RETRIES, delay 
 // ==============================
 const searchCache = new Map();
 
-function generateSearchKey({ term, usl, sort, dir }) {
-  return `${term}|${usl}|${sort}|${dir}`;
+function generateSearchKey({ term, cart, sort, dir }) {
+  return `${term}|${cart}|${sort}|${dir}`;
 }
 
 function updateSearchCache(key, data) {
@@ -120,7 +123,7 @@ function debounce(fn, wait) {
 }
 
 // ==============================
-// SEARCH LOGIC
+// MAIN SEARCH FUNCTION
 // ==============================
 export const doOptimizationSearch = debounce(function ({
   searchInput,
@@ -132,8 +135,8 @@ export const doOptimizationSearch = debounce(function ({
   sortDirection
 }) {
   const term = searchInput.value.trim().toLowerCase();
-  const usl = cartFilter.value;
-  const sort = sortBy.value;
+  const cart = cartFilter.value;
+  const sort = sortBy?.value || "rop";
 
   if (!term) {
     resultsList.innerHTML = "";
@@ -143,7 +146,7 @@ export const doOptimizationSearch = debounce(function ({
     return;
   }
 
-  const key = generateSearchKey({ term, usl, sort, dir: sortDirection });
+  const key = generateSearchKey({ term, cart, sort, dir: sortDirection });
 
   withLoadingToggle(
     {
@@ -160,11 +163,11 @@ export const doOptimizationSearch = debounce(function ({
         const cached = searchCache.get(key);
         renderOptimizationResults(cached, term, resultsList);
         populateOptimizationStats(cached);
-        addOptimizationSearchToHistory(term, usl, cached);
+        addOptimizationSearchToHistory(searchInput.value.trim(), cart, cached);
         return;
       }
 
-      return fetchWithRetry(buildSearchUrl({ term, usl, sort, dir: sortDirection }), {}, FETCH_RETRIES, FETCH_RETRY_DELAY, currentFetchController)
+      return fetchWithRetry(buildSearchUrl({ term, cart, sort, dir: sortDirection }), {}, FETCH_RETRIES, FETCH_RETRY_DELAY, currentFetchController)
         .then(res => res.json())
         .then(data => {
           if (!data || !data.length) {
@@ -178,15 +181,19 @@ export const doOptimizationSearch = debounce(function ({
           populateOptimizationStats(data);
           renderOptimizationResults(data, term, resultsList);
           window.optimizationSearchResults = data;
-          addOptimizationSearchToHistory(term, usl, data);
+          addOptimizationSearchToHistory(searchInput.value.trim(), cart, data);
           updateSearchCache(key, data);
         })
         .catch(err => {
-          if (err.name === "AbortError") return;
+          if (err.name === "AbortError") {
+            DEBUG_MODE && console.warn("[DEBUG] Fetch aborted.");
+            return;
+          }
           resultsList.innerHTML = "";
           elements.stats.innerHTML = "";
           noResults.style.display = "block";
           noResults.innerText = "Error loading results. Please try again.";
+          DEBUG_MODE && console.error("[DEBUG] Fetch Error:", err);
         })
         .finally(() => {
           restoreScrollPosition();
@@ -194,5 +201,5 @@ export const doOptimizationSearch = debounce(function ({
     }
   );
 
-  scrollPanel(document.querySelector('#optimization-search-panel .panel-header'));
+  scrollPanel(document.querySelector("#optimization-search-panel .panel-header"));
 }, DEBOUNCE_DELAY);
