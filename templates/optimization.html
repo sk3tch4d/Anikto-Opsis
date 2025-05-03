@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Optimization Report</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
+</head>
+<body>
+  <h1 id="typed-header">
+    <span id="typed-text" data-title="Optimization Report|Anikto Opsis"></span>
+  </h1>
+  <div id="toast" class="toast"></div>
+
+  <div id="panel-wrapper">
+    <div id="panel-container">
+
+      <!-- ============================= -->
+      <!-- PANEL: OPTIMIZATION SEARCH   -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="optimization-search-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Optimization Search</div>
+        <div class="panel-body scrollable-panel">
+
+          <!-- STICKY: Search and Filter -->
+          <div class="sticky-bar">
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+              <select id="opsh-filter" class="input full-width" style="flex: 0 0 100px;">
+                <option value="All">All</option>
+              </select>
+              <input id="optimization-search" class="input full-width" placeholder="Search..." style="flex: 1;" />
+            </div>
+          </div>
+
+          <ul id="optimization-stats" style="list-style: none; padding-left: 0; line-height: 1.8; text-align: center;">
+            <!--JS-->
+          </ul>
+
+          <!-- Loading + Stats -->
+          <div id="loading">
+            <div class="loading bounce">
+              <div class="bounce-ball one"></div>
+              <div class="bounce-ball two"></div>
+              <div class="bounce-ball three"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: SEARCH RESULTS -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="optimization-stats-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Full Results</div>
+        <div class="panel-body scrollable-panel">
+
+          <!-- Results -->
+          <ul id="optimization-results" style="margin-top: 1rem;"></ul>
+          <p id="no-results" class="error-text" style="display: none; text-align: center; margin-top: 1rem;">
+            No results found.
+          </p>
+
+          <!-- Loading + Stats -->
+          <div id="loading-full">
+            <div class="loading bounce">
+              <div class="bounce-ball one"></div>
+              <div class="bounce-ball two"></div>
+              <div class="bounce-ball three"></div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: SAVED OPTIMIZATION -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="optimizationO-saved-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Saved Items</div>
+        <div class="panel-body scrollable-panel">
+          <!--<ul id="optimization-saved-list" style="list-style: none; padding-left: 0;"></ul>-->
+        </div>
+      </div>
+      
+      <!-- ============================= -->
+      <!-- PANEL: SEARCH HISTORY -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="search-history-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Search History</div>
+        <div class="panel-body scrollable-panel">
+          <ul id="search-history-list" style="list-style: none; padding-left: 0;"></ul>
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: DOWNLOADS -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="downloads">
+        <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
+        <div class="panel-body">
+          <ul class="downloads">
+            <a class="file-action" id="optimization-search-download">Download Search</a>
+            <a class="file-action" id="optimization-history-download">Download Saved Items</a>
+            <a class="file-action" id="optimization-history-download">Download History</a>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: RETURN -->
+      <!-- ============================= -->
+      <div class="panel panel-animate no-shadow">
+        <form action="{{ url_for('index') }}" method="get" class="button-form">
+          <button type="submit" class="button full-width">Process Another</button>
+        </form>
+      </div>
+
+    </div> <!-- END panel-container -->
+  </div> <!-- END panel-wrapper -->
+
+  <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
+</body>
+</html>
