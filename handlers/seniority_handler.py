@@ -7,7 +7,7 @@ from flask import render_template, current_app as app
 from seniority import load_seniority_file
 
 # ==============================
-# PROCESS CUPE SENIORITY FILE
+# HANDLE SENIORITY FILE (CUPE LIST)
 # ==============================
 def handle(file):
     try:
@@ -23,7 +23,7 @@ def handle(file):
         seniority_df = load_seniority_file(save_path)
 
         # ==============================
-        # Render the seniority table view
+        # Render the seniority view
         # ==============================
         return render_template("seniority.html", table=seniority_df.to_dict(orient="records"))
 
