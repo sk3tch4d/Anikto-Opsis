@@ -62,7 +62,7 @@ def handle():
         import config
         config.OPTIMIZATION_DF = df
 
-        return render_template("optimization_result.html", table=df.to_dict(orient="records"))
+        return render_template("optimization.html", table=df.to_dict(orient="records"))
 
     except Exception as e:
         app.logger.error(f"Optimize handler failed: {e}")
