@@ -4,6 +4,7 @@
 
 # Shared global DataFrames
 INVENTORY_DF = None
+OPTIMIZATION_DF = None
 
 # ==============================
 # REGEX MATCHERS (Shared Patterns)
