@@ -3,16 +3,21 @@
 # ==============================
 
 import os
-from flask import render_template, current_app as app
+from flask import request, render_template, current_app as app
 from seniority import load_seniority_file
 
 # ==============================
-# HANDLE SENIORITY FILE (CUPE LIST)
+# HANDLE CUPE SENIORITY FILE
 # ==============================
-def handle(file):
+def handle():
     try:
         # ==============================
-        # Save uploaded file to /tmp
+        # Get uploaded file
+        # ==============================
+        file = request.files.getlist("uploads")[0]
+
+        # ==============================
+        # Save to temp path
         # ==============================
         save_path = os.path.join("/tmp", "seniority_uploaded.xlsx")
         file.save(save_path)
@@ -23,7 +28,7 @@ def handle(file):
         seniority_df = load_seniority_file(save_path)
 
         # ==============================
-        # Render the seniority view
+        # Render the table view
         # ==============================
         return render_template("seniority.html", table=seniority_df.to_dict(orient="records"))
 
