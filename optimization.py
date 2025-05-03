@@ -1,6 +1,7 @@
 # ==============================
 # OPTIMIZATION.PY
 # ==============================
+
 import pandas as pd
 
 def search_optimization(df, term, cart_filter="All", sort="site_suggested_rop", direction="desc"):
@@ -17,11 +18,16 @@ def search_optimization(df, term, cart_filter="All", sort="site_suggested_rop", 
 
     # Filter by search term match
     if term:
-        mask = df.apply(lambda row: term in " ".join(str(v).lower() for v in row.values if pd.notna(v)), axis=1)
+        mask = df.apply(
+            lambda row: term in " ".join(str(v).lower() for v in row.values if pd.notna(v)),
+            axis=1
+        )
         df = df[mask]
 
-    # Sort if applicable
+    # Sort if column exists
     if sort in df.columns:
+        df = df.copy()
+        df[sort] = pd.to_numeric(df[sort], errors="coerce")
         df = df.sort_values(by=sort, ascending=(direction == "asc"))
 
     return df.to_dict(orient="records")
