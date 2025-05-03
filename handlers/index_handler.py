@@ -44,5 +44,8 @@ def process_index_upload():
 
         return handle_cleaner()
 
+        print(f"DEBUG: fname = {fname}")
+        print(f"DEBUG: fname_upper = {fname_upper}")
+
     except Exception as e:
         return render_template("index.html", error=f"Unexpected error during routing: {str(e)}")
