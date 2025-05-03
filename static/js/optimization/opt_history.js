@@ -1,32 +1,67 @@
 // ==============================
-// OPT_HISTORY.JS — Search History Log
+// OPT_HISTORY.JS — Search History Log for Optimization
 // ==============================
 
 export function setupHistory() {
   const container = document.getElementById("search-history-list");
-  const history = new Set();
+  const searchInput = document.getElementById("optimization-search");
+  const HISTORY_KEY = "optimization_search_history";
+  const historySet = new Set();
 
-  if (!container) return;
+  if (!container || !searchInput) return;
 
+  // ==============================
+  // Load from localStorage
+  // ==============================
+  function loadHistory() {
+    const stored = localStorage.getItem(HISTORY_KEY);
+    try {
+      const parsed = JSON.parse(stored);
+      for (const term of parsed || []) {
+        historySet.add(term);
+      }
+    } catch {
+      // fallback
+    }
+  }
+
+  // ==============================
+  // Save to localStorage
+  // ==============================
+  function persistHistory() {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(Array.from(historySet)));
+  }
+
+  // ==============================
+  // Render History List
+  // ==============================
   function renderHistory() {
     container.innerHTML = "";
-    [...history].reverse().forEach(term => {
+    [...historySet].reverse().forEach(term => {
       const el = document.createElement("li");
       el.textContent = term;
       el.className = "history-tag";
       el.onclick = () => {
-        document.getElementById("optimization-search").value = term;
-        document.getElementById("optimization-search").dispatchEvent(new Event("input"));
+        searchInput.value = term;
+        searchInput.dispatchEvent(new Event("input"));
       };
       container.appendChild(el);
     });
   }
 
+  // ==============================
+  // Listen to search events
+  // ==============================
   window.addEventListener("optimization:history", e => {
     const term = (e.detail || "").trim();
-    if (term && !history.has(term)) {
-      history.add(term);
+    if (term && !historySet.has(term)) {
+      historySet.add(term);
+      persistHistory();
       renderHistory();
     }
   });
+
+  // Initial boot
+  loadHistory();
+  renderHistory();
 }
