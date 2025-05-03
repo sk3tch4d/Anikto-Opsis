@@ -15,19 +15,34 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 const savedItems = new Map();
 
 // ==============================
-// HELPER: SHOW TOAST
+// HELPER: TOAST
 // ==============================
 function showToast(message) {
   const toast = document.getElementById("toast");
   toast.textContent = message;
   toast.classList.add("show");
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2000);
+  setTimeout(() => toast.classList.remove("show"), 2000);
 }
 
 // ==============================
-// HELPER: TOGGLE SAVE
+// HELPER: UPDATE SAVED PANEL
+// ==============================
+function updateSavedPanel() {
+  const panel = document.querySelector("#optimization-saved-panel .panel-body");
+  panel.innerHTML = "";
+
+  if (!savedItems.size) {
+    panel.innerHTML = `<p>No saved items yet.</p><br><p>Double click to save a card.</p>`;
+    return;
+  }
+
+  for (const clone of savedItems.values()) {
+    panel.appendChild(clone.cloneNode(true));
+  }
+}
+
+// ==============================
+// HELPER: TOGGLE SAVED ITEM
 // ==============================
 function toggleSaveItem(card, item) {
   const key = item.material;
@@ -45,32 +60,15 @@ function toggleSaveItem(card, item) {
 }
 
 // ==============================
-// HELPER: UPDATE SAVED PANEL
+// HELPER: CARD CREATOR
 // ==============================
-function updateSavedPanel() {
-  const panel = document.querySelector("#optimization-saved-panel .panel-body");
-  panel.innerHTML = "";
-
-  if (!savedItems.size) {
-    panel.innerHTML = "<p>No saved items yet.</p><p>Double click a card to save it!</p>";
-    return;
-  }
-
-  for (const clone of savedItems.values()) {
-    panel.appendChild(clone.cloneNode(true));
-  }
-}
-
-// ==============================
-// HELPER: CREATE ITEM CARD
-// ==============================
-function createOptimizationCard(item, searchTerm) {
+function createCard(item, term) {
   const card = document.createElement("div");
   card.className = "compare-card";
 
   card.innerHTML = `
-    <div><strong>${highlightMatch(item.material, searchTerm)}</strong> — ${highlightMatch(item.material_description || "", searchTerm)}</div>
-    <div><strong>Bin:</strong> ${highlightMatch(item.bin || "-", searchTerm)}</div>
+    <div><strong>${highlightMatch(item.material, term)}</strong> — ${highlightMatch(item.material_description || "", term)}</div>
+    <div><strong>Bin:</strong> ${highlightMatch(item.bin || "-", term)}</div>
     <div><strong>ROP:</strong> ${item.site_suggested_rop || "-"}</div>
     <div><strong>ROQ:</strong> ${item.site_suggested_roq || "-"}</div>
     <div><strong>Cost:</strong> ${item.ma_price || 0} / ${item.bun_of_measure || "EA"}</div>
@@ -81,32 +79,34 @@ function createOptimizationCard(item, searchTerm) {
 }
 
 // ==============================
-// MAIN RENDER FUNCTION
+// MAIN EXPORT
 // ==============================
-export function populateOptimizationStats(results) {
-  const statsBox = document.getElementById("optimization-stats");
-  if (!statsBox) return;
+export function setupStats() {
+  const box = document.getElementById("optimization-stats");
+  if (!box || !window.optimizationData) return;
 
-  statsBox.innerHTML = "";
+  const input = document.getElementById("optimization-search");
+  const term = input?.value.trim().toLowerCase() || "";
 
-  const searchInput = document.getElementById("optimization-search");
-  const searchTerm = searchInput?.value?.trim().toLowerCase() || "";
+  const list = window.optimizationData;
+
+  box.innerHTML = "";
 
   const summary = document.createElement("div");
   summary.className = "compare-card";
-  summary.innerHTML = `<div><span class="tag-label">Results:</span> ${results.length}</div>`;
-  statsBox.appendChild(summary);
+  summary.innerHTML = `<div><span class="tag-label">Results:</span> ${list.length}</div>`;
+  box.appendChild(summary);
 
-  for (const item of results) {
-    const card = createOptimizationCard(item, searchTerm);
-    statsBox.appendChild(card);
+  for (const row of list) {
+    const card = createCard(row, term);
+    box.appendChild(card);
   }
 
-  if (!results.length) {
+  if (!list.length) {
     const empty = document.createElement("div");
     empty.className = "no-results";
     empty.textContent = "No matching results.";
-    statsBox.appendChild(empty);
+    box.appendChild(empty);
   }
 
   setupParseStats();
