@@ -11,7 +11,7 @@ INVENTORY_DF = None
 CATALOG_REGEX = r"(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$"
 ARG_REGEX = r"(arg|flowsheet).*?\.(pdf)$"
 SENIORITY_REGEX = r"(cupe).*seniority.*(list)?.*\.xlsx$"
-USL_OPT_REGEX = r"^KG01-[A-Z]+.*\.xlsx$"
+USL_OPT_REGEX = r"^KG01-[A-Z0-9]{1,4}-.*\.xlsx$"
 VALID_EXTENSIONS = r"\.(pdf|xlsx|db)$"
 
 # ==============================
