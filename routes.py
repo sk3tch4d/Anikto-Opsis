@@ -138,6 +138,16 @@ def register_routes(app):
             return "File not found", 404
 
     # ==============================
+    # DOWNLOAD OPTIMIZED FILE ROUTE
+    # ==============================
+    @app.route("/download/optimized")
+    def download_optimized():
+        path = config.OPTIMIZATION_PATH
+        if path and os.path.exists(path):
+            return send_file(path, as_attachment=True, download_name=os.path.basename(path))
+        return "Optimized file not available.", 404
+
+    # ==============================
     # UI PANEL ROUTES
     # ==============================
     @app.route("/1902")
