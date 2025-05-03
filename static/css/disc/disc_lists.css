@@ -7,12 +7,14 @@
 /* LI                            */
 /* ============================= */
 li {
-  background: #29293d; /*#292b3d;*/
+  /*background: #29293d; /*#292b3d;*/
+  background: linear-gradient(15deg, #29293d, #2b2b3b);
+  background-size: 160%;
   border: 2px solid #1f1f2e;
-  border-radius: 22px;
+  border-radius: 20px;
   margin-bottom: 0.64rem;
   padding: 0.5rem; 
-  box-shadow: inset 0px 0.8px 5px #1c1e22;
+  box-shadow: inset 0px 0.2px 6px #1c1e22;
   color: #b1b1cd;
   text-align: center;
   font-size: 0.92rem;
@@ -25,8 +27,9 @@ li {
 li:hover {
   color: #e0e0eb;
   font-size: 0.922rem;
-  border-radius: 22px;
+  border-radius: 24px;
 }
+
 
 
 /* ============================= */
