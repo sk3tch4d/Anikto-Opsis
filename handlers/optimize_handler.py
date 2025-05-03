@@ -5,9 +5,9 @@
 import os
 import re
 import json
+import pandas as pd
 from datetime import datetime
 from flask import request, render_template, current_app as app
-from inventory import load_inventory_data
 from inv_optimizer import suggest_rop_roq
 
 # ==============================
@@ -51,30 +51,36 @@ def handle():
         file.save(raw_path)
 
         # ==============================
-        # Load + Normalize Columns + Optimize
+        # Load XLSX from header row 10
         # ==============================
-        df = load_inventory_data(path=raw_path)
+        df = pd.read_excel(raw_path, header=9)
 
-        # Normalize headers: lower + replace spaces
+        # Normalize headers: lowercase + underscores
         df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
 
-        # Run optimization
+        # ==============================
+        # Run optimization logic
+        # ==============================
         df = suggest_rop_roq(df)
 
         # ==============================
-        # Save optimized result to NEW file
+        # Save optimized output
         # ==============================
         opt_path = os.path.join("/tmp", f"optimization_{usl_code}_{timestamp}_optimized.xlsx")
         df.to_excel(opt_path, index=False)
 
         # ==============================
-        # Store in shared config + Render
+        # Store in config + return UI
         # ==============================
         import config
         config.OPTIMIZATION_DF = df
         config.OPTIMIZATION_PATH = opt_path
 
-        return render_template("optimization.html", table=df.to_dict(orient="records"), download_file=os.path.basename(opt_path))
+        return render_template(
+            "optimization.html",
+            table=df.to_dict(orient="records"),
+            download_file=os.path.basename(opt_path)
+        )
 
     except Exception as e:
         app.logger.error(f"Optimize handler failed: {e}")
