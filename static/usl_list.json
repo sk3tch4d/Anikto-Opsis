@@ -1,0 +1,798 @@
+[
+  {
+    "usl": "ADMS",
+    "cost_center": "IPRE"
+  },
+  {
+    "usl": "ANEC",
+    "cost_center": "ANES"
+  },
+  {
+    "usl": "ANEK",
+    "cost_center": "ANES"
+  },
+  {
+    "usl": "ANES",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ARS",
+    "cost_center": "MMAR"
+  },
+  {
+    "usl": "ATU",
+    "cost_center": "ATU"
+  },
+  {
+    "usl": "ATUB",
+    "cost_center": "ATU"
+  },
+  {
+    "usl": "AUTO",
+    "cost_center": "HIST"
+  },
+  {
+    "usl": "BLDS",
+    "cost_center": "BLBA"
+  },
+  {
+    "usl": "BLDS",
+    "cost_center": "BLBA"
+  },
+  {
+    "usl": "BURS",
+    "cost_center": "KSDC"
+  },
+  {
+    "usl": "C10A",
+    "cost_center": "C10"
+  },
+  {
+    "usl": "C10B",
+    "cost_center": "C10"
+  },
+  {
+    "usl": "C10S",
+    "cost_center": "C10"
+  },
+  {
+    "usl": "C3S",
+    "cost_center": "C3"
+  },
+  {
+    "usl": "C3SA",
+    "cost_center": "C3"
+  },
+  {
+    "usl": "C3SB",
+    "cost_center": "C3"
+  },
+  {
+    "usl": "C4S",
+    "cost_center": "RNL"
+  },
+  {
+    "usl": "C4SA",
+    "cost_center": "C4"
+  },
+  {
+    "usl": "C4SB",
+    "cost_center": "C4"
+  },
+  {
+    "usl": "C5S",
+    "cost_center": "C5"
+  },
+  {
+    "usl": "C5SA",
+    "cost_center": "C5"
+  },
+  {
+    "usl": "C5SB",
+    "cost_center": "NICU"
+  },
+  {
+    "usl": "C5SC",
+    "cost_center": "OBS"
+  },
+  {
+    "usl": "C7S",
+    "cost_center": "FAME"
+  },
+  {
+    "usl": "C9S",
+    "cost_center": "C9"
+  },
+  {
+    "usl": "C9SA",
+    "cost_center": "C9"
+  },
+  {
+    "usl": "C9SB",
+    "cost_center": "C9"
+  },
+  {
+    "usl": "C9SC",
+    "cost_center": "C9"
+  },
+  {
+    "usl": "CATS",
+    "cost_center": "CAT"
+  },
+  {
+    "usl": "CCUA",
+    "cost_center": "CCU"
+  },
+  {
+    "usl": "CCUS",
+    "cost_center": "CCU"
+  },
+  {
+    "usl": "CHMS",
+    "cost_center": "CHEM"
+  },
+  {
+    "usl": "CHMS",
+    "cost_center": "CHEM"
+  },
+  {
+    "usl": "CICS",
+    "cost_center": "CIOC"
+  },
+  {
+    "usl": "CLPS",
+    "cost_center": "FAOG"
+  },
+  {
+    "usl": "CPCC",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "CPSA",
+    "cost_center": "CPS"
+  },
+  {
+    "usl": "CPSB",
+    "cost_center": "CPS"
+  },
+  {
+    "usl": "CPSC",
+    "cost_center": "CPS"
+  },
+  {
+    "usl": "CRPA",
+    "cost_center": "CORP"
+  },
+  {
+    "usl": "CRPA",
+    "cost_center": "CORP"
+  },
+  {
+    "usl": "CRPS",
+    "cost_center": "CORP"
+  },
+  {
+    "usl": "CRPS",
+    "cost_center": "CORP"
+  },
+  {
+    "usl": "CSRT",
+    "cost_center": "CSU"
+  },
+  {
+    "usl": "CSUA",
+    "cost_center": "CSU"
+  },
+  {
+    "usl": "CSUB",
+    "cost_center": "CSU"
+  },
+  {
+    "usl": "CSUS",
+    "cost_center": "CSU"
+  },
+  {
+    "usl": "CTSS",
+    "cost_center": "FAUR"
+  },
+  {
+    "usl": "CVLA",
+    "cost_center": "CVLB"
+  },
+  {
+    "usl": "CVLS",
+    "cost_center": "CVLB"
+  },
+  {
+    "usl": "CVRC",
+    "cost_center": "CVLB"
+  },
+  {
+    "usl": "CYT1",
+    "cost_center": "CYTO"
+  },
+  {
+    "usl": "D3S",
+    "cost_center": "D3"
+  },
+  {
+    "usl": "D4CR",
+    "cost_center": "ICD4"
+  },
+  {
+    "usl": "D4IC",
+    "cost_center": "ICD4"
+  },
+  {
+    "usl": "D4RT",
+    "cost_center": "ICD4"
+  },
+  {
+    "usl": "D4S",
+    "cost_center": "ICU"
+  },
+  {
+    "usl": "D4S1",
+    "cost_center": "ICD4"
+  },
+  {
+    "usl": "D4S2",
+    "cost_center": "ICD4"
+  },
+  {
+    "usl": "D4S3",
+    "cost_center": "ICD4"
+  },
+  {
+    "usl": "D4S4",
+    "cost_center": "ICD4"
+  },
+  {
+    "usl": "D5A",
+    "cost_center": "D5SG"
+  },
+  {
+    "usl": "D5S",
+    "cost_center": "D5"
+  },
+  {
+    "usl": "D5SB",
+    "cost_center": "OBS"
+  },
+  {
+    "usl": "DIUS",
+    "cost_center": "DIUS"
+  },
+  {
+    "usl": "ECUS",
+    "cost_center": "ECU"
+  },
+  {
+    "usl": "ENDS",
+    "cost_center": "ENDO"
+  },
+  {
+    "usl": "ERDP",
+    "cost_center": "EMER"
+  },
+  {
+    "usl": "EROF",
+    "cost_center": "ATU"
+  },
+  {
+    "usl": "ERS",
+    "cost_center": "EMER"
+  },
+  {
+    "usl": "ERSA",
+    "cost_center": "C9"
+  },
+  {
+    "usl": "ERSB",
+    "cost_center": "EMER"
+  },
+  {
+    "usl": "ERSC",
+    "cost_center": "EMER"
+  },
+  {
+    "usl": "ERSD",
+    "cost_center": "EMER"
+  },
+  {
+    "usl": "ERSE",
+    "cost_center": "EMER"
+  },
+  {
+    "usl": "ERSF",
+    "cost_center": "EMER"
+  },
+  {
+    "usl": "ERSG",
+    "cost_center": "C9"
+  },
+  {
+    "usl": "ERSH",
+    "cost_center": "C10"
+  },
+  {
+    "usl": "ERSI",
+    "cost_center": "EMER"
+  },
+  {
+    "usl": "ERSJ",
+    "cost_center": "EMRE"
+  },
+  {
+    "usl": "ERSK",
+    "cost_center": "EMER"
+  },
+  {
+    "usl": "FA1A",
+    "cost_center": "FAUR"
+  },
+  {
+    "usl": "FA1B",
+    "cost_center": "FAAC"
+  },
+  {
+    "usl": "FA1N",
+    "cost_center": "FAME"
+  },
+  {
+    "usl": "FA1S",
+    "cost_center": "FAUR"
+  },
+  {
+    "usl": "FA2A",
+    "cost_center": "FAME"
+  },
+  {
+    "usl": "FA2S",
+    "cost_center": "FAME"
+  },
+  {
+    "usl": "FA3A",
+    "cost_center": "CRDC"
+  },
+  {
+    "usl": "FA3S",
+    "cost_center": "ECHO"
+  },
+  {
+    "usl": "FA4A",
+    "cost_center": "FAME"
+  },
+  {
+    "usl": "FA4S",
+    "cost_center": "FAME"
+  },
+  {
+    "usl": "FA5A",
+    "cost_center": "FAOG"
+  },
+  {
+    "usl": "FA5S",
+    "cost_center": "FAOG"
+  },
+  {
+    "usl": "FTLS",
+    "cost_center": "ADCL"
+  },
+  {
+    "usl": "GEDS",
+    "cost_center": "GEDD"
+  },
+  {
+    "usl": "GEDS",
+    "cost_center": "GEDD"
+  },
+  {
+    "usl": "HEMA",
+    "cost_center": "HEMA"
+  },
+  {
+    "usl": "HEMA",
+    "cost_center": "HEMA"
+  },
+  {
+    "usl": "HMHS",
+    "cost_center": "HMHM"
+  },
+  {
+    "usl": "HMPS",
+    "cost_center": "TRPD"
+  },
+  {
+    "usl": "ICUA",
+    "cost_center": "ICU"
+  },
+  {
+    "usl": "ICUB",
+    "cost_center": "ICU"
+  },
+  {
+    "usl": "ICUC",
+    "cost_center": "ICU"
+  },
+  {
+    "usl": "ICUD",
+    "cost_center": "ICU"
+  },
+  {
+    "usl": "ICUE",
+    "cost_center": "ICU"
+  },
+  {
+    "usl": "ICUF",
+    "cost_center": "ICU"
+  },
+  {
+    "usl": "ICUG",
+    "cost_center": "ICU"
+  },
+  {
+    "usl": "ICUS",
+    "cost_center": "ICU"
+  },
+  {
+    "usl": "ICUW",
+    "cost_center": "ICU"
+  },
+  {
+    "usl": "IMUS",
+    "cost_center": "IMMU"
+  },
+  {
+    "usl": "IMUS",
+    "cost_center": "IMMU"
+  },
+  {
+    "usl": "INTA",
+    "cost_center": "INTR"
+  },
+  {
+    "usl": "IOAS",
+    "cost_center": "MH"
+  },
+  {
+    "usl": "ITRS",
+    "cost_center": "INTR"
+  },
+  {
+    "usl": "K332",
+    "cost_center": "CSU"
+  },
+  {
+    "usl": "K3S",
+    "cost_center": "K3"
+  },
+  {
+    "usl": "K3SA",
+    "cost_center": "K3"
+  },
+  {
+    "usl": "K4S",
+    "cost_center": "K4"
+  },
+  {
+    "usl": "K4SA",
+    "cost_center": "K4"
+  },
+  {
+    "usl": "K4SB",
+    "cost_center": "K4"
+  },
+  {
+    "usl": "K4ST",
+    "cost_center": "K4"
+  },
+  {
+    "usl": "K5S",
+    "cost_center": "K5"
+  },
+  {
+    "usl": "K6S",
+    "cost_center": "K6SG"
+  },
+  {
+    "usl": "K7S",
+    "cost_center": "K7"
+  },
+  {
+    "usl": "K7SA",
+    "cost_center": "K7"
+  },
+  {
+    "usl": "K9S",
+    "cost_center": "K9"
+  },
+  {
+    "usl": "K9SE",
+    "cost_center": "K9"
+  },
+  {
+    "usl": "K9SW",
+    "cost_center": "K9"
+  },
+  {
+    "usl": "KDSC",
+    "cost_center": "NSDU"
+  },
+  {
+    "usl": "KRL",
+    "cost_center": "SCF"
+  },
+  {
+    "usl": "KRL",
+    "cost_center": "SCF"
+  },
+  {
+    "usl": "MCRS",
+    "cost_center": "MICR"
+  },
+  {
+    "usl": "MCRS",
+    "cost_center": "MICR"
+  },
+  {
+    "usl": "MHA",
+    "cost_center": "MH"
+  },
+  {
+    "usl": "MHAS",
+    "cost_center": "MH"
+  },
+  {
+    "usl": "MHYS",
+    "cost_center": "MHY"
+  },
+  {
+    "usl": "MRIS",
+    "cost_center": "MRI"
+  },
+  {
+    "usl": "MSAU",
+    "cost_center": "C3MD"
+  },
+  {
+    "usl": "MSSU",
+    "cost_center": "K10M"
+  },
+  {
+    "usl": "NCCS",
+    "cost_center": "K7"
+  },
+  {
+    "usl": "NICA",
+    "cost_center": "MLKL"
+  },
+  {
+    "usl": "NICB",
+    "cost_center": "NICU"
+  },
+  {
+    "usl": "NICS",
+    "cost_center": "NICU"
+  },
+  {
+    "usl": "NMDS",
+    "cost_center": "NUME"
+  },
+  {
+    "usl": "NUAS",
+    "cost_center": "NUAD"
+  },
+  {
+    "usl": "OBCP",
+    "cost_center": "C5"
+  },
+  {
+    "usl": "OCHA",
+    "cost_center": "OCHE"
+  },
+  {
+    "usl": "OCHA",
+    "cost_center": "OCHE"
+  },
+  {
+    "usl": "OPRA",
+    "cost_center": "OPRE"
+  },
+  {
+    "usl": "OPRA",
+    "cost_center": "OPRE"
+  },
+  {
+    "usl": "OPUS",
+    "cost_center": "OPPU"
+  },
+  {
+    "usl": "ORS",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ORSA",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ORSB",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ORSC",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ORSD",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ORSE",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ORSF",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ORSG",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ORSH",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ORSI",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ORSJ",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ORSK",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "ORSP",
+    "cost_center": "OR"
+  },
+  {
+    "usl": "PACU",
+    "cost_center": "PAR"
+  },
+  {
+    "usl": "PAND",
+    "cost_center": "PAND"
+  },
+  {
+    "usl": "PARS",
+    "cost_center": "PAR"
+  },
+  {
+    "usl": "PEDA",
+    "cost_center": "PED"
+  },
+  {
+    "usl": "PEDS",
+    "cost_center": "PED"
+  },
+  {
+    "usl": "PERA",
+    "cost_center": "PERF"
+  },
+  {
+    "usl": "PETS",
+    "cost_center": "PET"
+  },
+  {
+    "usl": "PHMA",
+    "cost_center": "DRDS"
+  },
+  {
+    "usl": "PHMB",
+    "cost_center": "DRDS"
+  },
+  {
+    "usl": "PHMS",
+    "cost_center": "DRDS"
+  },
+  {
+    "usl": "PSSU",
+    "cost_center": "PSSU"
+  },
+  {
+    "usl": "PTHS",
+    "cost_center": "HIST"
+  },
+  {
+    "usl": "RNLS",
+    "cost_center": "RNL"
+  },
+  {
+    "usl": "SCC1",
+    "cost_center": "SRON"
+  },
+  {
+    "usl": "SCC1",
+    "cost_center": "SRON"
+  },
+  {
+    "usl": "SCC2",
+    "cost_center": "SRON"
+  },
+  {
+    "usl": "SCC2",
+    "cost_center": "SRON"
+  },
+  {
+    "usl": "SCC4",
+    "cost_center": "SYNU"
+  },
+  {
+    "usl": "SCC5",
+    "cost_center": "SRON"
+  },
+  {
+    "usl": "SCC5",
+    "cost_center": "SRON"
+  },
+  {
+    "usl": "SCC6",
+    "cost_center": "SYNU"
+  },
+  {
+    "usl": "SCDA",
+    "cost_center": "FADX"
+  },
+  {
+    "usl": "SCDS",
+    "cost_center": "PHLE"
+  },
+  {
+    "usl": "SCH1",
+    "cost_center": "SYNT"
+  },
+  {
+    "usl": "SCH2",
+    "cost_center": "PHCP"
+  },
+  {
+    "usl": "SCH3",
+    "cost_center": "SYNP"
+  },
+  {
+    "usl": "SCH4",
+    "cost_center": "SYNT"
+  },
+  {
+    "usl": "SCRA",
+    "cost_center": "RDNU"
+  },
+  {
+    "usl": "SCRS",
+    "cost_center": "RADT"
+  },
+  {
+    "usl": "SDAS",
+    "cost_center": "SDAS"
+  },
+  {
+    "usl": "SLBS",
+    "cost_center": "SAP"
+  },
+  {
+    "usl": "STMS",
+    "cost_center": "STEM"
+  },
+  {
+    "usl": "WOCS",
+    "cost_center": "WOCL"
+  },
+  {
+    "usl": "XRYS",
+    "cost_center": "XRAY"
+  }
+]
