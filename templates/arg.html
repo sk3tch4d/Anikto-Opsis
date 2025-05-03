@@ -125,9 +125,9 @@
             <div class="downloads">
               {% for file in outputs %}
                 {% if "ARGX" in file %}
-                  <button class="button panel" href="{{ url_for('download', filename=file) }}"n">Spreadsheet</button>
+                  <button class="button panel" href="{{ url_for('download', filename=file) }}">Spreadsheet</button>
                 {% elif "ARGM" in file %}
-                  <button class="button panel" href="{{ url_for('download', filename=file) }}"">Heatmap</button>
+                  <button class="button panel" href="{{ url_for('download', filename=file) }}">Heatmap</button>
                 {% else %}
                   <button class="button panel" href="{{ url_for('download', filename=file) }}">{{ file }}</button>
                 {% endif %}
