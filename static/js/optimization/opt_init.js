@@ -20,7 +20,7 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 export function initializeOptimizationApp() {
   const searchInput = document.getElementById("optimization-search");
   const cartFilter = document.getElementById("opsh-filter");
-  const sortBy = document.getElementById("sort-by") || { value: "site_suggested_rop" };
+  const sortBy = document.getElementById("sort-by");
   const sortDirButton = document.getElementById("sort-direction");
   const resultsList = document.getElementById("optimization-results");
   const noResults = document.getElementById("no-results");
@@ -53,7 +53,7 @@ export function initializeOptimizationApp() {
       return doOptimizationSearch({
         searchInput,
         cartFilter,
-        sortBy,
+        sortBy: sortBy || { value: "site_suggested_rop" },
         sortDirButton,
         resultsList,
         noResults,
@@ -74,7 +74,9 @@ export function initializeOptimizationApp() {
   });
 
   cartFilter.addEventListener("change", doSearch);
-  if (sortBy) sortBy.addEventListener("change", doSearch);
+  if (sortBy && typeof sortBy.addEventListener === "function") {
+    sortBy.addEventListener("change", doSearch);
+  }
 
   doSearch();
 
