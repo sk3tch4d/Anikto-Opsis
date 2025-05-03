@@ -1,54 +1,198 @@
 // ==============================
-// OPT_SEARCH.JS — Cart Filter + Text Search
+// OPT_SEARCH.JS — Optimization Search Logic
 // ==============================
 
-export function setupSearch() {
-  const searchInput = document.getElementById("optimization-search");
-  const filterSelect = document.getElementById("opsh-filter");
+import { populateOptimizationStats } from "./opt_stats.js";
+import { renderOptimizationResults } from "./opt_results.js";
+import { addOptimizationSearchToHistory } from "./opt_history.js";
+import { withLoadingToggle, createBounceLoader } from "../loading.js";
+import { scrollPanel } from "../panels.js";
 
-  if (!searchInput || !filterSelect) return;
+// ==============================
+// DEBUGGING
+// ==============================
+const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 
-  // Populate cart filters
-  const cartOptions = ["All", "Cart 1", "Cart 2", "Cart 3", "Cart 4", "Cart 5"];
-  filterSelect.innerHTML = cartOptions
-    .map(cart => `<option value="${cart}">${cart}</option>`) 
-    .join("");
+// ==============================
+// CONFIG
+// ==============================
+const SCROLL_RESTORE_DELAY = 50;
+const FETCH_TIMEOUT = 5000;
+const FETCH_RETRIES = 2;
+const FETCH_RETRY_DELAY = 500;
+const DEBOUNCE_DELAY = 300;
+const MAX_CACHE_SIZE = 20;
 
-  function getData() {
+// ==============================
+// URL BUILDER
+// ==============================
+function buildSearchUrl({ term, usl, sort, dir }) {
+  const params = new URLSearchParams({
+    term: term.trim().toLowerCase(),
+    usl,
+    sort,
+    dir
+  });
+  return `/optimization-search?${params}`;
+}
+
+// ==============================
+// ELEMENTS
+// ==============================
+const elements = {
+  stats: document.getElementById("optimization-stats")
+};
+
+// ==============================
+// BOUNCE LOADER
+// ==============================
+const bounceLoader = createBounceLoader(document.querySelector("#optimization-search-panel .panel-body"));
+
+// ==============================
+// FETCH ABORT CONTROLLER
+// ==============================
+let currentFetchController = null;
+
+// ==============================
+// SCROLL RESTORE
+// ==============================
+function restoreScrollPosition(key = "optimizationScrollTop", delay = SCROLL_RESTORE_DELAY) {
+  const savedScroll = localStorage.getItem(key);
+  if (savedScroll) {
+    setTimeout(() => {
+      window.scroll({
+        top: parseInt(savedScroll),
+        behavior: "smooth"
+      });
+    }, delay);
+  }
+}
+
+// ==============================
+// FETCH HELPERS
+// ==============================
+function fetchWithTimeout(resource, options = {}, timeout = FETCH_TIMEOUT, controller = null) {
+  const ctrl = controller || new AbortController();
+  const id = setTimeout(() => ctrl.abort(), timeout);
+  return fetch(resource, {
+    ...options,
+    signal: ctrl.signal
+  }).finally(() => clearTimeout(id));
+}
+
+async function fetchWithRetry(url, options = {}, retries = FETCH_RETRIES, delay = FETCH_RETRY_DELAY, controller = null) {
+  for (let attempt = 0; attempt <= retries; attempt++) {
     try {
-      const table = window.optimizationData || [];
-      return Array.isArray(table) ? table : [];
-    } catch {
-      return [];
+      return await fetchWithTimeout(url, options, FETCH_TIMEOUT, controller);
+    } catch (err) {
+      if (attempt === retries) throw err;
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
+}
 
-  function filterData() {
-    const term = searchInput.value.toLowerCase();
-    const cartFilter = filterSelect.value;
-    const data = getData();
+// ==============================
+// CACHE
+// ==============================
+const searchCache = new Map();
 
-    const results = data.filter(row => {
-      // Cart filter based on Bin column prefix
-      if (cartFilter !== "All") {
-        const cartNum = cartFilter.split(" ")[1];
-        const bin = (row["bin"] || "").toString().toUpperCase();
-        if (!bin.startsWith(cartNum)) return false;
-      }
+function generateSearchKey({ term, usl, sort, dir }) {
+  return `${term}|${usl}|${sort}|${dir}`;
+}
 
-      // Search term match against all string fields
-      const values = Object.values(row).map(v => (v || "").toString().toLowerCase());
-      return values.some(v => v.includes(term));
-    });
+function updateSearchCache(key, data) {
+  if (searchCache.size >= MAX_CACHE_SIZE) {
+    const oldestKey = searchCache.keys().next().value;
+    searchCache.delete(oldestKey);
+  }
+  searchCache.set(key, data);
+}
 
-    // Fire event to update other panels
-    const event = new CustomEvent("optimization:search", { detail: results });
-    window.dispatchEvent(event);
+// ==============================
+// DEBOUNCE
+// ==============================
+function debounce(fn, wait) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn.apply(this, args), wait);
+  };
+}
+
+// ==============================
+// SEARCH LOGIC
+// ==============================
+export const doOptimizationSearch = debounce(function ({
+  searchInput,
+  cartFilter,
+  sortBy,
+  sortDirButton,
+  resultsList,
+  noResults,
+  sortDirection
+}) {
+  const term = searchInput.value.trim().toLowerCase();
+  const usl = cartFilter.value;
+  const sort = sortBy.value;
+
+  if (!term) {
+    resultsList.innerHTML = "";
+    elements.stats.innerHTML = "";
+    noResults.style.display = "block";
+    noResults.innerText = "Please enter a search term.";
+    return;
   }
 
-  searchInput.addEventListener("input", filterData);
-  filterSelect.addEventListener("change", filterData);
+  const key = generateSearchKey({ term, usl, sort, dir: sortDirection });
 
-  // Initial trigger
-  filterData();
-}
+  withLoadingToggle(
+    {
+      show: [bounceLoader],
+      hide: [resultsList, noResults, elements.stats]
+    },
+    () => {
+      noResults.style.display = "none";
+
+      if (currentFetchController) currentFetchController.abort();
+      currentFetchController = new AbortController();
+
+      if (searchCache.has(key)) {
+        const cached = searchCache.get(key);
+        renderOptimizationResults(cached, term, resultsList);
+        populateOptimizationStats(cached);
+        addOptimizationSearchToHistory(term, usl, cached);
+        return;
+      }
+
+      return fetchWithRetry(buildSearchUrl({ term, usl, sort, dir: sortDirection }), {}, FETCH_RETRIES, FETCH_RETRY_DELAY, currentFetchController)
+        .then(res => res.json())
+        .then(data => {
+          if (!data || !data.length) {
+            resultsList.innerHTML = "";
+            elements.stats.innerHTML = "";
+            noResults.style.display = "block";
+            noResults.innerText = "No results found. Try a different search.";
+            return;
+          }
+
+          populateOptimizationStats(data);
+          renderOptimizationResults(data, term, resultsList);
+          window.optimizationSearchResults = data;
+          addOptimizationSearchToHistory(term, usl, data);
+          updateSearchCache(key, data);
+        })
+        .catch(err => {
+          if (err.name === "AbortError") return;
+          resultsList.innerHTML = "";
+          elements.stats.innerHTML = "";
+          noResults.style.display = "block";
+          noResults.innerText = "Error loading results. Please try again.";
+        })
+        .finally(() => {
+          restoreScrollPosition();
+        });
+    }
+  );
+
+  scrollPanel(document.querySelector('#optimization-search-panel .panel-header'));
+}, DEBOUNCE_DELAY);
