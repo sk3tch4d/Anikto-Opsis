@@ -3,16 +3,21 @@
 # ==============================
 
 import os
-from flask import render_template, current_app as app
+from flask import request, render_template, current_app as app
 from inv_cleaner import clean_xlsx_and_save
 
 # ==============================
-# HANDLE UNKNOWN XLSX FILE (CLEAN IT)
+# HANDLE UNKNOWN XLSX FILE (FALLBACK CLEAN)
 # ==============================
-def handle(file):
+def handle():
     try:
         # ==============================
-        # Clean the uploaded file
+        # Get uploaded file
+        # ==============================
+        file = request.files.getlist("uploads")[0]
+
+        # ==============================
+        # Run cleaner
         # ==============================
         cleaned_path, cleaned_filename = clean_xlsx_and_save(file)
 
