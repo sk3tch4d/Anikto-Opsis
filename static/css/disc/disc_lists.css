@@ -7,8 +7,7 @@
 /* LISTS                         */
 /* ============================= */
 li {
-  /*background: #292b3d; /*#292b3d;*/
-  background: linear-gradient(15deg, #292b3d, #232531);
+  background: #292b3d;
   background-size: 160%;
   border: 0.6px solid #1f1f2d;
   border-radius: 24px;
@@ -21,16 +20,16 @@ li {
   font-family: 'Segoe UI', Tahoma, sans-serif;
   transition: 
     transform 0.4s ease, 
-    color 0.4s ease;
+    color 0.4s ease
+    background 0.8s ease;
 }
 
 /* ============================= */
 /* LISTS: HOVER                  */
 /* ============================= */
 li:hover {
-  background: linear-gradient(15deg, #2e3042, #252632);
-  background-size: 160%;
-  color: #e0e0eb;
+  background: #29293d;
+  color: #c1c1d7;
 }
 
 
@@ -75,7 +74,7 @@ ul.downloads li > .button {
   color: #fff;
   text-align: center;
   font-weight: bold;
-  border: 1px solid #2f3136;
+  border: 1px solid #2f3136;z
   border-radius: 8px;
   box-sizing: border-box;
   transition: background-color 0.2s ease;
