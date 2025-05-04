@@ -125,11 +125,11 @@
             <div class="panel-body scrollable-panel open">
               {% for file in outputs %}
                 {% if "ARGX" in file %}
-                  <button class="button panel" href="{{ url_for('download', filename=file) }}">Spreadsheet</button>
+                  <a class="button panel" href="{{ url_for('download', filename=file) }}" download>Spreadsheet</a>
                 {% elif "ARGM" in file %}
-                  <button class="button panel" href="{{ url_for('download', filename=file) }}">Heatmap</button>
+                  <a class="button panel" href="{{ url_for('download', filename=file) }}" download>Heatmap</a>
                 {% else %}
-                  <button class="button panel" href="{{ url_for('download', filename=file) }}">{{ file }}</button>
+                  <a class="button panel" href="{{ url_for('download', filename=file) }}" download>{{ file }}</a>
                 {% endif %}
               {% endfor %}
             </div>
