@@ -8,8 +8,10 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
 </head>
 <body>
-  <h1 id="typed-header"><span id="typed-text" data-title="Seniority Summary|Anikto Opsis"></span></h1>
-
+  <h1 class="gradient-text-dark gradient-shift">
+    <span class="typed-text" data-title="Seniority Summary|Anikto Opsis"></span>
+  </h1>
+  
   <!-- Inject parsed data for JS -->
   <script>window.seniorityData = {{ table | tojson }};</script>
 
