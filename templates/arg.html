@@ -122,17 +122,17 @@
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
         <div class="panel-body">
           {% if outputs %}
-            <div class="panel-body scrollable-panel open">
+            <ul class="downloads">
               {% for file in outputs %}
                 {% if "ARGX" in file %}
-                  <a class="button panel" href="{{ url_for('download', filename=file) }}" download>Spreadsheet</a>
+                  <li><a class="button panel" href="{{ url_for('download', filename=file) }}" download>Spreadsheet</a></li>
                 {% elif "ARGM" in file %}
-                  <a class="button panel" href="{{ url_for('download', filename=file) }}" download>Heatmap</a>
+                  <li><a class="button panel" href="{{ url_for('download', filename=file) }}" download>Heatmap</a></li>
                 {% else %}
-                  <a class="button panel" href="{{ url_for('download', filename=file) }}" download>{{ file }}</a>
+                  <li><a class="button panel" href="{{ url_for('download', filename=file) }}" download>{{ file }}</a></li>
                 {% endif %}
               {% endfor %}
-            </div>
+            </ul>
           {% else %}
             <p>No output files were generated.</p>
           {% endif %}
