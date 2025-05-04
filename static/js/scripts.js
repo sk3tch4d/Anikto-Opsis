@@ -4,8 +4,8 @@
 
 // ----- Debugging -----
 import { initDebugToggle } from './debugging.js';
-// ----- Header -----
-import { initTypewriter } from './header.js';
+// ----- Typed -----
+import { initTypewriter } from './typing.js';
 // ----- Panels -----
 import { togglePanel, collapseAllPanels, openPanelById } from './panels.js';
 // ----- Sticky Bars -----
@@ -36,8 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Debug Toggle -----
   if (document.querySelector("#debug-toggle")) initDebugToggle();
 
-  // ----- Header -----
-  if (document.querySelector("#typed-header")) initTypewriter();
+  // ----- Typed -----
+  if (document.querySelector(".typed-text")) initTypewriter();
 
   // ----- Panels -----
   if (document.querySelector(".panel")) {
