@@ -4,46 +4,78 @@
 
 
 /* ============================== */
-/* THEMED GRADIENT: DARK          */
+/* TEXT GRADIENT: DARK            */
 /* ============================== */
 .gradient-text-dark {
-  background: linear-gradient(25deg, #5a5dcf, #7f5ac8);
+  background-image: linear-gradient(25deg, #5a5dcf, #7f5ac8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* ============================== */
-/* THEMED GRADIENT: LIGHT         */
+/* TEXT GRADIENT: LIGHT           */
 /* ============================== */
 .gradient-text-light {
-  background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+  background-image: linear-gradient(90deg, #a18cd1, #fbc2eb);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* ============================== */
-/* THEMED GRADIENT: WARM          */
+/* TEXT GRADIENT: WARM            */
 /* ============================== */
 .gradient-text-warm {
-  background: linear-gradient(135deg, #ff6a00, #ee0979);
+  background-image: linear-gradient(135deg, #ff6a00, #ee0979);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* ============================== */
-/* THEMED GRADIENT: COOL          */
+/* TEXT GRADIENT: COOL            */
 /* ============================== */
 .gradient-text-cool {
-  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  background-image: linear-gradient(45deg, #00c6ff, #0072ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* ============================== */
-/* THEMED GRADIENT: MONOCHROME    */
+/* TEXT GRADIENT: MONOCHROME      */
 /* ============================== */
 .gradient-text-monochrome {
-  background: linear-gradient(90deg, #000000, #4b4b4b);
+  background-image: linear-gradient(90deg, #000000, #4b4b4b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+
+/* ============================== */
+/* TEXT GRADIENT: THEME           */
+/* ============================== */
+.gradient-text-theme {
+  background-image: linear-gradient(135deg, #5a5dcf, #765bc8, #5a5dcf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================== */
+/* TEXT GRADIENT: SHIFT           */
+/* ============================== */
+.gradient-shift {
+  background-size: 200%;
+  animation: gradientShift 12s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gradient-shift:hover {
+  animation-duration: 3s;
+}
+
+/* ============================== */
+/* GRADIENT SHIFT BACKGROUND      */
+/* ============================== */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
