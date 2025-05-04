@@ -7,42 +7,61 @@
 /* HEADING 1                      */
 /* ============================== */
 h1 {
-  font-size: 2rem;
-  color: #5e77d4;
+  /* Box Model */
+  margin: 2rem 0 1.5rem;
+
+  /* Typography */
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  font-size: 2.2rem;
+  line-height: 1.4;
   text-align: center;
-  letter-spacing: 0.1px;
+  letter-spacing: 0.8px;
+  color: #5e77d4;
 }
+
 
 /* ============================== */
 /* HEADING 2                      */
 /* ============================== */
 h2 {
-  font-size: 1.6rem;
-  color: #d0d0e1;
-  text-align: center;
+  /* Box Model */
   margin-bottom: 0.75rem;
+
+  /* Typography */
+  font-size: 1.6rem;
+  text-align: center;
+  color: #d0d0e1;
 }
+
 
 /* ============================== */
 /* HEADING 3                      */
 /* ============================== */
 h3 {
-  color: #c1c1d7;
+  /* Box Model */
   margin: 1.2rem 0 0.2rem;
+
+  /* Typography */
   text-align: center;
+  color: #c1c1d7;
 }
+
 
 /* ============================== */
 /* HEADING 4                      */
 /* ============================== */
 h4 {
+  /* Box Model */
+  margin-top: 1.2rem;
+  margin-bottom: 0.8rem;
+
+  /* Layout */
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 1.2rem;
-  margin-bottom: 0.8rem;
+
+  /* Typography */
   font-size: 1.1rem;
   font-weight: bold;
 }
