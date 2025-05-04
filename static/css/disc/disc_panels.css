@@ -186,8 +186,11 @@ body.light {
 /* ============================= */
 .panel-content {
   max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
-
 /* ============================= */
 /* UPLOAD PANEL VARIANT          */
 /* ============================= */
