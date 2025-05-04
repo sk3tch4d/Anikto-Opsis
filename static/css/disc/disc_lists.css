@@ -4,14 +4,14 @@
 
 
 /* ============================= */
-/* LI                            */
+/* LISTS                         */
 /* ============================= */
 li {
-  background: #292b3d; /*#292b3d;*/
+  /*background: #292b3d; /*#292b3d;*/
   background: linear-gradient(15deg, #292b3d, #232531);
   background-size: 160%;
-  border: 2px solid #1f1f2e;
-  border-radius: 20px;
+  border: 0.6px solid #1f1f2d;
+  border-radius: 24px;
   margin-bottom: 0.64rem;
   padding: 0.5rem; 
   box-shadow: inset 0px 0.2px 6px #1c1e22;
@@ -21,15 +21,15 @@ li {
   font-family: 'Segoe UI', Tahoma, sans-serif;
   transition: transform 0.4s ease, color 0.4s ease;
 }
+
 /* ============================= */
-/* LI: HOVER                     */
+/* LISTS: HOVER                  */
 /* ============================= */
 li:hover {
   background: linear-gradient(15deg, #2e3042, #252632);
   background-size: 160%;
   color: #e0e0eb;
   font-size: 0.922rem;
-  border-radius: 24px;
 }
 
 
