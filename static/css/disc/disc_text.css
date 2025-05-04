@@ -11,12 +11,23 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.gradient-text-dark:hover {
+  background-image: linear-gradient(225deg, #5a5dcf, #7f5ac8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 
 /* ============================== */
 /* TEXT GRADIENT: LIGHT           */
 /* ============================== */
 .gradient-text-light {
   background-image: linear-gradient(90deg, #a18cd1, #fbc2eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gradient-text-light:hover {
+  background-image: linear-gradient(290deg, #a18cd1, #fbc2eb);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -29,12 +40,22 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.gradient-text-warm:hover {
+  background-image: linear-gradient(335deg, #ff6a00, #ee0979);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 /* ============================== */
 /* TEXT GRADIENT: COOL            */
 /* ============================== */
 .gradient-text-cool {
   background-image: linear-gradient(45deg, #00c6ff, #0072ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gradient-text-cool:hover {
+  background-image: linear-gradient(245deg, #00c6ff, #0072ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -47,6 +68,11 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.gradient-text-monochrome:hover {
+  background-image: linear-gradient(290deg, #000000, #4b4b4b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 
 /* ============================== */
@@ -54,6 +80,11 @@
 /* ============================== */
 .gradient-text-theme {
   background-image: linear-gradient(135deg, #5a5dcf, #765bc8, #5a5dcf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gradient-text-theme:hover {
+  background-image: linear-gradient(335deg, #5a5dcf, #765bc8, #5a5dcf);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
