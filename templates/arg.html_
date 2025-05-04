@@ -37,7 +37,7 @@
         <div class="panel-header open" onclick="togglePanel(this)">
           <span>Scheduled</span>
         </div>
-        <div class="panel-body scrollable-panel open">
+        <div class="panel-body">
           <div class="date-wrapper">
             <input type="date" id="working-date" />
             <div class="custom-date-display" onclick="document.getElementById('working-date').showPicker()">
@@ -45,16 +45,7 @@
             </div>
           </div>
           <div id="working-date-loading" style="display: none; text-align: center;">
-
-            <!-- Loading -->
-            <div id="loading">
-              <div class="loading bounce">
-                <div class="bounce-ball one"></div>
-                <div class="bounce-ball two"></div>
-                <div class="bounce-ball three"></div>
-              </div>
-            </div>
-
+            <div class="spinner"></div>
             <p style="margin-top: 0.5rem;">Fetching schedule...</p>
           </div>
           <div id="working-date-results" style="margin-top: 1em;"></div>
@@ -85,7 +76,7 @@
       <!-- ======== WEEKLY RANKINGS ======== -->
       <div class="panel panel-animate" id="rank-week">
         <div class="panel-header" onclick="togglePanel(this)">Weekly Rankings</div>
-        <div class="panel-body scrollable-panel open">
+        <div class="panel-body">
           <ul>
             {% for name, hrs in stats.rankings.weekly %}
               <li>{{ name|reorder_name }} – {{ hrs }} hrs</li>
@@ -97,7 +88,7 @@
       <!-- ======== PERIOD RANKINGS ======== -->
       <div class="panel panel-animate" id="rank-period">
         <div class="panel-header" onclick="togglePanel(this)">Period Rankings</div>
-        <div class="panel-body scrollable-panel open">
+        <div class="panel-body">
           <ul>
             {% for name, hrs in stats.rankings.period %}
               <li>{{ name|reorder_name }} – {{ hrs }} hrs</li>
@@ -109,7 +100,7 @@
       <!-- ======== STATS ======== -->
       <div class="panel panel-animate" id="stats">
         <div class="panel-header" onclick="togglePanel(this)">Stats</div>
-        <div class="panel-body scrollable-panel open">
+        <div class="panel-body">
           <ul style="list-style: none; padding-left: 0;">
             <li><p style="text-align: center"><strong>Total Hours This Week:</strong> {{ stats.total_hours_week }}</p></li>
             <li><p style="text-align: center"><strong>Top Day:</strong> {{ stats.top_day.strftime('%a, %b %d') }} ({{ stats.top_day_hours }} hrs)</p></li>
@@ -122,17 +113,17 @@
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
         <div class="panel-body">
           {% if outputs %}
-            <div class="panel-body scrollable-panel open">
+            <ul class="downloads">
               {% for file in outputs %}
                 {% if "ARGX" in file %}
-                  <button class="button panel" href="{{ url_for('download', filename=file) }}">Spreadsheet</button>
+                  <a href="{{ url_for('download', filename=file) }}" class="file-action">Spreadsheet</a>
                 {% elif "ARGM" in file %}
-                  <button class="button panel" href="{{ url_for('download', filename=file) }}">Heatmap</button>
+                  <a href="{{ url_for('download', filename=file) }}" class="file-action">Heatmap</a>
                 {% else %}
-                  <button class="button panel" href="{{ url_for('download', filename=file) }}">{{ file }}</button>
+                  <a href="{{ url_for('download', filename=file) }}" class="file-action">{{ file }}</a>
                 {% endif %}
               {% endfor %}
-            </div>
+            </ul>
           {% else %}
             <p>No output files were generated.</p>
           {% endif %}
@@ -140,7 +131,7 @@
       </div>
 
       <!-- ======== SUBMIT ======== -->
-      <div>
+      <div class="panel panel-animate no-shadow">
         <form action="{{ url_for('index') }}" method="get" class="button-form">
           <button type="submit" class="button full-width">Generate Another</button>
         </form>
