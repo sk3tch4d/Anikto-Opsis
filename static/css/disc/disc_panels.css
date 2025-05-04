@@ -187,10 +187,9 @@ body.light {
 .panel-content {
   max-width: 500px;
   margin: 0 auto;
-  padding: 0.85rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
   box-sizing: border-box;
 }
 /* ============================= */
