@@ -34,22 +34,6 @@
 }
 
 /* ============================== */
-/* TYPED TEXT INSIDE HEADER       */
-/* ============================== */
-#typed-header #typed-text {
-  background-image: linear-gradient(135deg, #5a5dcf, #765bc8, #5a5dcf);
-  background-size: 200%;
-  animation: gradientShift 12s ease infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Optional: Speed up animation on hover */
-#typed-header #typed-text:hover {
-  animation-duration: 3s;
-}
-
-/* ============================== */
 /* BLINKING CURSOR                */
 /* ============================== */
 #typed-header::after {
@@ -63,13 +47,4 @@
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0; }
-}
-
-/* ============================== */
-/* GRADIENT SHIFT BACKGROUND      */
-/* ============================== */
-@keyframes gradientShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
