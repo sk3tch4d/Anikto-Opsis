@@ -1,29 +1,14 @@
-/* ==============================
-   TYPED HEADER ANIMATION STYLES
-   ============================== */
+/* ============================== */
+/* DISC_TYPED_HEADER.CSS         */
+/* ============================== */
 
-/* =============== */
-/* DEFAULT TYPING  */
-/* =============== */
-#typed-text {
-  display: inline-block;
-  min-width: 12ch;
-  min-height: 1.2em;
-  white-space: nowrap;
-  font-weight: inherit;
-  font-size: inherit;
-  vertical-align: top;
-  /* Reset styles in case inherited from #typed-header */
-  color: inherit; 
-  background: none;
-  -webkit-background-clip: unset;
-  -webkit-text-fill-color: unset;
-}
-
+/* ============================== */
+/* TYPED HEADER WRAPPER           */
+/* ============================== */
 #typed-header {
-  /* --- Layout & Font --- */
+  /* Layout & Typography */
   margin: 1rem auto;
-  font-size: 2.0rem;
+  font-size: 2rem;
   font-weight: 800;
   letter-spacing: 1px;
   text-align: center;
@@ -33,32 +18,24 @@
   position: relative;
 }
 
-#typed-header span {
-  /* --- Animated Text Content --- */
-  display: inline-block;
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-
-/* ==============================
-   TYPED TEXT DEFAULT (NO STYLING)
-   ============================== */
-
+/* ============================== */
+/* TYPED TEXT BASE STYLES         */
+/* ============================== */
 #typed-text {
   display: inline-block;
   min-width: 12ch;
   min-height: 1.2em;
   white-space: nowrap;
   vertical-align: top;
-  font-weight: inherit;
   font-size: inherit;
+  font-weight: inherit;
   position: relative;
+  color: #5a5dcf; /* Fallback color for unsupported browsers */
 }
 
-/* ==============================
-   TYPED TEXT (INSIDE HEADER ONLY)
-   ============================== */
+/* ============================== */
+/* TYPED TEXT INSIDE HEADER       */
+/* ============================== */
 #typed-header #typed-text {
   background-image: linear-gradient(135deg, #5a5dcf, #765bc8, #5a5dcf);
   background-size: 200%;
@@ -66,12 +43,15 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-#typed-header #typed-text:hover {
-  animation: gradientShift 1s ease infinite;
 
-/* ==============================
-   BLINKING CURSOR
-   ============================== */
+/* Optional: Speed up animation on hover */
+#typed-header #typed-text:hover {
+  animation-duration: 3s;
+}
+
+/* ============================== */
+/* BLINKING CURSOR                */
+/* ============================== */
 #typed-header::after {
   content: "|";
   position: absolute;
@@ -79,15 +59,15 @@
   animation: blink 0.7s infinite;
   color: #5a5dcf;
 }
+
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0; }
 }
 
-/* ==============================
-   GRADIENT SHIFT BACKGROUND
-   ============================== */
-
+/* ============================== */
+/* GRADIENT SHIFT BACKGROUND      */
+/* ============================== */
 @keyframes gradientShift {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
