@@ -122,7 +122,7 @@
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
         <div class="panel-body">
           {% if outputs %}
-            <ul class="downloads">
+            <ul class="panel-body scrollable-panel open">
               {% for file in outputs %}
                 {% if "ARGX" in file %}
                   <li><a class="button panel" href="{{ url_for('download', filename=file) }}" download>Spreadsheet</a></li>
