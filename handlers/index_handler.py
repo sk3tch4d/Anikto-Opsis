@@ -3,7 +3,10 @@
 # ==============================
 
 import re
+import os
+import logging
 from flask import request, render_template
+from werkzeug.utils import secure_filename
 from config import CATALOG_REGEX, SENIORITY_REGEX, USL_OPT_REGEX
 
 # Modular handlers
@@ -22,39 +25,48 @@ def process_index_upload():
             return render_template("index.html", error="No files uploaded.")
 
         file = uploaded_files[0]
-        fname = file.filename
+        fname = secure_filename(file.filename)
         fname_lower = fname.lower()
 
-        print(f"DEBUG: file = {file}")
-        print(f"DEBUG: fname = {fname}")
-        print(f"DEBUG: fname_lower = {fname_lower}")
+        logging.debug(f"Uploaded file: {fname}")
 
         # PDF: Flowsheet / ARG
         if fname_lower.endswith(".pdf"):
             from report import process_report
-            save_path = f"/tmp/{fname}"
-            file.save(save_path)
-            output_files, stats = process_report([save_path])
-            return render_template("arg.html", outputs=[fname], stats=stats)
+            match = re.search(r"\d{4}-\d{2}-\d{2}", fname)
+            date_str = match.group() if match else "unknown"
+            pdf_name = f"ARG_{date_str}.pdf"
 
+            save_path = os.path.join("/tmp", pdf_name)
+            file.save(save_path)
+            logging.debug(f"Saved uploaded PDF as: {save_path}")
+
+            output_files, stats = process_report([save_path])
+            output_filenames = [os.path.basename(f) for f in output_files]
+            if pdf_name not in output_filenames:
+                output_filenames.append(pdf_name)
+
+            return render_template("arg.html", outputs=output_filenames, stats=stats)
+    
         # USL Optimizer: KG01-XXXX-*.xlsx
         if re.match(USL_OPT_REGEX, fname, re.IGNORECASE):
-            print("DEBUG: Routed to optimize handler")
+            logging.debug("Routed to optimize handler")
             return handle_optimize()
 
         # Seniority List
         if re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
-            print("DEBUG: Routed to seniority handler")
+            logging.debug("Routed to seniority handler")
             return handle_seniority()
 
         # Inventory Catalog
         if re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
-            print("DEBUG: Routed to inventory handler")
+            logging.debug("Routed to inventory handler")
             return handle_inventory()
 
         # Fallback Cleaner
-        print("DEBUG: Routed to cleaner handler")
+        logging.debug("Routed to cleaner handler")
         return handle_cleaner()
 
     except Exception as e:
+        logging.exception("Error during file processing")
         return render_template("index.html", error=f"Unexpected error during routing: {str(e)}")
