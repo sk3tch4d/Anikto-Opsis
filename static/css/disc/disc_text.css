@@ -7,73 +7,42 @@
 /* THEMED GRADIENT                */
 /* ============================== */
 .gradient-text {
-  font-size: 2.4rem;
-  font-weight: 600;
-  margin: 1.2rem 0 1.5rem;
-  text-align: center;
-  letter-spacing: 2px;
-
-  background: linear-gradient(25deg, #5a5dcf, #7f5ac8);
+  color: #5a5dcf; /* fallback for non-WebKit */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* ============================== */
+/* THEMED GRADIENT: DARK          */
+/* ============================== */
+.gradient-text.dark {
+  background: linear-gradient(25deg, #5a5dcf, #7f5ac8);
 }
 
 /* ============================== */
 /* THEMED GRADIENT: LIGHT         */
 /* ============================== */
-.gradient-text-light {
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 1.2rem 0 1.5rem;
-  text-align: center;
-  letter-spacing: 2px;
-
+.gradient-text.light {
   background: linear-gradient(90deg, #a18cd1, #fbc2eb);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 /* ============================== */
 /* THEMED GRADIENT: WARM          */
 /* ============================== */
-.gradient-text-warm {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 1.2rem 0 1.5rem;
-  text-align: center;
-  letter-spacing: 1.5px;
-
+.gradient-text.warm {
   background: linear-gradient(135deg, #ff6a00, #ee0979);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 /* ============================== */
 /* THEMED GRADIENT: COOL          */
 /* ============================== */
-.gradient-text-cool {
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 1.2rem 0 1.5rem;
-  text-align: center;
-  letter-spacing: 1.5px;
-
+.gradient-text.cool {
   background: linear-gradient(45deg, #00c6ff, #0072ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 /* ============================== */
 /* THEMED GRADIENT: MONOCHROME    */
 /* ============================== */
-.gradient-text-monochrome {
-  font-size: 2rem;
-  font-weight: 500;
-  margin: 1.2rem 0 1.5rem;
-  text-align: center;
-  letter-spacing: 1px;
-
+.gradient-text.monochrome {
   background: linear-gradient(90deg, #000000, #4b4b4b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
