@@ -19,7 +19,9 @@ li {
   text-align: center;
   font-size: 0.92rem;
   font-family: 'Segoe UI', Tahoma, sans-serif;
-  transition: transform 0.4s ease, color 0.4s ease;
+  transition: 
+    transform 0.4s ease, 
+    color 0.4s ease;
 }
 
 /* ============================= */
@@ -29,7 +31,6 @@ li:hover {
   background: linear-gradient(15deg, #2e3042, #252632);
   background-size: 160%;
   color: #e0e0eb;
-  font-size: 0.922rem;
 }
 
 
