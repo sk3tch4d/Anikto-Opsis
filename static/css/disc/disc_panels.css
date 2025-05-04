@@ -31,7 +31,7 @@ body.light {
 /* ============================= */
 .panel {
   user-select: none;
-  margin-top: 1.4rem;
+  margin-top: 1rem;
   width: clamp(320px, 85vw, 480px);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -183,7 +183,7 @@ body.light {
   width: 100%;
   margin: 0 auto;
 }
-
+/* ============================= */
 .panel-body .file-action.uploaded {
   background-color: #26282c;
   padding: 0.4rem 0.8rem;
@@ -197,11 +197,10 @@ body.light {
   text-align: center;
   width: 100%;
 }
-
+/* ============================= */
 .panel-body .file-action.uploaded:hover {
   background-color: #32353a;
 }
-
 
 /* ============================= */
 /* BODY LOCK WHEN PANEL OPEN     */
@@ -220,10 +219,10 @@ body.lock-scroll {
   flex-direction: column;
   max-height: 80vh;
 }
+/* ============================= */
 .search-controls {
   flex: 0 0 auto;
 }
-
 
 /* ============================= */
 /* PANEL: SCROLLABLE (LEGACY)    */
@@ -236,6 +235,7 @@ body.lock-scroll {
   transition: max-height 0.3s ease, opacity 0.3s ease;
   scrollbar-width: none; /* Firefox */
 }
+/* ============================= */
 .scrollable-panel::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
@@ -256,12 +256,12 @@ body.lock-scroll {
 .scrollable-panel {
   scrollbar-width: none; /* Firefox */
 }
+/* ============================= */
 .scrollable-fill::-webkit-scrollbar,
 .panel-body::-webkit-scrollbar,
 .scrollable-panel::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
-
 
 /* ============================= */
 /* ANIMATION: PANEL SLIDE-IN     */
