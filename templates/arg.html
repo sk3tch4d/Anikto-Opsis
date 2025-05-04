@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARG Summary</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
+</head>
+<body>
+  <h1 id="typed-header">
+    <span id="typed-text" data-title="ARG Summary|Anikto Opsis"></span>
+  </h1>
+  <div id="panel-wrapper"> 
+    {% set shift_icons = {
+      'Day':     '☀️', 
+      'Evening': '🌇', 
+      'Night':   '🌙'
+    } %}
+    {% set reason_icons = {
+      'Shift Swap'         : '🔄',
+      'Sick Leave'         : '🩼',
+      'Covering Vacant'    : '🪪',
+      'Schedule Adjustment': '🪛',
+      'Vacation'           : '🌴',
+      'Stat Holiday'       : '⭐',
+      'Leave of Absence'   : '🪁',
+      'Other'              : '❔'
+    } %}
+    <button id="mobile-focus-reset" style="position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0;" tabindex="-1" aria-hidden="true"></button>
+
+    <!-- ======== PANEL CONTAINER ======== -->
+    <div id="panel-container">
+
+      <!-- ======== SCHEDULED ======== -->
+      <div class="panel panel-animate" id="scheduled-search-panel">
+        <div class="panel-header open" onclick="togglePanel(this)">
+          <span>Scheduled</span>
+        </div>
+        <div class="panel-body">
+          <div class="date-wrapper">
+            <input type="date" id="working-date" />
+            <div class="custom-date-display" onclick="document.getElementById('working-date').showPicker()">
+              <span id="custom-date-text">Today</span>
+            </div>
+          </div>
+          <div id="working-date-loading" style="display: none; text-align: center;">
+            <div class="spinner"></div>
+            <p style="margin-top: 0.5rem;">Fetching schedule...</p>
+          </div>
+          <div id="working-date-results" style="margin-top: 1em;"></div>
+        </div>
+      </div>
+
+      <!-- ======== SWAPS & COVERAGE ======== -->
+      <div class="panel panel-animate" id="coverage">
+        <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage (WIP)</div>
+        <div class="panel-body scrollable-panel">
+          {% if stats.swaps %}
+            <ul>
+              {% for swap in stats.swaps %}
+                <li style="margin-bottom: 1em;">
+                  <strong>{{ reason_icons.get(swap.reason, '❔') }} <em>{{ swap.reason }}</em> ({{ swap.shift|replace("d","") }})</strong><br>
+                  {{ swap.start }} – {{ swap.end }} <!--{{ shift_icons.get(swap.type, '❔') }}--><br>
+                  {{ swap.org_employee }} → {{ swap.cov_employee }}<br>
+                  {{ swap.date }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>No shift swaps or exceptions detected.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- ======== WEEKLY RANKINGS ======== -->
+      <div class="panel panel-animate" id="rank-week">
+        <div class="panel-header" onclick="togglePanel(this)">Weekly Rankings</div>
+        <div class="panel-body">
+          <ul>
+            {% for name, hrs in stats.rankings.weekly %}
+              <li>{{ name|reorder_name }} – {{ hrs }} hrs</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- ======== PERIOD RANKINGS ======== -->
+      <div class="panel panel-animate" id="rank-period">
+        <div class="panel-header" onclick="togglePanel(this)">Period Rankings</div>
+        <div class="panel-body">
+          <ul>
+            {% for name, hrs in stats.rankings.period %}
+              <li>{{ name|reorder_name }} – {{ hrs }} hrs</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- ======== STATS ======== -->
+      <div class="panel panel-animate" id="stats">
+        <div class="panel-header" onclick="togglePanel(this)">Stats</div>
+        <div class="panel-body">
+          <ul style="list-style: none; padding-left: 0;">
+            <li><p style="text-align: center"><strong>Total Hours This Week:</strong> {{ stats.total_hours_week }}</p></li>
+            <li><p style="text-align: center"><strong>Top Day:</strong> {{ stats.top_day.strftime('%a, %b %d') }} ({{ stats.top_day_hours }} hrs)</p></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ======== DOWNLOADS ======== -->
+      <div class="panel panel-animate" id="downloads">
+        <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
+        <div class="panel-body">
+          {% if outputs %}
+            <ul class="downloads">
+              {% for file in outputs %}
+                {% if "ARGX" in file %}
+                  <a href="{{ url_for('download', filename=file) }}" class="file-action">Spreadsheet</a>
+                {% elif "ARGM" in file %}
+                  <a href="{{ url_for('download', filename=file) }}" class="file-action">Heatmap</a>
+                {% else %}
+                  <a href="{{ url_for('download', filename=file) }}" class="file-action">{{ file }}</a>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>No output files were generated.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- ======== SUBMIT ======== -->
+      <div class="panel panel-animate no-shadow">
+        <form action="{{ url_for('index') }}" method="get" class="button-form">
+          <button type="submit" class="button full-width">Generate Another</button>
+        </form>
+      </div>
+
+    </div> <!-- END #panel-container -->
+
+  </div> <!-- END #panel-wrapper -->
+  <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
+</body>
+</html>
