@@ -7,6 +7,7 @@
 /* TEXT GRADIENT: DARK            */
 /* ============================== */
 .gradient-text-dark {
+  display: inline-block;
   font-size: inherit;
   font-weight: inherit;
   background-image: linear-gradient(25deg, #5a5dcf, #7f5ac8);
