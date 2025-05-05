@@ -16,7 +16,7 @@ export function renderOptimizationResults(data, term, resultsList) {
 
   data.forEach(item => {
     const card = document.createElement("div");
-    card.className = "compare-card";
+    card.className = "panel-card";
 
     let html = "";
 
