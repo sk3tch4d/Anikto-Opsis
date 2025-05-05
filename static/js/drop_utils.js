@@ -9,11 +9,13 @@ import { displayRandomQuote } from './quotes.js';
 // ==============================
 // FILE TYPE MATCHERS
 // ==============================
+const USL_OPT_REGEX = "^KG01-[A-Z0-9]{1,4}-.*\.xlsx$"
 const CATALOG_REGEX = /(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$/i;
 const ARG_REGEX = /(arg|flowsheet).*?\.(pdf)$/i;
 const SENIORITY_REGEX = /(cupe).*seniority.*(list)?.*\.xlsx$/i;
 const UNCLEANED_REGEX = /(list|ven|vendor|cost|usl|cc).*\.xlsx$/i;
 
+const isOptimizationFile = name => CATALOG_REGEX.test(name);
 const isCatalogFile = name => CATALOG_REGEX.test(name);
 const isArgFile = name => ARG_REGEX.test(name);
 const isSeniorityFile = name => SENIORITY_REGEX.test(name);
@@ -50,6 +52,7 @@ function updateGenerateButtonText() {
   }
 
   const typeMatchers = [
+    { label: "Generate Optimization", match: isOptimizationFile },
     { label: "Generate Catalog", match: isCatalogFile },
     { label: "Generate Seniority Summary", match: isSeniorityFile },
     { label: "Generate ARG Summary", match: isArgFile },
