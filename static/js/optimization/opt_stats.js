@@ -65,7 +65,7 @@ function toggleSaveItem(card, item) {
 // ==============================
 function createCard(item, term) {
   const card = document.createElement("div");
-  card.className = "compare-card";
+  card.className = "panel-card";
 
   card.innerHTML = `
     <div><strong>${highlightMatch(item.material, term)}</strong> — ${highlightMatch(item.material_description || "", term)}</div>
@@ -92,7 +92,7 @@ export function populateOptimizationStats(results) {
   box.innerHTML = "";
 
   const summary = document.createElement("div");
-  summary.className = "compare-card";
+  summary.className = "panel-card";
   summary.innerHTML = `<div><span class="tag-label">Results:</span> ${results.length}</div>`;
   box.appendChild(summary);
 
