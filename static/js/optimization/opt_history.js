@@ -59,7 +59,7 @@ export function addOptimizationSearchToHistory(term, cartFilter, results) {
 // ==============================
 function renderEntry(container, entry, materialList = []) {
   const card = document.createElement("div");
-  card.className = "compare-card";
+  card.className = "panel-card";
 
   const timeLine = document.createElement("div");
   timeLine.className = "search-timestamp";
