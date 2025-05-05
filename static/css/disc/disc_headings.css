@@ -44,12 +44,12 @@ h2 {
 /* ============================== */
 h3 {
   /* Box Model */
-  margin: 0.75rem 0 0.75rem;
+  margin: 0.75rem 0 0.6rem;
 
   /* Typography */
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 1.6rem !important;
+  font-size: 1.1rem !important;
   line-height: 1.4;
   text-align: center;
   letter-spacing: 0.7px;
