@@ -165,7 +165,7 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
 
   const card = document.createElement("div");
-  card.className = "compare-card";
+  card.className = "panel-card";
 
   const numberHTML = highlightMatch(base.Num + old, currentSearch);
   const descHTML = highlightMatch(base.Description, currentSearch);
@@ -254,7 +254,7 @@ export function populateInventoryStats(results) {
   const fragment = document.createDocumentFragment();
 
   const summaryContainer = document.createElement("div");
-  summaryContainer.className = "compare-card";
+  summaryContainer.className = "panel-card";
 
   const liResults = document.createElement("div");
   const resultsCount = results.length >= 100 ? "100+" : results.length;
