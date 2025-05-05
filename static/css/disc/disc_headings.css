@@ -44,7 +44,7 @@ h2 {
 /* ============================== */
 h3 {
   /* Box Model */
-  margin: 0.75rem 0 0.2rem;
+  margin: 0.75rem 0 0;
 
   /* Typography */
   font-family: 'Inter', sans-serif;
