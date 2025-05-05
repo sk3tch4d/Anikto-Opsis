@@ -26,12 +26,16 @@ h1 {
 /* ============================== */
 h2 {
   /* Box Model */
-  margin-bottom: 0.75rem;
+  margin: 0.75rem 0 0.5rem;
 
   /* Typography */
-  font-size: 1.6rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 2.5rem;
+  line-height: 1.4;
   text-align: center;
-  color: #d0d0e1;
+  letter-spacing: 0.8px;
+  color: #5e77d4;
 }
 
 
