@@ -39,7 +39,7 @@ export function addSearchToHistory(term, uslFilter, results) {
 
   // ===== Build Card =====
   const card = document.createElement("div");
-  card.className = "compare-card";
+  card.className = "panel-card";
 
   // Timestamp
   const timeLine = document.createElement("div");
