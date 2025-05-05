@@ -25,7 +25,7 @@ export function renderResults(matches) {
     const statusDot = getStatusDot(status, position);
 
     html += `
-      <div class="compare-card">
+      <div class="panel-card">
         <strong>${first} ${last}</strong><br>
         ${statusDot} ${status}<br>
         <em>${position}</em><br>
