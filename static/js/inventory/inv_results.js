@@ -17,7 +17,7 @@ export function renderInventoryResults(data, term, resultsList) {
 
   data.forEach(item => {
     const card = document.createElement("div");
-    card.className = "compare-card";
+    card.className = "panel-card";
 
     const numStr = String(item.Num ?? "");
     const oldStr = String(item.Old ?? "");
