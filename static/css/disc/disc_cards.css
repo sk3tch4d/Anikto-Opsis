@@ -4,6 +4,26 @@
 
 
 /* ============================= */
+/* PANEL CARD                  */
+/* ============================= */
+.panel-card {
+  border: 2px solid #1f1f2e;
+  background: #29293d; /*#292b3d;*/
+  padding: 0.6rem 1.1rem;
+  border-radius: 9px;
+  margin-bottom: 0.85rem;
+  box-shadow: inset 0px 0.8px 5px #1c1e22;
+  color: #c1c1d7;
+  text-align: center;
+  font-size: 0.9rem;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  transition: transform 0.4s ease, color 0.4s ease;
+}
+.panel-card:hover {
+  color: #ddd;
+}
+
+/* ============================= */
 /* COMPARE CARD                  */
 /* ============================= */
 .compare-card {
