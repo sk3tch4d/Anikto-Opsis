@@ -1,8 +1,5 @@
 a {
   text-decoration: none;
-  color: #ffffff;
+  color: #eeeeee;
   font-weight: bold;
-}
-a:hover {
-  text-decoration: underline;
 }
