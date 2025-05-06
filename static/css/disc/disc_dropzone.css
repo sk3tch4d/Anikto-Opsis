@@ -1,100 +1,181 @@
-/* ============================== */
-/* DISC_HEADINGS.CSS              */
-/* ============================== */
-
-
-/* ============================== */
-/* HEADING 1                      */
-/* ============================== */
-h1 {
-  /* Box Model */
-  margin: 2rem 0 2rem;
-
-  /* Typography */
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 2.6rem !important;
-  line-height: 1.4;
-  text-align: center;
-  letter-spacing: 0.8px;
-  color: #5e77d4;
-  transition: 
-    font-size 0.8s ease,
-    margin 0.8s ease;
-}
-h1:hover {  
-  /* Box Model */
-  margin: 2rem 0 1.5rem;
-  block-size: inherit;
-
-  /* Typography */
-  font-size: 3rem !important;
-  line-height: 1.4;
-  letter-spacing: 0.8px;
-}
-
-/* ============================== */
-/* HEADING 2                      */
-/* ============================== */
-h2 {
-  /* Box Model */
-  margin: 0.75rem 0 0.5rem;
-
-  /* Typography */
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 2.4rem !important;
-  line-height: 1.4;
-  text-align: center;
-  letter-spacing: 0.75px;
-  color: #5e77d4;
+#generate.select {
+  background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
+  color: #060614;
+  background-size: 160%;
 }
 
 
-/* ============================== */
-/* HEADING 3                      */
-/* ============================== */
-h3 {
-  /* Box Model */
-  margin: 0.75rem 0 0;
-
-  /* Typography */
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 1rem !important;
-  line-height: 1.4;
-  text-align: center;
-  letter-spacing: 0.7px;
-  color: #d0d0e1;
-  
-  transition: 
-    font-size 0.8s ease,
-    margin 0.8s ease;
-}
-h3:hover {  
-  /* Box Model */
-  margin: 0.75rem 0 0;
-  block-size: inherit;
-
-  /* Typography */
-  font-size: 1.1em !important;
-  line-height: 1.4;
-  letter-spacing: 0.8px;
-
-/* ============================== */
-/* HEADING 4                      */
-/* ============================== */
-h4 {
-  /* Box Model */
-  margin-top: 1.2rem;
-  margin-bottom: 0.8rem;
-
-  /* Layout */
+.drop-zone {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  flex-direction: column;
 
-  /* Typography */
-  font-size: 1.1rem;
-  font-weight: bold;
+  border: 0.18rem dashed #8080ff;
+  border-radius: 18px;
+  padding: 3rem 2.6rem;
+
+  width: 95%;
+  min-height: 120px;
+  max-height: 200px;
+  box-sizing: border-box;
+
+  cursor: pointer;
+  text-align: center;
+  margin: 1.6rem auto 3rem;
+
+  animation: pulse-glow 2.8s ease-in-out infinite;
 }
+
+.drop-zone:hover {
+  background-color: rgba(114, 137, 218, 0.05);
+}
+.drop-zone.active {
+  background-color: rgba(114, 137, 218, 0.1);
+  border-color: #9999ff;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.drop-zone.drag-over {
+  background-color: #2b2e34;
+  border-color: #5a7fff;
+}
+.drop-text {
+  font-size: 0.94rem;
+  padding: 0.5rem;
+  color: #ccc;
+  max-width: 90%;
+  word-wrap: break-word;
+}
+input[type="file"] {
+  display: none;
+}
+
+/* ---- Hide dropzone ---- */
+.uploaded-file {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.drop-zone.hidden {
+  display: none;
+}
+
+/* ---- Reactive Drop ---- */
+.drop-zone {
+  transition: transform 0.45s cubic-bezier(0.25, 1.5, 0.5, 1), 
+              box-shadow 1s ease;
+  transform-origin: center;
+}
+.drop-zone:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 22px rgba(114, 137, 218, 0.2);
+}
+
+
+
+
+
+/* ==========================================================
+   FILE ACTION STYLES
+   Shared styles for upload/download file blocks
+   ========================================================== */
+
+/* -- Base Style -- */
+.file-action {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: #26282c;
+  color: #ccc !important;
+  border: 1px solid #7289da;
+  border-radius: 10px;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  margin: 0 0 0.75rem;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+  font-weight: normal;
+}
+
+/* -- Hover + Focus States -- */
+.file-upload:hover,
+.file-upload:focus {
+  background-color: #32353a;
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+}
+/* -- Visited State -- */
+.file-upload:visited {
+  color: #ccc;
+}
+/* -- Upload-Specific Tweaks -- */
+.file-upload.uploaded {
+  margin-top: 0.5rem;
+}
+.file-upload.mimic-drop {
+  border: 2px solid #7289da;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+/* -- Match Dropzone Padding -- */
+.index-upload .file-action {
+  padding: 1.5rem;
+}
+
+
+/* ------ SHIMMER ------ */
+.file-action.shimmer {
+  background: linear-gradient(
+    90deg,
+    #9494b8 30%,
+    #7289da 60%,
+    #7575a3 90%
+  );
+  background-size: 400% auto;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shimmer 8s ease-in-out infinite;
+}
+
+/* ------ SHIMMER ------ */
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+/* ------ PULSE ------ */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 
+      0 0 10px rgba(102, 102, 255, 0.3), 
+      inset 0 0 6px rgba(102, 102, 255, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 0 26px rgba(102, 102, 255, 0.3), 
+      inset 0 0 22px rgba(102, 102, 255, 0.3);
+  }
+  100% {
+    box-shadow: 
+      0 0 10px rgba(102, 102, 255, 0.3), 
+      inset 0 0 6px rgba(102, 102, 255, 0.3);
+  }
+}
+
+
+/* ------ JS LISTENERS ------ */
+dropzone.addEventListener('dragover', () => {
+  dropzone.classList.add('drag-over');
+});
+dropzone.addEventListener('dragleave', () => {
+  dropzone.classList.remove('drag-over');
+});
