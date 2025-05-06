@@ -36,7 +36,7 @@
           </div>
           <div class="panel-body">
             {% for display_name, saved_name in recent_pdfs %}
-              <label class="file-action uploaded" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+              <label class="upload-zone" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
                   <input type="checkbox" name="existing_pdfs" value="{{ saved_name }}" />
                   <span class="shimmer">{{ display_name }}</span>
               </label>
