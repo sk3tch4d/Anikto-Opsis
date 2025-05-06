@@ -102,6 +102,76 @@ input[type="file"] {
 }
 
 /* ============================== */
+/* UPLOAD-ZONE                      */
+/* ============================== */
+.upload-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+/* ============================== */
+  border: 0.18rem solid #8080ff;
+  border-radius: 18px;
+  padding: 3rem 2.6rem;
+/* ============================== */
+  width: 95%;
+  min-height: 120px;
+  max-height: 200px;
+/* ============================== */
+  cursor: pointer;
+  text-align: center;
+  margin: 1.6rem auto 3rem;
+/* ============================== */
+  animation: pulse-glow 2.8s ease-in-out infinite;
+  transition:
+    transform 0.45s cubic-bezier(0.25, 1.5, 0.5, 1), 
+    box-shadow 1s ease;
+  transform-origin: center;
+}
+
+/* ============================== */
+/* UPLOAD-ZONE: HIDDEN            */
+/* ============================== */
+.upload-zone:hover {
+  background-color: rgba(114, 137, 218, 0.05);
+  transform: scale(1.03);
+  box-shadow: 0 0 22px rgba(114, 137, 218, 0.2);
+}
+
+/* ============================== */
+/* UPLOAD-ZONE ACTIVE             */
+/* ============================== */
+.upload-zone.active {
+  background-color: rgba(114, 137, 218, 0.1);
+  border-color: #9999ff;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+/* ============================== */
+/* UPLOAD-ZONE HIDDEN             */
+/* ============================== */
+.drop-zone.hidden {
+  display: none;
+}
+
+/* ============================== */
+/* UPLOAD-TEXT                    */
+/* ============================== */
+.upload-text {
+  font-size: 0.94rem;
+  padding: 0.5rem;
+  color: #ccc;
+  max-width: 90%;
+  word-wrap: break-word;
+  transition: color 0.6s ease;
+}
+/* ============================== */
+.upload-text:hover {
+  color: #c4c5ee;
+}
+
+
+/* ============================== */
 /* FILE-ACTION                    */
 /* ============================== */
 .file-action {
