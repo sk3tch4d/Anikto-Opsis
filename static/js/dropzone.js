@@ -49,7 +49,7 @@ function setupFileInput(fileInput, fileList) {
     const li = document.createElement("li");
     const link = document.createElement("a");
 
-    link.className = "file-action uploaded";
+    link.className = "upload-zone";
     link.href = "#";
     link.textContent = file.name;
 
