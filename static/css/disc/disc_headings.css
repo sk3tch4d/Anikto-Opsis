@@ -19,16 +19,16 @@ h1 {
   letter-spacing: 0.8px;
   color: #5e77d4;
   transition: 
-    font-size 0.8s ease,
-    margin 0.8s ease;
+    font-size 0.4s ease,
+    margin 0.4s ease;
 }
 h1:hover {  
   /* Box Model */
-  margin: 2rem 0 1.5rem;
+  margin: 2rem 0 1.8rem;
   block-size: inherit;
-
+  display: inline-block;
   /* Typography */
-  font-size: 3rem !important;
+  font-size: 2.75rem !important;
   line-height: 1.4;
   letter-spacing: 0.8px;
 }
@@ -50,7 +50,6 @@ h2 {
   color: #5e77d4;
 }
 
-
 /* ============================== */
 /* HEADING 3                      */
 /* ============================== */
@@ -61,7 +60,7 @@ h3 {
   /* Typography */
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 1rem !important;
+  font-size: 0.98rem !important;
   line-height: 1.4;
   text-align: center;
   letter-spacing: 0.7px;
@@ -70,16 +69,6 @@ h3 {
   transition: 
     font-size 0.8s ease,
     margin 0.8s ease;
-}
-h3:hover {  
-  /* Box Model */
-  margin: 0.75rem 0 0;
-  block-size: inherit;
-
-  /* Typography */
-  font-size: 1.1em !important;
-  line-height: 1.4;
-  letter-spacing: 0.8px;
 }
 
 /* ============================== */
