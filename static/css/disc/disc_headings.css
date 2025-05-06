@@ -8,7 +8,7 @@
 /* ============================== */
 h1 {
   /* Box Model */
-  margin: 2rem 0 1.5rem;
+  margin: 2rem 0 2rem;
 
   /* Typography */
   font-family: 'Inter', sans-serif;
@@ -18,8 +18,20 @@ h1 {
   text-align: center;
   letter-spacing: 0.8px;
   color: #5e77d4;
+  transition: 
+    font-size 0.8s ease,
+    margin 0.8s ease;
 }
+h1:hover {  
+  /* Box Model */
+  margin: 2rem 0 1.5rem;
+  block-size: inherit;
 
+  /* Typography */
+  font-size: 3rem !important;
+  line-height: 1.4;
+  letter-spacing: 0.8px;
+}
 
 /* ============================== */
 /* HEADING 2                      */
@@ -54,8 +66,20 @@ h3 {
   text-align: center;
   letter-spacing: 0.7px;
   color: #d0d0e1;
+  
+  transition: 
+    font-size 0.8s ease,
+    margin 0.8s ease;
 }
+h3:hover {  
+  /* Box Model */
+  margin: 0.75rem 0 0;
+  block-size: inherit;
 
+  /* Typography */
+  font-size: 1.1em !important;
+  line-height: 1.4;
+  letter-spacing: 0.8px;
 
 /* ============================== */
 /* HEADING 4                      */
