@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zwdiseg Analysis</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
+</head>
+<body>
+  <h2>
+    <span class="typed-text gradient-text-dark gradient-shift" data-title="Zwdiseg Analyzer|Anikto Opsis"></span>
+  </h2>
+  <div id="toast" class="toast"></div>
+
+  <div id="panel-wrapper">
+    <div id="panel-container">
+
+      <!-- ============================= -->
+      <!-- PANEL: ZWDISEG SEARCH         -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="zwdiseg-search-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Search Zwdiseg</div>
+        <div class="panel-body scrollable-panel">
+
+          <!-- STICKY: Search and Filter -->
+          <div class="sticky-bar">
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+              <select id="usl-filter" class="input full-width" style="flex: 0 0 100px;">
+                <option value="All">All</option>
+              </select>
+              <input id="zwdiseg-search" class="input full-width" placeholder="Search..." style="flex: 1;" />
+            </div>
+          </div>
+
+          <ul id="zwdiseg-stats" style="list-style: none; padding-left: 0; line-height: 1.8; text-align: center;">
+            <!--JS-->
+          </ul>
+
+          <!-- Loading + Stats -->
+          <div id="loading">
+            <div class="loading bounce">
+              <div class="bounce-ball one"></div>
+              <div class="bounce-ball two"></div>
+              <div class="bounce-ball three"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: SEARCH RESULTS         -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="zwdiseg-stats-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Full Results</div>
+        <div class="panel-body scrollable-panel">
+
+          <!-- STICKY: Sort Row -->
+          <div class="sticky-bar">
+            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+              <select id="sort-by" class="input full-width" style="flex: 1;">
+                <option value="QTY">Quantity</option>
+                <option value="USL">USL</option>
+                <option value="Num">Number</option>
+                <option value="Cost">Cost</option>
+              </select>
+              <button id="sort-direction" class="input sort-button" type="button" style="flex: 0 0 auto;">↓</button>
+            </div>
+          </div>
+
+          <!-- Results -->
+          <ul id="zwdiseg-results" style="margin-top: 1rem;"></ul>
+          <p id="no-results" class="error-text" style="display: none; text-align: center; margin-top: 1rem;">
+            No results found.
+          </p>
+
+          <!-- Loading + Stats -->
+          <div id="loading-full">
+            <div class="loading bounce">
+              <div class="bounce-ball one"></div>
+              <div class="bounce-ball two"></div>
+              <div class="bounce-ball three"></div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: SAVED ZWDISEG          -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="zwdiseg-saved-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Saved Items</div>
+        <div class="panel-body scrollable-panel">
+          <!--<ul id="zwdiseg-saved-list" style="list-style: none; padding-left: 0;"></ul>-->
+        </div>
+      </div>
+      
+      <!-- ============================= -->
+      <!-- PANEL: SEARCH HISTORY         -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="zwdiseg-history-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Search History</div>
+        <div class="panel-body scrollable-panel">
+          <ul id="search-history-list" style="list-style: none; padding-left: 0;"></ul>
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: DOWNLOADS              -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="downloads">
+        <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
+        <div class="panel-body">
+          <div class="panel-body scrollable-panel">
+            <button class="button panel" id="zwdiseg-search-download">Download Search</button>
+            <button class="button panel" id="zwdiseg-saved-download">Download Saved Items</button>
+            <button class="button panel" id="zwdiseg-history-download">Download History</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: RETURN                 -->
+      <!-- ============================= -->
+      <div class="panel panel-animate no-shadow">
+        <form action="{{ url_for('index') }}" method="get" class="button-form">
+          <button type="submit" class="button full-width">Process Another</button>
+        </form>
+      </div>
+
+    </div> <!-- END panel-container -->
+  </div> <!-- END panel-wrapper -->
+
+  <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
+</body>
+</html>
