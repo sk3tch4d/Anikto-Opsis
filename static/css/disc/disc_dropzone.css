@@ -123,9 +123,7 @@ input[type="file"] {
   margin: 1.6rem auto 3rem;
 /* ============================== */
   font-size: 0.9rem;
-  padding: 0.5rem;
   color: #b3b3ff;
-  max-width: 90%;
   word-wrap: break-word;
 /* ============================== */
   animation: pulse-glow 2.8s ease-in-out infinite;
