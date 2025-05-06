@@ -1,44 +1,82 @@
+/* ============================== */
+/* DISC_DROPZONE.CSS              */
+/* ============================== */
+
+
+/* ============================== */
+/* GENERATE SELECT                */
+/* ============================== */
 #generate.select {
   background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
   color: #060614;
   background-size: 160%;
 }
 
-
+/* ============================== */
+/* DROP-ZONE                      */
+/* ============================== */
 .drop-zone {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
+/* ============================== */
   border: 0.18rem dashed #8080ff;
   border-radius: 18px;
   padding: 3rem 2.6rem;
-
+/* ============================== */
   width: 95%;
   min-height: 120px;
   max-height: 200px;
   box-sizing: border-box;
-
+/* ============================== */
   cursor: pointer;
   text-align: center;
   margin: 1.6rem auto 3rem;
-
+/* ============================== */
   animation: pulse-glow 2.8s ease-in-out infinite;
+  transition:
+    transform 0.45s cubic-bezier(0.25, 1.5, 0.5, 1), 
+    box-shadow 1s ease;
+  transform-origin: center;
 }
 
+/* ============================== */
+/* DROP-ZONE: HIDDEN              */
+/* ============================== */
 .drop-zone:hover {
   background-color: rgba(114, 137, 218, 0.05);
+  transform: scale(1.03);
+  box-shadow: 0 0 22px rgba(114, 137, 218, 0.2);
 }
+
+/* ============================== */
+/* DROP-ZONE ACTIVE               */
+/* ============================== */
 .drop-zone.active {
   background-color: rgba(114, 137, 218, 0.1);
   border-color: #9999ff;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
+
+/* ============================== */
+/* DROP-ZONE HIDDEN               */
+/* ============================== */
+.drop-zone.hidden {
+  display: none;
+}
+
+/* ============================== */
+/* DROP-ZONE DRAG-OVER            */
+/* ============================== */
 .drop-zone.drag-over {
   background-color: #2b2e34;
   border-color: #5a7fff;
 }
+
+/* ============================== */
+/* DROP-TEXT                      */
+/* ============================== */
 .drop-text {
   font-size: 0.94rem;
   padding: 0.5rem;
@@ -46,40 +84,26 @@
   max-width: 90%;
   word-wrap: break-word;
 }
+
+/* ============================== */
+/* INPUT: TYPE=FILE               */
+/* ============================== */
 input[type="file"] {
   display: none;
 }
 
+/* ============================== */
+/* UPLOADED-FILE                  */
+/* ============================== */
 /* ---- Hide dropzone ---- */
 .uploaded-file {
   word-break: break-word;
   overflow-wrap: anywhere;
 }
-.drop-zone.hidden {
-  display: none;
-}
 
-/* ---- Reactive Drop ---- */
-.drop-zone {
-  transition: transform 0.45s cubic-bezier(0.25, 1.5, 0.5, 1), 
-              box-shadow 1s ease;
-  transform-origin: center;
-}
-.drop-zone:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 22px rgba(114, 137, 218, 0.2);
-}
-
-
-
-
-
-/* ==========================================================
-   FILE ACTION STYLES
-   Shared styles for upload/download file blocks
-   ========================================================== */
-
-/* -- Base Style -- */
+/* ============================== */
+/* FILE-ACTION                    */
+/* ============================== */
 .file-action {
   display: block;
   width: 100%;
@@ -98,7 +122,9 @@ input[type="file"] {
   font-weight: normal;
 }
 
-/* -- Hover + Focus States -- */
+/* ============================== */
+/* FILE-ACTION: HOVER, FOCUS      */
+/* ============================== */
 .file-upload:hover,
 .file-upload:focus {
   background-color: #32353a;
@@ -106,14 +132,24 @@ input[type="file"] {
   text-decoration: none;
   outline: none;
 }
-/* -- Visited State -- */
+
+/* ============================== */
+/* FILE-ACTION: VISITED           */
+/* ============================== */
 .file-upload:visited {
   color: #ccc;
 }
-/* -- Upload-Specific Tweaks -- */
+
+/* ============================== */
+/* FILE-ACTION UPLOADED           */
+/* ============================== */
 .file-upload.uploaded {
   margin-top: 0.5rem;
 }
+
+/* ============================== */
+/* FILE-ACTION MIMIC-DROP         */
+/* ============================== */
 .file-upload.mimic-drop {
   border: 2px solid #7289da;
   padding: 1.5rem;
@@ -121,13 +157,17 @@ input[type="file"] {
   text-align: center;
   cursor: pointer;
 }
-/* -- Match Dropzone Padding -- */
+
+/* ============================== */
+/* INDEX-UPLOAD FILE-ACTION       */
+/* ============================== */
 .index-upload .file-action {
   padding: 1.5rem;
 }
 
-
-/* ------ SHIMMER ------ */
+/* ============================== */
+/* FILE-ACTION SHIMMER            */
+/* ============================== */
 .file-action.shimmer {
   background: linear-gradient(
     90deg,
@@ -142,7 +182,9 @@ input[type="file"] {
   animation: shimmer 8s ease-in-out infinite;
 }
 
-/* ------ SHIMMER ------ */
+/* ============================== */
+/* SHIMMER                        */
+/* ============================== */
 @keyframes shimmer {
   0% {
     background-position: 200% center;
@@ -152,7 +194,9 @@ input[type="file"] {
   }
 }
 
-/* ------ PULSE ------ */
+/* ============================== */
+/* PULSE-GLOW                     */
+/* ============================== */
 @keyframes pulse-glow {
   0% {
     box-shadow: 
@@ -171,8 +215,9 @@ input[type="file"] {
   }
 }
 
-
-/* ------ JS LISTENERS ------ */
+/* ============================== */
+/* JS LISTENERS                   */
+/* ============================== */
 dropzone.addEventListener('dragover', () => {
   dropzone.classList.add('drag-over');
 });
