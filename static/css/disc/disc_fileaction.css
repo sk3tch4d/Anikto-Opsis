@@ -50,9 +50,9 @@ ul.file-box li {
   width: 100%;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   background-color: transparent;
   border: none;
+  box-shadow: none;
 }
 .file-action.mimic-drop {
   border: 2px solid #7289da;
