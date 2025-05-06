@@ -122,9 +122,9 @@ input[type="file"] {
   text-align: center;
   margin: 1.6rem auto 3rem;
 /* ============================== */
-  font-size: 0.94rem;
+  font-size: 0.9rem;
   padding: 0.5rem;
-  color: #ccc;
+  color: #b3b3ff;
   max-width: 90%;
   word-wrap: break-word;
 /* ============================== */
@@ -156,7 +156,7 @@ input[type="file"] {
 /* ============================== */
 /* UPLOAD-ZONE HIDDEN             */
 /* ============================== */
-.drop-zone.hidden {
+.upload-zone.hidden {
   display: none;
 }
 
