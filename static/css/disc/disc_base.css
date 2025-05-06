@@ -15,17 +15,21 @@ html {
 /* BODY                           */
 /* ============================== */
 body {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+/* ============================== */
   /* min-height: 100vh;*/
-  background-color: #212230 !important;
-  color: #ccc;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem;
   line-height: 1.6;
+/* ============================== */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #212230 !important; 
   font-size: 1rem;
-  user-select: none;
+  color: #ccc;
 }
 
 /* ============================== */
