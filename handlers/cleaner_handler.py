@@ -1,25 +1,23 @@
 # ==============================
-# CLEANER_HANDLER.PY — DEFAULT CLEANER FLOW
+# CLEANER_HANDLER.PY — DEFAULT CLEANER FLOW (REFACTORED)
 # ==============================
 
 import os
-from flask import request, render_template, current_app as app
-from inv_cleaner import clean_xlsx_and_save
+from datetime import datetime
+from flask import render_template, current_app as app
+from utils.data_cleaner import save_cleaned_df
 
 # ==============================
 # HANDLE UNKNOWN XLSX FILE (FALLBACK CLEAN)
 # ==============================
-def handle():
+def handle(df):
     try:
         # ==============================
-        # Get uploaded file
+        # Save cleaned DataFrame to /tmp with a generic filename
         # ==============================
-        file = request.files.getlist("uploads")[0]
-
-        # ==============================
-        # Run cleaner
-        # ==============================
-        cleaned_path, cleaned_filename = clean_xlsx_and_save(file)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        cleaned_path = save_cleaned_df(df)
+        cleaned_filename = os.path.basename(cleaned_path)
 
         # ==============================
         # Provide cleaned file for download
