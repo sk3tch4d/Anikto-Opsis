@@ -7,7 +7,7 @@ import os
 import logging
 from flask import request, render_template
 from werkzeug.utils import secure_filename
-from config import CATALOG_REGEX, SENIORITY_REGEX, USL_OPT_REGEX, ZWISEG_REGEX
+from config import CATALOG_REGEX, SENIORITY_REGEX, USL_OPT_REGEX, ZWDISEG_REGEX
 
 # Modular handlers
 from handlers.optimize_handler import handle as handle_optimize
