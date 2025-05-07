@@ -14,6 +14,7 @@ from handlers.optimize_handler import handle as handle_optimize
 from handlers.seniority_handler import handle as handle_seniority
 from handlers.inventory_handler import handle as handle_inventory
 from handlers.inventory_handler import handle as handle_zwdiseg
+from handlers.cleaner_handler import handle as handle_cleaner
 
 # Cleaner utility
 from utils.data_cleaner import clean_xlsx_and_save
@@ -75,7 +76,9 @@ def process_index_upload():
                     logging.debug("Rerouted to zwdiseg handler after cleaning")
                     return handle_zwdiseg(cleaned_path)
 
-                return render_template("index.html", message="File cleaned, but no matching handler found.")
+                # Fallback Cleaner
+                logging.debug("Routed to cleaner handler")
+                return handle_cleaner()
 
             except Exception as clean_err:
                 logging.exception("Cleaning failed")
