@@ -11,15 +11,18 @@ import { displayRandomQuote } from './quotes.js';
 // ==============================
 //const OPTIMIZE_REGEX = "^KG01-[A-Z0-9]{1,4}-.*\.xlsx$";
 const CATALOG_REGEX = /(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$/i;
+const ZWDISEG_REGEX = /.*zwdiseg.*\.xlsx$/i;
 const ARG_REGEX = /(arg|flowsheet).*?\.(pdf)$/i;
 const SENIORITY_REGEX = /(cupe).*seniority.*(list)?.*\.xlsx$/i;
 const UNCLEANED_REGEX = /(list|ven|vendor|cost|usl|cc).*\.xlsx$/i;
 
 //const isOptimizationFile = name => OPTIMIZE_REGEX.test(name);
 const isCatalogFile = name => CATALOG_REGEX.test(name);
+const isZwdisegFile = name => ZWDISEG_REGEX.test(name);
 const isArgFile = name => ARG_REGEX.test(name);
 const isSeniorityFile = name => SENIORITY_REGEX.test(name);
 const isUncleanedFile = name => UNCLEANED_REGEX.test(name);
+
 const isValidFile = name => /\.(pdf|xlsx|db)$/i.test(name);
 
 // ==============================
@@ -54,6 +57,7 @@ function updateGenerateButtonText() {
   const typeMatchers = [
     //{ label: "Generate Optimization", match: isOptimizationFile },
     { label: "Generate Catalog", match: isCatalogFile },
+    { label: "Analyze Zwdiseg", match: isZwdisegFile },
     { label: "Generate Seniority Summary", match: isSeniorityFile },
     { label: "Generate ARG Summary", match: isArgFile },
     { label: "Generate Cleaned File", match: isUncleanedFile }
@@ -118,6 +122,7 @@ function detectFileTypeKey() {
   const typeMatchers = [
     { key: "arg", match: isArgFile },
     { key: "catalog", match: isCatalogFile },
+    { key: "zwdiseg", match: isZwdisegFile },
     { key: "seniority", match: isSeniorityFile },
     { key: "uncleaned", match: isUncleanedFile }
   ];
