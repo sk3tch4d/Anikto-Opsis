@@ -28,6 +28,8 @@ def get_inventory_usls(df):
 # SEARCH INVENTORY
 # ==============================
 def search_inventory(df, term, usl, sort="QTY", direction="desc"):
+    print("DF in memory:", df.shape)
+    print("Columns:", df.columns.tolist())
 
     if df is None:
         return []
