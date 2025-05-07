@@ -10,7 +10,6 @@ from openpyxl.utils import get_column_letter
 # ==============================
 # CONFIG — RENAME AND REMOVE MAPS
 # ==============================
-
 COLUMN_RENAMES = {
     "time": "Time",
     "name": "Name",
@@ -66,7 +65,6 @@ REMOVE_COLUMNS = [
 # ==============================
 # CLEANING FUNCTIONS (STEP MODULES)
 # ==============================
-
 def clean_headers(df):
     df.columns = df.columns.str.strip().str.replace(r"\s+", " ", regex=True)
     rename_map = {k: v for k, v in COLUMN_RENAMES.items() if k in df.columns}
@@ -102,9 +100,8 @@ def clean_format(df):
 # ==============================
 # DYNAMIC CLEANING PIPELINE
 # ==============================
-
-def clean_xlsx(file_stream, *steps):
-    df = pd.read_excel(file_stream)
+def clean_xlsx(file_stream, *steps, header=0):
+    df = pd.read_excel(file_stream, header=header)
     for step in steps:
         df = step(df)
     return df
@@ -112,7 +109,6 @@ def clean_xlsx(file_stream, *steps):
 # ==============================
 # EXCEL COLUMN AUTO-FIT
 # ==============================
-
 def autofit_columns(worksheet, max_width=40, min_width=10, padding=2):
     for col_cells in worksheet.columns:
         lengths = [len(str(cell.value)) if cell.value else 0 for cell in col_cells]
@@ -121,9 +117,8 @@ def autofit_columns(worksheet, max_width=40, min_width=10, padding=2):
         worksheet.column_dimensions[col_letter].width = best_fit
 
 # ==============================
-# SAVE TO TEMP FILE FOR DOWNLOAD IF NEEDED
+# SAVE TO TEMP FILE FOR DOWNLOAD
 # ==============================
-
 def save_cleaned_df(df):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx", dir="/tmp") as tmp:
         path = tmp.name
