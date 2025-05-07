@@ -125,25 +125,24 @@ function parseSeniorityQuery(query, data) {
 
   return data.filter(row => {
     const years = parseFloat(row["Years"] || 0);
-    const text = `${row.Status} ${row.Position}`.toLowerCase();
+    const text = Object.values(row).join(" ").toLowerCase();
     const fullName = `${row["First Name"]} ${row["Last Name"]}`.toLowerCase();
-
-    // 🔍 Match direct name search
+  
     if (normalized && fullName.includes(normalized)) return true;
-
+  
     let match = true;
-
+  
     if (exactYears !== null) match = match && years === exactYears;
     if (minYears !== null) match = match && years >= minYears;
     if (maxYears !== null) match = match && years <= maxYears;
-
+  
     if (keywordGroups.length) {
       const orMatch = keywordGroups.some(group =>
         group.every(word => text.includes(word))
       );
       if (!orMatch) match = false;
     }
-
+  
     return match;
   });
 }
