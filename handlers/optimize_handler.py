@@ -1,32 +1,26 @@
 # ==============================
-# OPTIMIZE_HANDLER.PY — USL OPTIMIZER FLOW
+# OPTIMIZE_HANDLER.PY — USL OPTIMIZER FLOW (REFACTORED)
 # ==============================
 
 import os
 import re
 import json
-import pandas as pd
 from datetime import datetime
-from flask import request, render_template, current_app as app
+from flask import render_template, current_app as app
 from inv_optimizer import suggest_rop_roq
 
 # ==============================
 # HANDLE REQUEST FOR USL OPTIMIZATION
 # ==============================
-def handle():
+def handle(df):
     try:
         # ==============================
-        # Get uploaded file
+        # Extract USL code from column or fallback filename (assume passed separately if needed)
         # ==============================
-        file = request.files.getlist("uploads")[0]
-        fname_upper = file.filename.upper()
-
-        # ==============================
-        # Extract USL code from filename
-        # ==============================
-        match = re.match(r"KG01-([A-Z0-9]{1,4})", fname_upper)
+        first_usl = df["USL"].dropna().astype(str).str.upper().iloc[0] if "USL" in df.columns else None
+        match = re.match(r"KG01-([A-Z0-9]{1,4})", first_usl) if first_usl else None
         if not match:
-            return render_template("index.html", error="Invalid USL filename format.")
+            return render_template("index.html", error="Invalid or missing USL format in data.")
 
         usl_code = match.group(1)
 
@@ -40,23 +34,9 @@ def handle():
         except Exception as e:
             app.logger.error(f"Failed to load USL list: {e}")
             return render_template("index.html", error="Could not load USL list.")
+
         if usl_code not in valid_usls:
             return render_template("index.html", error=f"USL '{usl_code}' not recognized.")
-
-        # ==============================
-        # Save uploaded file (raw)
-        # ==============================
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        raw_path = os.path.join("/tmp", f"optimization_{usl_code}_{timestamp}_raw.xlsx")
-        file.save(raw_path)
-
-        # ==============================
-        # Load XLSX from header row 10
-        # ==============================
-        df = pd.read_excel(raw_path, header=9)
-
-        # Normalize headers: lowercase + underscores
-        df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
 
         # ==============================
         # Run optimization logic
@@ -66,6 +46,7 @@ def handle():
         # ==============================
         # Save optimized output
         # ==============================
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         opt_path = os.path.join("/tmp", f"optimization_{usl_code}_{timestamp}_optimized.xlsx")
         df.to_excel(opt_path, index=False)
 
