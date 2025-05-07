@@ -4,6 +4,7 @@
 
 import pandas as pd
 import os
+import logging
 import tempfile
 from openpyxl.utils import get_column_letter
 
