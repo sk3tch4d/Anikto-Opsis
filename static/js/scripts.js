@@ -26,6 +26,8 @@ import { initAdminLogin, initJsonUploadForm, initFileUploadDisplay } from './adm
 import { initializeSeniorityApp } from './seniority/sen_init.js';
 // ----- Inventory -----
 import { initializeInventoryApp } from './inventory/inv_init.js';
+// ----- Zwdiseg -----
+import { initializeZwdisegApp } from './zwdiseg/zw_init.js';
 // ----- Optimization -----
 import { initializeOptimizationApp } from './optimization/opt_init.js';
 
@@ -72,6 +74,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Inventory -----
   if (document.querySelector("#inventory-search")) initializeInventoryApp();
 
+  // ----- Zwdiseg -----
+  if (document.querySelector("#zwdiseg-search")) initializeZwdisegApp();
+  
   // ----- Optimization -----
   if (document.querySelector("#optimization-search")) initializeOptimizationApp();
 });
