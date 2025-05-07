@@ -22,12 +22,6 @@ def handle(cleaned_path=None):
             file.save(save_path)
 
         # ==============================
-        # Save to temp path
-        # ==============================
-        save_path = os.path.join("/tmp", "catalog_uploaded.xlsx")
-        file.save(save_path)
-
-        # ==============================
         # Load inventory data
         # ==============================
         df = load_inventory_data(path=save_path)
