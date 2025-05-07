@@ -5,6 +5,8 @@
 import re
 import os
 import logging
+import pandas as pd
+
 from flask import request, render_template
 from werkzeug.utils import secure_filename
 from config import CATALOG_REGEX, SENIORITY_REGEX, USL_OPT_REGEX, ZWDISEG_REGEX
