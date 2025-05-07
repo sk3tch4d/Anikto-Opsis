@@ -64,12 +64,11 @@ REMOVE_COLUMNS = [
 ]
 
 # ==============================
-# ==============================
 # CLEANING FUNCTIONS (STEP MODULES)
 # ==============================
 def clean_headers(df):
     df.columns = df.columns.str.strip().str.replace(r"\s+", " ", regex=True)
-    rename_map = {k: v for k, v in COLUMN_RENAMES.items() if k in df.columns]
+    rename_map = {k: v for k, v in COLUMN_RENAMES.items() if k in df.columns}
     df.rename(columns=rename_map, inplace=True)
     logging.debug(f"[CLEAN] Headers -> {df.attrs.get('name', 'Unnamed')}")
     return df
