@@ -9,7 +9,7 @@ import pandas as pd
 
 from flask import request, render_template
 from werkzeug.utils import secure_filename
-from config import CATALOG_REGEX, SENIORITY_REGEX, USL_OPT_REGEX, ZWDISEG_REGEX
+from config import CATALOG_REGEX, SENIORITY_REGEX, USL_OPT_REGEX, ZWDISEG_REGEX, CLEAN_REGEX
 
 # Modular handlers
 from handlers.optimize_handler import handle as handle_optimize
@@ -66,7 +66,13 @@ def process_index_upload():
             logging.debug("Routed to cleaner logic for .xlsx file")
             try:
                 # Determine cleaning pipeline based on filename
-                if re.match(USL_OPT_REGEX, fname, re.IGNORECASE):
+                if re.match(CLEAN_REGEX, fname, re.IGNORECASE):
+                    logging.debug("Matched CLEAN — using optimize cleaning pipeline")
+                    steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
+                    df = clean_xlsx(file, *steps, name=fname)
+                    return handle_cleaner(df)
+                
+                elif re.match(USL_OPT_REGEX, fname, re.IGNORECASE):
                     logging.debug("Matched USL_OPT — using optimize cleaning pipeline")
                     steps = [clean_headers, clean_deleted_rows, clean_flags, clean_columns, clean_format]
                     df = clean_xlsx(file, *steps, name=fname)
