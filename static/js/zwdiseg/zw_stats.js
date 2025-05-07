@@ -244,7 +244,7 @@ export function populateZwdisegStats(results) {
   statsBox.innerHTML = "";
 
   const searchInput = document.getElementById("zwdiseg-search");
-  const currentSearch = searchInput?.value.trim() || "(None)";
+  const currentSearch = searchInput?.value.trim() || "";
 
   const filterInput = document.getElementById("usl-filter");
   const currentFilter = (filterInput?.value.trim().toLowerCase()) || "all";
@@ -329,3 +329,6 @@ export function populateZwdisegStats(results) {
 
   setupParseStats();
 }
+
+// DEBUG WINDOW CONSOLE HOOK
+window.populateInventoryStats = populateInventoryStats;
