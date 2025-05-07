@@ -17,9 +17,9 @@ def handle(cleaned_path=None):
         if cleaned_path:
             save_path = cleaned_path
         else:
-            uploaded_file = request.files.getlist("uploads")[0]
+            file = request.files.getlist("uploads")[0]
             save_path = os.path.join("/tmp", "some_name.xlsx")
-            uploaded_file.save(save_path)
+            file.save(save_path)
 
         # ==============================
         # Save to temp path
