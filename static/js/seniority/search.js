@@ -177,3 +177,4 @@ export function doSenioritySearch() {
 // GLOBAL EXPORT FOR INLINE HTML CALLS
 // ==============================
 window.searchFromGlobalStat = searchFromGlobalStat;
+window.doSenioritySearch = doSenioritySearch;
