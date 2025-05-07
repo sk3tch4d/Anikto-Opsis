@@ -53,11 +53,11 @@ def process_index_upload():
             return render_template("arg.html", outputs=output_filenames, stats=stats)
 
         # Excel: Clean and reroute based on cleaned content
-        #if fname_lower.endswith(".xlsx"):
-        #    logging.debug("Routed to cleaner logic for .xlsx file")
-        #    try:
-        #        cleaned_path, cleaned_fname = clean_xlsx_and_save(file)
-        #        cleaned_fname_lower = cleaned_fname.lower()
+        if fname_lower.endswith(".xlsx"):
+            logging.debug("Routed to cleaner logic for .xlsx file")
+            try:
+                cleaned_path, cleaned_fname = clean_xlsx_and_save(file)
+                cleaned_fname_lower = cleaned_fname.lower()
 
                 # Reroute after cleaning
                 if re.match(USL_OPT_REGEX, cleaned_fname, re.IGNORECASE):
