@@ -24,6 +24,7 @@ from report import get_working_on_date, get_shifts_for_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
 from inventory import load_inventory_data, get_inventory_usls, search_inventory
+from zwdiseg import load_zwdiseg_data, get_zwdiseg_usls, search_zwdiseg
 from optimization import search_optimization
 from handlers.index_handler import process_index_upload
 
@@ -59,6 +60,25 @@ def register_routes(app):
         sort = request.args.get("sort", "QTY")
         direction = request.args.get("dir", "desc")
         results = search_inventory(config.INVENTORY_DF, term, usl, sort, direction)
+        return jsonify(results)
+
+    # ==============================
+    # INVENTORY API ROUTES
+    # ==============================
+    @app.route("/zwdiseg-usls")
+    def zwdiseg_usls():
+        result = get_zwdiseg_usls(config.ZWDISEG_DF)
+        if isinstance(result, tuple):
+            return jsonify(result[0]), result[1]
+        return jsonify(result)
+
+    @app.route("/zwdiseg-search")
+    def zwdiseg_search():
+        term = request.args.get("term", "")
+        usl = request.args.get("usl", "Any")
+        sort = request.args.get("sort", "QTY")
+        direction = request.args.get("dir", "desc")
+        results = search_zwdiseg(config.ZWDISEG_DF, term, usl, sort, direction)
         return jsonify(results)
 
     # ==============================
