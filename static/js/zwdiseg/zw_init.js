@@ -5,7 +5,7 @@
 
 import { doZwdisegSearch } from "./zw_search.js";
 import { populateZwdisegStats } from "./zw_stats.js";
-import { setupZwdisegDownloadSearch, setupZwdisegDownloadHistory } from "./zw_downloads.js";
+import { setupZwdisegDownloadSearch, setupZwdisegDownloadHistory } from "./zw_download.js";
 import { highlightMatch } from '../search-utils.js';
 import { withLoadingToggle, createBounceLoader } from '../loading.js';
 import { scrollPanel } from '../panels.js';
