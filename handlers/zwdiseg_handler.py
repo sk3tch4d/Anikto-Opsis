@@ -2,30 +2,13 @@
 # ZWDISEG_HANDLER.PY
 # ==============================
 
-import os
-from flask import request, render_template, current_app as app
-from zwdiseg import load_zwdiseg_data
+from flask import render_template, current_app as app
 
 # ==============================
-# HANDLE ZWDISEG FILE
+# HANDLE ZWDISEG DATAFRAME
 # ==============================
-def handle(cleaned_path=None):
+def handle(df):
     try:
-        # ==============================
-        # Determine file source
-        # ==============================
-        if cleaned_path:
-            save_path = cleaned_path
-        else:
-            file = request.files.getlist("uploads")[0]
-            save_path = os.path.join("/tmp", "some_name.xlsx")
-            file.save(save_path)
-
-        # ==============================
-        # Load Zwdiseg data
-        # ==============================
-        df = load_zwdiseg_data(path=save_path)
-
         # ==============================
         # Store in global config and render
         # ==============================
