@@ -7,12 +7,13 @@ import os
 import logging
 from flask import request, render_template
 from werkzeug.utils import secure_filename
-from config import CATALOG_REGEX, SENIORITY_REGEX, USL_OPT_REGEX
+from config import CATALOG_REGEX, SENIORITY_REGEX, USL_OPT_REGEX, ZWISEG_REGEX
 
 # Modular handlers
 from handlers.optimize_handler import handle as handle_optimize
 from handlers.seniority_handler import handle as handle_seniority
 from handlers.inventory_handler import handle as handle_inventory
+from handlers.inventory_handler import handle as handle_zwdiseg
 
 # Cleaner utility
 from utils.data_cleaner import clean_xlsx_and_save
@@ -69,6 +70,10 @@ def process_index_upload():
                 if re.search(CATALOG_REGEX, cleaned_fname_lower, re.IGNORECASE):
                     logging.debug("Rerouted to inventory handler after cleaning")
                     return handle_inventory(cleaned_path)
+
+                if re.search(ZWDISEG_REGEX, cleaned_fname_lower, re.IGNORECASE):
+                    logging.debug("Rerouted to zwdiseg handler after cleaning")
+                    return handle_zwdiseg(cleaned_path)
 
                 return render_template("index.html", message="File cleaned, but no matching handler found.")
 
