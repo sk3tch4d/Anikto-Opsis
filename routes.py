@@ -5,6 +5,7 @@
 import os
 import re
 import config
+import numpy as np
 from datetime import datetime
 from flask import (
     request,
@@ -60,10 +61,14 @@ def register_routes(app):
         sort = request.args.get("sort", "QTY")
         direction = request.args.get("dir", "desc")
         results = search_inventory(config.INVENTORY_DF, term, usl, sort, direction)
+        for r in results:
+            for k, v in r.items():
+                if isinstance(v, float) and np.isnan(v):
+                    r[k] = None
         return jsonify(results)
 
     # ==============================
-    # INVENTORY API ROUTES
+    # ZWDISEG API ROUTES
     # ==============================
     @app.route("/zwdiseg-usls")
     def zwdiseg_usls():
@@ -79,6 +84,10 @@ def register_routes(app):
         sort = request.args.get("sort", "QTY")
         direction = request.args.get("dir", "desc")
         results = search_zwdiseg(config.ZWDISEG_DF, term, usl, sort, direction)
+        for r in results:
+            for k, v in r.items():
+                if isinstance(v, float) and np.isnan(v):
+                    r[k] = None
         return jsonify(results)
 
     # ==============================
@@ -91,6 +100,10 @@ def register_routes(app):
         sort = request.args.get("sort", "site_suggested_rop")
         direction = request.args.get("dir", "desc")
         results = search_optimization(config.OPTIMIZATION_DF, term, cart, sort, direction)
+        for r in results:
+            for k, v in r.items():
+                if isinstance(v, float) and np.isnan(v):
+                    r[k] = None
         return jsonify(results)
 
     @app.route("/clean-inventory-xlsx", methods=["POST"])
