@@ -245,7 +245,7 @@ export function populateInventoryStats(results) {
   
   const searchInput = document.getElementById("inventory-search");
   //const currentSearch = searchInput?.value.trim() || "(None)";
-  const currentSearch = searchInput?.value.trim().toLowerCase() || "";
+  const currentSearch = searchInput?.value.trim() || "";
 
   const filterInput = document.getElementById("usl-filter");
   const currentFilter = (filterInput?.value.trim().toLowerCase()) || "all";
