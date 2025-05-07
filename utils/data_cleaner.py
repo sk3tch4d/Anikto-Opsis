@@ -69,21 +69,25 @@ def clean_headers(df):
     df.columns = df.columns.str.strip().str.replace(r"\s+", " ", regex=True)
     rename_map = {k: v for k, v in COLUMN_RENAMES.items() if k in df.columns}
     df.rename(columns=rename_map, inplace=True)
+    logging.debug(f"[CLEAN] Headers ->{df.name}")
     return df
 
 def clean_columns(df):
     df = df.loc[:, ~df.columns.duplicated()]
     df.drop(columns=[col for col in REMOVE_COLUMNS if col in df.columns], inplace=True, errors='ignore')
+    logging.debug(f"[CLEAN] Columns -> {df.name}")
     return df
 
 def clean_deleted_rows(df):
     mask = df.astype(str).apply(lambda x: x.str.contains('DELETED', case=False, na=False)).any(axis=1)
+    logging.debug(f"[CLEAN] Deleted Rows -> {df.name}")
     return df[~mask]
 
 def clean_flags(df):
     for col in ['Mat', 'Pl', 'D', 'Del']:
         if col in df.columns:
             df = df[df[col].astype(str).str.upper() != 'X']
+    logging.debug(f"[CLEAN] Flags -> {df.name}")
     return df
 
 def clean_format(df):
@@ -94,16 +98,21 @@ def clean_format(df):
     if 'Material' in df.columns: sort_cols.append('Material')
     if 'USL' in df.columns: sort_cols.append('USL')
     if sort_cols:
-        df = df.sort_values(by=sort_cols, ascending=True, na_position='last')
+        df = df.sort_values(by=sort_cols, ascending=True, na_position='last)
+
+    logging.debug(f"[CLEAN] Formatting -> {df.name}")
     return df
 
 # ==============================
 # DYNAMIC CLEANING PIPELINE
 # ==============================
-def clean_xlsx(file_stream, *steps, header=0):
+def clean_xlsx(file_stream, *steps, header=0, name=None):
     df = pd.read_excel(file_stream, header=header)
+    df.name = name or "Unnamed DataFrame"
+    logging.debug(f"[CLEAN] Processing: {df.name}")
     for step in steps:
         df = step(df)
+
     return df
 
 # ==============================
@@ -125,4 +134,6 @@ def save_cleaned_df(df):
     with pd.ExcelWriter(path, engine="openpyxl") as writer:
         df.to_excel(writer, index=False)
         autofit_columns(writer.sheets["Sheet1"])
+    logging.debug(f"[CLEAN] Saved cleaned file -> {df.name}")
     return path
+
