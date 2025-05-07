@@ -9,12 +9,17 @@ from inventory import load_inventory_data
 # ==============================
 # HANDLE CATALOG/COST CENTER INVENTORY FILE
 # ==============================
-def handle():
+def handle(cleaned_path=None):
     try:
         # ==============================
-        # Get uploaded file
+        # Determine file source
         # ==============================
-        file = request.files.getlist("uploads")[0]
+        if cleaned_path:
+            save_path = cleaned_path
+        else:
+            uploaded_file = request.files.getlist("uploads")[0]
+            save_path = os.path.join("/tmp", "some_name.xlsx")
+            uploaded_file.save(save_path)
 
         # ==============================
         # Save to temp path
