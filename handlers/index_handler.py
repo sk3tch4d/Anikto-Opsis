@@ -13,7 +13,7 @@ from config import CATALOG_REGEX, SENIORITY_REGEX, USL_OPT_REGEX, ZWISEG_REGEX
 from handlers.optimize_handler import handle as handle_optimize
 from handlers.seniority_handler import handle as handle_seniority
 from handlers.inventory_handler import handle as handle_inventory
-from handlers.inventory_handler import handle as handle_zwdiseg
+from handlers.zwdiseg_handler import handle as handle_zwdiseg
 from handlers.cleaner_handler import handle as handle_cleaner
 
 # Cleaner utility
