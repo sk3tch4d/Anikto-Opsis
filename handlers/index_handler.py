@@ -77,9 +77,8 @@ def process_index_upload():
                     return handle_seniority(df)
 
                 elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
-                    logging.debug("Matched CATALOG — using inventory cleaning pipeline")
-                    steps = [clean_headers, clean_deleted_rows, clean_columns]
-                    df = clean_xlsx(file, *steps)
+                    logging.debug("Matched CATALOG")
+                    df = pd.read_excel(file)
                     return handle_inventory(df)
 
                 elif re.search(ZWDISEG_REGEX, fname_lower, re.IGNORECASE):
