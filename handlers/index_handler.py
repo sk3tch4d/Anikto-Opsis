@@ -1,5 +1,5 @@
 # ==============================
-# INDEX_HANDLER.PY — ROUTING DELEGATOR
+# INDEX_HANDLER.PY — ROUTING DELEGATOR (REFACTORED)
 # ==============================
 
 import re
@@ -17,7 +17,14 @@ from handlers.zwdiseg_handler import handle as handle_zwdiseg
 from handlers.cleaner_handler import handle as handle_cleaner
 
 # Cleaner utility
-from utils.data_cleaner import clean_xlsx_and_save
+from utils.data_cleaner import (
+    clean_xlsx,
+    clean_headers,
+    clean_columns,
+    clean_deleted_rows,
+    clean_flags,
+    clean_format
+)
 
 # ==============================
 # MAIN ENTRYPOINT — ROUTE BASED ON FILE TYPE
@@ -52,36 +59,40 @@ def process_index_upload():
 
             return render_template("arg.html", outputs=output_filenames, stats=stats)
 
-        # Excel: Clean and rerout
+        # Excel: Clean and reroute based on cleaned content
         if fname_lower.endswith(".xlsx"):
             logging.debug("Routed to cleaner logic for .xlsx file")
             try:
-                #cleaned_path, cleaned_fname = clean_xlsx_and_save(file)
-                #cleaned_fname_lower = cleaned_fname.lower()
+                # Determine cleaning pipeline based on filename
+                if re.match(USL_OPT_REGEX, fname, re.IGNORECASE):
+                    logging.debug("Matched USL_OPT — using optimize cleaning pipeline")
+                    steps = [clean_headers, clean_deleted_rows, clean_flags, clean_columns, clean_format]
+                    df = clean_xlsx(file, *steps)
+                    return handle_optimize(df)
 
-                # Reroute after cleaning
-                if re.match(USL_OPT_REGEX, cleaned_fname, re.IGNORECASE):
-                    logging.debug("Rerouted to optimize handler after cleaning")
-                    return handle_optimize(cleaned_path)
+                elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
+                    logging.debug("Matched SENIORITY — using seniority cleaning pipeline")
+                    steps = [clean_headers, clean_columns, clean_format]
+                    df = clean_xlsx(file, *steps)
+                    return handle_seniority(df)
 
-                if re.search(SENIORITY_REGEX, cleaned_fname_lower, re.IGNORECASE):
-                    logging.debug("Rerouted to seniority handler after cleaning")
-                    return handle_seniority(cleaned_path)
+                elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
+                    logging.debug("Matched CATALOG — using inventory cleaning pipeline")
+                    steps = [clean_headers, clean_deleted_rows, clean_columns]
+                    df = clean_xlsx(file, *steps)
+                    return handle_inventory(df)
 
-                if re.search(CATALOG_REGEX, cleaned_fname_lower, re.IGNORECASE):
-                    logging.debug("Rerouted to inventory handler after cleaning")
-                    return handle_inventory(cleaned_path)
+                elif re.search(ZWDISEG_REGEX, fname_lower, re.IGNORECASE):
+                    logging.debug("Matched ZWDISEG — using zwdiseg cleaning pipeline")
+                    steps = [clean_headers, clean_flags, clean_columns, clean_format]
+                    df = clean_xlsx(file, *steps)
+                    return handle_zwdiseg(df)
 
-                if re.search(ZWDISEG_REGEX, cleaned_fname_lower, re.IGNORECASE):
-                    logging.debug("Rerouted to cleaning")
-                    cleaned_path, cleaned_fname = clean_xlsx_and_save(file)
-                    cleaned_fname_lower = cleaned_fname.lower()
-                    logging.debug("Cleaned: Routed to zwdiseg handler")
-                    return handle_zwdiseg(cleaned_path)
-
-                # Fallback Cleaner
-                logging.debug("Routed to cleaner handler")
-                return handle_cleaner()
+                else:
+                    logging.debug("No match — using fallback cleaning pipeline")
+                    steps = [clean_headers, clean_columns]
+                    df = clean_xlsx(file, *steps)
+                    return handle_cleaner(df)
 
             except Exception as clean_err:
                 logging.exception("Cleaning failed")
