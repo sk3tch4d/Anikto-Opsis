@@ -330,3 +330,5 @@ export function populateInventoryStats(results) {
 
   setupParseStats();
 }
+
+window.populateInventoryStats = populateInventoryStats;
