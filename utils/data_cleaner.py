@@ -40,6 +40,7 @@ COLUMN_RENAMES = {
     "Created": "Created",
     "Cost ctr": "Cost Center",
     "Vendor's Name": "Vendor Name",
+    "Limited Seniority Years": "Years",
     "Vendor material numTer": "Vendor Material",
     "Vendor material number": "Vendor Material"
 }
