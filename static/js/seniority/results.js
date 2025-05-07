@@ -8,6 +8,8 @@ import { getStatusDot } from '../statusdot.js';
 // RENDER MATCHED RESULTS
 // ==============================
 export function renderResults(matches) {
+  console.log("Rendering", matches.length, "results");
+  
   const resultsDiv = document.getElementById("seniority-results");
   if (!matches || matches.length === 0) {
     resultsDiv.innerHTML = "<p>No matching entries found.</p>";
