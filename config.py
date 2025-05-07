@@ -20,6 +20,7 @@ ARG_REGEX = r"(arg|flowsheet).*?\.(pdf)$"
 SENIORITY_REGEX = r"(cupe).*seniority.*(list)?.*\.xlsx$"
 USL_OPT_REGEX = r"^KG01-[A-Z0-9]{1,4}-.*\.xlsx$"
 ZWDISEG_REGEX = r".*zwdiseg.*\.xlsx$"
+CLEAN_REGEX = r".*clean.*\.xlsx$"
 VALID_EXTENSIONS = r"\.(pdf|xlsx|db)$"
 
 # ==============================
