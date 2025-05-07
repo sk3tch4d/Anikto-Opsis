@@ -11,20 +11,20 @@ import pandas as pd
 # LOAD EXCEL FILE
 # ==============================
 def load_seniority_file(path):
+    # Load the Excel file assuming cleaned headers and structure
     df = pd.read_excel(path, sheet_name=0, header=2)
     df.columns = [str(col).strip() for col in df.columns]
     df = df.dropna(how="all")
 
-    # Explicit column normalization
-    rename_map = {
-        "First Name": "First Name",
-        "Last Name": "Last Name",
-        "Position": "Position",
-        "Status": "Status",
-        "Limited Seniority Years": "Years"
-    }
+    # Debugging output
+    print(f"[DEBUG] Loaded file: {path}")
+    print(f"[DEBUG] Columns: {list(df.columns)}")
+    print(f"[DEBUG] Rows after dropna: {len(df)}")
 
-    df = df.rename(columns={k: v for k, v in rename_map.items() if k in df.columns})
+    # Check for required column
+    if "Years" not in df.columns:
+        print("[WARNING] 'Years' column missing in seniority data!")
+
     return df
 
 
