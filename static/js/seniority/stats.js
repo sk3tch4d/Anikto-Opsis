@@ -161,4 +161,3 @@ export function refineSearchFromStat(filter) {
 // GLOBAL EXPORT
 // ==============================
 window.refineSearchFromStat = refineSearchFromStat;
-window.populateInventoryStats = populateInventoryStats;
