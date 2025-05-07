@@ -9,18 +9,17 @@ from zwdiseg import load_zwdiseg_data
 # ==============================
 # HANDLE ZWDISEG FILE
 # ==============================
-def handle():
+def handle(cleaned_path=None):
     try:
         # ==============================
-        # Get uploaded file
+        # Determine file source
         # ==============================
-        file = request.files.getlist("uploads")[0]
-
-        # ==============================
-        # Save to temp path
-        # ==============================
-        save_path = os.path.join("/tmp", "zwdiseg_uploaded.xlsx")
-        file.save(save_path)
+        if cleaned_path:
+            save_path = cleaned_path
+        else:
+            file = request.files.getlist("uploads")[0]
+            save_path = os.path.join("/tmp", "some_name.xlsx")
+            file.save(save_path)
 
         # ==============================
         # Load Zwdiseg data
