@@ -2,7 +2,6 @@
 # INVENTORY HANDLERS
 # ==============================
 
-import config
 import pandas as pd
 DEBUG = False
 
@@ -29,8 +28,6 @@ def get_inventory_usls(df):
 # SEARCH INVENTORY
 # ==============================
 def search_inventory(df, term, usl, sort="QTY", direction="desc"):
-    print("DF in memory:", config.INVENTORY_DF.shape)
-    print("Columns:", config.INVENTORY_DF.columns.tolist())
 
     if df is None:
         return []
