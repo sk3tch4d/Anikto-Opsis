@@ -69,13 +69,13 @@ def process_index_upload():
                 if re.match(USL_OPT_REGEX, fname, re.IGNORECASE):
                     logging.debug("Matched USL_OPT — using optimize cleaning pipeline")
                     steps = [clean_headers, clean_deleted_rows, clean_flags, clean_columns, clean_format]
-                    df = clean_xlsx(file, *steps)
+                    df = clean_xlsx(file, *steps, name=fname)
                     return handle_optimize(df)
 
                 elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
                     logging.debug("Matched SENIORITY — using optimize cleaning pipeline")
                     steps = [clean_headers]
-                    df = clean_xlsx(file, *steps, header=2)
+                    df = clean_xlsx(file, *steps, header=2, name=fname)
                     return handle_seniority(df)
 
                 elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
@@ -86,13 +86,13 @@ def process_index_upload():
                 elif re.search(ZWDISEG_REGEX, fname_lower, re.IGNORECASE):
                     logging.debug("Matched ZWDISEG — using zwdiseg cleaning pipeline")
                     steps = [clean_headers, clean_flags, clean_columns, clean_format]
-                    df = clean_xlsx(file, *steps)
+                    df = clean_xlsx(file, *steps, name=fname)
                     return handle_zwdiseg(df)
 
                 else:
                     logging.debug("No match — using fallback cleaning pipeline")
-                    steps = [clean_headers, clean_columns]
-                    df = clean_xlsx(file, *steps)
+                    steps = [clean_headers, clean_columns, clean_flags, clean_deleted_rows, clean_format]
+                    df = clean_xlsx(file, *steps, name=fname)
                     return handle_cleaner(df)
 
             except Exception as clean_err:
