@@ -242,9 +242,10 @@ export function populateInventoryStats(results) {
   if (!statsBox) return;
 
   statsBox.innerHTML = "";
-
+  
   const searchInput = document.getElementById("inventory-search");
-  const currentSearch = searchInput?.value.trim() || "(None)";
+  //const currentSearch = searchInput?.value.trim() || "(None)";
+  const currentSearch = searchInput?.value.trim().toLowerCase() || "";
 
   const filterInput = document.getElementById("usl-filter");
   const currentFilter = (filterInput?.value.trim().toLowerCase()) || "all";
