@@ -98,7 +98,7 @@ def clean_format(df):
     if 'Material' in df.columns: sort_cols.append('Material')
     if 'USL' in df.columns: sort_cols.append('USL')
     if sort_cols:
-        df = df.sort_values(by=sort_cols, ascending=True, na_position='last)
+        df = df.sort_values(by=sort_cols, ascending=True, na_position='last')
 
     logging.debug(f"[CLEAN] Formatting -> {df.name}")
     return df
