@@ -9,18 +9,17 @@ from seniority import load_seniority_file
 # ==============================
 # HANDLE CUPE SENIORITY FILE
 # ==============================
-def handle():
+def handle(cleaned_path=None):
     try:
         # ==============================
-        # Get uploaded file
+        # Determine file source
         # ==============================
-        file = request.files.getlist("uploads")[0]
-
-        # ==============================
-        # Save to temp path
-        # ==============================
-        save_path = os.path.join("/tmp", "seniority_uploaded.xlsx")
-        file.save(save_path)
+        if cleaned_path:
+            save_path = cleaned_path
+        else:
+            file = request.files.getlist("uploads")[0]
+            save_path = os.path.join("/tmp", "some_name.xlsx")
+            file.save(save_path)
 
         # ==============================
         # Load seniority data
