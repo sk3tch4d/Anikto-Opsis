@@ -178,3 +178,4 @@ export function doSenioritySearch() {
 // ==============================
 window.searchFromGlobalStat = searchFromGlobalStat;
 window.doSenioritySearch = doSenioritySearch;
+window.parseSeniorityQuery = parseSeniorityQuery;
