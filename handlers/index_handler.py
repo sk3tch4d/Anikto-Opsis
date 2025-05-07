@@ -13,7 +13,9 @@ from config import CATALOG_REGEX, SENIORITY_REGEX, USL_OPT_REGEX
 from handlers.optimize_handler import handle as handle_optimize
 from handlers.seniority_handler import handle as handle_seniority
 from handlers.inventory_handler import handle as handle_inventory
-from handlers.cleaner_handler import handle as handle_cleaner
+
+# Cleaner utility
+from utils.data_cleaner import clean_xlsx_and_save
 
 # ==============================
 # MAIN ENTRYPOINT — ROUTE BASED ON FILE TYPE
@@ -47,25 +49,35 @@ def process_index_upload():
                 output_filenames.append(pdf_name)
 
             return render_template("arg.html", outputs=output_filenames, stats=stats)
-    
-        # USL Optimizer: KG01-XXXX-*.xlsx
-        if re.match(USL_OPT_REGEX, fname, re.IGNORECASE):
-            logging.debug("Routed to optimize handler")
-            return handle_optimize()
 
-        # Seniority List
-        if re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
-            logging.debug("Routed to seniority handler")
-            return handle_seniority()
+        # Excel: Clean and reroute based on cleaned content
+        if fname_lower.endswith(".xlsx"):
+            logging.debug("Routed to cleaner logic for .xlsx file")
+            try:
+                cleaned_path, cleaned_fname = clean_xlsx_and_save(file)
+                cleaned_fname_lower = cleaned_fname.lower()
 
-        # Inventory Catalog
-        if re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
-            logging.debug("Routed to inventory handler")
-            return handle_inventory()
+                # Reroute after cleaning
+                if re.match(USL_OPT_REGEX, cleaned_fname, re.IGNORECASE):
+                    logging.debug("Rerouted to optimize handler after cleaning")
+                    return handle_optimize(cleaned_path)
 
-        # Fallback Cleaner
-        logging.debug("Routed to cleaner handler")
-        return handle_cleaner()
+                if re.search(SENIORITY_REGEX, cleaned_fname_lower, re.IGNORECASE):
+                    logging.debug("Rerouted to seniority handler after cleaning")
+                    return handle_seniority(cleaned_path)
+
+                if re.search(CATALOG_REGEX, cleaned_fname_lower, re.IGNORECASE):
+                    logging.debug("Rerouted to inventory handler after cleaning")
+                    return handle_inventory(cleaned_path)
+
+                return render_template("index.html", message="File cleaned, but no matching handler found.")
+
+            except Exception as clean_err:
+                logging.exception("Cleaning failed")
+                return render_template("index.html", error=f"Cleaning failed: {str(clean_err)}")
+
+        # Unknown file type
+        return render_template("index.html", error="Unsupported file type.")
 
     except Exception as e:
         logging.exception("Error during file processing")
