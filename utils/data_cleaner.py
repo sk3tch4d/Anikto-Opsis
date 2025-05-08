@@ -20,7 +20,7 @@ COLUMN_RENAMES = {
     "Reorder point for storage loca": "ROP",
     "Replenishment quantity for slo": "ROQ",
     "Difference Quantity from Dep.I": "Difference",
-    "Quantity Posted from Dep.Inven": "New QTY",
+    "Quantity Posted from Dep.Inven": "New_QTY",
     "Counted qty": "Counted",
     "SLoc": "USL",
     "Sloc": "USL",
@@ -37,13 +37,17 @@ COLUMN_RENAMES = {
     "Material Group": "Group",
     "Replenishmt qty": "ROQ",
     "Reorder point": "ROP",
+    "Old Mat": "Old",
     "Old Material Number": "Old",
     "Created": "Created",
-    "Cost ctr": "Cost Center",
-    "Vendor's Name": "Vendor Name",
+    "Cost ctr": "Cost_Center",
+    "Cost Ctr": "Cost_Center",
+    "Vendor's Name": "Vendor_Name",
+    "Vendors name": "Vendor_Name",
+    "years": "Years",
     "Limited Seniority Years": "Years",
-    "Vendor material numTer": "Vendor Material",
-    "Vendor material number": "Vendor Material"
+    "Vendor material numTer": "Vendor_Material",
+    "Vendor material number": "Vendor_Material"
 }
 
 REMOVE_COLUMNS = [
