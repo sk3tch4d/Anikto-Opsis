@@ -4,6 +4,7 @@
 // ==============================
 
 import { setupParseStats, highlightMatch } from "../search-utils.js";
+import { getStatusDot } from '../statusdot.js';
 
 // ==============================
 // DEBUG TOGGLE
@@ -199,7 +200,8 @@ export function populateZwdisegStats(results) {
   summaryContainer.className = "panel-card";
 
   const liResults = document.createElement("div");
-  liResults.innerHTML = `<span class="tag-label">Scan:</span> ${results.length} <span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Valid:</span> ${totalChanged}`;
+  const firstName = results[0]?.Name || "Unknown";
+  liResults.innerHTML = `<span class="tag-label">Scan:</span> ${firstName} <span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Valid:</span> ${totalChanged}`;
   summaryContainer.appendChild(liResults);
   fragment.appendChild(summaryContainer);
 
