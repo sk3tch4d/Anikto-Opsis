@@ -6,11 +6,10 @@ import pandas as pd
 DEBUG = False
 
 # ==============================
-# LOAD ZWDISEG DATA (via cleaner, no re-cleaning here)
+# LOAD ZWDISEG DATA
 # ==============================
 def load_zwdiseg_data(path):
     return pd.read_excel(path)
-
 
 # ==============================
 # GET USLs
@@ -21,11 +20,10 @@ def get_zwdiseg_usls(df):
     usls = sorted(df["USL"].dropna().unique().tolist())
     return usls
 
-
 # ==============================
 # SEARCH ZWDISEG
 # ==============================
-def search_zwdiseg(df, term, usl, sort="QTY", direction="desc"):
+def search_zwdiseg(df, term, usl, sort="USL", direction="desc"):
     if df is None:
         return []
 
@@ -52,11 +50,12 @@ def search_zwdiseg(df, term, usl, sort="QTY", direction="desc"):
         df["Date"] = df["Date"].astype(str)
 
     # Sorting and trimming...
-    valid_sort_fields = {"QTY", "USL", "Num", "Time", "ROP", "ROQ"}
+    valid_sort_fields = {"USL", "Num", "Counted", "New_QTY", "Difference", "ROP", "ROQ", "Time"}
     if sort not in valid_sort_fields:
-        sort = "QTY"
-
+        sort = "USL"
+    
     if sort in df.columns:
         df = df.sort_values(by=sort, ascending=(direction == "asc"))
 
+    # Return all under 1000 rows
     return df.head(1000).to_dict(orient="records")
