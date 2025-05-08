@@ -164,7 +164,7 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
     safeHighlight(base, "Name", currentSearch, "Name"),
     safeHighlight(base, "Cost_Center", currentSearch, "Cost Center"),
     safeHighlight(base, "Counted", currentSearch, "Counted"),
-    `${safeHighlight(base, "ROP", currentSearch, "ROP")} | ${safeHighlight(base, "ROQ", currentSearch, "ROQ")}`
+    `${safeHighlight(base, "ROP", currentSearch, "ROP")} | ${safeHighlight(base, "ROQ", currentSearch, "ROQ")}`,
     safeHighlight(base, "Difference", currentSearch, "Difference"),
     safeHighlight(base, "New_QTY", currentSearch, "New QTY"),
     safeHighlight(base, "MVT", currentSearch, "MVT"),
