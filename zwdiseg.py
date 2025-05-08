@@ -51,21 +51,20 @@ def search_zwdiseg(df, term, usl, sort="QTY", direction="desc"):
         return []
 
     # ✅ Validate sort field
-    valid_sort_fields = {"QTY", "USL", "Num", "Time", "ROP", "ROQ"}
+    valid_sort_fields = {"USL", "Num", "Counted", "New_QTY", "Difference", "ROP", "ROQ", "Time"}
     if sort not in valid_sort_fields:
-        sort = "QTY"
-
+        sort = "USL"
+        
     ascending = (direction == "asc")
     if sort in df.columns:
         df = df.sort_values(by=sort, ascending=ascending)
 
     # Trim to top 100 with expected columns (optional safeguard)
     columns_to_show = [
-        "Name", "SLoc", "Cost Ctr", "Material", "Counted qty",
-        "Reorder point for storage loca", "Replenishment quantity for slo",
-        "Difference Quantity from Dep.I", "Quantity Posted from Dep.Inven",
-        "Dif", "MvT", "Count date", "Time", "Material Description"
+        "Name", "USL", "Cost_Center", "Num", "Counted", "ROP", "ROQ",
+        "Difference", "New_QTY", "Changed", "MVT", "Date", "Time", "Description"
     ]
+    
     columns_to_show = [col for col in columns_to_show if col in df.columns]
 
     final_df = df[columns_to_show].head(100)
