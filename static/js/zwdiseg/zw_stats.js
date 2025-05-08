@@ -160,16 +160,12 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
     safeHighlight(base, "Num", currentSearch, "Stores Number"),
     safeHighlight(base, "Description", currentSearch, "Description"),
     safeHighlight(matching[0], "USL", currentSearch, "USL"),
-    safeHighlight(base, "Date", currentSearch, "Date"),
-    safeHighlight(base, "Time", currentSearch, "Time"),
     safeHighlight(base, "Name", currentSearch, "Name"),
     safeHighlight(base, "Cost_Center", currentSearch, "Cost Center"),
-    safeHighlight(base, "Counted", currentSearch, "Counted"),
+    `${safeHighlight(base, "Counted", currentSearch, "Counted")} ${safeHighlight(base, "Difference", currentSearch, "Difference")}`,
     `${safeHighlight(base, "ROP", currentSearch, "ROP")} ${safeHighlight(base, "ROQ", currentSearch, "ROQ")}`,
-    safeHighlight(base, "Difference", currentSearch, "Difference"),
-    safeHighlight(base, "New_QTY", currentSearch, "New QTY"),
     safeHighlight(base, "MVT", currentSearch, "MVT"),
-    `<span class="tag-label">Changed:</span> ${base.Changed === "X" ? "Yes" : "No"}`
+    safeHighlight(base, "Time", currentSearch, "Time")
   );
 
   const infoBlock = document.createElement("div");
@@ -201,9 +197,11 @@ export function populateZwdisegStats(results) {
 
   const liResults = document.createElement("div");
   const firstName = results[0]?.Name || "Unknown";
+  const firstDate = results[0]?.Date || "Unknown";
   liResults.innerHTML = `
+    <span class="tag-label">Date:</span> ${firstDate}&nbsp;&nbsp;
     <span class="tag-label">Scan:</span> ${firstName}&nbsp;&nbsp;
-    <span class="tag-label">Results:</span> ${results.length}&nbsp;&nbsp;
+    <span class="tag-label">Total:</span> ${results.length}&nbsp;&nbsp;
     <span class="tag-label">Valid:</span> ${totalChanged}
   `;
   summaryContainer.appendChild(liResults);
