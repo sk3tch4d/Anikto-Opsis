@@ -138,11 +138,12 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
 }
 
 // ==============================
-// HELPER: SAFE GETTER
+// HELPER: SAFE GETTER w/ HIGHLIGHT
 // ==============================
-function safeGet(obj, key, fallback = "undefined") {
+function safeHighlight(obj, key, currentSearch, label) {
   const val = obj?.[key];
-  return (val === undefined || val === null || val === "" || val === "NaT") ? fallback : val;
+  const safe = (val === undefined || val === null || val === "" || val === "NaT") ? "undefined" : val;
+  return `<span class="tag-label">${label}:</span> ${highlightMatch(String(safe), currentSearch)}`;
 }
 
 // ==============================
@@ -154,24 +155,21 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
   const card = document.createElement("div");
   card.className = "panel-card";
 
-  const numberHTML = highlightMatch(base.Num + old, currentSearch);
-  const descHTML = highlightMatch(safeGet(base, "Description"), currentSearch);
-
   const detailsHTML = joinAsDivs(
-    `<span class="tag-label">Stores Number:</span> ${safeGet(base, "Num")}`,
-    `<span class="tag-label">Description:</span> ${safeGet(base, "Description")}`,
-    `<span class="tag-label">USL:</span> ${safeGet(matching[0], "USL")}`,
-    `<span class="tag-label">Date:</span> ${safeGet(base, "Date")}`,
-    `<span class="tag-label">Time:</span> ${safeGet(base, "Time")}`,
-    `<span class="tag-label">Name:</span> ${safeGet(base, "Name")}`,
-    `<span class="tag-label">Cost Center:</span> ${safeGet(base, "Cost_Center")}`,
-    `<span class="tag-label">Counted:</span> ${safeGet(base, "Counted")}`,
-    `<span class="tag-label">ROP:</span> ${safeGet(base, "ROP")}`,
-    `<span class="tag-label">ROQ:</span> ${safeGet(base, "ROQ")}`,
-    `<span class="tag-label">Difference:</span> ${safeGet(base, "Difference")}`,
-    `<span class="tag-label">New QTY:</span> ${safeGet(base, "New_QTY")}`,
-    `<span class="tag-label">MVT:</span> ${safeGet(base, "MVT")}`,
-    `<span class="tag-label">Changed:</span> ${safeGet(base, "Changed") === "X" ? "Yes" : "No"}`
+    safeHighlight(base, "Num", currentSearch, "Stores Number"),
+    safeHighlight(base, "Description", currentSearch, "Description"),
+    safeHighlight(matching[0], "USL", currentSearch, "USL"),
+    safeHighlight(base, "Date", currentSearch, "Date"),
+    safeHighlight(base, "Time", currentSearch, "Time"),
+    safeHighlight(base, "Name", currentSearch, "Name"),
+    safeHighlight(base, "Cost_Center", currentSearch, "Cost Center"),
+    safeHighlight(base, "Counted", currentSearch, "Counted"),
+    safeHighlight(base, "ROP", currentSearch, "ROP"),
+    safeHighlight(base, "ROQ", currentSearch, "ROQ"),
+    safeHighlight(base, "Difference", currentSearch, "Difference"),
+    safeHighlight(base, "New_QTY", currentSearch, "New QTY"),
+    safeHighlight(base, "MVT", currentSearch, "MVT"),
+    `<span class="tag-label">Changed:</span> ${base.Changed === "X" ? "Yes" : "No"}`
   );
 
   const infoBlock = document.createElement("div");
