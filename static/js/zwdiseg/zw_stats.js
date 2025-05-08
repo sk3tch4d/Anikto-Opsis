@@ -151,21 +151,19 @@ function safeHighlight(obj, key, currentSearch, label) {
 // HELPER: CREATE ITEM CARD
 // ==============================
 function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
-  const old = base.Old?.trim() ? ` (Old: ${base.Old})` : "";
-  const totalQty = matching.reduce((sum, item) => sum + (item.New_QTY || 0), 0);
   const card = document.createElement("div");
   card.className = "panel-card";
 
+  const status = base.Changed === "X" ? "changed" : "unchanged";
+  const statusDot = getStatusDot(status, base.MVT || "");
+
   const detailsHTML = joinAsDivs(
     safeHighlight(base, "Num", currentSearch, "Stores Number"),
-    safeHighlight(base, "Description", currentSearch, "Description"),
-    safeHighlight(matching[0], "USL", currentSearch, "USL"),
-    safeHighlight(base, "Name", currentSearch, "Name"),
-    safeHighlight(base, "Cost_Center", currentSearch, "Cost Center"),
-    `${safeHighlight(base, "Counted", currentSearch, "Counted")} ${safeHighlight(base, "Difference", currentSearch, "Difference")}`,
-    `${safeHighlight(base, "ROP", currentSearch, "ROP")} ${safeHighlight(base, "ROQ", currentSearch, "ROQ")}`,
-    safeHighlight(base, "MVT", currentSearch, "MVT"),
-    safeHighlight(base, "Time", currentSearch, "Time")
+    highlightMatch(base.Description || "", currentSearch),
+    `${safeHighlight(base, "Counted", currentSearch, "Counted")}  ${safeHighlight(base, "New_QTY", currentSearch, "Remaining")}`,
+    safeHighlight(base, "Difference", currentSearch, "Difference"),
+    `${safeHighlight(base, "ROP", currentSearch, "ROP")} | ${safeHighlight(base, "ROQ", currentSearch, "ROQ")}`,
+    `<span class="tag-label">Changed:</span> ${statusDot}  ${highlightMatch(base.MVT || "", currentSearch)}`
   );
 
   const infoBlock = document.createElement("div");
@@ -199,9 +197,9 @@ export function populateZwdisegStats(results) {
   const firstName = results[0]?.Name || "Unknown";
   const firstDate = results[0]?.Date || "Unknown";
   liResults.innerHTML = `
-    <span class="tag-label">Date:</span> ${firstDate}&nbsp;
+    <span class="tag-label">Date:</span> ${firstDate}&nbsp;&nbsp;
     <span class="tag-label">Scan:</span> ${firstName}<br>
-    <span class="tag-label">Total:</span> ${results.length}&nbsp;
+    <span class="tag-label">Total:</span> ${results.length}&nbsp;&nbsp;
     <span class="tag-label">Valid:</span> ${totalChanged}
   `;
   summaryContainer.appendChild(liResults);
