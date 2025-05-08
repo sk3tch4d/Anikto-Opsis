@@ -192,6 +192,7 @@ export function populateZwdisegStats(results) {
   const currentFilter = filterInput?.value.trim().toLowerCase() || "all";
 
   const totalChanged = results.filter(item => item.Changed === "X").length;
+  const uniqueNums = [...new Set(results.map(item => item.Num))];
   const fragment = document.createDocumentFragment();
 
   const summaryContainer = document.createElement("div");
