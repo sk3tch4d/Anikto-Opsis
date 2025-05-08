@@ -201,7 +201,11 @@ export function populateZwdisegStats(results) {
 
   const liResults = document.createElement("div");
   const firstName = results[0]?.Name || "Unknown";
-  liResults.innerHTML = `<span class="tag-label">Scan:</span> ${firstName} <span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Valid:</span> ${totalChanged}`;
+  liResults.innerHTML = `
+    <span class="tag-label">Scan:</span> ${firstName}&nbsp;&nbsp;
+    <span class="tag-label">Results:</span> ${results.length}&nbsp;&nbsp;
+    <span class="tag-label">Valid:</span> ${totalChanged}
+  `;
   summaryContainer.appendChild(liResults);
   fragment.appendChild(summaryContainer);
 
