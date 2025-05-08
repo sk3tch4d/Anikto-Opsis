@@ -164,8 +164,7 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
     safeHighlight(base, "Name", currentSearch, "Name"),
     safeHighlight(base, "Cost_Center", currentSearch, "Cost Center"),
     safeHighlight(base, "Counted", currentSearch, "Counted"),
-    safeHighlight(base, "ROP", currentSearch, "ROP"),
-    safeHighlight(base, "ROQ", currentSearch, "ROQ"),
+    `${safeHighlight(base, "ROP", currentSearch, "ROP")} | ${safeHighlight(base, "ROQ", currentSearch, "ROQ")}`
     safeHighlight(base, "Difference", currentSearch, "Difference"),
     safeHighlight(base, "New_QTY", currentSearch, "New QTY"),
     safeHighlight(base, "MVT", currentSearch, "MVT"),
@@ -192,14 +191,14 @@ export function populateZwdisegStats(results) {
   const filterInput = document.getElementById("usl-filter");
   const currentFilter = filterInput?.value.trim().toLowerCase() || "all";
 
-  const uniqueNums = [...new Set(results.map(item => item.Num))];
+  const totalChanged = results.filter(item => item.Changed === "X").length;
   const fragment = document.createDocumentFragment();
 
   const summaryContainer = document.createElement("div");
   summaryContainer.className = "panel-card";
 
   const liResults = document.createElement("div");
-  liResults.innerHTML = `<span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Unique:</span> ${uniqueNums.length}`;
+  liResults.innerHTML = `<span class="tag-label">Scan:</span> ${results.length} <span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Valid:</span> ${totalChanged}`;
   summaryContainer.appendChild(liResults);
   fragment.appendChild(summaryContainer);
 
