@@ -132,12 +132,9 @@ export const doZwdisegSearch = debounce(function({ searchInput, uslFilter, sortB
   const sort = sortBy.value;
 
   // Validate search term
+  // Allow blank search: show all results matching USL
   if (!term) {
-    resultsList.innerHTML = "";
-    elements.stats.innerHTML = "";
-    noResults.style.display = "block";
-    noResults.innerText = "Please enter a search term.";
-    return;
+    DEBUG_MODE && console.log("[DEBUG] Blank search term — returning all USL-matching results");
   }
 
   const key = generateSearchKey({ term, usl, sort, dir: sortDirection });
