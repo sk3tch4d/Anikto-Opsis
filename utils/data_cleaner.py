@@ -116,9 +116,17 @@ def clean_xlsx(file_stream, *steps, header=0, name=None):
     df = pd.read_excel(file_stream, header=header)
     df.attrs["name"] = name or "Unnamed DataFrame"
     log_cleaning("Cleaning File", df)
+
     for step in steps:
         df = step(df)
+
+    # Normalize 'Date' after cleaning (Removes 00:00:00 from pandas)
+    if 'Date' in df.columns:
+        df['Date'] = pd.to_datetime(df['Date'], errors='coerce').dt.date
+        log_cleaning("Normalized Date", df)
+
     return df
+
 
 # ==============================
 # EXCEL COLUMN AUTO-FIT
