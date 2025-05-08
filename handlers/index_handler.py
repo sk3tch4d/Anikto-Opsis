@@ -91,7 +91,7 @@ def process_index_upload():
 
                 elif re.search(ZWDISEG_REGEX, fname_lower, re.IGNORECASE):
                     logging.debug("Matched ZWDISEG — using zwdiseg cleaning pipeline")
-                    steps = [clean_headers, clean_flags, clean_columns, clean_format]
+                    steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
                     df = clean_xlsx(file, *steps, name=fname)
                     return handle_zwdiseg(df)
 
