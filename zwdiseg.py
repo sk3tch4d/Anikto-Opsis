@@ -59,4 +59,4 @@ def search_zwdiseg(df, term, usl, sort="QTY", direction="desc"):
     if sort in df.columns:
         df = df.sort_values(by=sort, ascending=(direction == "asc"))
 
-    return df.head(100).to_dict(orient="records")
+    return df.head(1000).to_dict(orient="records")
