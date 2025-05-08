@@ -199,9 +199,9 @@ export function populateZwdisegStats(results) {
   const firstName = results[0]?.Name || "Unknown";
   const firstDate = results[0]?.Date || "Unknown";
   liResults.innerHTML = `
-    <span class="tag-label">Date:</span> ${firstDate}&nbsp;&nbsp;
-    <span class="tag-label">Scan:</span> ${firstName}&nbsp;&nbsp;
-    <span class="tag-label">Total:</span> ${results.length}&nbsp;&nbsp;
+    <span class="tag-label">Date:</span> ${firstDate}&nbsp;
+    <span class="tag-label">Scan:</span> ${firstName}<br>
+    <span class="tag-label">Total:</span> ${results.length}&nbsp;
     <span class="tag-label">Valid:</span> ${totalChanged}
   `;
   summaryContainer.appendChild(liResults);
