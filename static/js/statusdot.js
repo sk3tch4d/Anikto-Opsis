@@ -8,19 +8,14 @@
 // MATCH CONST RULES
 // ==============================
 const defaultFieldRules = [
-  { field: "MVT", match: "includes", value: ["201", "yes", "true"], color: "green" },
-  { field: "MVT", match: "includes", value: ["202", "no", "false"], color: "red" },
-  
-  { field: "position", match: "includes", value: ["full", "full-time"], color: "green" },
-  { field: "position", match: "includes", value: ["part", "part-time"], color: "yellow" },
-  { field: "position", match: "includes", value: ["casual", ""], color: "gray" },
-  { field: "position", match: "includes", value: ["hold", "off", "no"], color: "red" },
-  
-  { field: "status", match: "includes", value: ["full", "full-time"], color: "green" },
-  { field: "status", match: "includes", value: ["part", "part-time"], color: "yellow" },
-  { field: "status", match: "includes", value: ["casual", "casu"], color: "gray" },
-  { field: "position", match: "includes", value: ["hold", "off", "no"], color: "red" },
-  
+  { field: ["changed", "mvt"], match: "includes", value: ["201", "yes", "true"], color: "green" },
+  { field: ["changed", "mvt"], match: "includes", value: ["202", "no", "false"], color: "red" },
+
+  { field: ["position", "status"], match: "includes", value: ["full", "full-time"], color: "green" },
+  { field: ["position", "status"], match: "includes", value: ["part", "part-time"], color: "yellow" },
+  { field: ["position", "status"], match: "includes", value: ["casual", ""], color: "gray" },
+  { field: ["position", "status"], match: "includes", value: ["hold", "off", "no"], color: "red" },
+
   { field: "remarks", match: "startsWith", value: ["urgent", "immediate"], color: "orange" },
   { field: "other", match: "equals", value: ["123", "456"], color: "purple" }
 ];
@@ -81,14 +76,17 @@ export function getStatusDot(data, rules = defaultFieldRules, options = {}) {
   let color = "gray";
   let tooltipText = "";
 
-  for (const rule of rules) {
+  outer: for (const rule of rules) {
     const { field, match, value, color: ruleColor } = rule;
-    const fieldValue = (data[field] || "").toLowerCase();
+    const fields = Array.isArray(field) ? field : [field];
 
-    if (evaluateMatch(fieldValue, match, value)) {
-      color = ruleColor;
-      tooltipText = generateTooltip(`${field.charAt(0).toUpperCase() + field.slice(1)}: ${fieldValue}`, options, true);
-      break;
+    for (const f of fields) {
+      const fieldValue = (data[f] || "").toLowerCase();
+      if (evaluateMatch(fieldValue, match, value)) {
+        color = ruleColor;
+        tooltipText = generateTooltip(`${f.charAt(0).toUpperCase() + f.slice(1)}: ${fieldValue}`, options, true);
+        break outer;
+      }
     }
   }
 
