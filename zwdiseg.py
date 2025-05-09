@@ -28,18 +28,27 @@ def search_zwdiseg(df, term, usl, sort="USL", direction="desc"):
         return []
 
     term = term.strip().lower()
-
-    if usl.strip().lower() not in {"any", "all", ""}:
+    usl = usl.strip().lower()
+    
+    # Always apply USL filter if it's specified
+    if usl not in {"any", "all", ""}:
         df = df[df["USL"].astype(str).str.strip().str.lower() == usl]
-
-    try:
-        if term:
+    
+    # Only apply search filter if term is provided
+    if term:
+        try:
+            search_cols = df.columns
+    
             def row_matches(row):
-                return any(term in str(row[col]).lower() for col in df.columns)
-            df = df[df.apply(row_matches, axis=1)]
-    except Exception as e:
-        print(f"[ERROR] Search failed: {e}")
-        return []
+                return any(term in str(row[col]).lower() for col in search_cols)
+    
+            mask = df.apply(row_matches, axis=1)
+            df = df[mask]
+    
+        except Exception as e:
+            print(f"[ERROR] Search failed: {e}")
+            return []
+
 
     # Handle JSON serialization safely
     if "Time" in df.columns:
