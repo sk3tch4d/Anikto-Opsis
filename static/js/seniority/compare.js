@@ -79,7 +79,7 @@ function renderListItem(row) {
   const position = row["Position"] || "";
   const status = row["Status"] || "";
   const years = parseFloat(row["Years"] || 0);
-  const statusDot = getStatusDot(status, position);
+  const statusDot = getStatusDot({ status, position });
 
   return `
     <div class="compare-card">
