@@ -22,7 +22,7 @@ export function renderResults(matches) {
     const position = row["Position"] || "";
     const status = row["Status"] || "";
     const years = parseFloat(row["Years"] || 0);
-    const statusDot = getStatusDot(status, position);
+    const statusDot = getStatusDot({ status, position });
 
     html += "<li style='margin-bottom: 1.5em;'>";
     html += `<strong>${first} ${last}</strong><br>`;
