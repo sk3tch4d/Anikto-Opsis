@@ -14,7 +14,7 @@ export function renderZwdisegResults(data, term, resultsList) {
   if (!Array.isArray(data) || !resultsList) return;
   if (data.length === 0) return;
 
-  resultsList.innerHTML = ""; // clear previous results
+  resultsList.innerHTML = ""; // Clear previous results
 
   data.forEach(item => {
     const card = document.createElement("div");
@@ -30,38 +30,23 @@ export function renderZwdisegResults(data, term, resultsList) {
     const changed = item.Changed === "X" ? "Yes" : "No";
     const mvt = item.MVT ?? "";
     const statusDot = getStatusDot({ mvt });
-
+    
     let html = "";
 
-    // ==============================
     // Line 1: Material Number
-    // ==============================
     html += `<span class="tag-label">Material:</span> ${highlightMatch(num, term)}<br>`;
 
-    // ==============================
     // Line 2: Description
-    // ==============================
     html += `${highlightMatch(desc, term)}<br>`;
 
-    // ==============================
-    // Line 3: Counted & Remaining
-    // ==============================
-    html += `<span class="tag-label">Counted:</span> ${counted} <span class="tag-label">Remaining:</span> ${newQty}<br>`;
-
-    // ==============================
-    // Line 4: Difference
-    // ==============================
-    html += `<span class="tag-label">Difference:</span> ${diff}<br>`;
-
-    // ==============================
-    // Line 5: ROP & ROQ
-    // ==============================
+    // Line 3: ROP & ROQ
     html += `<span class="tag-label">ROP:</span> ${rop} | <span class="tag-label">ROQ:</span> ${roq}<br>`;
 
-    // ==============================
-    // Line 6: Changed & MVT
-    // ==============================
-    html += `<span class="tag-label">Changed:</span> ${statusDot} ${changed} | <span class="tag-label">MVT:</span> ${mvt}`;
+    // Line 4: Counted & Remaining
+    html += `<span class="tag-label">Counted:</span> ${counted} <span class="tag-label">Difference:</span> ${diff}<br>`;
+
+    // Line 5: Changed & MVT
+    html += `<span class="tag-label">MVT:</span> ${mvt} ${statusDot}`;
 
     card.innerHTML = html;
     resultsList.appendChild(card);
