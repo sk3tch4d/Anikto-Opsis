@@ -55,7 +55,7 @@ export function renderZwdisegResults(data, term, resultsList) {
     // ==============================
     // Line 5: Changed & MVT
     // ==============================
-    const statusDot = getStatusDot({ MVT: mvt });
+    const statusDot = getStatusDot({ mvt });
     html += `<span class="tag-label">MVT:</span> ${mvt} ${statusDot}`;
 
     card.innerHTML = html;
