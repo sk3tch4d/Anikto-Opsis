@@ -8,14 +8,21 @@
 // MATCH CONST RULES
 // ==============================
 const defaultFieldRules = [
-  { field: "MVT", match: "includes", value: ["201", "yes"], color: "green" },
-  { field: "MVT", match: "includes", value: ["202", "no", "x"], color: "red" },
-  { field: "position", match: "includes", value: ["full", "yes", "no"], color: "green" },
+  { field: "MVT", match: "includes", value: ["201", "yes", "true"], color: "green" },
+  { field: "MVT", match: "includes", value: ["202", "no", "false"], color: "red" },
+  
+  { field: "position", match: "includes", value: ["full", "full-time"], color: "green" },
+  { field: "position", match: "includes", value: ["part", "part-time"], color: "yellow" },
+  { field: "position", match: "includes", value: ["casual", ""], color: "gray" },
   { field: "position", match: "includes", value: ["hold", "off", "no"], color: "red" },
-  { field: "position", match: "includes", value: ["casual", "off", "no"], color: "gray" },
-  { field: "status", match: "equals", value: ["full", "complete"], color: "green" },
-  { field: "status", match: "includes", value: ["part", "partial"], color: "yellow" },
-  { field: "remarks", match: "startsWith", value: ["urgent", "immediate"], color: "orange" }
+  
+  { field: "status", match: "includes", value: ["full", "full-time"], color: "green" },
+  { field: "status", match: "includes", value: ["part", "part-time"], color: "yellow" },
+  { field: "status", match: "includes", value: ["casual", "casu"], color: "gray" },
+  { field: "position", match: "includes", value: ["hold", "off", "no"], color: "red" },
+  
+  { field: "remarks", match: "startsWith", value: ["urgent", "immediate"], color: "orange" },
+  { field: "other", match: "equals", value: ["123", "456"], color: "purple" }
 ];
 
 const defaultMatchRules = [
