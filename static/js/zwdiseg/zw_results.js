@@ -29,6 +29,7 @@ export function renderZwdisegResults(data, term, resultsList) {
     const roq = item.ROQ ?? "";
     const changed = item.Changed === "X" ? "Yes" : "No";
     const mvt = item.MVT ?? "";
+    const statusDot = getStatusDot({ mvt });
 
     let html = "";
 
@@ -43,20 +44,24 @@ export function renderZwdisegResults(data, term, resultsList) {
     html += `${highlightMatch(desc, term)}<br>`;
 
     // ==============================
-    // Line 3: ROP & ROQ
+    // Line 3: Counted & Remaining
+    // ==============================
+    html += `<span class="tag-label">Counted:</span> ${counted} <span class="tag-label">Remaining:</span> ${newQty}<br>`;
+
+    // ==============================
+    // Line 4: Difference
+    // ==============================
+    html += `<span class="tag-label">Difference:</span> ${diff}<br>`;
+
+    // ==============================
+    // Line 5: ROP & ROQ
     // ==============================
     html += `<span class="tag-label">ROP:</span> ${rop} | <span class="tag-label">ROQ:</span> ${roq}<br>`;
 
     // ==============================
-    // Line 4: Counted & Remaining
+    // Line 6: Changed & MVT
     // ==============================
-    html += `<span class="tag-label">Counted:</span> ${counted} <span class="tag-label">Difference:</span> ${diff}<br>`;
-
-    // ==============================
-    // Line 5: Changed & MVT
-    // ==============================
-    const statusDot = getStatusDot({ mvt });
-    html += `<span class="tag-label">MVT:</span> ${mvt} ${statusDot}`;
+    html += `<span class="tag-label">Changed:</span> ${statusDot} ${changed} | <span class="tag-label">MVT:</span> ${mvt}`;
 
     card.innerHTML = html;
     resultsList.appendChild(card);
