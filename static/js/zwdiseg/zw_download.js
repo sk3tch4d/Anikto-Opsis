@@ -21,9 +21,11 @@ export function setupZwdisegDownloadCleaned() {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Cleaned Zwdiseg");
 
-    XLSX.writeFile(workbook, "cleaned_zwdiseg.xlsx");
+    const today = new Date().toISOString().split("T")[0]; // e.g., 2025-05-10
+    XLSX.writeFile(workbook, `cleaned_zwdiseg_${today}.xlsx`);
   });
 }
+
 
 // ==============================
 // SETUP: DOWNLOAD FOR SEARCH
