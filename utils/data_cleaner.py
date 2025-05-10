@@ -20,7 +20,7 @@ COLUMN_RENAMES = {
     "Reorder point for storage loca": "ROP",
     "Replenishment quantity for slo": "ROQ",
     "Difference Quantity from Dep.I": "Difference",
-    "Quantity Posted from Dep.Inven": "New_QTY",
+    "Quantity Posted from Dep.Inven": "Consumed",
     "Counted qty": "Counted",
     "SLoc": "USL",
     "Sloc": "USL",
