@@ -31,7 +31,11 @@ export function setupInventoryDownloadSaved() {
     const saved = Array.from(window.savedItems?.values() || []);
     if (!saved.length) return alert("No saved items to export.");
 
-    const data = saved.flatMap(entry => entry.data);
+    const data = saved.map(entry => ({
+      sheetName: `Item_${entry.data[0]?.Num || "Unknown"}`,
+      data: entry.data
+    }));
+
     downloadTable({
       data,
       layout: "inventory_saved"
