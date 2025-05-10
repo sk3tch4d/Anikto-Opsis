@@ -148,6 +148,20 @@ function safeHighlight(obj, key, currentSearch, label) {
 }
 
 // ==============================
+// HELPER: GET VALID PERCENTAGE
+// ==============================
+export function getValidPercentage(results) {
+  const { valid, total } = results.reduce((acc, item) => {
+    const val = String(item.Valid).toLowerCase();
+    if (val === "true") acc.valid++;
+    if (val === "true" || val === "false") acc.total++;
+    return acc;
+  }, { valid: 0, total: 0 });
+
+  return total ? `${(valid / total * 100).toFixed(1)}%` : "0.0%";
+}
+
+// ==============================
 // HELPER: CREATE ITEM CARD
 // ==============================
 function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
@@ -160,10 +174,10 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
   const matchUSL = base.USL;
 
   const detailsHTML = joinAsDivs(
-    `<span class="tag-label">USL:</span> ${matchUSL}&nbsp; ${safeHighlight(base, "Num", currentSearch, "Material")}&nbsp;&nbsp;${statusDot}`,
+    `<span class="tag-label">USL:</span> ${matchUSL}&nbsp;&nbsp;${safeHighlight(base, "Num", currentSearch, "Material")}&nbsp;&nbsp;&nbsp;${statusDot}`,
     highlightMatch(base.Description || "", currentSearch),
-    `${safeHighlight(base, "ROP", currentSearch, "ROP")} ${safeHighlight(base, "ROQ", currentSearch, "ROQ")}`,
-    `${safeHighlight(base, "Counted", currentSearch, "Counted")}  ${safeHighlight(base, "Consumed", currentSearch, "Consumed")}`,
+    `${safeHighlight(base, "ROP", currentSearch, "ROP")}&nbsp;&nbsp;${safeHighlight(base, "ROQ", currentSearch, "ROQ")}`,
+    `${safeHighlight(base, "Counted", currentSearch, "Counted")}&nbsp;&nbsp;${safeHighlight(base, "Consumed", currentSearch, "Consumed")}`,
     `<span class="tag-label">Movement:</span> ${highlightMatch(base.MVT || "", currentSearch)}`
   );
 
@@ -172,32 +186,8 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
   card.appendChild(infoBlock);
   card.addEventListener("dblclick", () => toggleSaveItem(card, base));
 
-  if (currentFilter === "all") {
-    if (uniqueUSLs.length === 1) {
-      const singlePill = document.createElement("span");
-      singlePill.className = "clickable-match";
-      singlePill.textContent = uniqueUSLs[0];
-      singlePill.setAttribute("data-filter", uniqueUSLs[0]);
-      singlePill.setAttribute("data-search", base.Num);
-      card.appendChild(singlePill);
-    } else if (uniqueUSLs.length > 1) {
-      const { toggle, wrapper: uslWrapper } = createToggleList({
-        label: "USLs",
-        items: uniqueUSLs,
-        itemAttributes: {
-          "data-filter": usl => usl,
-        },
-        searchableValue: base.Num,
-      });
-      card.appendChild(toggle);
-      card.appendChild(uslWrapper);
-      attachLocalToggleHandlers(card);
-    }
-  }
-
   return card;
 }
-
 
 // ==============================
 // MAIN STAT POPULATOR FUNCTION
@@ -213,6 +203,8 @@ export function populateZwdisegStats(results) {
   const currentFilter = filterInput?.value.trim().toLowerCase() || "all";
 
   const totalValid = results.filter(item => item.Valid === "true").length;
+  const totalInvalid = results.filter(item => item.Valid === "false").length;
+  const validPercent = getValidPercentage(results);
   const uniqueNums = [...new Set(results.map(item => item.Num))];
   const fragment = document.createDocumentFragment();
 
@@ -226,7 +218,8 @@ export function populateZwdisegStats(results) {
     <span class="tag-label">Date:</span> ${firstDate}&nbsp;&nbsp;
     <span class="tag-label">Scan:</span> ${firstName}<br>
     <span class="tag-label">Total:</span> ${results.length}&nbsp;&nbsp;
-    <span class="tag-label">Valid:</span> ${totalValid}
+    <span class="tag-label">Valid:</span> ${totalValid}&nbsp;&nbsp;
+    <span class="tag-label">Invalid:</span> ${totalInvalid}
   `;
   summaryContainer.appendChild(liResults);
   fragment.appendChild(summaryContainer);
