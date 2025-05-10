@@ -1,55 +1,34 @@
 // ==============================
 // DOWNLOADS.JS
-// Basic XLSX Export (No Styling)
+// Seniority XLSX Export
 // ==============================
-import * as XLSX from "https://cdn.sheetjs.com/xlsx-latest/package/xlsx.mjs";
+
+import { downloadTable } from "../xlsx_downloads.js";
 
 // ==============================
-// INIT BUTTON
+// DOWNLOAD SENIORTY SEARCH
 // ==============================
 export function setupSeniorityDownloadSearch() {
   const btn = document.getElementById("seniority-search-download");
-  if (btn) {
-    btn.addEventListener("click", downloadSearch);
-  }
-}
+  if (!btn) return;
 
-// ==============================
-// DOWNLOAD XLSX WITH AUTOFIT
-// ==============================
-export function downloadSearch() {
-  const results = window.currentSearchResults || [];
-  if (!results.length) {
-    alert("No search results to download.");
-    return;
-  }
+  btn.addEventListener("click", () => {
+    const results = window.currentSearchResults || [];
+    if (!results.length) {
+      return alert("No search results to download.");
+    }
 
-  const headers = ["Years", "First Name", "Last Name", "Status", "Position"];
-  const rows = results.map(row => [
-    parseFloat(row["Years"] || 0).toFixed(2),
-    row["First Name"] || "",
-    row["Last Name"] || "",
-    row["Status"] || "",
-    row["Position"] || ""
-  ]);
+    const rows = results.map(row => [
+      parseFloat(row["Years"] || 0).toFixed(2),
+      row["First Name"] || "",
+      row["Last Name"] || "",
+      row["Status"] || "",
+      row["Position"] || ""
+    ]);
 
-  // Create sheet
-  const worksheet = XLSX.utils.aoa_to_sheet([headers, ...rows]);
-
-  // Autofit column widths based on max content + padding
-  worksheet["!cols"] = headers.map((header, i) => {
-    const maxLen = Math.max(
-      header.length,
-      ...rows.map(row => String(row[i] || "").length)
-    );
-    return { wch: maxLen + 2 }; // Add small padding
+    downloadTable({
+      data: rows, // AOA format
+      layout: "seniority_search"
+    });
   });
-
-  // Increase header row height
-  worksheet["!rows"] = [{ hpt: 20 }];
-
-  // Create and download workbook
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Search Results");
-  XLSX.writeFile(workbook, "Search_Results.xlsx");
 }
