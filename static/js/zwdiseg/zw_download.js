@@ -3,7 +3,7 @@
 // Zwdiseg Data Exporter
 // ==============================
 
-import { downloadTable } from "../xlsx_download.js";
+import { downloadTable } from "../xlsx_downloads.js";
 
 // ==============================
 // SETUP: DOWNLOAD CLEANED DATA
