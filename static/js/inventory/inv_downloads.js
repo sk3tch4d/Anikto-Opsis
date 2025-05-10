@@ -32,7 +32,7 @@ export function setupInventoryDownloadSaved() {
     if (!saved.length) return alert("No saved items to export.");
 
     const data = saved.map(entry => ({
-      sheetName: `Item_${entry.data[0]?.Num || "Unknown"}`,
+      sheetName: `${entry.data[0]?.Num || "Unknown"}`,
       data: entry.data
     }));
 
