@@ -190,10 +190,13 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
       });
       card.appendChild(toggle);
       card.appendChild(uslWrapper);
+      attachLocalToggleHandlers(card);
     }
-  
+  }
+
   return card;
 }
+
 
 // ==============================
 // MAIN STAT POPULATOR FUNCTION
