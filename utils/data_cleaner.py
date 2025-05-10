@@ -124,25 +124,10 @@ def clean_xlsx(file_stream, *steps, header=0, name=None):
     for step in steps:
         df = step(df)
 
-    # Normalize 'Date' after cleaning
+    # Normalize 'Date' after cleaning (Removes 00:00:00 from pandas)
     if 'Date' in df.columns:
         df['Date'] = pd.to_datetime(df['Date'], errors='coerce').dt.date
         log_cleaning("Normalized Date", df)
-
-    # Ensure clean and unique columns before reordering
-    df.columns = df.columns.str.strip()
-    df = df.loc[:, ~df.columns.duplicated()]
-
-    COLS_ORDER = [
-        "Cost_Center", "USL", "Num", "QTY", "ROP", "ROQ", "Counted", "Consumed",
-        "Difference", "Changed", "MVT", "Description", "Cost", "UOM",
-        "Old", "Group", "Date", "Time", "Name", "Position", "Status", "Years", 
-        "Valid", "Created", "Vendor_Name", "Vendor_Material"
-    ]
-
-    df_order = [col for col in COLS_ORDER if col in df.columns]
-    remaining_cols = [col for col in df.columns if col not in df_order]
-    df = df[df_order + remaining_cols]
 
     return df
 
@@ -167,4 +152,3 @@ def save_cleaned_df(df):
         autofit_columns(writer.sheets["Sheet1"])
     log_cleaning("Saved File", df)
     return path
-
