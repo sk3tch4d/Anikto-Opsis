@@ -26,7 +26,12 @@ def handle(df):
         # Add Valid Column
         # ==============================
         df = df.copy()
-        df["Valid"] = df.apply(lambda row: is_below_rop(row.get("ROP"), row.get("Counted")), axis=1)
+        
+        # Boolean
+        # df["Valid"] = df.apply(lambda row: is_below_rop(row.get("ROP"), row.get("Counted")), axis=1)
+        
+        # String
+        df["Valid"] = df.apply(lambda row: str(is_below_rop(row.get("ROP"), row.get("Counted"))).lower(), axis=1)
 
         # ==============================
         # Store and Render
