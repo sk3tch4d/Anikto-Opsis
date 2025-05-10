@@ -56,6 +56,7 @@ export function downloadTable({ data, layout, filename = null }) {
         const maxLen = Math.max(col.length, ...filtered.map(row => String(row[col] || "").length));
         return { wch: maxLen + 2 };
       });
+      worksheet["!rows"] = [{ hpt: 24 }];  // Set header height to 24 points
       XLSX.utils.book_append_sheet(workbook, worksheet, sanitizeSheetName(sheetName));
     });
   } else {
@@ -72,6 +73,8 @@ export function downloadTable({ data, layout, filename = null }) {
       );
       return { wch: maxLen + 2 };
     });
+
+    worksheet["!rows"] = [{ hpt: 24 }];  // Set header height to 24 points
 
     XLSX.utils.book_append_sheet(workbook, worksheet, toTitle(layout));
   }
