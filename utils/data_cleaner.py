@@ -129,6 +129,17 @@ def clean_xlsx(file_stream, *steps, header=0, name=None):
         df['Date'] = pd.to_datetime(df['Date'], errors='coerce').dt.date
         log_cleaning("Normalized Date", df)
 
+    DF_ORDER = [
+        "Cost_Center", "USL", "Num", "QTY", "ROP", "ROQ", "Counted", "Consumed",
+        "Difference", "Changed", "MVT", "Description", "Cost", "UOM",
+        "Old", "Group", "Date", "Time", "Name", "Position", "Status", "Years", 
+        "Valid", "Created", "Vendor_Name","Vendor_Material"
+    ]
+    
+    # Only keep columns that exist in the DataFrame and match the desired order
+    df = df[[col for col in DF_ORDER if col in df.columns] + [col for col in df.columns if col not in DF_ORDER]]
+
+    
     return df
 
 
