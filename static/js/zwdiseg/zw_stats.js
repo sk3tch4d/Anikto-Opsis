@@ -186,7 +186,7 @@ export function populateZwdisegStats(results) {
   const filterInput = document.getElementById("usl-filter");
   const currentFilter = filterInput?.value.trim().toLowerCase() || "all";
 
-  const totalValid = results.filter(item => item.Valid === "True").length;
+  const totalValid = results.filter(item => item.Valid === "true").length;
   const uniqueNums = [...new Set(results.map(item => item.Num))];
   const fragment = document.createDocumentFragment();
 
