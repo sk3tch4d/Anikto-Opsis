@@ -23,7 +23,7 @@ export function renderZwdisegResults(data, term, resultsList) {
     const num = String(item.Num ?? "");
     const desc = String(item.Description ?? "");
     const counted = item.Counted ?? "";
-    const newQty = item.New_QTY ?? "";
+    const consumed = item.Consumed ?? "";
     const diff = item.Difference ?? "";
     const rop = item.ROP ?? "";
     const roq = item.ROQ ?? "";
@@ -43,7 +43,7 @@ export function renderZwdisegResults(data, term, resultsList) {
     html += `<span class="tag-label">ROP:</span> ${rop} | <span class="tag-label">ROQ:</span> ${roq}<br>`;
 
     // Line 4: Counted & Remaining
-    html += `<span class="tag-label">Counted:</span> ${counted} <span class="tag-label">Difference:</span> ${diff}<br>`;
+    html += `<span class="tag-label">Counted:</span> ${counted} <span class="tag-label">Consumed:</span> ${consumed}<br>`;
 
     // Line 5: Changed & MVT
     html += `<span class="tag-label">MVT:</span> ${mvt} ${statusDot}`;
