@@ -154,7 +154,7 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
   const card = document.createElement("div");
   card.className = "panel-card";
 
-  const status = base.Changed === "X" ? "changed" : "unchanged";
+  //const status = base.Changed === "X" ? "changed" : "unchanged";
   const statusDot = getStatusDot({ mvt: base.MVT });
 
   const detailsHTML = joinAsDivs(
