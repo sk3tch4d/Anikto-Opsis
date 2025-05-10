@@ -156,6 +156,7 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
 
   //const status = base.Changed === "X" ? "changed" : "unchanged";
   const statusDot = getStatusDot({ valid: base.Valid });
+  const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
 
   const detailsHTML = joinAsDivs(
     safeHighlight(base, "Num", currentSearch, "Material"),
@@ -169,6 +170,28 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
   infoBlock.innerHTML = detailsHTML;
   card.appendChild(infoBlock);
   card.addEventListener("dblclick", () => toggleSaveItem(card, base));
+
+  if (currentFilter === "all") {
+    if (uniqueUSLs.length === 1) {
+      const singlePill = document.createElement("span");
+      singlePill.className = "clickable-match";
+      singlePill.textContent = uniqueUSLs[0];
+      singlePill.setAttribute("data-filter", uniqueUSLs[0]);
+      singlePill.setAttribute("data-search", base.Num);
+      card.appendChild(singlePill);
+    } else if (uniqueUSLs.length > 1) {
+      const { toggle, wrapper: uslWrapper } = createToggleList({
+        label: "USLs",
+        items: uniqueUSLs,
+        itemAttributes: {
+          "data-filter": usl => usl,
+        },
+        searchableValue: base.Num,
+      });
+      card.appendChild(toggle);
+      card.appendChild(uslWrapper);
+    }
+  
   return card;
 }
 
