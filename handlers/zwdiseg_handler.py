@@ -5,14 +5,32 @@
 from flask import render_template, current_app as app
 
 # ==============================
+# ROP Validation Logic
+# ==============================
+def is_below_rop(rop, counted):
+    try:
+        rop_val = float(rop)
+        counted_val = float(counted)
+        return counted_val < rop_val
+    except (ValueError, TypeError):
+        return False
+
+# ==============================
 # HANDLE ZWDISEG DATAFRAME
 # ==============================
 def handle(df):
     try:
-        # ==============================
-        # Store in global config and render
-        # ==============================
         import config
+
+        # ==============================
+        # Add Valid Column
+        # ==============================
+        df = df.copy()
+        df["Valid"] = df.apply(lambda row: is_below_rop(row.get("ROP"), row.get("Counted")), axis=1)
+
+        # ==============================
+        # Store and Render
+        # ==============================
         config.ZWDISEG_DF = df
 
         return render_template("zwdiseg.html", table=[])
