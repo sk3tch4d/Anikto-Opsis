@@ -14,7 +14,9 @@ const COLUMN_LAYOUTS = {
   zwdiseg_history: [ "Timestamp", "Search Term", "Filter Used", "Matches" ],
   inventory_search: [ "Num", "Description", "USL", "ROP", "ROQ", "Group", "Date" ],
   inventory_history: [ "Timestamp", "Search Term", "Filter Used", "Matches" ],
-  seniority_search: [ "Years", "First Name", "Last Name", "Status", "Position" ]
+  seniority_search: [ "Years", "First Name", "Last Name", "Status", "Position" ],
+  optimization_search: ["Num", "Description", "Group", "USL", "ROP", "ROQ", "Candidate", "Confidence", "Score"],
+  optimization_history: ["Timestamp", "Search Term", "Filter Used", "Matches"]
 };
 
 // ==============================
