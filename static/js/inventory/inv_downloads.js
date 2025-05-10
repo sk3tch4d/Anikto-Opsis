@@ -21,6 +21,25 @@ export function setupInventoryDownloadSearch() {
 }
 
 // ==============================
+// SETUP: DOWNLOAD FOR SAVED
+// ==============================
+export function setupInventoryDownloadSaved() {
+  const button = document.getElementById("inventory-saved-download");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    const saved = Array.from(window.savedItems?.values() || []);
+    if (!saved.length) return alert("No saved items to export.");
+
+    const data = saved.map(entry => entry.data);
+    downloadTable({
+      data,
+      layout: "inventory_saved"
+    });
+  });
+}
+
+// ==============================
 // SETUP: DOWNLOAD FOR HISTORY
 // ==============================
 export function setupInventoryDownloadHistory() {
