@@ -28,8 +28,8 @@ export function renderZwdisegResults(data, term, resultsList) {
     const rop = item.ROP ?? "";
     const roq = item.ROQ ?? "";
     const changed = item.Changed === "X" ? "Yes" : "No";
-    const mvt = item.MVT ?? "";
-    const statusDot = getStatusDot({ mvt });
+    const valid = item.Valid ?? "";
+    const statusDot = getStatusDot({ valid });
     
     let html = "";
 
@@ -46,7 +46,7 @@ export function renderZwdisegResults(data, term, resultsList) {
     html += `<span class="tag-label">Counted:</span> ${counted} <span class="tag-label">Consumed:</span> ${consumed}<br>`;
 
     // Line 5: Changed & MVT
-    html += `<span class="tag-label">MVT:</span> ${mvt} ${statusDot}`;
+    html += `<span class="tag-label">Movement:</span> ${mvt} <span class="tag-label">Valid Scan:</span> ${statusDot}`;
 
     card.innerHTML = html;
     resultsList.appendChild(card);
