@@ -13,7 +13,7 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 // ==============================
 // GLOBAL: SAVED ITEMS
 // ==============================
-const savedItems = new Map();
+window.savedItems = new Map();
 
 // ==============================
 // HELPER: SHOW TOAST
