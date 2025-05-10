@@ -17,20 +17,25 @@ export function setupZwdisegDownloadCleaned() {
       return alert("No cleaned data to download.");
     }
 
-    // PRESERVE PY COL ORDER
-    const columnOrder = Object.keys(window.zwdisegCleanedData[0]);
+    // HARD-CODED COLUMN ORDER
+    const columnOrder = [
+      "Cost_Center", "USL", "Num", "Description", "ROP", "ROQ",
+      "Counted", "Consumed", "Difference", "Changed", "MVT",
+      "Name", "Date", "Time", "Valid"
+    ];
 
     const worksheet = XLSX.utils.json_to_sheet(window.zwdisegCleanedData, {
       header: columnOrder
     });
-    
+
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Cleaned Zwdiseg");
 
-    const today = new Date().toISOString().split("T")[0]; // e.g., 2025-05-10
+    const today = new Date().toISOString().split("T")[0];
     XLSX.writeFile(workbook, `cleaned_zwdiseg_${today}.xlsx`);
   });
 }
+
 
 
 // ==============================
