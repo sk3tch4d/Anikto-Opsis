@@ -1,8 +1,7 @@
 // ==============================
-// STATUSDOT.JS
+// STATUSDOT.JS (Sanitized Version)
 // Status Icon Assignment Logic
 // ==============================
-
 
 // ==============================
 // MATCH CONST RULES
@@ -10,7 +9,6 @@
 const defaultFieldRules = [
   { field: ["changed", "mvt"], match: "includes", value: ["201", "yes", "true"], color: "green" },
   { field: ["changed", "mvt"], match: "includes", value: ["202", "no", "false"], color: "red" },
-
 
   { field: ["position", "status"], match: "includes", value: ["hold", "off", "no"], color: "red" },
   { field: ["position", "status"], match: "includes", value: ["full", "full-time"], color: "green" },
@@ -29,22 +27,29 @@ const defaultMatchRules = [
 ];
 
 // ==============================
+// HELPER: Escape HTML
+// ==============================
+function escapeHtml(str) {
+  return String(str).replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// ==============================
 // EVALUATE MATCH
 // ==============================
 function evaluateMatch(str, match, value) {
   const values = Array.isArray(value) ? value : [value];
-  str = (str || "").toLowerCase();
+  str = String(str || "").toLowerCase();
 
   return typeof match === "function"
     ? match(str)
     : match === "includes"
-      ? values.some(v => str.includes(v.toLowerCase()))
+      ? values.some(v => str.includes(String(v).toLowerCase()))
       : match === "equals"
-        ? values.some(v => str === v.toLowerCase())
+        ? values.some(v => str === String(v).toLowerCase())
         : match === "startsWith"
-          ? values.some(v => str.startsWith(v.toLowerCase()))
+          ? values.some(v => str.startsWith(String(v).toLowerCase()))
           : match === "endsWith"
-            ? values.some(v => str.endsWith(v.toLowerCase()))
+            ? values.some(v => str.endsWith(String(v).toLowerCase()))
             : false;
 }
 
@@ -62,17 +67,6 @@ function generateTooltip(fieldOrContent, options, showField = true) {
 // ==============================
 // GET STATUS DOT
 // ==============================
-/**
- * Evaluates structured data against field-specific matching rules
- * and returns a colored status dot with optional tooltip.
- *
- * @param {Object} data - Object containing named fields (e.g., { status, position, MVT, remarks }).
- * @param {Array} [rules=defaultFieldRules] - Optional array of rule objects using field, match type, and values.
- * @param {Object} [options={}] - Display settings.
- * @param {boolean|string} [options.tooltip] - If true, generates default tooltip; if a string, uses custom text.
- * @returns {string} - HTML string for a <span> element with the status-dot class and optional tooltip.
- */
-
 export function getStatusDot(data, rules = defaultFieldRules, options = {}) {
   let color = "gray";
   let tooltipText = "";
@@ -82,7 +76,10 @@ export function getStatusDot(data, rules = defaultFieldRules, options = {}) {
     const fields = Array.isArray(field) ? field : [field];
 
     for (const f of fields) {
-      const fieldValue = (data[f] || "").toLowerCase();
+      const fieldValue = typeof data[f] === 'string'
+        ? data[f].toLowerCase()
+        : String(data[f] || '').toLowerCase();
+
       if (evaluateMatch(fieldValue, match, value)) {
         color = ruleColor;
         tooltipText = generateTooltip(`${f.charAt(0).toUpperCase() + f.slice(1)}: ${fieldValue}`, options, true);
@@ -91,24 +88,14 @@ export function getStatusDot(data, rules = defaultFieldRules, options = {}) {
     }
   }
 
-  const titleAttr = tooltipText ? ` title="${tooltipText}"` : "";
-  return `<span class="status-dot ${color}"${titleAttr}></span>`;
+  const titleAttr = tooltipText ? ` title="${escapeHtml(tooltipText)}"` : "";
+  const sanitizedColor = color.replace(/[^a-z\-]/gi, ''); // Basic CSS class sanitization
+  return `<span class="status-dot ${sanitizedColor}"${titleAttr}></span>`;
 }
 
 // ==============================
 // MATCH STATUS DOT
 // ==============================
-/**
- * Evaluates a single string against match rules (e.g., includes, startsWith)
- * and returns a colored status dot with optional tooltip.
- *
- * @param {string} input - The raw input string to evaluate.
- * @param {Array} [rules=defaultMatchRules] - Optional match rule set.
- * @param {Object} [options={}] - Display settings.
- * @param {boolean|string} [options.tooltip] - If true, generates default tooltip; if a string, uses custom text.
- * @returns {string} - HTML string for a <span> element with the status-dot class and optional tooltip.
- */
-
 export function matchStatusDot(input, rules = defaultMatchRules, options = {}) {
   let color = "gray";
   let tooltipText = "";
@@ -121,6 +108,7 @@ export function matchStatusDot(input, rules = defaultMatchRules, options = {}) {
     }
   }
 
-  const titleAttr = tooltipText ? ` title="${tooltipText}"` : "";
-  return `<span class="status-dot ${color}"${titleAttr}></span>`;
+  const titleAttr = tooltipText ? ` title="${escapeHtml(tooltipText)}"` : "";
+  const sanitizedColor = color.replace(/[^a-z\-]/gi, '');
+  return `<span class="status-dot ${sanitizedColor}"${titleAttr}></span>`;
 }
