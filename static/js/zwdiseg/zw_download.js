@@ -17,7 +17,13 @@ export function setupZwdisegDownloadCleaned() {
       return alert("No cleaned data to download.");
     }
 
-    const worksheet = XLSX.utils.json_to_sheet(window.zwdisegCleanedData);
+    // PRESERVE PY COL ORDER
+    const columnOrder = Object.keys(window.zwdisegCleanedData[0]);
+
+    const worksheet = XLSX.utils.json_to_sheet(window.zwdisegCleanedData, {
+      header: columnOrder
+    });
+    
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Cleaned Zwdiseg");
 
