@@ -58,7 +58,6 @@ export function downloadTable({ data, layout, filename = null }) {
       });
       
       worksheet["!rows"] = [{ hpt: 22 }];  // Set Header to 22 points
-      worksheet["!freeze"] = { xSplit: 0, ySplit: 1 }; // Freeze Header
       XLSX.utils.book_append_sheet(workbook, worksheet, sanitizeSheetName(sheetName));
     });
   } else {
@@ -77,8 +76,6 @@ export function downloadTable({ data, layout, filename = null }) {
     });
 
     worksheet["!rows"] = [{ hpt: 22 }];  // Set Header to 22 points
-    worksheet["!freeze"] = { xSplit: 0, ySplit: 1 }; // Freeze Header
-
     XLSX.utils.book_append_sheet(workbook, worksheet, toTitle(layout));
   }
 
