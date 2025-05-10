@@ -7,9 +7,9 @@
 // MATCH CONST RULES
 // ==============================
 const defaultFieldRules = [
-  { field: ["changed", "mvt"], match: "includes", value: ["201", "yes", "true"], color: "green" },
-  { field: ["changed", "mvt"], match: "includes", value: ["202", "no", "false"], color: "red" },
-
+  { field: ["changed", "mvt", "valid"], match: "includes", value: ["201", "yes", "true"], color: "green" },
+  { field: ["changed", "mvt", "valid"], match: "includes", value: ["202", "no", "false"], color: "red" },
+  
   { field: ["position", "status"], match: "includes", value: ["hold", "off", "no"], color: "red" },
   { field: ["position", "status"], match: "includes", value: ["full", "full-time"], color: "green" },
   { field: ["position", "status"], match: "includes", value: ["part", "part-time"], color: "yellow" },
