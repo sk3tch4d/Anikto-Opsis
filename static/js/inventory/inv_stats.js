@@ -82,7 +82,7 @@ function updateSavedPanel() {
   const savedPanel = document.querySelector("#inventory-saved-panel .panel-body");
   savedPanel.innerHTML = "";
 
-  const cards = Array.from(savedItems.values()).reverse();
+  const cards = Array.from(savedItems.values()).map(entry => entry.card).reverse();
 
   if (cards.length === 0) {
     savedPanel.innerHTML = "<p>No items saved yet.</p><br><br><p>Double click a tile to save!</p>";
@@ -106,7 +106,7 @@ function toggleSaveItem(card, base) {
     showToast("Removed!");
   } else {
     const clone = card.cloneNode(true);
-    savedItems.set(base.Num, clone);
+    savedItems.set(base.Num, { card: clone, data: base });
     card.classList.add("saved-card");
     showToast("Saved!");
   }
