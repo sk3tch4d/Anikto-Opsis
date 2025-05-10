@@ -28,6 +28,7 @@ export function renderZwdisegResults(data, term, resultsList) {
     const rop = item.ROP ?? "";
     const roq = item.ROQ ?? "";
     const changed = item.Changed === "X" ? "Yes" : "No";
+    const mvt = item.MVT ?? "";
     const valid = item.Valid ?? "";
     const statusDot = getStatusDot({ valid });
     
