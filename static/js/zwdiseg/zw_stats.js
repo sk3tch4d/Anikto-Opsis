@@ -186,7 +186,7 @@ export function populateZwdisegStats(results) {
   const filterInput = document.getElementById("usl-filter");
   const currentFilter = filterInput?.value.trim().toLowerCase() || "all";
 
-  const totalChanged = results.filter(item => item.Changed === "X").length;
+  const totalValid = results.filter(item => item.Valid === "True").length;
   const uniqueNums = [...new Set(results.map(item => item.Num))];
   const fragment = document.createDocumentFragment();
 
@@ -200,7 +200,7 @@ export function populateZwdisegStats(results) {
     <span class="tag-label">Date:</span> ${firstDate}&nbsp;&nbsp;
     <span class="tag-label">Scan:</span> ${firstName}<br>
     <span class="tag-label">Total:</span> ${results.length}&nbsp;&nbsp;
-    <span class="tag-label">Valid:</span> ${totalChanged}
+    <span class="tag-label">Valid:</span> ${totalValid}
   `;
   summaryContainer.appendChild(liResults);
   fragment.appendChild(summaryContainer);
