@@ -157,13 +157,14 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
   //const status = base.Changed === "X" ? "changed" : "unchanged";
   const statusDot = getStatusDot({ valid: base.Valid });
   const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
+  const matchUSL = base.USL;
 
   const detailsHTML = joinAsDivs(
-    safeHighlight(base, "Num", currentSearch, "Material"),
+    `<span class="tag-label">USL:</span> ${matchUSL}&nbsp; ${safeHighlight(base, "Num", currentSearch, "Material")}&nbsp;&nbsp;${statusDot}`,
     highlightMatch(base.Description || "", currentSearch),
-    `${safeHighlight(base, "ROP", currentSearch, "ROP")} | ${safeHighlight(base, "ROQ", currentSearch, "ROQ")}`,
+    `${safeHighlight(base, "ROP", currentSearch, "ROP")} ${safeHighlight(base, "ROQ", currentSearch, "ROQ")}`,
     `${safeHighlight(base, "Counted", currentSearch, "Counted")}  ${safeHighlight(base, "Consumed", currentSearch, "Consumed")}`,
-    `<span class="tag-label">Movement:</span> ${highlightMatch(base.MVT || "", currentSearch)} <span class="tag-label">Valid Scan:</span> ${statusDot}`
+    `<span class="tag-label">Movement:</span> ${highlightMatch(base.MVT || "", currentSearch)}`
   );
 
   const infoBlock = document.createElement("div");
