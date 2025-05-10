@@ -1,6 +1,6 @@
 // ==============================
 // XLSX_DOWNLOAD.JS
-// Dynamic Opt Excel Exporter
+// Dynamic XLSX Exporter
 // ==============================
 
 import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.2/package/xlsx.mjs";
@@ -21,7 +21,7 @@ const COLUMN_LAYOUTS = {
 };
 
 // ==============================
-// MAIN DOWNLOAD TABLE FUNCTION
+// MAIN DOWNLOAD FUNCTION
 // ==============================
 export function downloadTable({ data, layout, filename = null }) {
   if (!data?.length) {
@@ -34,25 +34,41 @@ export function downloadTable({ data, layout, filename = null }) {
     return alert(`Export failed: unknown layout "${layout}"`);
   }
 
-  const isAOA = Array.isArray(data[0]);
-  const worksheet = isAOA
-    ? XLSX.utils.aoa_to_sheet([header, ...data])
-    : XLSX.utils.json_to_sheet(data, { header });
-
-  // ✅ Always autofit
-  worksheet["!cols"] = header.map((col, i) => {
-    const maxLen = Math.max(
-      col.length,
-      ...data.map(row =>
-        String(isAOA ? row[i] : row[col] || "").length
-      )
-    );
-    return { wch: maxLen + 2 };
-  });
-
   const workbook = XLSX.utils.book_new();
-  const sheetName = toTitle(layout);
-  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+
+  // 🔍 MULTI-SHEET DETECTION
+  const isMultiSheet = typeof data[0] === "object" && "sheetName" in data[0] && "data" in data[0];
+
+  if (isMultiSheet) {
+    data.forEach(({ sheetName, data: rows }) => {
+      const worksheet = XLSX.utils.json_to_sheet(rows, { header });
+      worksheet["!cols"] = header.map((col, i) => {
+        const maxLen = Math.max(
+          col.length,
+          ...rows.map(row => String(row[col] || "").length)
+        );
+        return { wch: maxLen + 2 };
+      });
+      XLSX.utils.book_append_sheet(workbook, worksheet, sanitizeSheetName(sheetName));
+    });
+  } else {
+    const isAOA = Array.isArray(data[0]);
+    const worksheet = isAOA
+      ? XLSX.utils.aoa_to_sheet([header, ...data])
+      : XLSX.utils.json_to_sheet(data, { header });
+
+    worksheet["!cols"] = header.map((col, i) => {
+      const maxLen = Math.max(
+        col.length,
+        ...data.map(row =>
+          String(isAOA ? row[i] : row[col] || "").length
+        )
+      );
+      return { wch: maxLen + 2 };
+    });
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, toTitle(layout));
+  }
 
   const finalFilename = filename || `${layout}_${getDate()}.xlsx`;
   XLSX.writeFile(workbook, finalFilename);
@@ -67,4 +83,8 @@ function getDate() {
 
 function toTitle(str) {
   return str.replace(/_/g, " ").replace(/\b\w/g, char => char.toUpperCase());
+}
+
+function sanitizeSheetName(name) {
+  return name.replace(/[\\/?*[\]]+/g, "").slice(0, 31); // Excel sheet name rules
 }
