@@ -106,7 +106,7 @@ function toggleSaveItem(card, base) {
     showToast("Removed!");
   } else {
     const clone = card.cloneNode(true);
-    savedItems.set(base.Num, { card: clone, data: base });
+    savedItems.set(base.Num, { card: clone, data: matching });
     card.classList.add("saved-card");
     showToast("Saved!");
   }
