@@ -176,6 +176,7 @@ export const doZwdisegSearch = debounce(function({ searchInput, uslFilter, sortB
           populateZwdisegStats(data);
           renderZwdisegResults(data, term, resultsList);
           window.zwdisegSearchResults = data;
+          window.zwdisegCleanedData = data;
           addSearchToHistory(searchInput.value.trim(), uslFilter.value, data);
           updateSearchCache(key, data);
         })
