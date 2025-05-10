@@ -13,7 +13,7 @@ const COLUMN_LAYOUTS = {
   zwdiseg_search: [ "Num", "Description", "Group", "ROP", "ROQ", "USL", "Date" ],
   zwdiseg_history: [ "Timestamp", "Search Term", "Filter Used", "Matches" ],
   inventory_search: [ "Num", "Description", "USL", "ROP", "ROQ", "Group", "Date" ],
-  inventory_saved: ["Num", "Description", "Group", "USL", "ROP", "ROQ", "Cost_Center", "Date"],
+  inventory_saved: ["Num", "USL", "Bin", "QTY", "ROP", "ROQ", "Description", "Cost_Center", "Group", "Old", "Cost", "UOM"],  
   inventory_history: [ "Timestamp", "Search Term", "Filter Used", "Matches" ],
   seniority_search: [ "Years", "First Name", "Last Name", "Status", "Position" ],
   optimization_search: ["Num", "Description", "Group", "USL", "ROP", "ROQ", "Candidate", "Confidence", "Score"],
@@ -36,33 +36,39 @@ export function downloadTable({ data, layout, filename = null }) {
 
   const workbook = XLSX.utils.book_new();
 
-  // 🔍 MULTI-SHEET DETECTION
   const isMultiSheet = typeof data[0] === "object" && "sheetName" in data[0] && "data" in data[0];
+
+  function filterData(dataSet) {
+    return dataSet.map(row => {
+      const filtered = {};
+      header.forEach(col => {
+        filtered[col] = row[col] ?? "";
+      });
+      return filtered;
+    });
+  }
 
   if (isMultiSheet) {
     data.forEach(({ sheetName, data: rows }) => {
-      const worksheet = XLSX.utils.json_to_sheet(rows, { header });
+      const filtered = filterData(rows);
+      const worksheet = XLSX.utils.json_to_sheet(filtered, { header });
       worksheet["!cols"] = header.map((col, i) => {
-        const maxLen = Math.max(
-          col.length,
-          ...rows.map(row => String(row[col] || "").length)
-        );
+        const maxLen = Math.max(col.length, ...filtered.map(row => String(row[col] || "").length));
         return { wch: maxLen + 2 };
       });
       XLSX.utils.book_append_sheet(workbook, worksheet, sanitizeSheetName(sheetName));
     });
   } else {
     const isAOA = Array.isArray(data[0]);
+    const filtered = isAOA ? data : filterData(data);
     const worksheet = isAOA
-      ? XLSX.utils.aoa_to_sheet([header, ...data])
-      : XLSX.utils.json_to_sheet(data, { header });
+      ? XLSX.utils.aoa_to_sheet([header, ...filtered])
+      : XLSX.utils.json_to_sheet(filtered, { header });
 
     worksheet["!cols"] = header.map((col, i) => {
       const maxLen = Math.max(
         col.length,
-        ...data.map(row =>
-          String(isAOA ? row[i] : row[col] || "").length
-        )
+        ...filtered.map(row => String(isAOA ? row[i] : row[col] || "").length)
       );
       return { wch: maxLen + 2 };
     });
