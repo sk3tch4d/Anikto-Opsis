@@ -99,7 +99,7 @@ function updateSavedPanel() {
 // ==============================
 // HELPER: TOGGLE SAVE ITEM
 // ==============================
-function toggleSaveItem(card, base) {
+function toggleSaveItem(card, base, matching) {
   if (savedItems.has(base.Num)) {
     savedItems.delete(base.Num);
     card.classList.remove("saved-card");
@@ -206,8 +206,9 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   card.appendChild(infoBlock);
 
   card.addEventListener("dblclick", () => {
-    toggleSaveItem(card, base);
+    toggleSaveItem(card, base, matching);
   });
+
 
   if (currentFilter === "all") {
     if (uniqueUSLs.length === 1) {
