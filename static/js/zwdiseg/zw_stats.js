@@ -160,10 +160,10 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
   const detailsHTML = joinAsDivs(
     safeHighlight(base, "Num", currentSearch, "Stores Number"),
     highlightMatch(base.Description || "", currentSearch),
-    `${safeHighlight(base, "Counted", currentSearch, "Counted")}  ${safeHighlight(base, "New_QTY", currentSearch, "Remaining")}`,
-    safeHighlight(base, "Difference", currentSearch, "Difference"),
     `${safeHighlight(base, "ROP", currentSearch, "ROP")} | ${safeHighlight(base, "ROQ", currentSearch, "ROQ")}`,
-    `<span class="tag-label">Changed:</span> ${statusDot}  ${highlightMatch(base.MVT || "", currentSearch)}`
+    `${safeHighlight(base, "Counted", currentSearch, "Counted")}  ${safeHighlight(base, "Consumed", currentSearch, "Consumed")}`,
+    safeHighlight(base, "Difference", currentSearch, "Difference"),
+    `<span class="tag-label">Movement:</span> ${statusDot}  ${highlightMatch(base.MVT || "", currentSearch)}`
   );
 
   const infoBlock = document.createElement("div");
