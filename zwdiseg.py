@@ -1,22 +1,28 @@
 # ==============================
-# ZWDISEG.PY
+# ZWDISEG.PY (Final Optimized Version)
 # ==============================
 
 import pandas as pd
+
 DEBUG = False
 
 # ==============================
 # LOAD ZWDISEG DATA
 # ==============================
 def load_zwdiseg_data(path):
-    return pd.read_excel(path)
+    try:
+        return pd.read_excel(path)
+    except Exception as e:
+        if DEBUG:
+            print(f"[ERROR] Failed to load Excel: {e}")
+        return None
 
 # ==============================
 # GET USLs
 # ==============================
 def get_zwdiseg_usls(df):
-    if df is None:
-        return {"error": "zwdiseg not loaded."}, 400
+    if df is None or "USL" not in df.columns:
+        return {"error": "zwdiseg not loaded or missing USL column."}, 400
     usls = sorted(df["USL"].dropna().unique().tolist())
     return usls
 
@@ -27,44 +33,34 @@ def search_zwdiseg(df, term, usl, sort="USL", direction="desc"):
     if df is None:
         return []
 
+    df = df.copy()  # Avoid SettingWithCopyWarning or side effects
+
     term = term.strip().lower()
     usl = usl.strip().lower()
     
-    # Always apply USL filter if it's specified
     if usl not in {"any", "all", ""}:
         df = df[df["USL"].astype(str).str.strip().str.lower() == usl]
     
-    # Only apply search filter if term is provided
     if term:
         try:
             search_cols = df.columns
-    
             def row_matches(row):
                 return any(term in str(row[col]).lower() for col in search_cols)
-    
-            mask = df.apply(row_matches, axis=1)
-            df = df[mask]
-    
+            df = df[df.apply(row_matches, axis=1)]
         except Exception as e:
-            print(f"[ERROR] Search failed: {e}")
+            if DEBUG:
+                print(f"[ERROR] Search failed: {e}")
             return []
 
-
     # Handle JSON serialization safely
-    if "Time" in df.columns:
-        df["Time"] = df["Time"].astype(str)
+    for col in ("Time", "Date"):
+        if col in df.columns:
+            df[col] = df[col].astype(str)
 
-    # Optional: Handle Date serialization as well (usually safe, but...)
-    if "Date" in df.columns:
-        df["Date"] = df["Date"].astype(str)
-
-    # Sorting and trimming...
-    valid_sort_fields = {"USL", "Num", "Counted", "New_QTY", "Difference", "ROP", "ROQ", "Time"}
-    if sort not in valid_sort_fields:
+    # Validate sort field against actual DataFrame columns
+    if sort not in df.columns:
         sort = "USL"
-    
-    if sort in df.columns:
-        df = df.sort_values(by=sort, ascending=(direction == "asc"))
 
-    # Return all under 1000 rows
+    df = df.sort_values(by=sort, ascending=(direction == "asc"))
+
     return df.head(1000).to_dict(orient="records")
