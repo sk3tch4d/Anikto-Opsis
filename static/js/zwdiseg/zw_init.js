@@ -5,7 +5,7 @@
 
 import { doZwdisegSearch } from "./zw_search.js";
 import { populateZwdisegStats } from "./zw_stats.js";
-import { setupZwdisegDownloadSearch, setupZwdisegDownloadHistory } from "./zw_download.js";
+import { setupZwdisegDownloadSearch, setupZwdisegDownloadHistory, setupZwdisegDownloadCleaned } from "./zw_download.js";
 import { highlightMatch } from '../search-utils.js';
 import { withLoadingToggle, createBounceLoader } from '../loading.js';
 import { scrollPanel } from '../panels.js';
@@ -108,6 +108,9 @@ export function initializeZwdisegApp() {
   // ==============================
   // DOWNLOAD BUTTONS SETUP
   // ==============================
+  if (document.getElementById("zwdiseg-cleaned-download")) {
+    setupZwdisegDownloadCleaned();
+  }
   if (document.getElementById("zwdiseg-search-download")) {
     setupZwdisegDownloadSearch();
   }
