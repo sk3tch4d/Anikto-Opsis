@@ -49,7 +49,7 @@ export function renderInventoryResults(data, term, resultsList) {
     // OTHER FIELDS
     // ==============================
     if (item.Description?.trim()) {
-      html += `<span class="tag-label">Description:</span> ${highlightMatch(item.Description, term)}<br>`;
+      html += `${highlightMatch(item.Description, term)}<br>`;
     }
 
     if (item.USL?.trim() || item.Bin?.trim()) {
