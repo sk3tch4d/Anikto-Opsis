@@ -25,6 +25,23 @@ const nonClosableElements = [
 ];
 
 // ==============================
+// PANEL SCROLL BAR
+// ==============================
+export function initPanelScrollBar(panelId, barId) {
+  const indicators = document.querySelectorAll(".panel-scroll-bar");
+
+  indicators.forEach(bar => {
+    const panel = bar.closest(".panel-body");
+    if (!panel) return;
+
+    panel.addEventListener("scroll", () => {
+      const percent = (panel.scrollTop / (panel.scrollHeight - panel.clientHeight)) * 100;
+      bar.style.width = `${percent}%`;
+    });
+  });
+}
+
+// ==============================
 // SCROLL LOCK
 // ==============================
 function enableBodyLock() {
