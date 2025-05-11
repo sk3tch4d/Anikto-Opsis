@@ -136,6 +136,39 @@ function detectFileTypeKey() {
 }
 
 // ==============================
+// LOAD PREDEFINED INV DB
+// ==============================
+export function enableAutoDbTrigger() {
+  const form = document.querySelector("form");
+  const header = document.querySelector("h1");
+  if (!form || !header) return;
+
+  // Inject checkbox
+  const autoCheckbox = document.createElement("input");
+  autoCheckbox.type = "checkbox";
+  autoCheckbox.name = "existing_pdfs";
+  autoCheckbox.value = "Cat_V7.7.db";
+  autoCheckbox.id = "autofile";
+  autoCheckbox.style.display = "none";
+  form.appendChild(autoCheckbox);
+
+  // Handler
+  let pressTimer;
+  header.addEventListener("mousedown", () => {
+    pressTimer = setTimeout(() => {
+      autoCheckbox.checked = true;
+      console.log("Auto-injected: Cat_V7.7.db selected");
+      refreshDropUI();
+    }, 3000);
+  });
+
+  const cancel = () => clearTimeout(pressTimer);
+  header.addEventListener("mouseup", cancel);
+  header.addEventListener("mouseleave", cancel);
+  header.addEventListener("touchend", cancel);
+}
+
+// ==============================
 // START FORM LOADING UI
 // ==============================
 export function startFormLoadingUI() {
