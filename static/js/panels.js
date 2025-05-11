@@ -27,17 +27,17 @@ const nonClosableElements = [
 // ==============================
 // PANEL SCROLL BAR
 // ==============================
-export function initPanelScrollBar(panelId, barId) {
-  const indicators = document.querySelectorAll(".panel-scroll-bar");
+export function initPanelScrollBars() {
+  document.querySelectorAll('.panel').forEach(panel => {
+    const scrollable = panel.querySelector('.scrollable-panel');
+    const bar = panel.querySelector('.panel-scroll-bar');
 
-  indicators.forEach(bar => {
-    const panel = bar.closest(".panel-body");
-    if (!panel) return;
-
-    panel.addEventListener("scroll", () => {
-      const percent = (panel.scrollTop / (panel.scrollHeight - panel.clientHeight)) * 100;
-      bar.style.width = `${percent}%`;
-    });
+    if (scrollable && bar) {
+      scrollable.addEventListener('scroll', () => {
+        const percent = scrollable.scrollTop / (scrollable.scrollHeight - scrollable.clientHeight);
+        bar.style.width = `${percent * 100}%`;
+      });
+    }
   });
 }
 
