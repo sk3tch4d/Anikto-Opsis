@@ -114,7 +114,7 @@ def clean_format(df):
     return df
 
 # ==============================
-# DYNAMIC CLEANING PIPELINE
+# XLSX CLEANING PIPELINE
 # ==============================
 def clean_xlsx(file_stream, *steps, header=0, name=None):
     df = pd.read_excel(file_stream, header=header)
@@ -129,6 +129,19 @@ def clean_xlsx(file_stream, *steps, header=0, name=None):
         df['Date'] = pd.to_datetime(df['Date'], errors='coerce').dt.date
         log_cleaning("Normalized Date", df)
 
+    return df
+
+# ==============================
+# DB CLEANING PIPELINE
+# ==============================
+def clean_db(df, name="DB Inventory"):
+    df.attrs["name"] = name
+    steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
+    for step in steps:
+        df = step(df)
+    if 'Date' in df.columns:
+        df['Date'] = pd.to_datetime(df['Date'], errors='coerce').dt.date
+        log_cleaning("Normalized Date", df)
     return df
 
 # ==============================
