@@ -280,25 +280,27 @@ body.lock-scroll {
 }
 
 /* ============================= */
-/* PANEL SCROLL CONTAINER        */
+/* PANEL SCROLL BAR              */
 /* ============================= */
 .panel-scroll-container {
   position: sticky;
   top: 0;
-  width: 100%;
-  background: #444;
   height: 4px;
-  z-index: 10;
+  width: 100%;
+  background-color: transparent;
+  z-index: 2;
   overflow: hidden;
-  border-radius: 4px;
+  display: none;
 }
 /* ============================= */
-/* PANEL SCROLL BAR              */
+.panel-body.open .panel-scroll-container {
+  display: block;
+}
 /* ============================= */
 .panel-scroll-bar {
   height: 100%;
   width: 0%;
-  background: var(--highlight, #5a5dcf);
+  background-color: var(--highlight, #5a5dcf);
   transition: width 0.2s ease;
 }
 
