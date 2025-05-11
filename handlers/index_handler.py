@@ -1,11 +1,13 @@
 # ==============================
-# INDEX_HANDLER.PY — ROUTING DELEGATOR (REFACTORED)
+# INDEX_HANDLER.PY
+# FILE ROUTING & DELEGATION
 # ==============================
 
 import re
 import os
 import logging
 import pandas as pd
+import sqlite3
 
 from flask import request, render_template
 from werkzeug.utils import secure_filename
@@ -25,11 +27,13 @@ from utils.data_cleaner import (
     clean_columns,
     clean_deleted_rows,
     clean_flags,
-    clean_format
+    clean_format,
+    clean_db
 )
 
 # ==============================
-# MAIN ENTRYPOINT — ROUTE BASED ON FILE TYPE
+# MAIN ENTRYPOINT
+# ROUTE BASED ON FILE TYPE/NAME
 # ==============================
 def process_index_upload():
     try:
@@ -66,35 +70,29 @@ def process_index_upload():
             logging.debug("Routed to cleaner logic for .xlsx file")
             try:
                 # DETERMINE CLEANING PIPELINE
-
-                # MATCH CLEAN FILE
                 if re.match(CLEAN_REGEX, fname, re.IGNORECASE):
                     logging.debug("Matched CLEAN — using optimize cleaning pipeline")
                     steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
                     df = clean_xlsx(file, *steps, name=fname)
                     return handle_cleaner(df)
 
-                # MATCH OPTIMIZE
                 elif re.match(OPTIMIZE_REGEX, fname, re.IGNORECASE):
                     logging.debug("Matched OPTIMIZE — using optimize cleaning pipeline")
                     steps = [clean_headers, clean_deleted_rows, clean_flags, clean_columns, clean_format]
                     df = clean_xlsx(file, *steps, name=fname)
                     return handle_optimize(df)
-                    
-                # MATCH SENIORITY
+
                 elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
                     logging.debug("Matched SENIORITY — using optimize cleaning pipeline")
                     steps = [clean_headers]
                     df = clean_xlsx(file, *steps, header=2, name=fname)
                     return handle_seniority(df)
 
-                # MATCH INVENTORY
                 elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
                     logging.debug("Matched CATALOG")
                     df = pd.read_excel(file)
                     return handle_inventory(df)
-                    
-                # MATCH ZWDISEG
+
                 elif re.search(ZWDISEG_REGEX, fname_lower, re.IGNORECASE):
                     logging.debug("Matched ZWDISEG — using zwdiseg cleaning pipeline")
                     steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
@@ -102,7 +100,6 @@ def process_index_upload():
                     return handle_zwdiseg(df)
 
                 else:
-                    # CLEAN FILE
                     logging.debug("No match — using fallback cleaning pipeline")
                     steps = [clean_headers, clean_columns, clean_flags, clean_deleted_rows, clean_format]
                     df = clean_xlsx(file, *steps, name=fname)
@@ -111,6 +108,18 @@ def process_index_upload():
             except Exception as clean_err:
                 logging.exception("Cleaning failed")
                 return render_template("index.html", error=f"Cleaning failed: {str(clean_err)}")
+
+        # SQLite: Inventory Database
+        if fname_lower.endswith(".db"):
+            logging.debug("Matched SQLite DB — reading inventory table")
+            save_path = os.path.join("/tmp", fname)
+            file.save(save_path)
+
+            with sqlite3.connect(save_path) as conn:
+                df = pd.read_sql_query("SELECT * FROM inventory", conn)
+
+            df = clean_db(df, name="DB Inventory Load")
+            return handle_inventory(df)
 
         # UNKNOWN FILE TYPE
         return render_template("index.html", error="Unsupported file type.")
