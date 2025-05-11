@@ -15,10 +15,10 @@ OPTIMIZATION_PATH = None
 # ==============================
 # GLOBAL REGEX MATCHERS
 # ==============================
-CATALOG_REGEX = r"(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$"
 ARG_REGEX = r"(arg|flowsheet).*?\.(pdf)$"
+CATALOG_REGEX = r"(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$"
+OPTIMIZE_REGEX = r"^KG01-[A-Z0-9]{1,4}-.*\.xlsx$"
 SENIORITY_REGEX = r"(cupe).*seniority.*(list)?.*\.xlsx$"
-USL_OPT_REGEX = r"^KG01-[A-Z0-9]{1,4}-.*\.xlsx$"
 ZWDISEG_REGEX = r".*zwdiseg.*\.xlsx$"
 CLEAN_REGEX = r".*clean.*\.xlsx$"
 VALID_EXTENSIONS = r"\.(pdf|xlsx|db)$"
