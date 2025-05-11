@@ -152,22 +152,26 @@ export function enableAutoDbTrigger() {
   autoCheckbox.style.display = "none";
   form.appendChild(autoCheckbox);
 
-  // Handler
   let pressTimer;
-  header.addEventListener("mousedown", () => {
+
+  const startPress = () => {
     pressTimer = setTimeout(() => {
       autoCheckbox.checked = true;
-
-      refreshDropUI();      
-      console.log("✔️ Auto-selected: Cat_V7.7.db");
-
+      refreshDropUI();
+      alert("✔️ Cat_V7.7.db selected");
     }, 3000);
-  });
+  };
 
-  const cancel = () => clearTimeout(pressTimer);
-  header.addEventListener("mouseup", cancel);
-  header.addEventListener("mouseleave", cancel);
-  header.addEventListener("touchend", cancel);
+  const cancelPress = () => clearTimeout(pressTimer);
+
+  // Support both touch and mouse
+  header.addEventListener("touchstart", startPress);
+  header.addEventListener("touchend", cancelPress);
+  header.addEventListener("touchcancel", cancelPress);
+
+  header.addEventListener("mousedown", startPress);
+  header.addEventListener("mouseup", cancelPress);
+  header.addEventListener("mouseleave", cancelPress);
 }
 
 // ==============================
