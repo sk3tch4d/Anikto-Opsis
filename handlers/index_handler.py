@@ -38,16 +38,52 @@ from utils.data_cleaner import (
 def process_index_upload():
     try:
         uploaded_files = request.files.getlist("uploads")
-        if not uploaded_files:
+        existing_files = request.form.getlist("existing_files")
+
+        # ==============================
+        # HANDLE MISSING FILES
+        # ==============================
+        if not uploaded_files and not existing_files:
             return render_template("index.html", error="No files uploaded.")
 
+        # ==============================
+        # HANDLE EXISTING FILE SELECTION (STATIC)
+        # ==============================
+        if existing_files:
+            fname = secure_filename(existing_files[0])
+            fname_lower = fname.lower()
+            logging.debug(f"Selected existing file: {fname}")
+
+            # ==============================
+            # SQLite: Inventory Database
+            # ==============================
+            if fname_lower.endswith(".db"):
+                static_path = os.path.join("static", fname)
+                logging.debug(f"Using static DB path: {static_path}")
+
+                with sqlite3.connect(static_path) as conn:
+                    df = pd.read_sql_query("SELECT * FROM inventory", conn)
+
+                df = clean_db(df, name="DB Inventory Load")
+                return handle_inventory(df)
+
+            # ==============================
+            # UNSUPPORTED STATIC FILE TYPE
+            # ==============================
+            return render_template("index.html", error="Unsupported file type.")
+
+        # ==============================
+        # FILE UPLOAD FLOW
+        # ==============================
         file = uploaded_files[0]
         fname = secure_filename(file.filename)
         fname_lower = fname.lower()
 
         logging.debug(f"Uploaded file: {fname}")
 
+        # ==============================
         # PDF: FLOWSHEET / ARG
+        # ==============================
         if fname_lower.endswith(".pdf"):
             from report import process_report
             match = re.search(r"\d{4}-\d{2}-\d{2}", fname)
@@ -65,7 +101,9 @@ def process_index_upload():
 
             return render_template("arg.html", outputs=output_filenames, stats=stats)
 
+        # ==============================
         # Excel: Clean and reroute based on cleaned content
+        # ==============================
         if fname_lower.endswith(".xlsx"):
             logging.debug("Routed to cleaner logic for .xlsx file")
             try:
@@ -109,7 +147,9 @@ def process_index_upload():
                 logging.exception("Cleaning failed")
                 return render_template("index.html", error=f"Cleaning failed: {str(clean_err)}")
 
-        # SQLite: Inventory Database
+        # ==============================
+        # SQLite: Inventory Database (Uploaded)
+        # ==============================
         if fname_lower.endswith(".db"):
             logging.debug("Matched SQLite DB — reading inventory table")
             save_path = os.path.join("/tmp", fname)
@@ -121,7 +161,9 @@ def process_index_upload():
             df = clean_db(df, name="DB Inventory Load")
             return handle_inventory(df)
 
+        # ==============================
         # UNKNOWN FILE TYPE
+        # ==============================
         return render_template("index.html", error="Unsupported file type.")
 
     except Exception as e:
