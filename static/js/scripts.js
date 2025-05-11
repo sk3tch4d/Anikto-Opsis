@@ -7,7 +7,7 @@ import { initDebugToggle } from './debugging.js';
 // ----- Typed -----
 import { initTypewriter } from './typing.js';
 // ----- Panels -----
-import { togglePanel, collapseAllPanels, openPanelById } from './panels.js';
+import { togglePanel, collapseAllPanels, openPanelById, initPanelScrollBars } from './panels.js';
 // ----- Sticky Bars -----
 import { initStickyBars } from './sticky.js';
 // ----- Dropzone -----
@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector(".panel")) {
     window.togglePanel = togglePanel;
     collapseAllPanels({ excludeSelector: "#login-panel" });
+    initPanelScrollBars();
   }
 
   // ----- Sticky Bars -----
