@@ -43,7 +43,7 @@ function updateGenerateButtonText() {
   if (!generateBtn) return;
 
   const uploadedFiles = fileInput?.files ? Array.from(fileInput.files) : [];
-  const existingCheckboxes = document.querySelectorAll('input[name="existing_pdfs"]:checked');
+  const existingCheckboxes = document.querySelectorAll('input[name="existing_files"]:checked');
   const existingFiles = Array.from(existingCheckboxes).map(cb => cb.value);
 
   const allFiles = uploadedFiles.map(f => f.name.trim())
@@ -115,7 +115,7 @@ export function updateGenText(typeKey) {
 function detectFileTypeKey() {
   const fileInput = document.getElementById("file-input");
   const uploadedFiles = fileInput?.files ? Array.from(fileInput.files) : [];
-  const existingCheckboxes = document.querySelectorAll('input[name="existing_pdfs"]:checked');
+  const existingCheckboxes = document.querySelectorAll('input[name="existing_files"]:checked');
   const existingFiles = Array.from(existingCheckboxes).map(cb => cb.value);
 
   const allFiles = uploadedFiles.map(f => f.name.trim())
@@ -146,7 +146,7 @@ export function enableAutoDbTrigger() {
   // Inject Checkbox
   const autoCheckbox = document.createElement("input");
   autoCheckbox.type = "checkbox";
-  autoCheckbox.name = "existing_pdfs";
+  autoCheckbox.name = "existing_files";
   autoCheckbox.value = "Cat_V7.7.db";
   autoCheckbox.id = "autofile";
   autoCheckbox.style.display = "none";
