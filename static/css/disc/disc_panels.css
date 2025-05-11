@@ -283,24 +283,25 @@ body.lock-scroll {
 /* PANEL SCROLL BAR              */
 /* ============================= */
 .panel-scroll-container {
-  position: sticky;
-  top: 0;
+  position: absolute;
+  left: 0;
   height: 4px;
   width: 100%;
   background-color: transparent;
-  z-index: 2;
   overflow: hidden;
   display: none;
+  pointer-events: none;
+  z-index: 2;
 }
 /* ============================= */
-.panel-body.open .panel-scroll-container {
+.panel.open .panel-scroll-container {
   display: block;
 }
 /* ============================= */
 .panel-scroll-bar {
   height: 100%;
   width: 0%;
-  background-color: var(--highlight, #5a5dcf);
+  background-color: #7676d6; /*#8989dc;*/
   transition: width 0.2s ease;
 }
 
