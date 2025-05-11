@@ -95,7 +95,7 @@ function bindChangeEvents() {
   const fileInput = document.getElementById("file-input");
   fileInput?.addEventListener("change", refreshDropUI);
 
-  const checkboxes = document.querySelectorAll('input[name="existing_pdfs"]');
+  const checkboxes = document.querySelectorAll('input[name="existing_files"]');
   checkboxes.forEach(cb => {
     cb.addEventListener("change", refreshDropUI);
   });
