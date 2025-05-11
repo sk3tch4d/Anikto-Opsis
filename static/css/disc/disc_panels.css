@@ -279,6 +279,28 @@ body.lock-scroll {
   display: none; /* Chrome, Safari, Opera */
 }
 
+/* ============================= */
+/* PANEL SCROLL INDICATOR        */
+/* ============================= */
+.panel-scroll-container {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: #444;
+  height: 4px;
+  z-index: 10;
+  overflow: hidden;
+  border-radius: 4px;
+}
+/* ============================= */
+/* PANEL SCROLL BAR              */
+/* ============================= */
+.panel-scroll-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--highlight, #5a5dcf);
+  transition: width 0.2s ease;
+}
 
 /* ============================= */
 /* ANIMATION: PANEL SLIDE-IN     */
