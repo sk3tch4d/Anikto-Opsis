@@ -9,7 +9,7 @@ import pandas as pd
 
 from flask import request, render_template
 from werkzeug.utils import secure_filename
-from config import CATALOG_REGEX, SENIORITY_REGEX, USL_OPT_REGEX, ZWDISEG_REGEX, CLEAN_REGEX
+from config import CATALOG_REGEX, SENIORITY_REGEX, OPTIMIZE_REGEX, ZWDISEG_REGEX, CLEAN_REGEX
 
 # Modular handlers
 from handlers.optimize_handler import handle as handle_optimize
@@ -43,7 +43,7 @@ def process_index_upload():
 
         logging.debug(f"Uploaded file: {fname}")
 
-        # PDF: Flowsheet / ARG
+        # PDF: FLOWSHEET / ARG
         if fname_lower.endswith(".pdf"):
             from report import process_report
             match = re.search(r"\d{4}-\d{2}-\d{2}", fname)
@@ -65,30 +65,36 @@ def process_index_upload():
         if fname_lower.endswith(".xlsx"):
             logging.debug("Routed to cleaner logic for .xlsx file")
             try:
-                # Determine cleaning pipeline based on filename
+                # DETERMINE CLEANING PIPELINE
+
+                # MATCH CLEAN FILE
                 if re.match(CLEAN_REGEX, fname, re.IGNORECASE):
                     logging.debug("Matched CLEAN — using optimize cleaning pipeline")
                     steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
                     df = clean_xlsx(file, *steps, name=fname)
                     return handle_cleaner(df)
-                
-                elif re.match(USL_OPT_REGEX, fname, re.IGNORECASE):
-                    logging.debug("Matched USL_OPT — using optimize cleaning pipeline")
+
+                # MATCH OPTIMIZE
+                elif re.match(OPTIMIZE_REGEX, fname, re.IGNORECASE):
+                    logging.debug("Matched OPTIMIZE — using optimize cleaning pipeline")
                     steps = [clean_headers, clean_deleted_rows, clean_flags, clean_columns, clean_format]
                     df = clean_xlsx(file, *steps, name=fname)
                     return handle_optimize(df)
-
+                    
+                # MATCH SENIORITY
                 elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
                     logging.debug("Matched SENIORITY — using optimize cleaning pipeline")
                     steps = [clean_headers]
                     df = clean_xlsx(file, *steps, header=2, name=fname)
                     return handle_seniority(df)
 
+                # MATCH INVENTORY
                 elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
                     logging.debug("Matched CATALOG")
                     df = pd.read_excel(file)
                     return handle_inventory(df)
-
+                    
+                # MATCH ZWDISEG
                 elif re.search(ZWDISEG_REGEX, fname_lower, re.IGNORECASE):
                     logging.debug("Matched ZWDISEG — using zwdiseg cleaning pipeline")
                     steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
@@ -96,6 +102,7 @@ def process_index_upload():
                     return handle_zwdiseg(df)
 
                 else:
+                    # CLEAN FILE
                     logging.debug("No match — using fallback cleaning pipeline")
                     steps = [clean_headers, clean_columns, clean_flags, clean_deleted_rows, clean_format]
                     df = clean_xlsx(file, *steps, name=fname)
@@ -105,7 +112,7 @@ def process_index_upload():
                 logging.exception("Cleaning failed")
                 return render_template("index.html", error=f"Cleaning failed: {str(clean_err)}")
 
-        # Unknown file type
+        # UNKNOWN FILE TYPE
         return render_template("index.html", error="Unsupported file type.")
 
     except Exception as e:
