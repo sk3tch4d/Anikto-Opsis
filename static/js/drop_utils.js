@@ -143,7 +143,7 @@ export function enableAutoDbTrigger() {
   const header = document.querySelector("h1");
   if (!form || !header) return;
 
-  // Inject checkbox
+  // Inject Checkbox
   const autoCheckbox = document.createElement("input");
   autoCheckbox.type = "checkbox";
   autoCheckbox.name = "existing_pdfs";
@@ -157,8 +157,10 @@ export function enableAutoDbTrigger() {
   header.addEventListener("mousedown", () => {
     pressTimer = setTimeout(() => {
       autoCheckbox.checked = true;
-      console.log("Auto-injected: Cat_V7.7.db selected");
-      refreshDropUI();
+
+      refreshDropUI();      
+      console.log("✔️ Auto-selected: Cat_V7.7.db");
+
     }, 3000);
   });
 
