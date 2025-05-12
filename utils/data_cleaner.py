@@ -92,6 +92,19 @@ def log_cleaning(step, df, extra=""):
     logging.debug(f"[CLEAN] {step} -> {name}{f' — {extra}' if extra else ''}")
 
 # ==============================
+# DETECT AND SET HEADER
+# ==============================
+def detect_and_set_header(df, max_rows=20):
+    for i in range(max_rows):
+        row = df.iloc[i]
+        num_strings = sum(isinstance(val, str) and val.strip() != "" for val in row)
+        if num_strings >= len(row) // 2:  # Heuristic: majority are valid strings
+            df.columns = row
+            df = df.iloc[i + 1:].reset_index(drop=True)
+            return df
+    return df  # Fallback: return unchanged
+
+# ==============================
 # CLEANING FUNCTIONS (STEP MODULES)
 # ==============================
 def clean_headers(df):
@@ -133,6 +146,7 @@ def clean_format(df):
 # XLSX CLEANING PIPELINE
 # ==============================
 def clean_xlsx(file_stream, *steps, header=0, name=None):
+    df = detect_and_set_header(df) # Adjust Header if needed
     df = pd.read_excel(file_stream, header=header)
     df.attrs["name"] = name or "Unnamed DataFrame"
     log_cleaning("Cleaning File", df)
@@ -159,6 +173,7 @@ def clean_xlsx(file_stream, *steps, header=0, name=None):
 # DB CLEANING PIPELINE
 # ==============================
 def clean_db(df, name="DB Inventory"):
+    df = detect_and_set_header(df) # Adjust Header if needed
     df.attrs["name"] = name
     steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
     for step in steps:
