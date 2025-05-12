@@ -5,6 +5,7 @@
 
 import { toggleLoadingState } from './loading.js';
 import { displayRandomQuote } from './quotes.js';
+import Immersive from './immersiveHelper.js';
 
 // ==============================
 // FILE TYPE MATCHERS
@@ -184,11 +185,12 @@ export function enableAutoIndexTrigger() {
   });
 }
 
-
 // ==============================
 // START FORM LOADING UI
 // ==============================
 export function startFormLoadingUI() {
+  Immersive.enter(); // Mobile-only
+
   toggleLoadingState(true, {
     show: [document.getElementById("loading")],
     hide: [document.getElementById("upload-form")]
