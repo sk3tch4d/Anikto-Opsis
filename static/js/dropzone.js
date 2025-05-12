@@ -4,6 +4,7 @@
 // ==============================
 
 import { refreshDropUI, startFormLoadingUI, enableAutoIndexTrigger } from './drop_utils.js';
+import Immersive from './immersiveHelper.js';
 
 // ==============================
 // INIT DROPZONE
@@ -39,6 +40,10 @@ function setupFileInput(fileInput, fileList) {
   if (!fileInput || !fileList) return;
 
   const dropZone = document.getElementById("drop-zone");
+  
+  fileInput.addEventListener("click", () => {
+    Immersive.enter();  // Mobile Only
+  });
 
   fileInput.addEventListener("change", () => {
     if (fileInput.files.length === 0) return;
@@ -59,7 +64,7 @@ function setupFileInput(fileInput, fileList) {
 
     link.addEventListener("click", (e) => {
       e.preventDefault();
-      fileInput.click();
+      fileInput.click();  // Re-triggers immersive if clicked again
     });
   });
 }
