@@ -19,7 +19,7 @@ import { removeFocus } from "./helpers.js";
     document.selection.empty();
   }
 }*/
-function clearTextSelect() {
+export function clearTextSelect() {
   const sel = window.getSelection?.();
   if (sel && !sel.isCollapsed) sel.removeAllRanges();
 }
