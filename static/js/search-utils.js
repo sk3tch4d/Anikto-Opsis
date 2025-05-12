@@ -7,6 +7,20 @@ import { openPanelById, scrollPanel } from "./panels.js";
 import { removeFocus } from "./helpers.js";
 
 // ==============================
+// CLEAR TEXT SELECTION
+// ==============================
+function clearTextSelect() {
+  if (window.getSelection) {
+    const sel = window.getSelection();
+    if (sel && !sel.isCollapsed) {
+      sel.removeAllRanges();
+    }
+  } else if (document.selection) {
+    document.selection.empty();
+  }
+}
+
+// ==============================
 // TRIGGER SEARCH FROM STAT
 // ==============================
 export function searchFromStat(inputId, value) {
