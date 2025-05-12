@@ -3,7 +3,7 @@
 // Zwdiseg Statistics Renderer
 // ==============================
 
-import { setupParseStats, highlightMatch } from "../search-utils.js";
+import { clearTextSelect ,setupParseStats, highlightMatch } from "../search-utils.js";
 import { getStatusDot } from '../statusdot.js';
 
 // ==============================
@@ -43,14 +43,6 @@ function joinAsDivs(...lines) {
 // ==============================
 function vibrateShort() {
   if (navigator.vibrate) navigator.vibrate(65);
-}
-
-// ==============================
-// HELPER: CLEAR TEXT SELECTION
-// ==============================
-function clearTextSelection() {
-  const sel = window.getSelection?.();
-  if (sel && !sel.isCollapsed) sel.removeAllRanges();
 }
 
 // ==============================
@@ -100,7 +92,7 @@ function toggleSaveItem(card, base) {
     showToast("Saved!");
   }
   vibrateShort();
-  clearTextSelection();
+  clearTextSelect();
   updateSavedPanel();
 }
 
