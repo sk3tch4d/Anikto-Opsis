@@ -136,12 +136,14 @@ function detectFileTypeKey() {
 }
 
 // ==============================
-// LOAD PREDEFINED INV DB
+// LOAD DB / LOAD SETTINGS
 // ==============================
-export function enableAutoDbTrigger() {
+export function enableAutoIndexTrigger() {
   const form = document.querySelector("form");
-  const header = document.querySelector("h1");
-  if (!form || !header) return;
+  const dbTrigger = document.getElementById("drop-zone");
+  const title = document.querySelector("h1");
+
+  if (!form || !dbTrigger || !title) return;
 
   // Inject Checkbox
   const autoCheckbox = document.createElement("input");
@@ -152,27 +154,36 @@ export function enableAutoDbTrigger() {
   autoCheckbox.style.display = "none";
   form.appendChild(autoCheckbox);
 
-  let pressTimer;
+  // Utility function
+  const pressHold = (targetElement, action, holdTime = 2000) => {
+    let pressTimer;
 
-  const startPress = () => {
-    pressTimer = setTimeout(() => {
-      autoCheckbox.checked = true;
-      refreshDropUI();
-      //alert("✔️ Cat_V7.7.db selected");
-    }, 2000);
+    const start = () => {
+      pressTimer = setTimeout(action, holdTime);
+    };
+
+    const cancel = () => clearTimeout(pressTimer);
+
+    targetElement.addEventListener("touchstart", start);
+    targetElement.addEventListener("touchend", cancel);
+    targetElement.addEventListener("touchcancel", cancel);
+    targetElement.addEventListener("mousedown", start);
+    targetElement.addEventListener("mouseup", cancel);
+    targetElement.addEventListener("mouseleave", cancel);
   };
 
-  const cancelPress = () => clearTimeout(pressTimer);
+  // Redirect on h1 hold
+  pressHold(title, () => {
+    window.location.href = "/1902";
+  });
 
-  // Support both touch and mouse
-  header.addEventListener("touchstart", startPress);
-  header.addEventListener("touchend", cancelPress);
-  header.addEventListener("touchcancel", cancelPress);
-
-  header.addEventListener("mousedown", startPress);
-  header.addEventListener("mouseup", cancelPress);
-  header.addEventListener("mouseleave", cancelPress);
+  // Trigger db load on drop-zone hold
+  pressHold(dbTrigger, () => {
+    autoCheckbox.checked = true;
+    refreshDropUI();
+  });
 }
+
 
 // ==============================
 // START FORM LOADING UI
