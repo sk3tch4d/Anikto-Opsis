@@ -165,7 +165,7 @@ def clean_db(df, name="DB Inventory"):
 # ==============================
 # EXCEL COLUMN AUTO-FIT
 # ==============================
-def autofit_columns(worksheet, max_width=40, min_width=10, padding=2):
+def autofit_columns(worksheet, max_width=40, min_width=4, padding=2):
     for col_cells in worksheet.columns:
         lengths = [len(str(cell.value)) if cell.value else 0 for cell in col_cells]
         best_fit = min(max(max(lengths) + padding, min_width), max_width)
