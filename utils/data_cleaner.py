@@ -16,6 +16,7 @@ COLUMN_RENAMES = {
     "name": "Name",
     "Dif": "Changed",
     "MvT": "MVT",
+    "Total of Movements": "MVT",
     "New Bin": "New",
     "Count date": "Date",
     "Reorder point for storage loca": "ROP",
@@ -47,7 +48,6 @@ COLUMN_RENAMES = {
     "Old Mat": "Old",
     "Old Material Number": "Old",
     "Created": "Created",
-    "Total of Movements": "Moves",
     "Date of First Movement": "First",
     "Cost ctr": "Cost_Center",
     "Cost Ctr": "Cost_Center",
@@ -189,7 +189,7 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True):
 # DB CLEANING PIPELINE
 # ==============================
 def clean_db(df, name="DB Inventory"):
-    df = detect_and_set_header(df) # Adjust Header if needed
+    #df = detect_and_set_header(df) # Adjust Header if needed
     df.attrs["name"] = name
     steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
     for step in steps:
