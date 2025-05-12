@@ -1,5 +1,10 @@
 // ==============================
-// DEBUGGING
+// DEBUGGING.JS
+// ==============================
+
+
+// ==============================
+// LOCAL DEBUG MODE
 // ==============================
 export function initDebugToggle() {
   const toggleSwitch = document.getElementById("debug-toggle");
@@ -9,9 +14,11 @@ export function initDebugToggle() {
   toggleSwitch.checked = enabled;
 
   toggleSwitch.addEventListener("change", () => {
-    localStorage.setItem("DEBUG_MODE", toggleSwitch.checked);
-    console.log(`[DEBUG] Debug Mode ${toggleSwitch.checked ? "Enabled" : "Disabled"}`);
-    //alert(`Debug Mode ${toggleSwitch.checked ? "enabled" : "disabled"}. Reload a page to apply.`);
+    const isEnabled = toggleSwitch.checked;
+    localStorage.setItem("DEBUG_MODE", isEnabled);
+    console.log(`[DEBUG] Debug Mode ${isEnabled ? "Enabled" : "Disabled"}`);
+    // Reload the page to apply the new debug mode everywhere
+    location.reload();
   });
 
   console.log(`[DEBUG] Debug Mode is currently ${enabled ? "ENABLED" : "DISABLED"}`);
