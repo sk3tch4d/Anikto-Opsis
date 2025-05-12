@@ -79,7 +79,7 @@ REMOVE_COLUMNS = [
     "Conversion Numerator", "Conversion Numberator",
     "Alt. unit of Measure", "Quantity Posted from Dep.Inven.1", 
     "Total QOH Value", "Alt. Unit of Measure", "Alt. Unit of Measure",
-    "MPQ", "Man. Rev. Req.", "Man. Rev. Req. Site",
+    "MPQ", "Man. Rev. Req.", "Man. Rev. Req. Site", "MRRS",
     "Recommended Max Stock Val.", "Cur. Max Stock Val.", "MA Price",
     "Reason Text for Departmental I", "Status of count", "MRP Controller"
 ]
