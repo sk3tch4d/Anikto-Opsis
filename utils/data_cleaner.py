@@ -146,22 +146,22 @@ def clean_format(df):
 # XLSX CLEANING PIPELINE
 # ==============================
 def clean_xlsx(file_stream, *steps, header=0, name=None):
-    df = detect_and_set_header(df) # Adjust Header if needed
     df = pd.read_excel(file_stream, header=header)
+    df = detect_and_set_header(df)  # Adjust Header if needed
     df.attrs["name"] = name or "Unnamed DataFrame"
     log_cleaning("Cleaning File", df)
 
     for step in steps:
         df = step(df)
 
-    # Normalize Date after cleaning (Removes 00:00:00 from pandas)
+    # Normalize Date after cleaning
     for col in ['Created', 'Date', 'First']:
         if col in df.columns:
             df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
             log_cleaning("Normalized Date", df)
 
     # Handle Cart Ops Edge Format
-    opUSL = set(df['USL'])
+    opUSL = set(df.get('USL', []))
     if len(opUSL) == 1:
         bin_col_name = next(iter(opUSL))
         df = df.rename(columns={'Bin': bin_col_name})
