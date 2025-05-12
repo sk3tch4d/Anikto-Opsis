@@ -7,7 +7,6 @@ import os
 import logging
 import tempfile
 from openpyxl.utils import get_column_letter
-from openpyxl.styles import Alignment
 
 # ==============================
 # CONFIG — RENAME AND REMOVE MAPS
@@ -111,36 +110,17 @@ def detect_and_set_header(df, max_rows=20):
     return df  # Fallback: return unchanged
 
 # ==============================
-# ALIGN COLUMNS
-# ==============================
-def align_col(df, worksheet, column_name, alignment="left"):
-    if column_name not in df.columns:
-        return 
-
-    col_idx = df.columns.get_loc(column_name) + 1  # 1-based index
-    col_letter = get_column_letter(col_idx)
-    align_style = Alignment(horizontal=alignment)
-
-    for row in worksheet.iter_rows(min_row=2, min_col=col_idx, max_col=col_idx):
-        for cell in row:
-            cell.alignment = align_style
-
-# ==============================
 # ADJUST CART OPS FORMAT
 # ==============================
-def adjust_cart_ops(df, worksheet=None):
+def adjust_cart_ops(df):
     if 'USL' in df.columns:
         usl_values = df['USL'].dropna().unique()
         if len(usl_values) == 1:
             bin_col_name = str(usl_values[0])
             if 'Bin' in df.columns:
                 df.rename(columns={'Bin': bin_col_name}, inplace=True)
-                if worksheet:
-                    align_col(df, worksheet, bin_col_name, alignment="center")
-                    align_col(df, worksheet, 'Num', alignment="left")
             df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
             log_cleaning("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
-
     return df
 
 # ==============================
@@ -178,11 +158,6 @@ def clean_format(df):
     #if 'USL' in df.columns: sort_cols.append('USL')
     if sort_cols:
         df = df.sort_values(by=sort_cols, ascending=True, na_position='last')
-    # REMOVE EMPTY TIME FROM DATE COLS
-    for col in ['Created', 'Date', 'First']:
-        if col in df.columns:
-            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
-            log_cleaning("Normalized Date", df)
     log_cleaning("Formatting", df)
     return df
 
@@ -195,8 +170,18 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True):
         df = detect_and_set_header(df) # Adjust Header if needed
     df.attrs["name"] = name or "Unnamed DataFrame"
     log_cleaning("Cleaning File", df)
+
     for step in steps:
         df = step(df)
+
+    # Normalize Date after cleaning
+    for col in ['Created', 'Date', 'First']:
+        if col in df.columns:
+            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
+            log_cleaning("Normalized Date", df)
+
+    # Handle Cart Ops Edge Format
+    df = adjust_cart_ops(df) 
 
     return df
 
@@ -209,6 +194,9 @@ def clean_db(df, name="DB Inventory"):
     steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
     for step in steps:
         df = step(df)
+    if 'Date' in df.columns:
+        df['Date'] = pd.to_datetime(df['Date'], errors='coerce').dt.date
+        log_cleaning("Normalized Date", df)
     return df
 
 # ==============================
@@ -228,15 +216,9 @@ def save_cleaned_df(df):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx", dir="/tmp") as tmp:
         path = tmp.name
     with pd.ExcelWriter(path, engine="openpyxl") as writer:
-        df.to_excel(writer, index=False, sheet_name="Sheet1")
-        
+        df.to_excel(writer, index=False)
         worksheet = writer.sheets["Sheet1"]
         autofit_columns(worksheet)
-        # Freeze Header
-        worksheet.freeze_panes = "A2"
-        # Handle Cart Ops Edge Format
-        df = adjust_cart_ops(df, worksheet)
-
+        worksheet.freeze_panes = worksheet["A2"]
     log_cleaning("Saved File", df)
-    print("File saved:", path)
     return path
