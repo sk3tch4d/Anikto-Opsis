@@ -120,11 +120,10 @@ def clean_flags(df):
     return df
 
 def clean_format(df):
-    if 'Created' in df.columns:
-        df['Created'] = pd.to_datetime(df['Created'], errors='coerce').dt.date
     sort_cols = []
     if 'Material' in df.columns: sort_cols.append('Material')
-    if 'USL' in df.columns: sort_cols.append('USL')
+    if 'Bin' in df.columns: sort_cols.append('Bin')
+    #if 'USL' in df.columns: sort_cols.append('USL')
     if sort_cols:
         df = df.sort_values(by=sort_cols, ascending=True, na_position='last')
     log_cleaning("Formatting", df)
@@ -142,10 +141,17 @@ def clean_xlsx(file_stream, *steps, header=0, name=None):
         df = step(df)
 
     # Normalize Date after cleaning (Removes 00:00:00 from pandas)
-    for col in ['Date', 'First']:
+    for col in ['Created', 'Date', 'First']:
         if col in df.columns:
             df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
             log_cleaning("Normalized Date", df)
+
+    # Handle Cart Ops Edge Format
+    opUSL = set(df['USL'])
+    if len(opUSL) == 1:
+        bin_col_name = next(iter(opUSL))
+        df = df.rename(columns={'Bin': bin_col_name})
+        df = df.drop(['USL'], axis=1, errors='ignore')
 
     return df
 
