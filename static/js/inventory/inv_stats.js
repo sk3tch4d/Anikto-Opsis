@@ -97,7 +97,7 @@ function toggleSaveItem(card, base, matching) {
     showToast("Saved!");
   }
   vibrateShort();
-  clearTextSelection();
+  clearTextSelect();
   updateSavedPanel();
 }
 
