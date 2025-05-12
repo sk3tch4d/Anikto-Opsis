@@ -9,7 +9,7 @@ import { removeFocus } from "./helpers.js";
 // ==============================
 // CLEAR TEXT SELECTION
 // ==============================
-export function clearTextSelect() {
+/*function clearTextSelect() {
   if (window.getSelection) {
     const sel = window.getSelection();
     if (sel && !sel.isCollapsed) {
@@ -18,6 +18,10 @@ export function clearTextSelect() {
   } else if (document.selection) {
     document.selection.empty();
   }
+}*/
+function clearTextSelect() {
+  const sel = window.getSelection?.();
+  if (sel && !sel.isCollapsed) sel.removeAllRanges();
 }
 
 // ==============================
