@@ -98,10 +98,15 @@ def detect_and_set_header(df, max_rows=20):
     for i in range(max_rows):
         row = df.iloc[i]
         num_strings = sum(isinstance(val, str) and val.strip() != "" for val in row)
-        if num_strings >= len(row) // 2:  # Heuristic: majority are valid strings
+        unique_values = len(set(val for val in row if isinstance(val, str) and val.strip() != ""))
+        if num_strings >= len(row) // 2 and unique_values >= 3: # Heuristic: majority are valid strings
             df.columns = row
             df = df.iloc[i + 1:].reset_index(drop=True)
+            
+            logging.debug(f"[CLEAN]Detected header at row {i} with {num_strings} strings and {unique_values} unique values")
             return df
+
+    logging.debug("[CLEAN] No valid header row detected in preview window.")
     return df  # Fallback: return unchanged
 
 # ==============================
@@ -145,9 +150,10 @@ def clean_format(df):
 # ==============================
 # XLSX CLEANING PIPELINE
 # ==============================
-def clean_xlsx(file_stream, *steps, header=0, name=None):
+def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True):
     df = pd.read_excel(file_stream, header=header)
-    df = detect_and_set_header(df)  # Adjust Header if needed
+    if detect_header:
+        df = detect_and_set_header(df) # Adjust Header if needed
     df.attrs["name"] = name or "Unnamed DataFrame"
     log_cleaning("Cleaning File", df)
 
@@ -166,6 +172,7 @@ def clean_xlsx(file_stream, *steps, header=0, name=None):
         bin_col_name = next(iter(opUSL))
         df = df.rename(columns={'Bin': bin_col_name})
         df = df.drop(['USL'], axis=1, errors='ignore')
+        df = df.drop(['Group'], axis=1, errors='ignore')        
 
     return df
 
