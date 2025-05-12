@@ -16,6 +16,7 @@ COLUMN_RENAMES = {
     "name": "Name",
     "Dif": "Changed",
     "MvT": "MVT",
+    "New Bin": "New",
     "Count date": "Date",
     "Reorder point for storage loca": "ROP",
     "Replenishment quantity for slo": "ROQ",
@@ -155,9 +156,12 @@ def clean_db(df, name="DB Inventory"):
     steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
     for step in steps:
         df = step(df)
-    if 'Date' in df.columns:
-        df['Date'] = pd.to_datetime(df['Date'], errors='coerce').dt.date
-        log_cleaning("Normalized Date", df)
+    for col in ['Date', 'First']:
+        if col in df.columns:
+            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
+            # df[col] = pd.to_datetime(df[col], errors='coerce', utc=True).dt.date
+            log_cleaning(f"Normalized {col}", df)
+
     return df
 
 # ==============================
