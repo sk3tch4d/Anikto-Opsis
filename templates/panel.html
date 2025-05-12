@@ -18,9 +18,9 @@
       <!-- Settings Panel -->
       <div id="login-panel" class="panel open" style="max-width: 400px; margin: 2rem auto;">
         <div class="panel-header">Access Panel</div>
-        <div class="panel-body open">
+        <div class="panel-body scrollable-panel open">
           <form id="admin-login-form">
-            <input type="password" id="adpw" class="input panel" placeholder="••••••••" />
+            <input type="password" id="adpw" class="input full-width" placeholder="••••••••" />
             <button id="admin-login" class="button panel" type="submit">Login</button>
           </form>  
           <p id="login-error" class="error-text" style="display: none;">Incorrect password. Try again.</p>
@@ -33,7 +33,7 @@
         <!-- Data Management -->
         <div class="panel">
           <div class="panel-header" onclick="togglePanel(this)">Data Management</div>
-          <div class="panel-body">
+          <div class="panel-body scrollable-panel">
             <!-- Export Buttons -->
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
               <a href="/export/shifts.csv" class="button panel">Export as CSV</a>
@@ -69,7 +69,7 @@
         <!-- Developer Tools -->
         <div class="panel">
           <div class="panel-header" onclick="togglePanel(this)">Developer Tools</div>
-          <div class="panel-body">
+          <div class="panel-body scrollable-panel">
             <ul class="settings-list">
               <li class="toggle-setting">
                 <span>Debug Mode</span>
