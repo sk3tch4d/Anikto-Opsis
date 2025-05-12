@@ -4,7 +4,6 @@
 // ==============================
 
 import { refreshDropUI, startFormLoadingUI, enableAutoIndexTrigger } from './drop_utils.js';
-import Immersive from './immersive.js';
 
 // ==============================
 // INIT DROPZONE
@@ -43,8 +42,6 @@ function setupFileInput(fileInput, fileList) {
 
   fileInput.addEventListener("change", () => {
     if (fileInput.files.length === 0) return;
-
-    Immersive.enter(); // Mobile-only 
 
     if (dropZone) dropZone.style.display = "none";
     fileList.innerHTML = "";
