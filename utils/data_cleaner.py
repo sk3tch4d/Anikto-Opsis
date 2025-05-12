@@ -59,8 +59,7 @@ COLUMN_RENAMES = {
     "years": "Years",
     "Limited Seniority Years": "Years",
     "Vendor material numTer": "Vendor_Material",
-    "Vendor material number": "Vendor_Material",
-    "MPQ", "Man. Rev. Req.", "Man. Rev. Req. Site"
+    "Vendor material number": "Vendor_Material"
 }
 
 REMOVE_COLUMNS = [
@@ -79,6 +78,7 @@ REMOVE_COLUMNS = [
     "Conversion Numerator", "Alt. unit of Measure",
     "Quantity Posted from Dep.Inven.1", "Total QOH Value",
     "Alt. Unit of Measure", "Alt. Unit of Measure",
+    "MPQ", "Man. Rev. Req.", "Man. Rev. Req. Site",
     "Recommended Max Stock Val.", "Cur. Max Stock Val.", "MA Price",
     "Reason Text for Departmental I", "Status of count", "MRP Controller"
 ]
