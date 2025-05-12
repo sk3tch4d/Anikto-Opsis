@@ -110,17 +110,36 @@ def detect_and_set_header(df, max_rows=20):
     return df  # Fallback: return unchanged
 
 # ==============================
+# ALIGN COLUMNS
+# ==============================
+def align_col(df, worksheet, column_name, alignment="left"):
+    if column_name not in df.columns:
+        return 
+
+    col_idx = df.columns.get_loc(column_name) + 1  # 1-based index
+    col_letter = get_column_letter(col_idx)
+    align_style = Alignment(horizontal=alignment)
+
+    for row in worksheet.iter_rows(min_row=2, min_col=col_idx, max_col=col_idx):
+        for cell in row:
+            cell.alignment = align_style
+
+# ==============================
 # ADJUST CART OPS FORMAT
 # ==============================
-def adjust_cart_ops(df):
+def adjust_cart_ops(df, worksheet=None):
     if 'USL' in df.columns:
         usl_values = df['USL'].dropna().unique()
         if len(usl_values) == 1:
             bin_col_name = str(usl_values[0])
             if 'Bin' in df.columns:
                 df.rename(columns={'Bin': bin_col_name}, inplace=True)
+                if worksheet:
+                    align_col(df, worksheet, bin_col_name, alignment="center")
+                    align_col(df, worksheet, 'Num', alignment="left")
             df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
             log_cleaning("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
+
     return df
 
 # ==============================
@@ -180,9 +199,6 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True):
             df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
             log_cleaning("Normalized Date", df)
 
-    # Handle Cart Ops Edge Format
-    df = adjust_cart_ops(df) 
-
     return df
 
 # ==============================
@@ -217,8 +233,14 @@ def save_cleaned_df(df):
         path = tmp.name
     with pd.ExcelWriter(path, engine="openpyxl") as writer:
         df.to_excel(writer, index=False)
+        
         worksheet = writer.sheets["Sheet1"]
         autofit_columns(worksheet)
-        worksheet.freeze_panes = worksheet["A2"]
+        # Freeze Header
+        worksheet.freeze_panes = "A2"
+        # Handle Cart Ops Edge Format
+        df = adjust_cart_ops(df, worksheet)
+
     log_cleaning("Saved File", df)
+    print("File saved:", path)
     return path
