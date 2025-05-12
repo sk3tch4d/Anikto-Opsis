@@ -40,13 +40,11 @@ function setupFileInput(fileInput, fileList) {
   if (!fileInput || !fileList) return;
 
   const dropZone = document.getElementById("drop-zone");
-  
-  fileInput.addEventListener("click", () => {
-    Immersive.enter();  // Mobile Only
-  });
 
   fileInput.addEventListener("change", () => {
     if (fileInput.files.length === 0) return;
+
+    Immersive.enter(); // Mobile-only 
 
     if (dropZone) dropZone.style.display = "none";
     fileList.innerHTML = "";
@@ -64,7 +62,7 @@ function setupFileInput(fileInput, fileList) {
 
     link.addEventListener("click", (e) => {
       e.preventDefault();
-      fileInput.click();  // Re-triggers immersive if clicked again
+      fileInput.click();
     });
   });
 }
