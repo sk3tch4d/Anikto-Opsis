@@ -110,6 +110,20 @@ def detect_and_set_header(df, max_rows=20):
     return df  # Fallback: return unchanged
 
 # ==============================
+# ADJUST CART OPS FORMAT
+# ==============================
+def adjust_cart_ops(df):
+    if 'USL' in df.columns:
+        usl_values = df['USL'].dropna().unique()
+        if len(usl_values) == 1:
+            bin_col_name = str(usl_values[0])
+            if 'Bin' in df.columns:
+                df.rename(columns={'Bin': bin_col_name}, inplace=True)
+            df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
+            log_cleaning("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
+    return df
+
+# ==============================
 # CLEANING FUNCTIONS (STEP MODULES)
 # ==============================
 def clean_headers(df):
@@ -167,12 +181,7 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True):
             log_cleaning("Normalized Date", df)
 
     # Handle Cart Ops Edge Format
-    if 'USL' in df.columns:
-    usl_values = df['USL'].dropna().unique()
-    if len(usl_values) == 1:
-        bin_col_name = str(usl_values[0])
-        df = df.rename(columns={'Bin': bin_col_name})
-        df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
+    df = adjust_cart_ops(df) 
 
     return df
 
