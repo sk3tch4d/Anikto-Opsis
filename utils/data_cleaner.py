@@ -7,6 +7,7 @@ import os
 import logging
 import tempfile
 from openpyxl.utils import get_column_letter
+from openpyxl.styles import Alignment
 
 # ==============================
 # CONFIG — RENAME AND REMOVE MAPS
@@ -177,6 +178,11 @@ def clean_format(df):
     #if 'USL' in df.columns: sort_cols.append('USL')
     if sort_cols:
         df = df.sort_values(by=sort_cols, ascending=True, na_position='last')
+    # REMOVE EMPTY TIME FROM DATE COLS
+    for col in ['Created', 'Date', 'First']:
+        if col in df.columns:
+            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
+            log_cleaning("Normalized Date", df)
     log_cleaning("Formatting", df)
     return df
 
@@ -189,15 +195,8 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True):
         df = detect_and_set_header(df) # Adjust Header if needed
     df.attrs["name"] = name or "Unnamed DataFrame"
     log_cleaning("Cleaning File", df)
-
     for step in steps:
         df = step(df)
-
-    # Normalize Date after cleaning
-    for col in ['Created', 'Date', 'First']:
-        if col in df.columns:
-            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
-            log_cleaning("Normalized Date", df)
 
     return df
 
@@ -210,9 +209,6 @@ def clean_db(df, name="DB Inventory"):
     steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
     for step in steps:
         df = step(df)
-    if 'Date' in df.columns:
-        df['Date'] = pd.to_datetime(df['Date'], errors='coerce').dt.date
-        log_cleaning("Normalized Date", df)
     return df
 
 # ==============================
@@ -232,7 +228,7 @@ def save_cleaned_df(df):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx", dir="/tmp") as tmp:
         path = tmp.name
     with pd.ExcelWriter(path, engine="openpyxl") as writer:
-        df.to_excel(writer, index=False)
+        df.to_excel(writer, index=False, sheet_name="Sheet1")
         
         worksheet = writer.sheets["Sheet1"]
         autofit_columns(worksheet)
