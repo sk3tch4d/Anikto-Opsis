@@ -4,7 +4,7 @@
 // ==============================
 
 import { refreshDropUI, startFormLoadingUI, enableAutoIndexTrigger } from './drop_utils.js';
-import Immersive from './immersiveHelper.js';
+import Immersive from './immersive.js';
 
 // ==============================
 // INIT DROPZONE
