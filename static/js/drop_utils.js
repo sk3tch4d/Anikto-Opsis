@@ -5,7 +5,7 @@
 
 import { toggleLoadingState } from './loading.js';
 import { displayRandomQuote } from './quotes.js';
-import Immersive from './immersiveHelper.js';
+import Immersive from './immersive.js';
 
 // ==============================
 // FILE TYPE MATCHERS
