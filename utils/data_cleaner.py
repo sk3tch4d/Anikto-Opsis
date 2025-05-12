@@ -75,9 +75,9 @@ REMOVE_COLUMNS = [
     "Reorder point for storage loca.1", "Mat. Doc.",
     "Replenishment quantity for slo.1", "MatYr",
     "Difference Quantity from Dep.I.1", "Item.1", 
-    "Conversion Numerator", "Alt. unit of Measure",
-    "Quantity Posted from Dep.Inven.1", "Total QOH Value",
-    "Alt. Unit of Measure", "Alt. Unit of Measure",
+    "Conversion Numerator", "Conversion Numberator,
+    "Alt. unit of Measure", "Quantity Posted from Dep.Inven.1", 
+    "Total QOH Value", "Alt. Unit of Measure", "Alt. Unit of Measure",
     "MPQ", "Man. Rev. Req.", "Man. Rev. Req. Site",
     "Recommended Max Stock Val.", "Cur. Max Stock Val.", "MA Price",
     "Reason Text for Departmental I", "Status of count", "MRP Controller"
