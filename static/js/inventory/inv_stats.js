@@ -3,7 +3,7 @@
 // Inventory Statistics Renderer
 // ==============================
 
-import { setupParseStats, highlightMatch } from "../search-utils.js";
+import { clearTextSelect, setupParseStats, highlightMatch } from "../search-utils.js";
 
 // ==============================
 // DEBUG TOGGLE
@@ -43,20 +43,6 @@ function joinAsDivs(...lines) {
 function vibrateShort() {
   if (navigator.vibrate) {
     navigator.vibrate(65);
-  }
-}
-
-// ==============================
-// HELPER: CLEAR TEXT SELECTION
-// ==============================
-function clearTextSelection() {
-  if (window.getSelection) {
-    const sel = window.getSelection();
-    if (sel && !sel.isCollapsed) {
-      sel.removeAllRanges();
-    }
-  } else if (document.selection) {
-    document.selection.empty();
   }
 }
 
