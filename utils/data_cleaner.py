@@ -167,12 +167,12 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True):
             log_cleaning("Normalized Date", df)
 
     # Handle Cart Ops Edge Format
-    opUSL = set(df.get('USL', []))
-    if len(opUSL) == 1:
-        bin_col_name = next(iter(opUSL))
+    if 'USL' in df.columns:
+    usl_values = df['USL'].dropna().unique()
+    if len(usl_values) == 1:
+        bin_col_name = str(usl_values[0])
         df = df.rename(columns={'Bin': bin_col_name})
-        df = df.drop(['USL'], axis=1, errors='ignore')
-        df = df.drop(['Group'], axis=1, errors='ignore')        
+        df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
 
     return df
 
