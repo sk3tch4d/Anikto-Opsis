@@ -141,10 +141,11 @@ def clean_xlsx(file_stream, *steps, header=0, name=None):
     for step in steps:
         df = step(df)
 
-    # Normalize 'Date' after cleaning (Removes 00:00:00 from pandas)
-    if 'Date' in df.columns:
-        df['Date'] = pd.to_datetime(df['Date'], errors='coerce').dt.date
-        log_cleaning("Normalized Date", df)
+    # Normalize Date after cleaning (Removes 00:00:00 from pandas)
+    for col in ['Date', 'First']:
+        if col in df.columns:
+            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
+            log_cleaning("Normalized Date", df)
 
     return df
 
@@ -156,11 +157,9 @@ def clean_db(df, name="DB Inventory"):
     steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
     for step in steps:
         df = step(df)
-    for col in ['Date', 'First']:
-        if col in df.columns:
-            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
-            log_cleaning(f"Normalized {col}", df)
-
+    if 'Date' in df.columns:
+        df['Date'] = pd.to_datetime(df['Date'], errors='coerce').dt.date
+        log_cleaning("Normalized Date", df)
     return df
 
 # ==============================
