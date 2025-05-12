@@ -217,7 +217,8 @@ def save_cleaned_df(df):
         path = tmp.name
     with pd.ExcelWriter(path, engine="openpyxl") as writer:
         df.to_excel(writer, index=False)
-        autofit_columns(writer.sheets["Sheet1"])
-        worksheet.freeze_panes = "A2" # FREEZE HEADER ROW
+        worksheet = writer.sheets["Sheet1"]
+        autofit_columns(worksheet)
+        worksheet.freeze_panes = worksheet["A2"]
     log_cleaning("Saved File", df)
     return path
