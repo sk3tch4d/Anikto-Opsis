@@ -158,8 +158,7 @@ def clean_db(df, name="DB Inventory"):
         df = step(df)
     for col in ['Date', 'First']:
         if col in df.columns:
-            df[col] = pd.to_datetime(df[col], errors='coerce').dt.normalize()
-            # df[col] = pd.to_datetime(df[col], errors='coerce', utc=True).dt.normalize()
+            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
             log_cleaning(f"Normalized {col}", df)
 
     return df
