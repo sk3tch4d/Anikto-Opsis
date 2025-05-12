@@ -9,7 +9,7 @@ import { displayRandomQuote } from './quotes.js';
 // ==============================
 // FILE TYPE MATCHERS
 // ==============================
-//const OPTIMIZE_REGEX = "^KG01-[A-Z0-9]{1,4}-.*\.xlsx$";
+const OPTIMIZE_REGEX = /^KG01-[A-Z0-9]{1,4}-.*\.xlsx$/i;
 const CLEAN_REGEX = /.*clean.*\.xlsx$/i;
 const CATALOG_REGEX = /(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$/i;
 const ZWDISEG_REGEX = /.*zwdiseg.*\.xlsx$/i;
@@ -17,7 +17,7 @@ const ARG_REGEX = /(arg|flowsheet).*?\.(pdf)$/i;
 const SENIORITY_REGEX = /(cupe).*seniority.*(list)?.*\.xlsx$/i;
 const UNCLEANED_REGEX = /(list|ven|vendor|cost|usl|cc).*\.xlsx$/i;
 
-//const isOptimizationFile = name => OPTIMIZE_REGEX.test(name);
+const isOptimizationFile = name => OPTIMIZE_REGEX.test(name);
 const isCleaningFile = name => CLEAN_REGEX.test(name);
 const isCatalogFile = name => CATALOG_REGEX.test(name);
 const isZwdisegFile = name => ZWDISEG_REGEX.test(name);
@@ -158,8 +158,8 @@ export function enableAutoDbTrigger() {
     pressTimer = setTimeout(() => {
       autoCheckbox.checked = true;
       refreshDropUI();
-      alert("✔️ Cat_V7.7.db selected");
-    }, 3000);
+      //alert("✔️ Cat_V7.7.db selected");
+    }, 2000);
   };
 
   const cancelPress = () => clearTimeout(pressTimer);
