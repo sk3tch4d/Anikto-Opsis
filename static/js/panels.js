@@ -2,9 +2,12 @@
 // PANELS.JS — UI Panel Handling
 // ==============================
 
-import { initDebugToggle } from './debugging.js';
 
 // ==============================
+// GLOBAL CONST
+// ==============================
+
+const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 
 const nonClosablePanels = [
   "downloads",
@@ -70,9 +73,9 @@ export function scrollPanel(header = null, yOffset = -14, delay = 10) {
   const headerRect = header.getBoundingClientRect();
   const scrollTarget = headerRect.top + window.pageYOffset + yOffset;
 
-  console.log('[DEBUG] headerRect.top:', headerRect.top);
-  console.log('[DEBUG] pageYOffset:', window.pageYOffset);
-  console.log('[DEBUG] Final Scroll Target (y):', scrollTarget);
+  DEBUG_MODE && console.log('[DEBUG] headerRect.top: ', headerRect.top);
+  DEBUG_MODE && console.log('[DEBUG] pageYOffset: ', window.pageYOffset);
+  DEBUG_MODE && console.log('[DEBUG] Final Scroll Target (y): ', scrollTarget);
 
   setTimeout(() => {
     window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
@@ -84,8 +87,10 @@ export function scrollPanel(header = null, yOffset = -14, delay = 10) {
 // OPEN PANEL
 // ==============================
 export function openPanel(panelId) {
+  DEBUG_MODE && console.log('[DEBUG] Attempting to open panel with ID: ', panelId);
+  
   const panel = document.getElementById(panelId);
-  if (!panel) return console.warn(`Panel not found: ${panelId}`);
+  if (!panel) return console.warn(`[DEBUG] Panel not found for ID: ${panelId}`);
 
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
@@ -135,8 +140,13 @@ export function openPanelById(panelId) {
 // TOGGLE PANEL
 // ==============================
 export function togglePanel(header) {
+  DEBUG_MODE && console.log('[DEBUG] Attempting toggle panel with header: ', header);
+  
   const panel = header.closest('.panel');
-  if (!panel) return;
+  if (!panel.id) {
+    DEBUG_MODE && console.warn('[DEBUG] togglePanel called on panel with no ID:', panel);
+    return;
+  }
 
   const isOpen = panel.classList.contains('open');
   if (isOpen) {
@@ -154,6 +164,8 @@ export function togglePanel(header) {
 function closePanel(panel) {
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
+
+  DEBUG_MODE && console.log('[DEBUG] Closing panel:', panel.id || panel);
   
   panel.classList.remove('open');
   header?.classList.remove('open');
@@ -171,6 +183,8 @@ function closePanel(panel) {
 export function collapseAllPanels({ excludeSelector = null } = {}) {
   const exclusions = Array.isArray(excludeSelector) ? excludeSelector : excludeSelector ? [excludeSelector] : [];
 
+  DEBUG_MODE && console.log('[DEBUG] Collapsing panels, excluding:', exclusions);
+  
   document.querySelectorAll('.panel-body').forEach(body => {
     const panel = body.closest('.panel');
     if (exclusions.some(sel => panel?.matches(sel))) return;
