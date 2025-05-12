@@ -3,7 +3,7 @@
 // Handles File Uploads
 // ==============================
 
-import { refreshDropUI, startFormLoadingUI, enableAutoDbTrigger } from './drop_utils.js';
+import { refreshDropUI, startFormLoadingUI, enableAutoIndexTrigger } from './drop_utils.js';
 
 // ==============================
 // INIT DROPZONE
@@ -17,7 +17,7 @@ export function initDropzone() {
   setupFileInput(fileInput, fileList);
   setupDragAndDrop(dropZone, fileInput);
   bindChangeEvents();
-  enableAutoDbTrigger();
+  enableAutoIndexTrigger();
 }
 
 // ==============================
