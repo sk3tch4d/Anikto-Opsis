@@ -19,6 +19,10 @@ COLUMN_RENAMES = {
     "Count date": "Date",
     "Reorder point for storage loca": "ROP",
     "Replenishment quantity for slo": "ROQ",
+    "Recommended ROP": "RROP",
+    "Recommended ROQ": "RROQ",
+    "Site Suggested ROP": "SROP",
+    "Site Suggested ROQ": "SROQ",
     "Difference Quantity from Dep.I": "Difference",
     "Quantity Posted from Dep.Inven": "Consumed",
     "Counted qty": "Counted",
@@ -32,22 +36,31 @@ COLUMN_RENAMES = {
     "Un": "UOM",
     "U/M": "UOM",
     "BUn.4": "UOM",
+    "BUn of measure": "UOM",
     "Net price": "Cost",
     "Matl grp": "Group",
     "Material Group": "Group",
     "Replenishmt qty": "ROQ",
     "Reorder point": "ROP",
+    "QTY on Hand": "QTY",
     "Old Mat": "Old",
     "Old Material Number": "Old",
     "Created": "Created",
+    "Total of Movements": "Moves",
+    "Date of First Movement": "First",
     "Cost ctr": "Cost_Center",
     "Cost Ctr": "Cost_Center",
+    "Cart Usage 1": "CU1",
+    "Cart Usage 2": "CU2",
+    "Cost Centre Usage 1", "CC1",
+    "Cost Centre Usage 2", "CC2",
     "Vendor's Name": "Vendor_Name",
     "Vendors name": "Vendor_Name",
     "years": "Years",
     "Limited Seniority Years": "Years",
     "Vendor material numTer": "Vendor_Material",
-    "Vendor material number": "Vendor_Material"
+    "Vendor material number": "Vendor_Material",
+    "MPQ", "Man. Rev. Req.", "Man. Rev. Req. Site"
 }
 
 REMOVE_COLUMNS = [
@@ -62,9 +75,12 @@ REMOVE_COLUMNS = [
     "Valuated Unrestricted-Use Stoc.1", "BUn", "DSt",
     "Reorder point for storage loca.1", "Mat. Doc.",
     "Replenishment quantity for slo.1", "MatYr",
-    "Difference Quantity from Dep.I.1", "Item.1",
-    "Quantity Posted from Dep.Inven.1",
-    "Reason Text for Departmental I", "Status of count"
+    "Difference Quantity from Dep.I.1", "Item.1", 
+    "Conversion Numerator", "Alt. unit of Measure",
+    "Quantity Posted from Dep.Inven.1", "Total QOH Value",
+    "Alt. Unit of Measure", "Alt. Unit of Measure",
+    "Recommended Max Stock Val.", "Cur. Max Stock Val.", "MA Price",
+    "Reason Text for Departmental I", "Status of count", "MRP Controller"
 ]
 
 # ==============================
