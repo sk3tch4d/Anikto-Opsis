@@ -1,5 +1,5 @@
 # ==============================
-# ROUTES.PY — ARGX MAIN ROUTE HANDLER
+# ROUTES.PY — MAIN ROUTE HANDLER
 # ==============================
 
 import os
@@ -30,19 +30,25 @@ from optimization import search_optimization
 from handlers.index_handler import process_index_upload
 
 # ==============================
-# Ensure upload folder exists
+# ENSURE UPLOAD FOLDER EXISTS
 # ==============================
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # ==============================
-# Register all application routes
+# REGISTER APPLICATION ROUTES
 # ==============================
 def register_routes(app):
 
-    @app.template_filter("reorder_name")
-    def reorder_name(value):
-        parts = value.split(", ")
-        return f"{parts[1]} {parts[0]}" if len(parts) == 2 else value
+    # ==============================
+    # INDEX HANDLING: POST & GET
+    # ==============================
+    @app.route("/", methods=["GET"])
+    def index():
+        return render_template("index.html")
+    # ==============================
+    @app.route("/", methods=["POST"])
+    def post_index():
+        return process_index_upload()
 
     # ==============================
     # INVENTORY API ROUTES
@@ -53,7 +59,7 @@ def register_routes(app):
         if isinstance(result, tuple):
             return jsonify(result[0]), result[1]
         return jsonify(result)
-
+    # ==============================
     @app.route("/inventory-search")
     def inventory_search():
         term = request.args.get("term", "")
@@ -76,7 +82,7 @@ def register_routes(app):
         if isinstance(result, tuple):
             return jsonify(result[0]), result[1]
         return jsonify(result)
-
+    # ==============================
     @app.route("/zwdiseg-search")
     def zwdiseg_search():
         term = request.args.get("term", "")
@@ -93,6 +99,13 @@ def register_routes(app):
     # ==============================
     # OPTIMIZATION API ROUTES
     # ==============================
+    @app.route("/download/optimized")
+    def download_optimized():
+        path = config.OPTIMIZATION_PATH
+        if path and os.path.exists(path):
+            return send_file(path, as_attachment=True, download_name=os.path.basename(path))
+        return "Optimized file not available.", 404
+    # ==============================
     @app.route("/optimization-search")
     def optimization_search():
         term = request.args.get("term", "")
@@ -106,12 +119,14 @@ def register_routes(app):
                     r[k] = None
         return jsonify(results)
 
+    # ==============================
+    # CLEAN INVENTORY
+    # ==============================
     @app.route("/clean-inventory-xlsx", methods=["POST"])
     def clean_inventory_xlsx():
         file = request.files.get('file')
         if not file:
             return jsonify({"error": "No file uploaded"}), 400
-
         try:
             tmp_path = clean_xlsx_and_save(file)
             response = send_file(tmp_path, as_attachment=True, download_name='cleaned_inventory.xlsx')
@@ -122,7 +137,6 @@ def register_routes(app):
                     os.unlink(tmp_path)
                 except Exception as e:
                     app.logger.error(f"Error deleting temp file: {e}")
-
             return response
 
         except ValueError as ve:
@@ -130,30 +144,9 @@ def register_routes(app):
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
-    @app.route("/", methods=["GET"])
-    def index():
-        return render_template("index.html")
-
-    @app.route("/", methods=["POST"])
-    def post_index():
-        return process_index_upload()
-
-    @app.route("/export/shifts.csv")
-    def handle_export_csv():
-        return export_shifts_csv()
-
-    @app.route("/export/shifts.json")
-    def handle_export_json():
-        return export_shifts_json()
-
-    @app.route("/import/shifts", methods=["POST"])
-    def handle_import_json():
-        return import_shifts_from_json()
-
-    @app.route("/import/shifts.csv", methods=["POST"])
-    def handle_import_csv():
-        return import_shifts_from_csv()
-
+    # ==============================
+    # ARG SCHEDULE API ROUTES
+    # ==============================
     @app.route("/api/working_on_date")
     def working_on_date():
         date_str = request.args.get("date")
@@ -162,34 +155,7 @@ def register_routes(app):
 
         result, status = get_shifts_for_date(date_str)
         return jsonify(result), status
-
-    @app.route("/download/<filename>")
-    def download(filename):
-        file_path = os.path.join("/tmp", filename)
-        if os.path.exists(file_path):
-            return send_file(file_path, as_attachment=True)
-        else:
-            return "File not found", 404
-
-    @app.route("/download/optimized")
-    def download_optimized():
-        path = config.OPTIMIZATION_PATH
-        if path and os.path.exists(path):
-            return send_file(path, as_attachment=True, download_name=os.path.basename(path))
-        return "Optimized file not available.", 404
-
-    @app.route("/1902")
-    def panel():
-        return render_template("panel.html")
-
-    @app.route("/61617")
-    def inventory():
-        return render_template("inventory.html", table=[])
-
-    @app.route("/test")
-    def testing():
-        return render_template("testing.html", table=[])
-
+    # ==============================
     @app.route("/dbcheck")
     def dbcheck():
         try:
@@ -201,3 +167,50 @@ def register_routes(app):
             }
         except Exception as e:
             return {"error": str(e)}
+    # ==============================
+    @app.template_filter("reorder_name")
+    def reorder_name(value):
+        parts = value.split(", ")
+        return f"{parts[1]} {parts[0]}" if len(parts) == 2 else value
+    # ==============================
+    @app.route("/export/shifts.csv")
+    def handle_export_csv():
+        return export_shifts_csv()
+    # ==============================
+    @app.route("/export/shifts.json")
+    def handle_export_json():
+        return export_shifts_json()
+    # ==============================
+    @app.route("/import/shifts", methods=["POST"])
+    def handle_import_json():
+        return import_shifts_from_json()
+    # ==============================
+    @app.route("/import/shifts.csv", methods=["POST"])
+    def handle_import_csv():
+        return import_shifts_from_csv()
+
+    # ==============================
+    # REDIRECT ROUTES
+    # ==============================
+    @app.route("/1902")
+    def panel():
+        return render_template("panel.html")
+    # ==============================
+    @app.route("/61617")
+    def inventory():
+        return render_template("inventory.html", table=[])
+    # ==============================
+    @app.route("/test")
+    def testing():
+        return render_template("testing.html", table=[])
+
+    # ==============================
+    # HANDLE DOWNLOADS
+    # ==============================
+    @app.route("/download/<filename>")
+    def download(filename):
+        file_path = os.path.join("/tmp", filename)
+        if os.path.exists(file_path):
+            return send_file(file_path, as_attachment=True)
+        else:
+            return "File not found", 404
