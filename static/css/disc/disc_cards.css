@@ -9,18 +9,18 @@
 .panel-card {
   border: 2px solid #1f1f2e;
   background: #29293d; /*#292b3d;*/
-  padding: 0.6rem 1.1rem;
-  border-radius: 9px;
+  padding: 0.62rem 1.1rem;
+  border-radius: 12px;
   margin-bottom: 0.85rem;
-  box-shadow: inset 0px 0.8px 5px #1c1e22;
+  box-shadow: inset 0px 0.4px 2zpx #1c1e22;
   color: #c1c1d7;
   text-align: center;
   font-size: 0.9rem;
   font-family: 'Segoe UI', Tahoma, sans-serif;
-  transition: transform 0.4s ease, color 0.4s ease;
+  transition: transform 0.4s ease, color 0.5s ease;
 }
 .panel-card:hover {
-  color: #ddd;
+  color: #b0b2e8;
 }
 
 /* ============================= */
@@ -29,10 +29,10 @@
 .compare-card {
   border: 2px solid #1f1f2e;
   background: #29293d; /*#292b3d;*/
-  padding: 0.6rem 1.1rem;
-  border-radius: 9px;
+  padding: 0.62rem 1.1rem;
+  border-radius: 12px;
   margin-bottom: 0.85rem;
-  box-shadow: inset 0px 0.8px 5px #1c1e22;
+  box-shadow: inset 0px 0.4px 2zpx #1c1e22;
   color: #c1c1d7;
   text-align: center;
   font-size: 0.9rem;
@@ -40,7 +40,7 @@
   transition: transform 0.4s ease, color 0.4s ease;
 }
 .compare-card:hover {
-  color: #ddd;
+  color: #b0b2e8;
 }
 
 /* ============================= */
@@ -53,12 +53,11 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
-  margin-top: 1.25rem;
 }
 .compare-delta .delta-item {
   background: #29293d;
   padding: 0.5rem 0.75rem;
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: inset 0 0 0 1.4px #1a1b1f;
   color: #ccc;
   font-size: 0.9rem;
@@ -67,12 +66,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: color 0.4s ease;
 }
+.compare-delta .delta-item:hover {
+  color: #888bdd;
+}
+
 .compare-delta .delta-item strong {
   font-size: 0.85rem;
   color: #999;
   font-weight: 600;
   margin-right: 0.5rem;
+  transition: color 0.4s ease;
+}
+.compare-delta .delta-item strong:hover {
+  color: #BBB;
 }
 
 /* Optional: Better for small screens */
