@@ -1,8 +1,6 @@
 # ==============================
-# SENIORITY.PY — XLSX Loader & Search Utilities
-# ==============================
-# Handles loading and searching of seniority Excel files
-# Used for one-time analysis and in-page lookup only
+# SENIORITY.PY
+# XLSX Loader & Search Utilities
 # ==============================
 
 import pandas as pd
@@ -12,7 +10,7 @@ import pandas as pd
 # ==============================
 def load_seniority_file(path):
     # Load the Excel file assuming cleaned headers and structure
-    df = pd.read_excel(path, sheet_name=0, header=2)
+    df = pd.read_excel(path)#, sheet_name=0, header=0)
     df.columns = [str(col).strip() for col in df.columns]
     df = df.dropna(how="all")
 
