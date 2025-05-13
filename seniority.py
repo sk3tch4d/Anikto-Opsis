@@ -14,6 +14,10 @@ def load_seniority_file(path):
     df.columns = [str(col).strip() for col in df.columns]
     df = df.dropna(how="all")
 
+    # Normalize Years column
+    if "Years" in df.columns:
+        df["Years"] = pd.to_numeric(df["Years"], errors="coerce")
+
     # Debugging output
     print(f"[DEBUG] Loaded file: {path}")
     print(f"[DEBUG] Columns: {list(df.columns)}")
