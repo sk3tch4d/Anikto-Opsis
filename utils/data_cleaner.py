@@ -132,25 +132,25 @@ def clean_headers(df):
     df.rename(columns=rename_map, inplace=True)
     log_cleaning("Headers", df)
     return df
-
+# ==============================
 def clean_columns(df):
     df = df.loc[:, ~df.columns.duplicated()]
     df.drop(columns=[col for col in REMOVE_COLUMNS if col in df.columns], inplace=True, errors='ignore')
     log_cleaning("Columns", df, extra=f"{len(df.columns)} columns remain")
     return df
-
+# ==============================
 def clean_deleted_rows(df):
     mask = df.astype(str).apply(lambda x: x.str.contains('DELETED', case=False, na=False)).any(axis=1)
     log_cleaning("Deleted Rows", df, extra=f"{mask.sum()} rows removed")
     return df[~mask]
-
+# ==============================
 def clean_flags(df):
     for col in ['Mat', 'Pl', 'D', 'Del']:
         if col in df.columns:
             df = df[df[col].astype(str).str.upper() != 'X']
     log_cleaning("Flags", df)
     return df
-
+# ==============================
 def clean_format(df):
     sort_cols = []
     if 'Material' in df.columns: sort_cols.append('Material')
