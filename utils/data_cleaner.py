@@ -168,9 +168,16 @@ def clean_format(df):
 # ==============================
 def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True):
     df = pd.read_excel(file_stream, header=header)
+    df.attrs["name"] = name or "Unnamed DataFrame"
+
+    # String Headers & Remove whitespace
+    df.columns = [str(col).strip() for col in df.columns]
+    # Remove full rows where all values are missing
+    df = df.dropna(how="all")
+
     if detect_header:
         df = detect_and_set_header(df) # Adjust Header if needed
-    df.attrs["name"] = name or "Unnamed DataFrame"
+
     log_cleaning("Cleaning File", df)
 
     for step in steps:
