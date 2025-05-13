@@ -156,6 +156,8 @@ def clean_format(df):
     if 'Material' in df.columns: sort_cols.append('Material')
     if 'Bin' in df.columns: sort_cols.append('Bin')
     #if 'USL' in df.columns: sort_cols.append('USL')
+    for col in sort_cols:
+        df[col] = df[col].astype(str)  # Convert to string 
     if sort_cols:
         df = df.sort_values(by=sort_cols, ascending=True, na_position='last')
     log_cleaning("Formatting", df)
