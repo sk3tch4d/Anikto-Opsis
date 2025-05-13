@@ -12,6 +12,9 @@ def handle(df):
         # ==============================
         # Render the table view
         # ==============================
+        if "Years" not in df.columns:
+            print("[WARNING] 'Years' column missing in seniority data!")
+            
         return render_template("seniority.html", table=df.to_dict(orient="records"))
 
     except Exception as e:
