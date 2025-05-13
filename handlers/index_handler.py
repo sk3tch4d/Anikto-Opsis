@@ -122,10 +122,9 @@ def process_index_upload():
 
                 elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
                     logging.debug("Matched SENIORITY — using optimize cleaning pipeline")
-                    #steps = [clean_headers]
-                    #df = clean_xlsx(file, *steps, header=2, name=fname)
-                    ##df = pd.read_excel(file)
-                    df = pd.read_excel(file, sheet_name=0, header=2)
+                    steps = [clean_headers]
+                    df = clean_xlsx(file, *steps, name=fname)
+                    #df = pd.read_excel(file, sheet_name=0, header=2)
                     return handle_seniority(df)
 
                 elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
