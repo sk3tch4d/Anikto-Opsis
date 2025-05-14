@@ -46,7 +46,7 @@ export function populatePositionList() {
         card.className = "clickable-stat";
         
         card.innerHTML = `
-        <div class="compare-delta">
+        <div class="panel-delta">
           <div class="delta-item">${toTitleCase(pos)}<br>${count}</div>
         </div>
       `;
