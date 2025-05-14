@@ -44,19 +44,18 @@ export function populatePositionList() {
       // Sort and build DOM elements
       const sorted = Object.entries(positionMap).sort((a, b) => b[1] - a[1]);
       sorted.forEach(([pos, count]) => {
-        const li = document.createElement("li");
-        const p = document.createElement("p");
-        p.className = "clickable-stat";
-        const titleCasePos = toTitleCase(pos);
-        p.innerHTML = `<strong>${titleCasePos}:</strong> ${count}`;
-        p.addEventListener("click", () => {
-          searchFromStat("seniority-search", pos);
-        });
-        li.appendChild(p);
-        container.appendChild(li);
+      const card = document.createElement("div");
+      card.className = "compare-card clickable-stat";
+    
+      card.innerHTML = `
+        <div class="compare-delta">
+          <div class="delta-item">${toTitleCase(pos)}<br>${count}</div>
+        </div>
+      `;
+    
+      card.addEventListener("click", () => {
+        searchFromStat("seniority-search", pos);
       });
-    })
-    .catch(err => {
-      console.error("Failed to load pos_adjust.json", err);
+    
+      container.appendChild(card);
     });
-}
