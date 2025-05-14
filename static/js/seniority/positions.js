@@ -44,12 +44,15 @@ export function populatePositionList() {
       sorted.forEach(([pos, count]) => {
         const card = document.createElement("div");
         card.className = "clickable-stat";
-        
+
         card.innerHTML = `
-        <div class="panel-delta">
-          <div class="delta-item">${toTitleCase(pos)}<br>${count}</div>
-        </div>
-      `;
+          <div class="panel-delta">
+            <div class="delta-item">
+              ${toTitleCase(pos)}
+              <span>${count}</span>
+            </div>
+          </div>
+        `;
 
         card.addEventListener("click", () => {
           searchFromStat("seniority-search", pos);
