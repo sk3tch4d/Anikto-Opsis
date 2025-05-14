@@ -47,7 +47,10 @@ export function populatePositionList() {
 
         card.innerHTML = `
           <div class="compare-delta">
-            <div class="delta-item">${toTitleCase(pos)}<br>${count}</div>
+            <div class="delta-item">
+              ${toTitleCase(pos)}
+              <span>${count}</span>
+            </div>
           </div>
         `;
 
