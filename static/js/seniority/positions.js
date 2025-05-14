@@ -2,6 +2,7 @@
 // POSITIONS.JS
 // Position List Panel Logic
 // ==============================
+
 import { searchFromStat } from '../search-utils.js'; // centralized function
 import { normalize } from './search.js';
 import { toTitleCase } from './helpers.js';
@@ -27,7 +28,6 @@ export function populatePositionList() {
           .replace(/\b(PT|FT|CASUAL|CAS|HOLD)\b/gi, "")
           .trim();
 
-        // Apply replacements
         for (const [key, value] of Object.entries(posAdjustments)) {
           const pattern = new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
           base = base.replace(pattern, value);
@@ -38,25 +38,27 @@ export function populatePositionList() {
         positionMap[base] = (positionMap[base] || 0) + 1;
       });
 
-      // Clear existing list
       container.innerHTML = "";
 
-      // Sort and build DOM elements
       const sorted = Object.entries(positionMap).sort((a, b) => b[1] - a[1]);
       sorted.forEach(([pos, count]) => {
-      const card = document.createElement("div");
-      card.className = "compare-card clickable-stat";
-    
-      card.innerHTML = `
-        <div class="compare-delta">
-          <div class="delta-item">${toTitleCase(pos)}<br>${count}</div>
-        </div>
-      `;
-    
-      card.addEventListener("click", () => {
-        searchFromStat("seniority-search", pos);
+        const card = document.createElement("div");
+        card.className = "compare-card clickable-stat";
+
+        card.innerHTML = `
+          <div class="compare-delta">
+            <div class="delta-item">${toTitleCase(pos)}<br>${count}</div>
+          </div>
+        `;
+
+        card.addEventListener("click", () => {
+          searchFromStat("seniority-search", pos);
+        });
+
+        container.appendChild(card);
       });
-    
-      container.appendChild(card);
+    }) 
+    .catch(err => {
+      console.error("Failed to load pos_adjust.json", err);
     });
 }
