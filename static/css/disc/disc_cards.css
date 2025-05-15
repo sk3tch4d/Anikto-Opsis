@@ -32,7 +32,6 @@
 .panel-delta {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  gap: 0.5rem;
 }
 .panel-delta .delta-item {
   background: #29293d;
