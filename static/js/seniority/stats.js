@@ -106,30 +106,19 @@ export function populateStats(data) {
   
   statsDiv.innerHTML = `
     <div class="panel-delta">
-      <div class="delta-item"><strong>Filtered by:</strong><br><em>${currentQuery}</em></div>
-      <div class="delta-item"><strong>Total Employees:</strong><br>${total}</div>
-  
-      <div class="delta-item">
-        <span class="clickable-stat" data-name="Full-Time"><strong>Full-Time:</strong>${fullTime}</span>
-      </div>
-      <div class="delta-item">
-        <span class="clickable-stat" data-name="Part-Time"><strong>Part-Time:</strong>${partTime}</span>
-      </div>
-      <div class="delta-item">
-        <span class="clickable-stat" data-name="Casual"><strong>Casual:</strong>${casual}</span>
-      </div>
-  
-      <div class="delta-item"><strong>Average Seniority:</strong><br>${avgYears} Years</div>
-      <div class="delta-item"><strong>Top Senior:</strong><br>${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</div>
+      <div class="delta-item full-span"><strong>Filtered by:</strong><br><em>${currentQuery}</em></div>
+      <div class="delta-item full-span"><strong>Total Employees:</strong><br>${total}</div>
+      <div class="delta-item full-span"><span class="clickable-stat" data-name="Full-Time"><strong>Full-Time:</strong>${fullTime}</span></div>
+      <div class="delta-item full-span"><span class="clickable-stat" data-name="Part-Time"><strong>Part-Time:</strong>${partTime}</span></div>
+      <div class="delta-item full-span"><span class="clickable-stat" data-name="Casual"><strong>Casual:</strong>${casual}</span></div>
+      <div class="delta-item full-span"><strong>Average Seniority:</strong><br>${avgYears} Years</div>
+      <div class="delta-item full-span"><strong>Top Senior:</strong><br>${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</div>
       <div class="delta-item full-span"><strong>Total Combined:</strong><br>${totalYears.toFixed(2)} Years</div>
     </div>
   `;
 
-
-
   setupParseStats(".clickable-stat", "seniority-search", "data-name");
 }
-
 
 // ==============================
 // REFINE FILTERED RESULTS
