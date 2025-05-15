@@ -103,22 +103,35 @@ export function populateStats(data) {
   });
 
   const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
-  
-  statsDiv.innerHTML = `
-    <div class="panel-delta">
-      <div class="delta-item">Filtered by:<span><em>${currentQuery}</em></span></div>
-      <div class="delta-item">Total Employees:<span>${total}</span></div>
-      <div class="delta-item"><span class="clickable-stat" data-name="Full-Time">Full-Time:</span><span>${fullTime}</span></div>
-      <div class="delta-item"><span class="clickable-stat" data-name="Part-Time">Part-Time:</span><span>${partTime}</span></div>
-      <div class="delta-item"><span class="clickable-stat" data-name="Casual">Casual:</span><span>${casual}</span></div>
-      <div class="delta-item">Average Seniority:<span>${avgYears} Years</span></div>
-      <div class="delta-item">Top Senior:<span>${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</span></div>
-      <div class="delta-item">Total Combined:<span>${totalYears.toFixed(2)} Years</span></div>
-    </div>
-  `;
 
+  const container = document.createElement("div");
+  container.className = "panel-delta";
 
-  setupParseStats(".clickable-stat", "seniority-search", "data-name");
+  const addRow = (label, value, isClickable = false, filterName = "") => {
+    const row = document.createElement("div");
+    row.className = isClickable ? "delta-item clickable-stat" : "delta-item";
+    row.innerHTML = `<span>${label}</span><span>${value}</span>`;
+
+    if (isClickable && filterName) {
+      row.addEventListener("click", () => {
+        searchFromStat("seniority-search", filterName);
+      });
+    }
+
+    container.appendChild(row);
+  };
+
+  addRow("Filtered by", `<em>${currentQuery}</em>`);
+  addRow("Total Employees", total);
+  addRow("Full-Time", fullTime, true, "Full-Time");
+  addRow("Part-Time", partTime, true, "Part-Time");
+  addRow("Casual", casual, true, "Casual");
+  addRow("Average Seniority", `${avgYears} Years`);
+  addRow("Top Senior", `${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years`);
+  addRow("Total Combined", `${totalYears.toFixed(2)} Years`);
+
+  statsDiv.innerHTML = "";
+  statsDiv.appendChild(container);
 }
 
 // ==============================
