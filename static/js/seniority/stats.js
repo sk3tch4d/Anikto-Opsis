@@ -72,7 +72,7 @@ export function populateStats(data) {
   const statsDiv = document.getElementById("seniority-stats");
   const searchInput = document.getElementById("seniority-search");
   const currentQuery = searchInput?.value.trim() || "(None)";
-  
+
   if (!statsDiv || !data || !data.length) {
     statsDiv.innerHTML = "<p style='text-align: center;'>No data available.</p>";
     return;
@@ -102,36 +102,92 @@ export function populateStats(data) {
     }
   });
 
-  const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
-
-  const container = document.createElement("div");
-  container.className = "panel-delta";
-
-  const addRow = (label, value, isClickable = false, filterName = "") => {
-    const row = document.createElement("div");
-    row.className = isClickable ? "delta-item clickable-stat" : "delta-item";
-    row.innerHTML = `<span>${label}</span><span>${value}</span>`;
-
-    if (isClickable && filterName) {
-      row.addEventListener("click", () => {
-        searchFromStat("seniority-search", filterName);
-      });
-    }
-
-    container.appendChild(row);
-  };
-
-  addRow("Filtered by", `<em>${currentQuery}</em>`);
-  addRow("Total Employees", total);
-  addRow("Full-Time", fullTime, true, "Full-Time");
-  addRow("Part-Time", partTime, true, "Part-Time");
-  addRow("Casual", casual, true, "Casual");
-  addRow("Average Seniority", `${avgYears} Years`);
-  addRow("Top Senior", `${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years`);
-  addRow("Total Combined", `${totalYears.toFixed(2)} Years`);
+  const avgYears = (total > 0) ? (totalYears / total).toFixed(2) : "0.00";
+  totalYears = totalYears.toFixed(2);
 
   statsDiv.innerHTML = "";
-  statsDiv.appendChild(container);
+
+  // Static top items (not clickable)
+  const staticPanel = document.createElement("div");
+  staticPanel.className = "panel-delta";
+  staticPanel.innerHTML = `
+    <div class="delta-item">
+      <span>Filtered by</span>
+      <span><em>${currentQuery}</em></span>
+    </div>
+    <div class="delta-item">
+      <span>Total Employees</span>
+      <span>${total}</span>
+    </div>
+  `;
+  statsDiv.appendChild(staticPanel);
+
+  // Clickable: Full-Time
+  const fullCard = document.createElement("div");
+  fullCard.className = "clickable-stat";
+  fullCard.innerHTML = `
+    <div class="panel-delta">
+      <div class="delta-item">
+        <span>Full-Time</span>
+        <span>${fullTime}</span>
+      </div>
+    </div>
+  `;
+  fullCard.addEventListener("click", () => {
+    searchFromStat("seniority-search", "Full-Time");
+  });
+  statsDiv.appendChild(fullCard);
+
+  // Clickable: Part-Time
+  const partCard = document.createElement("div");
+  partCard.className = "clickable-stat";
+  partCard.innerHTML = `
+    <div class="panel-delta">
+      <div class="delta-item">
+        <span>Part-Time</span>
+        <span>${partTime}</span>
+      </div>
+    </div>
+  `;
+  partCard.addEventListener("click", () => {
+    searchFromStat("seniority-search", "Part-Time");
+  });
+  statsDiv.appendChild(partCard);
+
+  // Clickable: Casual
+  const casualCard = document.createElement("div");
+  casualCard.className = "clickable-stat";
+  casualCard.innerHTML = `
+    <div class="panel-delta">
+      <div class="delta-item">
+        <span>Casual</span>
+        <span>${casual}</span>
+      </div>
+    </div>
+  `;
+  casualCard.addEventListener("click", () => {
+    searchFromStat("seniority-search", "Casual");
+  });
+  statsDiv.appendChild(casualCard);
+
+  // Static bottom items (not clickable)
+  const bottomPanel = document.createElement("div");
+  bottomPanel.className = "panel-delta";
+  bottomPanel.innerHTML = `
+    <div class="delta-item">
+      <span>Average Seniority</span>
+      <span>${avgYears} Years</span>
+    </div>
+    <div class="delta-item">
+      <span>Top Senior</span>
+      <span>${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</span>
+    </div>
+    <div class="delta-item">
+      <span>Total Combined</span>
+      <span>${totalYears} Years</span>
+    </div>
+  `;
+  statsDiv.appendChild(bottomPanel);
 }
 
 // ==============================
