@@ -105,26 +105,26 @@ export function populateStats(data) {
   const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
   
   statsDiv.innerHTML = `
-    <ul style="list-style: none; padding-left: 0;">
-      <li><p style="text-align: center"><strong>Filtered by:</strong> <em>${currentQuery}</em></p></li>
-      <li><p style="text-align: center"><strong>Total Employees:</strong> ${total}</p></li>
-      <li><p style="text-align: center">
-        <span class="clickable-stat" data-name="Full-Time">
-          <strong>Full-Time:</strong> ${fullTime}
-        </span></p></li>
-      <li><p style="text-align: center">
-        <span class="clickable-stat" data-name="Part-Time">
-          <strong>Part-Time:</strong> ${partTime}
-        </span></p></li>
-      <li><p style="text-align: center">
-        <span class="clickable-stat" data-name="Casual">
-          <strong>Casual:</strong> ${casual}
-        </span></p></li>
-      <li><p style="text-align: center"><strong>Average Seniority:</strong> ${avgYears} Years</p></li>
-      <li><p style="text-align: center"><strong>Top Senior:</strong> ${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</p></li>
-      <li><p style="text-align: center"><strong>Total Combined:</strong> ${totalYears.toFixed(2)} Years</p></li>
-    </ul>
+    <div class="panel-delta">
+      <div class="delta-item"><strong>Filtered by:</strong><br><em>${currentQuery}</em></div>
+      <div class="delta-item"><strong>Total Employees:</strong><br>${total}</div>
+  
+      <div class="delta-item">
+        <span class="clickable-stat" data-name="Full-Time"><strong>Full-Time:</strong>${fullTime}</span>
+      </div>
+      <div class="delta-item">
+        <span class="clickable-stat" data-name="Part-Time"><strong>Part-Time:</strong>${partTime}</span>
+      </div>
+      <div class="delta-item">
+        <span class="clickable-stat" data-name="Casual"><strong>Casual:</strong>${casual}</span>
+      </div>
+  
+      <div class="delta-item"><strong>Average Seniority:</strong><br>${avgYears} Years</div>
+      <div class="delta-item"><strong>Top Senior:</strong><br>${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</div>
+      <div class="delta-item full-span"><strong>Total Combined:</strong><br>${totalYears.toFixed(2)} Years</div>
+    </div>
   `;
+
 
 
   setupParseStats(".clickable-stat", "seniority-search", "data-name");
