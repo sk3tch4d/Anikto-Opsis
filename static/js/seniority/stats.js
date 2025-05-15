@@ -107,7 +107,7 @@ export function populateStats(data) {
 
   statsDiv.innerHTML = "";
 
-  // Static top items (not clickable)
+  // Static: Filtered Search ==========
   const staticPanel = document.createElement("div");
   staticPanel.className = "panel-delta";
   staticPanel.innerHTML = `
@@ -122,7 +122,7 @@ export function populateStats(data) {
   `;
   statsDiv.appendChild(staticPanel);
 
-  // Clickable: Full-Time
+  // Clickable: Full-Time ==========
   const fullCard = document.createElement("div");
   fullCard.className = "clickable-stat";
   fullCard.innerHTML = `
@@ -138,7 +138,7 @@ export function populateStats(data) {
   });
   statsDiv.appendChild(fullCard);
 
-  // Clickable: Part-Time
+  // Clickable: Part-Time ==========
   const partCard = document.createElement("div");
   partCard.className = "clickable-stat";
   partCard.innerHTML = `
@@ -154,7 +154,7 @@ export function populateStats(data) {
   });
   statsDiv.appendChild(partCard);
 
-  // Clickable: Casual
+  // Clickable: Casual ==========
   const casualCard = document.createElement("div");
   casualCard.className = "clickable-stat";
   casualCard.innerHTML = `
@@ -170,24 +170,39 @@ export function populateStats(data) {
   });
   statsDiv.appendChild(casualCard);
 
-  // Static bottom items (not clickable)
-  const bottomPanel = document.createElement("div");
+  // Static: Average Seniority ==========
+  const deltaAveSen = document.createElement("div");
   bottomPanel.className = "panel-delta";
   bottomPanel.innerHTML = `
     <div class="delta-item">
       <span>Average Seniority</span>
       <span>${avgYears} Years</span>
     </div>
+  `;
+  statsDiv.appendChild(deltaAveSen);
+
+  // Static: Top Seniority ==========
+  const deltaTopSen = document.createElement("div");
+  bottomPanel.className = "panel-delta";
+  bottomPanel.innerHTML = `
     <div class="delta-item">
       <span>Top Senior</span>
       <span>${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</span>
     </div>
+  `;
+  statsDiv.appendChild(deltaTopSen);
+  
+  // Static: Total Years ==========
+  const totalComYrs = document.createElement("div");
+  bottomPanel.className = "panel-delta";
+  bottomPanel.innerHTML = `
     <div class="delta-item">
       <span>Total Combined</span>
       <span>${totalYears} Years</span>
     </div>
   `;
-  statsDiv.appendChild(bottomPanel);
+  statsDiv.appendChild(totalComYrs);
+  
 }
 
 // ==============================
