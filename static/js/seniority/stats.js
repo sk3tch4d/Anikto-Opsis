@@ -121,24 +121,24 @@ export function populateStats(data) {
 
   statsDiv.innerHTML = "";
 
-  const staticPanel = document.createElement("div");
-  staticPanel.className = "panel-delta";
-  staticPanel.innerHTML = `
+  // Separate panel for "Filtered by" with spacing
+  const filteredPanel = document.createElement("div");
+  filteredPanel.className = "panel-delta";
+  filteredPanel.style.marginBottom = "8px";
+  filteredPanel.innerHTML = `
     <div class="delta-item">
       <span>Filtered by</span>
       <span><em>${currentQuery}</em></span>
     </div>
-    <div class="delta-item">
-      <span>Total Employees</span>
-      <span>${total}</span>
-    </div>
   `;
-  statsDiv.appendChild(staticPanel);
+  statsDiv.appendChild(filteredPanel);
 
-  function createStatCard(label, value, filterValue) {
+  // Reusable stat card
+  function createStatCard(label, value, filterValue = null) {
     const card = document.createElement("div");
     card.className = "clickable-stat";
-    card.dataset.name = filterValue;
+    if (filterValue) card.dataset.name = filterValue;
+
     card.innerHTML = `
       <div class="panel-delta">
         <div class="delta-item">
@@ -147,16 +147,23 @@ export function populateStats(data) {
         </div>
       </div>
     `;
-    card.addEventListener("click", () => {
-      searchFromStat("seniority-search", filterValue);
-    });
+
+    if (filterValue) {
+      card.addEventListener("click", () => {
+        searchFromStat("seniority-search", filterValue);
+      });
+    }
+
     return card;
   }
 
+  // Append remaining stats
+  statsDiv.appendChild(createStatCard("Total Employees", total));
   statsDiv.appendChild(createStatCard("Full-Time", fullTime, "Full-Time"));
   statsDiv.appendChild(createStatCard("Part-Time", partTime, "Part-Time"));
   statsDiv.appendChild(createStatCard("Casual", casual, "Casual"));
 
+  // Bottom stats (non-clickable)
   const bottomPanel = document.createElement("div");
   bottomPanel.className = "panel-delta";
   bottomPanel.innerHTML = `
