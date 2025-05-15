@@ -45,21 +45,35 @@ export function populateGlobalStats() {
   totalYears = parseFloat(totalYears.toFixed(2));
   const avgYears = total > 0 ? parseFloat((totalYears / total).toFixed(2)) : 0;
 
-  statsDiv.innerHTML = `
-    <ul style="list-style: none; padding-left: 0;">
-      <li><p><strong>Total Departments:</strong> ${departments.size}</p></li>
-      <li><p><strong>Total Employees:</strong> ${total}</p></li>
-      <li><p class="clickable-stat" data-name="Full-Time"><strong>Total Full-Time:</strong> ${fullTime}</p></li>
-      <li><p class="clickable-stat" data-name="Part-Time"><strong>Total Part-Time:</strong> ${partTime}</p></li>
-      <li><p class="clickable-stat" data-name="Casual"><strong>Total Casual:</strong> ${casual}</p></li>
-      <li><p class="clickable-stat" data-name="10+"><strong>10+ Years:</strong> ${tenPlus}</p></li>
-      <li><p class="clickable-stat" data-name="20+"><strong>20+ Years:</strong> ${twentyPlus}</p></li>
-      <li><p class="clickable-stat" data-name="30+"><strong>30+ Years:</strong> ${thirtyPlus}</p></li>
-      <li><p class="clickable-stat" data-name="40+"><strong>40+ Years:</strong> ${fortyPlus}</p></li>
-      <li><p><strong>Average Years:</strong> ${avgYears}</p></li>
-      <li><p><strong>Total Combined:</strong> ${totalYears}</p></li>
-    </ul>
-  `;
+  statsDiv.innerHTML = "";
+
+  function createStatCard(label, value, filterName = null) {
+    const card = document.createElement("div");
+    card.className = "clickable-stat";
+    if (filterName) card.dataset.name = filterName;
+
+    card.innerHTML = `
+      <div class="panel-delta">
+        <div class="delta-item">
+          <span>${label}</span>
+          <span>${value}</span>
+        </div>
+      </div>
+    `;
+    return card;
+  }
+
+  statsDiv.appendChild(createStatCard("Total Departments", departments.size));
+  statsDiv.appendChild(createStatCard("Total Employees", total));
+  statsDiv.appendChild(createStatCard("Total Full-Time", fullTime, "Full-Time"));
+  statsDiv.appendChild(createStatCard("Total Part-Time", partTime, "Part-Time"));
+  statsDiv.appendChild(createStatCard("Total Casual", casual, "Casual"));
+  statsDiv.appendChild(createStatCard("10+ Years", tenPlus, "10+"));
+  statsDiv.appendChild(createStatCard("20+ Years", twentyPlus, "20+"));
+  statsDiv.appendChild(createStatCard("30+ Years", thirtyPlus, "30+"));
+  statsDiv.appendChild(createStatCard("40+ Years", fortyPlus, "40+"));
+  statsDiv.appendChild(createStatCard("Average Years", avgYears));
+  statsDiv.appendChild(createStatCard("Total Combined", totalYears));
 
   setupParseStats(".clickable-stat", "seniority-search", "data-name");
 }
@@ -107,7 +121,6 @@ export function populateStats(data) {
 
   statsDiv.innerHTML = "";
 
-  // Static top items (not clickable)
   const staticPanel = document.createElement("div");
   staticPanel.className = "panel-delta";
   staticPanel.innerHTML = `
@@ -122,55 +135,28 @@ export function populateStats(data) {
   `;
   statsDiv.appendChild(staticPanel);
 
-  // Clickable: Full-Time
-  const fullCard = document.createElement("div");
-  fullCard.className = "clickable-stat";
-  fullCard.innerHTML = `
-    <div class="panel-delta">
-      <div class="delta-item">
-        <span>Full-Time</span>
-        <span>${fullTime}</span>
+  function createStatCard(label, value, filterValue) {
+    const card = document.createElement("div");
+    card.className = "clickable-stat";
+    card.dataset.name = filterValue;
+    card.innerHTML = `
+      <div class="panel-delta">
+        <div class="delta-item">
+          <span>${label}</span>
+          <span>${value}</span>
+        </div>
       </div>
-    </div>
-  `;
-  fullCard.addEventListener("click", () => {
-    searchFromStat("seniority-search", "Full-Time");
-  });
-  statsDiv.appendChild(fullCard);
+    `;
+    card.addEventListener("click", () => {
+      searchFromStat("seniority-search", filterValue);
+    });
+    return card;
+  }
 
-  // Clickable: Part-Time
-  const partCard = document.createElement("div");
-  partCard.className = "clickable-stat";
-  partCard.innerHTML = `
-    <div class="panel-delta">
-      <div class="delta-item">
-        <span>Part-Time</span>
-        <span>${partTime}</span>
-      </div>
-    </div>
-  `;
-  partCard.addEventListener("click", () => {
-    searchFromStat("seniority-search", "Part-Time");
-  });
-  statsDiv.appendChild(partCard);
+  statsDiv.appendChild(createStatCard("Full-Time", fullTime, "Full-Time"));
+  statsDiv.appendChild(createStatCard("Part-Time", partTime, "Part-Time"));
+  statsDiv.appendChild(createStatCard("Casual", casual, "Casual"));
 
-  // Clickable: Casual
-  const casualCard = document.createElement("div");
-  casualCard.className = "clickable-stat";
-  casualCard.innerHTML = `
-    <div class="panel-delta">
-      <div class="delta-item">
-        <span>Casual</span>
-        <span>${casual}</span>
-      </div>
-    </div>
-  `;
-  casualCard.addEventListener("click", () => {
-    searchFromStat("seniority-search", "Casual");
-  });
-  statsDiv.appendChild(casualCard);
-
-  // Static bottom items (not clickable)
   const bottomPanel = document.createElement("div");
   bottomPanel.className = "panel-delta";
   bottomPanel.innerHTML = `
@@ -214,7 +200,6 @@ export function refineSearchFromStat(filter) {
   renderResults(refined);
   populateStats(refined);
 }
-
 
 // ==============================
 // GLOBAL EXPORT
