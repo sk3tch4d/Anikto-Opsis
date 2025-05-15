@@ -106,16 +106,17 @@ export function populateStats(data) {
   
   statsDiv.innerHTML = `
     <div class="panel-delta">
-      <div class="delta-item full-span"><strong>Filtered by:</strong><br><em>${currentQuery}</em></div>
-      <div class="delta-item full-span"><strong>Total Employees:</strong><br>${total}</div>
-      <div class="delta-item full-span"><span class="clickable-stat" data-name="Full-Time"><strong>Full-Time:</strong>${fullTime}</span></div>
-      <div class="delta-item full-span"><span class="clickable-stat" data-name="Part-Time"><strong>Part-Time:</strong>${partTime}</span></div>
-      <div class="delta-item full-span"><span class="clickable-stat" data-name="Casual"><strong>Casual:</strong>${casual}</span></div>
-      <div class="delta-item full-span"><strong>Average Seniority:</strong><br>${avgYears} Years</div>
-      <div class="delta-item full-span"><strong>Top Senior:</strong><br>${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</div>
-      <div class="delta-item full-span"><strong>Total Combined:</strong><br>${totalYears.toFixed(2)} Years</div>
+      <div class="delta-item">Filtered by:<span><em>${currentQuery}</em></span></div>
+      <div class="delta-item">Total Employees:<span>${total}</span></div>
+      <div class="delta-item"><span class="clickable-stat" data-name="Full-Time">Full-Time:</span><span>${fullTime}</span></div>
+      <div class="delta-item"><span class="clickable-stat" data-name="Part-Time">Part-Time:</span><span>${partTime}</span></div>
+      <div class="delta-item"><span class="clickable-stat" data-name="Casual">Casual:</span><span>${casual}</span></div>
+      <div class="delta-item">Average Seniority:<span>${avgYears} Years</span></div>
+      <div class="delta-item">Top Senior:<span>${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</span></div>
+      <div class="delta-item">Total Combined:<span>${totalYears.toFixed(2)} Years</span></div>
     </div>
   `;
+
 
   setupParseStats(".clickable-stat", "seniority-search", "data-name");
 }
