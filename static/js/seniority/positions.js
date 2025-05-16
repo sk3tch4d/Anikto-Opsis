@@ -43,7 +43,7 @@ export function populatePositionList() {
       const sorted = Object.entries(positionMap).sort((a, b) => b[1] - a[1]);
       sorted.forEach(([pos, count]) => {
         const card = document.createElement("div");
-        card.className = "clickable-stat";
+        card.className = "clickable-delta";
 
         card.innerHTML = `
           <div class="panel-delta">
