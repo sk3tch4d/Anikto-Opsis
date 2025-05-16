@@ -29,10 +29,12 @@
 .panel-delta .full-span {
   grid-column: span 2;
 }
+/* ============================= */
 .panel-delta {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
 }
+/* ============================= */
 .panel-delta .delta-item {
   background: #29293d;
   padding: 0.5rem 0.75rem;
@@ -51,7 +53,7 @@
 .panel-delta .delta-item:hover {
   color: #888bdd;
 }
-
+/* ============================= */
 .panel-delta .delta-item strong {
   font-size: 0.85rem;
   color: #999;
@@ -61,6 +63,26 @@
 }
 .panel-delta .delta-item strong:hover {
   color: #BBB;
+}
+/* ============================= */
+.clickable-delta .panel-delta .delta-item {
+  cursor: pointer;
+  background-color: #2e2e44;
+  transition: background 0.2s ease, color 0.3s ease;
+}
+.clickable-delta .panel-delta .delta-item:hover {
+  color: #a0a2f0;
+  background-color: #3a3a55;
+}
+/* ============================= */
+.clickable-delta-on .panel-delta .delta-item {
+  cursor: pointer;
+  background-color: #2e2e44;
+  transition: background 0.2s ease, color 0.3s ease;
+}
+.clickable-delta-on .panel-delta .delta-item:hover {
+  color: #a0a2f0;
+  background-color: #3a3a55;
 }
 
 /* ============================= */
