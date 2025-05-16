@@ -28,11 +28,12 @@ export async function fetchWorkingOnDate() {
     } else {
       ['Day', 'Evening', 'Night'].forEach(type => {
         if (data[type]?.length) {
-          html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><ul>`;
+          html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><div class="panel-delta">`;
           data[type].forEach(([name, shift]) => {
-            html += `<li>${name} (${shift})</li>`;
+            html += `<div class="delta-item">${name} <span>(${shift})</span></div>`;
+
           });
-          html += `</ul>`;
+          html += `</div>`;
         }
       });
       if (!html) html = "<p>No employees scheduled for this date.</p>";
