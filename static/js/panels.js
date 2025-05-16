@@ -92,7 +92,7 @@ export function initPanelScrollBars() {
 // ==============================
 // SCROLL PANEL BODY
 // ==============================
-export function scrollPanelBody(panelId = null) {
+export function scrollPanelBody(panelId = null, behavior = 'smooth') {
   let panel;
 
   if (panelId) {
@@ -103,11 +103,10 @@ export function scrollPanelBody(panelId = null) {
 
   const body = panel?.querySelector('.panel-body.scrollable-panel');
   if (body) {
-    body.scrollTop = 0;
-    DEBUG_MODE && console.log(`[DEBUG] Scrolled ${panel?.id || '(unknown panel)'} body to top`);
+    body.scrollTo({ top: 0, behavior });
+    DEBUG_MODE && console.log(`[DEBUG] Smooth scrolled ${panel?.id || '(unknown panel)'} body to top`);
   }
 }
-
 
 // ==============================
 // SCROLL LOCK
