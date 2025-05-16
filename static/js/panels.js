@@ -4,11 +4,12 @@
 
 
 // ==============================
-// GLOBAL CONST
+// GLOBAL CONFIG
 // ==============================
 
 const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 
+// Panel IDs that should never close automatically
 const nonClosablePanels = [
   "downloads",
   "seniority-search-panel",
@@ -18,6 +19,8 @@ const nonClosablePanels = [
   "search-history-panel",
   "inventory-saved-panel"
 ];
+
+// Tag names that shouldn't trigger panel close
 const nonClosableElements = [
   "BUTTON",
   "INPUT",
@@ -26,6 +29,46 @@ const nonClosableElements = [
   "LABEL",
   "A"
 ];
+
+// Selectors for attributes or classes to ignore
+const nonClosableSelectors = [
+  "[panel-ignore-close]",
+  ".downloads",
+  ".file-action"
+];
+
+// Class-based ignores (not inside clickable container)
+const nonClosableClasses = [
+  "panel-delta"
+];
+
+// Conditional rules like: ignore `.panel-delta` unless inside `.clickable-stat`
+const conditionalIgnoreRules = [
+  { base: ".panel-delta", unlessWithin: ".clickable-stat" }
+];
+
+// ==============================
+// HELPERS
+// ==============================
+function shouldIgnorePanelClose(target) {
+  if (nonClosableElements.includes(target.tagName)) return true;
+
+  if (nonClosableSelectors.some(sel => target.closest(sel))) return true;
+
+  if (nonClosableClasses.some(cls => target.closest(`.${cls}`) && !target.closest(".clickable-stat"))) return true;
+
+  for (const { base, unlessWithin } of conditionalIgnoreRules) {
+    if (target.closest(base) && !target.closest(unlessWithin)) return true;
+  }
+
+  return false;
+}
+
+function isDateInput(target, panelId) {
+  return panelId === "scheduled" && (
+    target.closest("#working-date") || target.closest(".custom-date-display")
+  );
+}
 
 // ==============================
 // PANEL SCROLL BAR
@@ -51,7 +94,6 @@ function enableBodyLock() {
   document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
 }
-
 function disableBodyLock() {
   document.documentElement.style.overflow = '';
   document.body.style.overflow = '';
@@ -61,9 +103,7 @@ function disableBodyLock() {
 // SCROLL TO HEADER
 // ==============================
 export function scrollPanel(header = null, yOffset = -14, delay = 10) {
-  
   if (!header) {
-    console.warn('scrollPanel: No header found to scroll. Defaulted');
     const openPanel = document.querySelector('.panel.open');
     header = openPanel?.querySelector('.panel-header');
   }
@@ -73,28 +113,24 @@ export function scrollPanel(header = null, yOffset = -14, delay = 10) {
   const headerRect = header.getBoundingClientRect();
   const scrollTarget = headerRect.top + window.pageYOffset + yOffset;
 
-  DEBUG_MODE && console.log('[DEBUG] headerRect.top: ', headerRect.top);
-  DEBUG_MODE && console.log('[DEBUG] pageYOffset: ', window.pageYOffset);
-  DEBUG_MODE && console.log('[DEBUG] Final Scroll Target (y): ', scrollTarget);
+  DEBUG_MODE && console.log('[DEBUG] Scroll target:', scrollTarget);
 
   setTimeout(() => {
     window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
   }, delay);
 }
 
-
 // ==============================
-// OPEN PANEL
+// PANEL CORE
 // ==============================
 export function openPanel(panelId) {
-  DEBUG_MODE && console.log('[DEBUG] Attempting to open panel with ID: ', panelId);
-  
+  DEBUG_MODE && console.log('[DEBUG] Opening panel:', panelId);
+
   const panel = document.getElementById(panelId);
-  if (!panel) return console.warn(`[DEBUG] Panel not found for ID: ${panelId}`);
+  if (!panel) return console.warn(`[DEBUG] Panel not found: ${panelId}`);
 
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
-
   const wasOpen = panel.classList.contains('open');
 
   collapseAllPanels({ excludeSelector: `#${panelId}` });
@@ -109,17 +145,12 @@ export function openPanel(panelId) {
       const onTransitionEnd = (e) => {
         if (e.propertyName !== 'max-height') return;
         body.removeEventListener('transitionend', onTransitionEnd);
-      
+
         requestAnimationFrame(() => {
           scrollPanel(header);
-
-          // Delay lock enough to let scroll visually apply
-          setTimeout(() => {
-            enableBodyLock();
-          }, 500);
+          setTimeout(enableBodyLock, 500);
         });
       };
-
       body.addEventListener('transitionend', onTransitionEnd);
     } else {
       enableBodyLock();
@@ -129,62 +160,39 @@ export function openPanel(panelId) {
   });
 }
 
-// ==============================
-// OPEN PANEL BY ID
-// ==============================
 export function openPanelById(panelId) {
   openPanel(panelId);
 }
 
-// ==============================
-// TOGGLE PANEL
-// ==============================
 export function togglePanel(header) {
-  DEBUG_MODE && console.log('[DEBUG] Attempting toggle panel with header: ', header);
-  
   const panel = header.closest('.panel');
-  if (!panel.id) {
-    DEBUG_MODE && console.warn('[DEBUG] togglePanel called on panel with no ID:', panel);
-    return;
-  }
+  if (!panel?.id) return;
 
   const isOpen = panel.classList.contains('open');
   if (isOpen) {
     closePanel(panel);
-    const stillOpen = document.querySelector('.panel.open');
-    if (!stillOpen) disableBodyLock();
+    if (!document.querySelector('.panel.open')) disableBodyLock();
   } else {
     openPanel(panel.id);
   }
 }
 
-// ==============================
-// CLOSE PANEL
-// ==============================
 function closePanel(panel) {
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
 
-  DEBUG_MODE && console.log('[DEBUG] Closing panel:', panel.id || panel);
-  
   panel.classList.remove('open');
   header?.classList.remove('open');
   body?.classList.remove('open');
-  
-  // FOCUS HEADER
+
   setTimeout(() => {
     document.getElementById('typed-header')?.focus();
   }, 100);
 }
 
-// ==============================
-// COLLAPSE PANELS
-// ==============================
 export function collapseAllPanels({ excludeSelector = null } = {}) {
   const exclusions = Array.isArray(excludeSelector) ? excludeSelector : excludeSelector ? [excludeSelector] : [];
 
-  DEBUG_MODE && console.log('[DEBUG] Collapsing panels, excluding:', exclusions);
-  
   document.querySelectorAll('.panel-body').forEach(body => {
     const panel = body.closest('.panel');
     if (exclusions.some(sel => panel?.matches(sel))) return;
@@ -195,20 +203,14 @@ export function collapseAllPanels({ excludeSelector = null } = {}) {
 }
 
 // ==============================
-// TOUCH LISTENER SETUP
+// TOUCH HANDLING
 // ==============================
 function setupTouchListeners(body, panelId, panel, header) {
   if (nonClosablePanels.includes(panelId)) return;
 
   const closePanelOnTouch = (event) => {
     const target = event.target;
-    const isInteractive = nonClosableElements.includes(target.tagName);
-    const isIgnored = target.closest('[panel-ignore-close], .downloads, .file-action');
-    const isInsideHeader = header.contains(target);
-    const isDateInput = panelId === 'scheduled' && (
-      target.closest('#working-date') || target.closest('.custom-date-display')
-    );
-    if (!isInteractive && !isInsideHeader && !isIgnored && !isDateInput) {
+    if (!shouldIgnorePanelClose(target) && !header.contains(target) && !isDateInput(target, panelId)) {
       closePanel(panel);
       body.removeEventListener('click', closePanelOnTouch);
     }
