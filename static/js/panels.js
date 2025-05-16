@@ -90,6 +90,26 @@ export function initPanelScrollBars() {
 }
 
 // ==============================
+// SCROLL PANEL BODY
+// ==============================
+export function scrollPanelBody(panelId = null) {
+  let panel;
+
+  if (panelId) {
+    panel = document.getElementById(panelId);
+  } else {
+    panel = document.querySelector('.panel.open');
+  }
+
+  const body = panel?.querySelector('.panel-body.scrollable-panel');
+  if (body) {
+    body.scrollTop = 0;
+    DEBUG_MODE && console.log(`[DEBUG] Scrolled ${panel?.id || '(unknown panel)'} body to top`);
+  }
+}
+
+
+// ==============================
 // SCROLL LOCK
 // ==============================
 function enableBodyLock() {
