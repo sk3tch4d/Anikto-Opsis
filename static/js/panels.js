@@ -39,7 +39,9 @@ const nonClosableSelectors = [
 
 // Class-based ignores (not inside clickable container)
 const nonClosableClasses = [
-  "panel-delta"
+  "panel-delta",
+  "compare-delta",
+  "compare-card"
 ];
 
 // Conditional rules like: ignore `.panel-delta` unless inside `.clickable-stat`
