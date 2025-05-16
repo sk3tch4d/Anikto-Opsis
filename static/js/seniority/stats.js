@@ -49,7 +49,7 @@ export function populateGlobalStats() {
 
   function createStatCard(label, value, filterName = null) {
     const card = document.createElement("div");
-    card.className = "clickable-stat";
+    card.className = "clickable-delta";
     if (filterName) card.dataset.name = filterName;
 
     card.innerHTML = `
@@ -75,7 +75,7 @@ export function populateGlobalStats() {
   statsDiv.appendChild(createStatCard("Average Years", avgYears));
   statsDiv.appendChild(createStatCard("Total Combined", totalYears));
 
-  setupParseStats(".clickable-stat", "seniority-search", "data-name");
+  setupParseStats(".clickable-delta", "seniority-search", "data-name");
 }
 
 
@@ -136,7 +136,7 @@ export function populateStats(data) {
   // Reusable stat card
   function createStatCard(label, value, filterValue = null) {
     const card = document.createElement("div");
-    card.className = "clickable-stat";
+    card.className = "clickable-delta-on";
     if (filterValue) card.dataset.name = filterValue;
 
     card.innerHTML = `
