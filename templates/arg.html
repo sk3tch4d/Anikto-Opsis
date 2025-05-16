@@ -88,11 +88,11 @@
       <div class="panel panel-animate" id="rank-week">
         <div class="panel-header" onclick="togglePanel(this)">Weekly Rankings</div>
         <div class="panel-body scrollable-panel open">
-          <ul>
+          <div class="panel-delta">
             {% for name, hrs in stats.rankings.weekly %}
-              <li>{{ name|reorder_name }} – {{ hrs }} hrs</li>
+              <div class="delta-item">{{ name|reorder_name }} <span>{{ hrs }}</span> hours</div>
             {% endfor %}
-          </ul>
+          </div>
         </div>
       </div>
 
