@@ -36,45 +36,42 @@ export function searchFromStat(inputId, value) {
 // ==============================
 // PARSE TO SEARCH MODULE (Event Delegation)
 // ==============================
-export function setupParseStats() {
+export function setupParseStats(selector, inputId, attr, filterId = null, filterAttr = "data-filter") {
   let pressTimer = null;
 
-  // ====== Cache DOM elements ======
-  const searchInput = document.getElementById("inventory-search");
-  const uslFilter = document.getElementById("usl-filter");
+  const inputEl = document.getElementById(inputId);
+  const filterEl = filterId ? document.getElementById(filterId) : null;
+  const panelId = `${inputId}-panel`;
 
   // ====== Normal Click to Search ======
   document.addEventListener("click", function (e) {
-    const matchTarget = e.target.closest(".clickable-match, .clickable-stat");
+    const matchTarget = e.target.closest(selector);
+    if (!matchTarget) return;
 
-    if (matchTarget) {
-      const searchValue = matchTarget.getAttribute("data-search");
-      const filterValue = matchTarget.getAttribute("data-filter");
+    const searchValue = matchTarget.getAttribute(attr);
+    const filterValue = matchTarget.getAttribute(filterAttr);
 
-      if (uslFilter) {
-        if (filterValue && Array.from(uslFilter.options).some(opt => opt.value === filterValue)) {
-          uslFilter.value = filterValue;
-        } else {
-          uslFilter.value = "All";
-        }
-        uslFilter.dispatchEvent(new Event("change"));
+    if (filterEl) {
+      if (filterValue && Array.from(filterEl.options).some(opt => opt.value === filterValue)) {
+        filterEl.value = filterValue;
+      } else {
+        filterEl.value = "All";
       }
-
-      if (searchInput) {
-        if (searchValue) {
-          searchInput.value = searchValue;
-          searchInput.dispatchEvent(new Event("input"));
-        }
-      }
-
-      const searchPanel = document.getElementById("inventory-search-panel");
-      if (searchPanel && !searchPanel.classList.contains("open")) {
-        openPanelById("inventory-search-panel");
-      }
-
-      scrollPanel();
-      removeFocus(matchTarget);
+      filterEl.dispatchEvent(new Event("change"));
     }
+
+    if (inputEl && searchValue) {
+      inputEl.value = searchValue;
+      inputEl.dispatchEvent(new Event("input"));
+    }
+
+    const panelEl = document.getElementById(panelId);
+    if (panelEl && !panelEl.classList.contains("open")) {
+      openPanelById(panelId);
+    }
+
+    scrollPanel();
+    removeFocus(matchTarget);
   }, { passive: true });
 
   // ====== Long Press Reset ======
@@ -85,29 +82,25 @@ export function setupParseStats() {
   document.addEventListener("mouseleave", clearLongPress);
 
   function startLongPress(e) {
-    const inputMatch = e.target.closest("#inventory-search");
-    const filterMatch = e.target.closest("#usl-filter");
+    const inputMatch = e.target.closest(`#${inputId}`);
+    const filterMatch = filterId ? e.target.closest(`#${filterId}`) : null;
 
     if (inputMatch) {
       pressTimer = setTimeout(() => {
-        if (searchInput) {
-          searchInput.value = "";
-          searchInput.dispatchEvent(new Event("input"));
-          triggerVibration();
-          showToast("Search cleared");
-        }
+        inputEl.value = "";
+        inputEl.dispatchEvent(new Event("input"));
+        triggerVibration();
+        showToast("Search cleared");
       }, 600);
     }
 
-    if (filterMatch) {
+    if (filterMatch && filterEl) {
       pressTimer = setTimeout(() => {
-        if (uslFilter) {
-          uslFilter.value = "All";
-          uslFilter.dispatchEvent(new Event("change"));
-          removeFocus(uslFilter);
-          triggerVibration();
-          showToast("Filter reset");
-        }
+        filterEl.value = "All";
+        filterEl.dispatchEvent(new Event("change"));
+        removeFocus(filterEl);
+        triggerVibration();
+        showToast("Filter reset");
       }, 600);
     }
   }
@@ -117,6 +110,7 @@ export function setupParseStats() {
     pressTimer = null;
   }
 }
+
 
 
 // ==============================
