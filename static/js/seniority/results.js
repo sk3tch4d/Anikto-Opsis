@@ -4,6 +4,7 @@
 // ==============================
 
 import { getStatusDot } from '../statusdot.js';
+import { scrollPanelBody } from '../panels.js';
 
 // ==============================
 // RENDER MATCHED RESULTS
@@ -55,5 +56,5 @@ export function renderResults(matches) {
   });
 
   // Reset scroll
-  resultsDiv.scrollTop = 0;
+  scrollPanelBody();
 }
