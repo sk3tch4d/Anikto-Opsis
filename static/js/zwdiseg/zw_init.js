@@ -8,7 +8,7 @@ import { populateZwdisegStats } from "./zw_stats.js";
 import { setupZwdisegDownloadSearch, setupZwdisegDownloadHistory, setupZwdisegDownloadCleaned } from "./zw_download.js";
 import { highlightMatch } from '../search-utils.js';
 import { withLoadingToggle, createBounceLoader } from '../loading.js';
-import { scrollPanel } from '../panels.js';
+//import { scrollPanel } from '../panels.js';
 
 // ==============================
 // GLOBAL CONST
@@ -78,9 +78,9 @@ export function initializeZwdisegApp() {
       });
     });
 
-    // Adjust Search Window
+    /* Adjust Search Window
     const header = document.querySelector('#zwdiseg-search-panel .panel-header');
-    scrollPanel(header);
+    scrollPanel(header);*/
   }
 
   // ==============================
