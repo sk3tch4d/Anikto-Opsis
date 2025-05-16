@@ -315,7 +315,7 @@ export function populateInventoryStats(results) {
 
   statsBox.appendChild(fragment);
 
-  setupParseStats();
+  setupParseStats(".clickable-match, .clickable-stat", "inventory-search", "data-search", "usl-filter", "data-filter");
 }
 
 window.populateInventoryStats = populateInventoryStats;
