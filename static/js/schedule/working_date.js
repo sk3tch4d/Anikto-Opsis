@@ -1,6 +1,6 @@
 // ==============================
-// SCHEDULE.JS
-// ARG Shedule Logic
+// SCHEDULED.JS
+// ARG Working Date Logic
 // ==============================
 
 // ==============================
