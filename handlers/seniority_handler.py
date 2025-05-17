@@ -9,6 +9,7 @@ import json
 # NORMALIZE POSITIONS WITH DEPARTMENT + SUFFIX
 # ==============================
 def normalize_positions(df, mapping_path="static/pos_adjust.json"):
+    """Normalize the Position column in-place, add Department and Note columns."""
     try:
         with open(mapping_path, "r") as f:
             mapping = json.load(f)
@@ -16,15 +17,17 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
         app.logger.error(f"Failed to load normalization map: {e}")
         return df
 
-    full_title_map = {k.upper(): v for k, v in mapping.items() if " " in k or k.isupper()}
-    word_sub_map = {k.upper(): v for k, v in mapping.items()}
+    full_title_map = {k.upper(): v for k, v in mapping.items()}
+    word_sub_map = full_title_map.copy()
     SUFFIXES = {"PT", "CAS", "WW", "HOLD", "PSDC"}
 
     def normalize(raw_position):
-        if not isinstance(raw_position, str):
+        # Handle NaN, None, or anything non-string gracefully
+        raw_position = str(raw_position).strip() if pd.notna(raw_position) else ""
+
+        if not raw_position:
             return "", "", ""
 
-        raw_position = raw_position.strip()
         parts = raw_position.split(" - ", 1)
         base_title = parts[0].strip()
         department = parts[1].strip() if len(parts) > 1 else ""
@@ -53,9 +56,7 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
 
     if "Position" in df.columns:
         df = df.copy()
-        df[["Position", "Department", "Note"]] = df["Position"].astype(str).apply(
-            lambda x: pd.Series(normalize(x))
-        )
+        df[["Position", "Department", "Note"]] = df["Position"].apply(lambda x: pd.Series(normalize(x)))
     else:
         app.logger.warning("No 'Position' column found in DataFrame.")
 
