@@ -1,10 +1,14 @@
 {
-    "RPN": "Registered Practical Nurse",
-    "PCA": "Patient Care Assistant",
-    "EA": "Environmental Assistant",
-    "Enviro Serv": "Environmental",
-    "Asst": "Assistant",
-    "Attdnt": "Attendant",
-    "Reg P": "Registered P",
-    "Reg. P": "Registered P"
+  "RPN": "Registered Practical Nurse",
+  "PCA": "Patient Care Assistant",
+  "ATTDNT": "Attendant",
+  "REG Practical Nurse": "Registered Practical Nurse",
+  "REG. Practical Nurse": "Registered Practical Nurse",
+
+  "ESA": "Environmental Service Assistant",
+  "ENVIRO": "Environmental",
+  "SERV": "Service",
+  "SVC": "Service",
+  "ASST": "Assistant",
+  "ASSIST": "Assistant"
 }
