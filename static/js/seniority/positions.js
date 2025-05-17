@@ -27,12 +27,13 @@ export function populatePositionList() {
     .then(posAdjustments => {
       const positionMap = {};
 
+      // Normalize posAdjustments keys to uppercase for case-insensitive lookups
       const normalizedAdjustments = {};
       for (const [key, value] of Object.entries(posAdjustments)) {
         normalizedAdjustments[key.toUpperCase()] = value;
       }
 
-      // Helper: adjust a single position string
+      // Adjust a single position string (without splitting by dash)
       function adjustPosition(raw, adjustments, acronyms) {
         return raw
           .replace(/\b(PT|FT|CASUAL|CAS|HOLD)\b/gi, "")
@@ -48,25 +49,21 @@ export function populatePositionList() {
       data.forEach(row => {
         const raw = row["Position"] || "";
 
-        // Process each role chunk separated by dashes
-        const roles = raw.split("-").map(role =>
-          adjustPosition(role, normalizedAdjustments, acronyms)
-        );
+        // Only use the part before the dash
+        const [baseRole] = raw.split("-");
+        const adjusted = adjustPosition(baseRole, normalizedAdjustments, acronyms);
+        const normalized = normalize(adjusted);
+        if (!normalized) return;
 
-        roles.forEach(role => {
-          const normalized = normalize(role);
-          if (!normalized) return;
+        // Optional log for suspicious entries
+        if (normalized.length > 100 || /[^a-zA-Z0-9\s\.\-\/&]/.test(normalized)) {
+          console.warn("Suspicious normalized position:", raw, "→", normalized);
+        }
 
-          // Log suspicious entries
-          if (normalized.length > 100 || /[^a-zA-Z0-9\s\.\-\/&]/.test(normalized)) {
-            console.warn("Suspicious normalized position:", raw, "→", normalized);
-          }
-
-          positionMap[normalized] = (positionMap[normalized] || 0) + 1;
-        });
+        positionMap[normalized] = (positionMap[normalized] || 0) + 1;
       });
 
-      // Clear existing and populate sorted positions
+      // Clear and render sorted positions
       container.innerHTML = "";
       const sorted = Object.entries(positionMap).sort((a, b) => b[1] - a[1]);
 
@@ -94,4 +91,3 @@ export function populatePositionList() {
       console.error("Failed to load pos_adjust.json", err);
     });
 }
-
