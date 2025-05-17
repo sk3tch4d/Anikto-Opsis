@@ -20,37 +20,39 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
 
     full_title_map = {k.upper(): v for k, v in mapping.items()}
     word_sub_map = full_title_map.copy()
-    SUFFIXES = {"PT", "CAS", "WW", "HOLD", "PSDC"}
+
+    IGNORE_SUFFIXES = {"PT", "CAS"}
+    NOTE_SUFFIXES = {"WW", "HOLD", "PSDC"}
+    ALL_SUFFIXES = IGNORE_SUFFIXES | NOTE_SUFFIXES
 
     def normalize(raw_position):
-        # Handle NaN, None, or anything non-string gracefully
-        raw_position = str(raw_position).strip() if pd.notna(raw_position) else ""
-        raw_position = str(raw_position).replace("–", "-").replace("—", "-").strip()
-
+        raw_position = str(raw_position).replace("–", "-").replace("—", "-").strip() if pd.notna(raw_position) else ""
         if not raw_position:
             return "", "", ""
 
         parts = raw_position.split(" - ", 1)
         base_title = parts[0].strip()
         department = parts[1].strip() if len(parts) > 1 else ""
-
         note = ""
+
+        # Check full string for suffix
         full_upper = raw_position.upper()
-        for suffix in SUFFIXES:
+        for suffix in ALL_SUFFIXES:
             if full_upper.endswith(f" {suffix}"):
-                note = suffix
+                if suffix in NOTE_SUFFIXES:
+                    note = suffix
                 if department.upper().endswith(f" {suffix}"):
                     department = department[:-(len(suffix) + 1)].strip()
                 elif base_title.upper().endswith(f" {suffix}"):
                     base_title = " ".join(base_title.split()[:-1])
                 break
 
+        # Remove any remaining suffix from word list
         words = base_title.split()
-        if words and words[-1].upper() in SUFFIXES:
-            words = words[:-1]  # strip suffix cleanly
-    
-        full_key = " ".join(words).upper()
+        if words and words[-1].upper() in ALL_SUFFIXES:
+            words = words[:-1]
 
+        full_key = " ".join(words).upper()
         if full_key in full_title_map:
             normalized = full_title_map[full_key]
         else:
