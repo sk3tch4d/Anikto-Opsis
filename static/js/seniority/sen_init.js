@@ -23,6 +23,7 @@ export function initializeSeniorityApp() {
   initComparisonPanel();
   populateGlobalStats();
   populatePositionList();
+  setupSeniorityDownloadCleaned();
   setupSeniorityDownloadSearch();
   fixMobileDatalist();
 }
