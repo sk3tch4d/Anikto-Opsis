@@ -43,15 +43,14 @@ export function renderResults(matches) {
     const status = row["Status"] || "";
     const note = row["Note"] || "";
     const years = parseFloat(row["Years"] || 0);
-    const statusDot = getStatusDot({ status, position, note, department });
+    const statusDot = getStatusDot({ note, status });
 
     const card = document.createElement("div");
     card.className = "panel-card";
     card.innerHTML = `
       <strong>${first} ${last}</strong><br>
       ${statusDot} ${status} ${note}<br>
-      <em>${position}</em><br>
-      <em>${department}</em><br>
+      <em>${position} - ${department}</em><br>
       ${years.toFixed(2)} Years
     `;
 
