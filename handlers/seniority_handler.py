@@ -75,5 +75,6 @@ def handle(df):
         return render_template("seniority.html", table=df.to_dict(orient="records"))
 
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         app.logger.error(f"Seniority handler failed: {e}")
-        return render_template("index.html", error="Failed to process seniority file.")
