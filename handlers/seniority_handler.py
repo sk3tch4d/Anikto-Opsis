@@ -33,7 +33,7 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
         if not raw_position:
             return "", "", ""
 
-        parts = raw_position.split(" - ", 1)
+        parts = raw_position.rsplit(" - ", 1)
         base_title = parts[0].strip()
         department = parts[1].strip() if len(parts) > 1 else ""
         note = ""
