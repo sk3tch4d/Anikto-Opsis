@@ -10,10 +10,10 @@ const defaultFieldRules = [
   { field: ["changed", "mvt", "valid"], match: "includes", value: ["201", "yes", "true"], color: "green" },
   { field: ["changed", "mvt", "valid"], match: "includes", value: ["202", "no", "false"], color: "red" },
   
-  { field: ["position", "status"], match: "includes", value: ["hold", "off", "no"], color: "red" },
-  { field: ["position", "status"], match: "includes", value: ["full", "full-time"], color: "green" },
-  { field: ["position", "status"], match: "includes", value: ["part", "part-time"], color: "yellow" },
-  { field: ["position", "status"], match: "includes", value: ["casual", ""], color: "gray" },
+  { field: ["note", "position", "status"], match: "includes", value: ["hold", "off", "no"], color: "red" },
+  { field: ["note", "position", "status"], match: "includes", value: ["full", "full-time"], color: "green" },
+  { field: ["note", "position", "status"], match: "includes", value: ["part", "part-time"], color: "yellow" },
+  { field: ["note", "position", "status"], match: "includes", value: ["casual", ""], color: "gray" },
 
   { field: "remarks", match: "startsWith", value: ["urgent", "immediate"], color: "orange" },
   { field: "other", match: "equals", value: ["123", "456"], color: "purple" }
