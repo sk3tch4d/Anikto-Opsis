@@ -35,9 +35,15 @@ export function populatePositionList() {
 
       // Adjust a single position string (without splitting by dash)
       function adjustPosition(raw, adjustments, acronyms) {
+        // Phrase-level substitutions first
+        for (const [key, value] of Object.entries(adjustments)) {
+          const pattern = new RegExp(`\\b${key}\\b`, "gi");
+          raw = raw.replace(pattern, value);
+        }
+      
         return raw
           .replace(/\b(PT|FT|CASUAL|CAS|HOLD)\b/gi, "")
-          .split(/[\s\-]+/)
+          .split(/[\s\-\/]+/)
           .filter(Boolean)
           .map(token => {
             const upper = token.toUpperCase();
