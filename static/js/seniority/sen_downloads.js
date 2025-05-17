@@ -13,9 +13,21 @@ export function setupSeniorityDownloadCleaned() {
   if (!button) return;
 
   button.addEventListener("click", () => {
-    downloadTable({
-      data: window.seniorityData,
-      layout: "seniority_clean"
+      results: window.seniorityData,
+
+      const rows = results.map(row => [
+        parseFloat(row["Years"] || 0).toFixed(2),
+        row["First Name"] || "",
+        row["Last Name"] || "",
+        row["Status"] || "",
+        row["Position"] || "",
+        row["Department"] || "",
+        row["Note"] || ""
+      ]);
+  
+      downloadTable({
+        data: rows, // AOA format
+        layout: "seniority_clean"
     });
   });
 }
