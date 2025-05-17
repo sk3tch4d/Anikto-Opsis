@@ -150,7 +150,7 @@ export function populateStats(data) {
 
     if (filterValue) {
       card.addEventListener("click", () => {
-        searchFromStat("seniority-search", filterValue);
+        refineSearchFromStat(filterValue);
       });
     }
 
