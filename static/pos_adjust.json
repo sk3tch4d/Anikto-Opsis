@@ -6,14 +6,18 @@
 
   "ESA": "Environmental Assistant",
   "Env Serv Assisnt": "Environmental Assistant",
+  "Enviro Serv Asst": "Environmental Assistant",
+  "Environmental Asst": "Environmental Assistant",
   "Enviro Serv Assistant": "Environmental Assistant",
   "Environmental Svc Asst": "Environmental Assistant",
   "Environmental Assistant": "Environmental Assistant",
   "Environmental Service Asst": "Environmental Assistant",
   "Environmental Service Assistant": "Environmental Assistant",
-  
+
+  "Med.": "Medical"
   "PCA": "Patient Care Assistant",
   "REG. CLERK": "Registration Clerk",
-  
+
+  "Csa": "CSA",
   "ATTDNT": "Attendant"
 }
