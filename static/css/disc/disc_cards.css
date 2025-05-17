@@ -19,6 +19,7 @@
   font-family: 'Segoe UI', Tahoma, sans-serif;
   transition: transform 0.4s ease, color 0.5s ease;
 }
+/* ============================= */
 .panel-card:hover {
   color: #b0b2e8;
 }
