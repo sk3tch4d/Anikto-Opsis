@@ -6,6 +6,21 @@
 import { downloadTable } from "../xlsx_downloads.js";
 
 // ==============================
+// SETUP: DOWNLOAD CLEANED DATA
+// ==============================
+export function setupSeniorityDownloadCleaned() {
+  const button = document.getElementById("seniority-cleaned-download");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    downloadTable({
+      data: window.seniorityCleanedData,
+      layout: "seniority_clean"
+    });
+  });
+}
+
+// ==============================
 // DOWNLOAD SENIORTY SEARCH
 // ==============================
 export function setupSeniorityDownloadSearch() {
