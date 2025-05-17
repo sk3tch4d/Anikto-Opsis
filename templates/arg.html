@@ -70,12 +70,12 @@
           {% if stats.swaps %}
             <ul>
               {% for swap in stats.swaps %}
-                <li style="margin-bottom: 1em;">
+                <div class="panel-card">
                   <strong>{{ reason_icons.get(swap.reason, '❔') }} <em>{{ swap.reason }}</em> ({{ swap.shift|replace("d","") }})</strong><br>
                   {{ swap.start }} – {{ swap.end }} <!--{{ shift_icons.get(swap.type, '❔') }}--><br>
                   {{ swap.org_employee }} → {{ swap.cov_employee }}<br>
                   {{ swap.date }}
-                </li>
+                </div>
               {% endfor %}
             </ul>
           {% else %}
