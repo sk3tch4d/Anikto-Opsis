@@ -1,23 +1,21 @@
 {
-  "REG Practical Nurse": "Registered Practical Nurse",
-  "REG. Practical Nurse": "Registered Practical Nurse",
   "RPN": "Registered Practical Nurse",
+  "Reg. Pract. Nurse": "Registered Practical Nurse",
+  "Reg Practical Nurse": "Registered Practical Nurse",
+  "Reg. Practical Nurse": "Registered Practical Nurse",
+
   "ESA": "Environmental Assistant",
-  "Environmental Assistant - Linen": "Environmental Assistant",
-  "Environmental Assistant - Env. Services": "Environmental Assistant",
-  "Environmental Assistant PT - Env. Serv.": "Environmental Assistant",
-  "Environmental Asst PT -  BLDU/KHSC": "Environmental Assistant",
-  "Environmental Asst - Env. Serv. HOLD": "Environmental Assistant",
-  "Environmental Asst": "Environmental Assistant",
+  "Env Serv Assisnt": "Environmental Assistant",
+  "Enviro Serv Assistant": "Environmental Assistant",
   "Environmental Svc Asst": "Environmental Assistant",
-  "ENVIRONMENTAL SERVICE ASSISTANT": "Environmental Assistant",
-  "Unit Clerk": "Unit Clerk",
-  "Admin Secretary": "Admin Secretary",
-  "Addiction Care Worker": "Addiction Care Worker",
+  "Environmental Assistant": "Environmental Assistant",
+  "Environmental Service Asst": "Environmental Assistant",
+  "Environmental Service Assistant": "Environmental Assistant",
+  
   "PCA": "Patient Care Assistant",
+  "REG. CLERK": "Registration Clerk"
+  
   "ATTDNT": "Attendant",
   "ASST": "Assistant",
-  "ASSIST": "Assistant",
-  "REG. PRACTICAL NURSE": "Registered Practical Nurse",
-  "REG. CLERK": "Registration Clerk"
+  "ASSIST": "Assistant"
 }
