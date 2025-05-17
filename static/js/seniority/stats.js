@@ -126,8 +126,8 @@ export function populateStats(data) {
   filteredPanel.className = "panel-delta";
   filteredPanel.style.marginBottom = "8px";
   filteredPanel.innerHTML = `
-    <div class="delta-item">
-      <span>Filtered by</span>
+    <div class="delta-item-off">
+      <span>Filtered by:</span>
       <span><em>${currentQuery}</em></span>
     </div>
   `;
@@ -169,15 +169,15 @@ export function populateStats(data) {
   bottomPanel.innerHTML = `
     <div class="delta-item">
       <span>Average Seniority</span>
-      <span>${avgYears} Years</span>
+      <span>${avgYears} Yrs</span>
     </div>
     <div class="delta-item">
       <span>Top Senior</span>
-      <span>${mostSenior.name} — ${mostSenior.years.toFixed(2)} Years</span>
+      <span>${mostSenior.name} — ${mostSenior.years.toFixed(2)} Yrs</span>
     </div>
     <div class="delta-item">
       <span>Total Combined</span>
-      <span>${totalYears} Years</span>
+      <span>${totalYears} Yrs</span>
     </div>
   `;
   statsDiv.appendChild(bottomPanel);
