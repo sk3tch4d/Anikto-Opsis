@@ -5,6 +5,7 @@
 from flask import render_template, current_app as app
 import pandas as pd
 import json
+import re
 
 # ==============================
 # NORMALIZE POSITIONS WITH DEPARTMENT + SUFFIX
@@ -26,7 +27,9 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
     ALL_SUFFIXES = IGNORE_SUFFIXES | NOTE_SUFFIXES
 
     def normalize(raw_position):
-        raw_position = str(raw_position).replace("–", "-").replace("—", "-").strip() if pd.notna(raw_position) else ""
+        raw_position = str(raw_position).strip()
+        raw_position = re.sub(r"[–—]", "-", raw_position)  # normalize dashes
+        raw_position = re.sub(r"\s*-\s*", " - ", raw_position)  # normalize space-hyphen-space     
         if not raw_position:
             return "", "", ""
 
