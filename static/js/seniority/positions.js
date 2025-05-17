@@ -40,8 +40,8 @@ export function populatePositionList() {
           const normalized = normalize(role);
           if (!normalized) return;
 
-          // Optional: Log suspicious entries
-          if (normalized.length > 100 || /[^a-zA-Z0-9\s\-]/.test(normalized)) {
+          // Log suspicious entries
+          if (normalized.length > 100 || /[^a-zA-Z0-9\s\.\-\/&]/.test(normalized)) {
             console.warn("Suspicious normalized position:", raw, "→", normalized);
           }
 
