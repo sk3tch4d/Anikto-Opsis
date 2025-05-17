@@ -48,7 +48,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: color 0.4s ease;
+  transition: color 1.4s ease;
 }
 .panel-delta .delta-item:hover {
   color: #888bdd;
@@ -64,25 +64,27 @@
 .panel-delta .delta-item strong:hover {
   color: #BBB;
 }
+
+/* ============================= */
+/* CLICKABLE DELTA                   */
 /* ============================= */
 .clickable-delta .panel-delta .delta-item {
   cursor: pointer;
-  background-color: #2e2e44;
-  transition: background 0.2s ease, color 0.3s ease;
+  transition: background 0.3s ease, color 0.4s ease;
 }
 .clickable-delta .panel-delta .delta-item:hover {
-  color: #a0a2f0;
-  background-color: #3a3a55;
+  color: #888bdd;
+  background-color: #2e2e44;
 }
 /* ============================= */
 .clickable-delta-on .panel-delta .delta-item {
   cursor: pointer;
-  background-color: #2e2e44;
-  transition: background 0.2s ease, color 0.3s ease;
+  color: #888bdd;
+  transition: background 0.3s ease, color 0.4s ease;
 }
 .clickable-delta-on .panel-delta .delta-item:hover {
   color: #a0a2f0;
-  background-color: #3a3a55;
+  background-color: #2e2e44;
 }
 
 /* ============================= */
