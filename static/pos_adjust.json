@@ -1,14 +1,21 @@
 {
-  "RPN": "Registered Practical Nurse",
-  "PCA": "Patient Care Assistant",
-  "ATTDNT": "Attendant",
   "REG Practical Nurse": "Registered Practical Nurse",
   "REG. Practical Nurse": "Registered Practical Nurse",
-
-  "ESA": "Environmental Service Assistant",
+  "RPN": "Registered Practical Nurse",
+  "ESA": "Environmental Services Assistant",
+  "Env Serv Assisnt": "Environmental Services Assistant",
+  "Environmental Svc Asst": "Environmental Services Assistant",
+  "Environmental Services Asst": "Environmental Services Assistant",
+  "Unit Clerk": "Unit Clerk",
+  "Admin Secretary": "Admin Secretary",
+  "Addiction Care Worker": "Addiction Care Worker",
+  "PCA": "Patient Care Assistant",
+  "ATTDNT": "Attendant",
   "ENVIRO": "Environmental",
   "SERV": "Service",
   "SVC": "Service",
   "ASST": "Assistant",
-  "ASSIST": "Assistant"
+  "ASSIST": "Assistant",
+  "REG. PRACTICAL NURSE": "Registered Practical Nurse",
+  "REG. CLERK": "Registration Clerk"
 }
