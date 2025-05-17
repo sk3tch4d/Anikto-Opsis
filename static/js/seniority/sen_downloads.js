@@ -38,7 +38,9 @@ export function setupSeniorityDownloadSearch() {
       row["First Name"] || "",
       row["Last Name"] || "",
       row["Status"] || "",
-      row["Position"] || ""
+      row["Position"] || "",
+      row["Department"] || "",
+      row["Note"] || ""
     ]);
 
     downloadTable({
