@@ -17,7 +17,7 @@ import { refreshDropUI, initUpTexts } from './drop_utils.js';
 // ----- Quotes -----
 import { initQuotes } from './quotes.js';
 // ----- Schedule -----
-import { initScheduleUI } from './schedule.js';
+import { initScheduleUI } from './schedule/working_date.js';
 // ----- Search-Utils -----
 import { setupParseStats, searchFromStat } from './search-utils.js';
 // ----- Admin -----
