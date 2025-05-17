@@ -13,7 +13,7 @@ export function setupSeniorityDownloadCleaned() {
   if (!button) return;
 
   button.addEventListener("click", () => {
-      const results: window.seniorityData || [];
+      const results = window.seniorityData || [];
         if (!results.length) {
           return alert("Error: No data to download.");
         }
