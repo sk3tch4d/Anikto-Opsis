@@ -20,27 +20,39 @@ export function populatePositionList() {
     .then(posAdjustments => {
       const positionMap = {};
 
+      // Helper: adjust a single position string
+      function adjustPosition(raw, adjustments) {
+        return raw
+          .replace(/\b(PT|FT|CASUAL|CAS|HOLD)\b/gi, "") // remove non-position terms
+          .split(/[\s\-]+/) // split on spaces/dashes
+          .filter(Boolean)
+          .map(token => adjustments[token.toUpperCase()] || token)
+          .join(" ");
+      }
+
       data.forEach(row => {
         const raw = row["Position"] || "";
 
-        let base = raw
-          .split("-")[0]
-          .replace(/\b(PT|FT|CASUAL|CAS|HOLD)\b/gi, "")
-          .trim();
+        // Process each role chunk separated by dashes
+        const roles = raw.split("-").map(role => adjustPosition(role, posAdjustments));
 
-        for (const [key, value] of Object.entries(posAdjustments)) {
-          const pattern = new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
-          base = base.replace(pattern, value);
-        }
+        roles.forEach(role => {
+          const normalized = normalize(role);
+          if (!normalized) return;
 
-        base = normalize(base);
-        if (!base) return;
-        positionMap[base] = (positionMap[base] || 0) + 1;
+          // Optional: Log suspicious entries
+          if (normalized.length > 100 || /[^a-zA-Z0-9\s\-]/.test(normalized)) {
+            console.warn("Suspicious normalized position:", raw, "→", normalized);
+          }
+
+          positionMap[normalized] = (positionMap[normalized] || 0) + 1;
+        });
       });
 
+      // Clear existing and populate sorted positions
       container.innerHTML = "";
-
       const sorted = Object.entries(positionMap).sort((a, b) => b[1] - a[1]);
+
       sorted.forEach(([pos, count]) => {
         const card = document.createElement("div");
         card.className = "clickable-delta";
@@ -60,8 +72,9 @@ export function populatePositionList() {
 
         container.appendChild(card);
       });
-    }) 
+    })
     .catch(err => {
       console.error("Failed to load pos_adjust.json", err);
     });
 }
+
