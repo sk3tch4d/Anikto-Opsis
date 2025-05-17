@@ -25,6 +25,7 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
     def normalize(raw_position):
         # Handle NaN, None, or anything non-string gracefully
         raw_position = str(raw_position).strip() if pd.notna(raw_position) else ""
+        raw_position = str(raw_position).replace("–", "-").replace("—", "-").strip()
 
         if not raw_position:
             return "", "", ""
