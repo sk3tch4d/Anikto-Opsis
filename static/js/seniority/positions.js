@@ -8,6 +8,13 @@ import { normalize } from './search.js';
 import { toTitleCase } from './helpers.js';
 
 // ==============================
+// GLOBAL CONST
+// ==============================
+const acronyms = new Set([
+  "MDR", "CSA", "RPN", "EA", "DI", "OT", "PT", "HDH", "IT", "HR"
+]);
+
+// ==============================
 // INIT POSITION PANEL
 // ==============================
 export function populatePositionList() {
@@ -20,13 +27,21 @@ export function populatePositionList() {
     .then(posAdjustments => {
       const positionMap = {};
 
+      const normalizedAdjustments = {};
+      for (const [key, value] of Object.entries(posAdjustments)) {
+        normalizedAdjustments[key.toUpperCase()] = value;
+      }
+
       // Helper: adjust a single position string
-      function adjustPosition(raw, adjustments) {
+      function adjustPosition(raw, adjustments, acronyms) {
         return raw
-          .replace(/\b(PT|FT|CASUAL|CAS|HOLD)\b/gi, "") // remove non-position terms
-          .split(/[\s\-]+/) // split on spaces/dashes
+          .replace(/\b(PT|FT|CASUAL|CAS|HOLD)\b/gi, "")
+          .split(/[\s\-]+/)
           .filter(Boolean)
-          .map(token => adjustments[token.toUpperCase()] || token)
+          .map(token => {
+            const upper = token.toUpperCase();
+            return adjustments[upper] || (acronyms.has(upper) ? upper : token);
+          })
           .join(" ");
       }
 
@@ -34,7 +49,9 @@ export function populatePositionList() {
         const raw = row["Position"] || "";
 
         // Process each role chunk separated by dashes
-        const roles = raw.split("-").map(role => adjustPosition(role, posAdjustments));
+        const roles = raw.split("-").map(role =>
+          adjustPosition(role, normalizedAdjustments, acronyms)
+        );
 
         roles.forEach(role => {
           const normalized = normalize(role);
