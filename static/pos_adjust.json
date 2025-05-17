@@ -18,6 +18,8 @@
   "PCA": "Patient Care Assistant",
   "REG. CLERK": "Registration Clerk",
   "Therapy Asst": "Therapy Assistant",
+  "Systems Asst": "Systems Assistant",
+  "Periop. Asst": "Perioperative Assistant",
   "Health Care Asst": "Health Care Assistant",
   "Patient Care Asst": "Patient Care Assistant",
   "Ship/rec. Clerk": "Shipping/Receiving Clerk",
@@ -26,6 +28,8 @@
   "Perioperative Asst": "Perioperative Assistant",
   "Occ. Therapy Asst": "Occupational Therapy Assistant",
   "Periop. Asst Lead Hand": "Periop. Assistant Lead Hand",
+  "Cardiac Diagnostic Assist": "Cardiac Diagnostic Assistant",
+  "Occupational Therapy Asst": "Occupational Therapy Assistant",
   "Or Supplies & Equiq. Technician": "Supply/Equipment Technician",
 
   "Mdr": "MDR",
