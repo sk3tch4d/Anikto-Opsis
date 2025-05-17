@@ -14,7 +14,7 @@ export function setupSeniorityDownloadCleaned() {
 
   button.addEventListener("click", () => {
     downloadTable({
-      data: window.seniorityCleanedData,
+      data: window.seniorityData,
       layout: "seniority_clean"
     });
   });
