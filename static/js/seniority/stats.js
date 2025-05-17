@@ -128,7 +128,7 @@ export function populateStats(data) {
   filteredPanel.innerHTML = `
     <div class="delta-item">
       <span class="off">Filtered by:</span>
-      <span><em>${currentQuery}</em></span>
+      <span class="off"><em>${currentQuery}</em></span>
     </div>
   `;
   statsDiv.appendChild(filteredPanel);
@@ -172,8 +172,8 @@ export function populateStats(data) {
       <span>${avgYears} Yrs</span>
     </div>
     <div class="delta-item">
-      <span>Top Senior</span>
-      <span>${mostSenior.name} — ${mostSenior.years.toFixed(2)} Yrs</span>
+      <span>Top</span>
+      <span>${mostSenior.name} ${mostSenior.years.toFixed(2)} Yrs</span>
     </div>
     <div class="delta-item">
       <span>Total Combined</span>
