@@ -48,7 +48,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: color 1.4s ease;
+  transition: color 0.8s ease;
 }
 .panel-delta .delta-item:hover {
   color: #888bdd;
