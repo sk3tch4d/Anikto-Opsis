@@ -65,9 +65,13 @@
 .panel-delta .delta-item strong:hover {
   color: #BBB;
 }
+/* ============================= */
+.panel-delta .delta-item-off {
+  color: #a6a6a6;
+}
 
 /* ============================= */
-/* CLICKABLE DELTA                   */
+/* CLICKABLE DELTA               */
 /* ============================= */
 .clickable-delta .panel-delta .delta-item {
   cursor: pointer;
