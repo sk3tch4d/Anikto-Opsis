@@ -126,8 +126,8 @@ export function populateStats(data) {
   filteredPanel.className = "panel-delta";
   filteredPanel.style.marginBottom = "8px";
   filteredPanel.innerHTML = `
-    <div class="delta-item-off">
-      <span>Filtered by:</span>
+    <div class="delta-item">
+      <span class="off">Filtered by:</span>
       <span><em>${currentQuery}</em></span>
     </div>
   `;
