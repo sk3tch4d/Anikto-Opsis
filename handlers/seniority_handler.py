@@ -78,3 +78,4 @@ def handle(df):
         import traceback
         traceback.print_exc()
         app.logger.error(f"Seniority handler failed: {e}")
+        return render_template("index.html", error="Failed to process seniority file.")
