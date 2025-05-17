@@ -2,8 +2,11 @@
     "RPN": "Registered Practical Nurse",
     "PCA": "Patient Care Assistant",
     "EA": "Environmental Assistant",
+    "Enviro Serv": "Environmental",
     "Asst": "Assistant",
+    "Attdnt": "Attendant",
     "Reg P": "Registered P",
     "Reg. P": "Registered P",
-    "Enviro Serv": "Environmental"
+    "Mdr": "MDR",
+    "Csa": "CSA"
 }
