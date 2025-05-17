@@ -11,7 +11,7 @@
   background: #29293d; /*#292b3d;*/
   padding: 0.62rem 1.1rem;
   border-radius: 12px;
-  margin-bottom: 0.85rem;
+  margin: 0.5rem 0;
   box-shadow: inset 0px 0.4px 2zpx #1c1e22;
   color: #c1c1d7;
   text-align: center;
@@ -95,7 +95,7 @@
   background: #29293d; /*#292b3d;*/
   padding: 0.62rem 1.1rem;
   border-radius: 12px;
-  margin-bottom: 0.85rem;
+  margin: 0.5rem 0;
   box-shadow: inset 0px 0.4px 2zpx #1c1e22;
   color: #c1c1d7;
   text-align: center;
