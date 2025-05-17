@@ -1,18 +1,10 @@
 // ==============================
 // POSITIONS.JS
-// Position List Panel Logic
+// Position List Panel Logic (Cleaned)
 // ==============================
 
-import { searchFromStat } from '../search-utils.js'; // centralized function
-import { normalize } from './search.js';
+import { searchFromStat } from '../search-utils.js';
 import { toTitleCase } from './helpers.js';
-
-// ==============================
-// GLOBAL CONST
-// ==============================
-const acronyms = new Set([
-  "MDR", "CSA", "RPN", "EA", "DI", "OT", "PT", "HDH", "IT", "HR"
-]);
 
 // ==============================
 // INIT POSITION PANEL
@@ -22,78 +14,37 @@ export function populatePositionList() {
   const data = window.seniorityData || [];
   if (!container || !data.length) return;
 
-  fetch("/static/pos_adjust.json")
-    .then(res => res.json())
-    .then(posAdjustments => {
-      const positionMap = {};
+  const positionMap = {};
 
-      // Normalize posAdjustments keys to uppercase for case-insensitive lookups
-      const normalizedAdjustments = {};
-      for (const [key, value] of Object.entries(posAdjustments)) {
-        normalizedAdjustments[key.toUpperCase()] = value;
-      }
+  // Count frequency of already-normalized positions
+  data.forEach(row => {
+    const position = row["Position"]?.trim();
+    if (!position) return;
 
-      // Adjust a single position string (without splitting by dash)
-      function adjustPosition(raw, adjustments, acronyms) {
-        // Phrase-level substitutions first
-        for (const [key, value] of Object.entries(adjustments)) {
-          const pattern = new RegExp(`\\b${key}\\b`, "gi");
-          raw = raw.replace(pattern, value);
-        }
-      
-        return raw
-          .replace(/\b(PT|FT|CASUAL|CAS|HOLD)\b/gi, "")
-          .split(/[\s\-\/]+/)
-          .filter(Boolean)
-          .map(token => {
-            const upper = token.toUpperCase();
-            return adjustments[upper] || (acronyms.has(upper) ? upper : token);
-          })
-          .join(" ");
-      }
+    positionMap[position] = (positionMap[position] || 0) + 1;
+  });
 
-      data.forEach(row => {
-        const raw = row["Position"] || "";
+  // Clear and render sorted positions
+  container.innerHTML = "";
+  const sorted = Object.entries(positionMap).sort((a, b) => b[1] - a[1]);
 
-        // Only use the part before the dash
-        const [baseRole] = raw.split("-");
-        const adjusted = adjustPosition(baseRole, normalizedAdjustments, acronyms);
-        const normalized = normalize(adjusted);
-        if (!normalized) return;
+  sorted.forEach(([pos, count]) => {
+    const card = document.createElement("div");
+    card.className = "clickable-delta";
 
-        // Optional log for suspicious entries
-        if (normalized.length > 100 || /[^a-zA-Z0-9\s\.\-\/&]/.test(normalized)) {
-          console.warn("Suspicious normalized position:", raw, "→", normalized);
-        }
+    card.innerHTML = `
+      <div class="panel-delta">
+        <div class="delta-item">
+          ${toTitleCase(pos)}
+          <span>${count}</span>
+        </div>
+      </div>
+    `;
 
-        positionMap[normalized] = (positionMap[normalized] || 0) + 1;
-      });
-
-      // Clear and render sorted positions
-      container.innerHTML = "";
-      const sorted = Object.entries(positionMap).sort((a, b) => b[1] - a[1]);
-
-      sorted.forEach(([pos, count]) => {
-        const card = document.createElement("div");
-        card.className = "clickable-delta";
-
-        card.innerHTML = `
-          <div class="panel-delta">
-            <div class="delta-item">
-              ${toTitleCase(pos)}
-              <span>${count}</span>
-            </div>
-          </div>
-        `;
-
-        card.addEventListener("click", () => {
-          searchFromStat("seniority-search", pos);
-        });
-
-        container.appendChild(card);
-      });
-    })
-    .catch(err => {
-      console.error("Failed to load pos_adjust.json", err);
+    card.addEventListener("click", () => {
+      searchFromStat("seniority-search", pos);
     });
+
+    container.appendChild(card);
+  });
 }
