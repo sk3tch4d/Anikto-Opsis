@@ -36,7 +36,7 @@ export function initSenioritySearch() {
   });
 
   // Optional: pre-fill and search on load
-  input.value = "Supply Assistant";
+  input.value = "";
   doSenioritySearch();
   populateGlobalStats();
   populatePositionList();
