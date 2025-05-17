@@ -20,7 +20,7 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
 
     full_title_map = {k.upper(): v for k, v in mapping.items()}
     word_sub_map = full_title_map.copy()
-    SUFFIXES = {"PT", "Pt", "CAS", "WW", "Ww", "HOLD", "PSDC"}
+    SUFFIXES = {"PT", "CAS", "WW", "HOLD", "PSDC"}
 
     def normalize(raw_position):
         # Handle NaN, None, or anything non-string gracefully
@@ -46,6 +46,9 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
                 break
 
         words = base_title.split()
+        if words and words[-1].upper() in SUFFIXES:
+            words = words[:-1]  # strip suffix cleanly
+    
         full_key = " ".join(words).upper()
 
         if full_key in full_title_map:
