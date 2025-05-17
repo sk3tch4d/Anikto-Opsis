@@ -3,8 +3,9 @@
 // Global + Filtered Statistics
 // ==============================
 
-import { setupParseStats, searchFromStat } from "../search-utils.js";
 import { renderResults } from './results.js';
+import { setupParseStats, searchFromStat } from "../search-utils.js";
+import { openPanelById } from "../panels.js";
 
 // ==============================
 // GLOBAL STATS (ALL ENTRIES)
@@ -206,6 +207,7 @@ export function refineSearchFromStat(filter) {
   window.currentSearchResults = refined;
   renderResults(refined);
   populateStats(refined);
+  openPanelById("seniority-search-panel");
 }
 
 // ==============================
