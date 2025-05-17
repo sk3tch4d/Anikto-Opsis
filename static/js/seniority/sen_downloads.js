@@ -13,7 +13,10 @@ export function setupSeniorityDownloadCleaned() {
   if (!button) return;
 
   button.addEventListener("click", () => {
-      results: window.seniorityData,
+      const results: window.seniorityData || [];
+        if (!results.length) {
+          return alert("Error: No data to download.");
+        }
 
       const rows = results.map(row => [
         parseFloat(row["Years"] || 0).toFixed(2),
