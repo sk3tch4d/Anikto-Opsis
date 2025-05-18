@@ -1,0 +1,159 @@
+/* ============================= */
+/* DISC_VARIABLES.CSS            */
+/* ============================= */
+
+
+/* ============================= */
+/* ROOT.                         */
+/* ============================= */
+:root {
+  /* ====== AUTOCOMPLETE LIST*/
+  --disc_autocomplete-autocomplete-list-background: #1e1f22;
+  --disc_autocomplete-autocomplete-list-border: 1px solid #2e2e2e;
+  --disc_autocomplete-autocomplete-list-box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  --disc_autocomplete-autocomplete-item-color: #ccc;
+  --disc_autocomplete-autocomplete-itemhover-background: #2c2e32;
+  /* ====== BADGES */
+  --disc_badges-badge-day-background-color: #ffde59;
+  --disc_badges-badge-day-color: #000;
+  --disc_badges-badge-evening-background-color: #ff914d;
+  --disc_badges-badge-night-background-color: #4d9aff;
+  --disc_badges-badge-night-color: #fff;
+  /* ====== BASE */
+  --disc_base-body-background-color: #212230 !important;
+  /* ====== BUTTONS */ 
+  --disc_buttons-button-background-color: #33364d;
+  --disc_buttons-button-border: 1px solid #2f3136;
+  --disc_buttons-button-box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  --disc_buttons-buttonhover-color: #060614;
+  --disc_buttons-buttonfocus-box-shadow: 0 0 0 2px #7289da;
+  --disc_buttons-buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  --disc_buttons-buttonpanelhover-color: #0c0c27;
+  --disc_buttons-label-button-background-color: #40444b;
+  --disc_buttons-label-buttonhover-background-color: #50545b;
+  /* ====== CARDS */
+  --disc_cards-panel-card-background: #29293d;
+  --disc_cards-panel-card-box-shadow: inset 0 0 0 1.4px #1a1b1f;
+  --disc_cards-panel-card-color: #c1c1d7;
+  --disc_cards-panel-cardhover-color: #b0b2e8;
+  --disc_cards-panel-delta-delta-itemhover-color: #888bdd;
+  --disc_cards-panel-delta-delta-item-strong-color: #999;
+  --disc_cards-panel-delta-delta-item-stronghover-color: #bbb;
+  --disc_cards-panel-delta-delta-item-off-color: #999999;
+  --disc_cards-clickable-delta-panel-delta-delta-itemhover-background-color: #2e2e44;
+  --disc_cards-clickable-delta-on-panel-delta-delta-itemhover-color: #a0a2f0;
+  /* ====== DROPZONE */
+  --disc_dropzone-drop-zone-border: 0.18rem dashed #8080ff;
+  --disc_dropzone-drop-zonehover-background-color: rgba(114, 137, 218, 0.05);
+  --disc_dropzone-drop-zonehover-box-shadow: 0 0 22px rgba(114, 137, 218, 0.2);
+  --disc_dropzone-drop-zoneactive-background-color: rgba(114, 137, 218, 0.1);
+  --disc_dropzone-drop-zoneactive-border-color: #9999ff;
+  --disc_dropzone-drop-zonedrag-over-background-color: #2b2e34;
+  --disc_dropzone-drop-zonedrag-over-border-color: #5a7fff;
+  --disc_dropzone-upload-zone-border: 0.18rem solid #8080ff;
+  --disc_dropzone-upload-zone-color: #b3b3ff;
+  --disc_dropzone-file-action-background-color: #26282c;
+  --disc_dropzone-file-action-color: #ccc !important;
+  --disc_dropzone-file-action-border: 1px solid #7289da;
+  --disc_dropzone-file-uploadfocus-background-color: #32353a;
+  --disc_dropzone-file-uploadmimic-drop-border: 2px solid #7289da;
+  --disc_dropzone-file-actionshimmer-color: transparent;
+  /* ====== FILEACTION */
+  --disc_fileaction-file-action-background-color: #3d405c;
+  --disc_fileaction-file-action-border: 2.6px solid #1f202e;
+  --disc_fileaction-file-actionfocus-background-color: #52567a;
+  --disc_fileaction-file-actionfocus-color: #eee;
+  --disc_fileaction-ulfile-box-li-border: none;
+  /* ====== HEADINGS */
+  --disc_headings-h1-color: #5e77d4;
+  --disc_headings-h3-color: #d0d0e1;
+  /* ====== INPUTS */
+  --disc_inputs-inputfull-width-background: linear-gradient(-30deg, #15151e, #292b3d, #1f202e, #292b3d, #1f202e);
+  --disc_inputs-inputfull-width-border: 2px solid #6666cc;
+  --disc_inputs-inputfull-width-box-shadow: inset 0 0 0 1px #1f1f1f;
+  --disc_inputs-inputfull-widthfocus-border-color: #5d5df8;
+  --disc_inputs-inputfull-widthinput-error-border: 1px solid #ff4d4f !important;
+  --disc_inputs-inputfull-widthinput-error-background: linear-gradient(-30deg, #3b1e1e, #4b2a2a, #3b1e1e) !important;
+  --disc_inputs-inputfull-widthinput-error-color: #f8dada;
+  --disc_inputs-input[type="date"]-background-color: #2f3136;
+  --disc_inputs-input[type="date"]-color: #ffffff;
+  --disc_inputs-input[type="date"]-border: 1px solid #40444b;
+  --disc_inputs-input[type="date"]focus-box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.4);
+  --disc_inputs-custom-date-displayhover-background-color: #36393f;
+  /* ====== LABELS */
+  --disc_labels-search-timestamp-color: #ddd;
+  --disc_labels-toast-background: #2a2c3f;
+  --disc_labels-toast-border: 1.6px solid #8080ff;
+  --disc_labels-toastshow-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --disc_labels-saved-card-border: 2px solid #8080ff !important;
+  --disc_labels-tag-label-color: #9393ec;
+  --disc_labels-tag-toggle-color: #0a0b0f;
+  --disc_labels-tag-toggle-border: 2px solid  #1f202e;
+  --disc_labels-tag-togglehover-color: #0b0613;
+  --disc_labels-usl-wrappershow-box-shadow: inset 0 0 0.4rem 0.1rem #0d0c0d;
+  --disc_labels-usl-wrappershow-color: #7289da;
+  /* ====== LINKS */
+  --disc_links-a-color: #eeeeee;
+  /* ====== LISTS */
+  --disc_lists-li-color: #b1b1cd;
+  /* ====== LOADING */
+  --disc_loading-loadingspinner-spinner-border: 10px solid rgba(255, 255, 255, 0.1);
+  --disc_loading-bounce-ball-box-shadow: 0 0 18px 2px rgba(0,0,0,0.4);
+  /* ====== PANELS */
+  --disc_panels-root-border: #232529;
+  --disc_panels-panel-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  --disc_panels-panelopen-box-shadow: 0 0 18px 3px rgba(0,0,0,0.4);
+  --disc_panels-panel-header-color: #cccccc;
+  --disc_panels-panelno-shadow-box-shadow: none !important;
+  --disc_panels-panelno-shadow-background: transparent !important;
+  --disc_panels-panelopen->-panel-bodybefore-background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);
+  --disc_panels-panel-body-label-background: #1f2023;
+  --disc_panels-panel-body-labelhover-background: #2a2d33;
+  --disc_panels-panel-scroll-bar-background-color: #7676d6;
+  /* ====== RESPONSIVE */
+  --disc_responsive-highlight-background-color: #7289da44;
+  /* ====== SENIORITY */
+  --disc_seniority-filter-box-background: #222;
+  --disc_seniority-filter-box-border: 2px solid #333;
+  --disc_seniority-input[type="range"]year-slider-background: #333;
+  /* ====== SPINNER */
+  --disc_spinner-spinner-border: 6px solid rgba(255, 255, 255, 0.1);
+  /* ====== STATS */
+  --disc_stats-panel-body-clickable-num-color: #7578d7;
+  --disc_stats-panel-body-clickable-stat-color: #b3b3ff !important;
+  --disc_stats-panel-body-clickable-stathover-color: #ccccff !important;
+  /* ====== STATUSDOT */
+  --disc_status-dot-status-dotyellow-background: #ffd700;
+  --disc_status-dot-status-dotred-background: #e74c3c;
+  --disc_status-dot-status-dotgreen-background: #2ecc71;
+  /* ====== TYPING */
+  --disc_typing-typed-text-color: #5a5dcf;
+  /* ====== UTILS */
+  --disc_utils-slider-background-color: #444;
+}
+
+/* ============================= */
+/* DARK THEME.                   */
+/* ============================= */
+[data-theme="dark"] {
+  --color-accent-purple: #5a5dcf;
+  --color-text-muted: #ccc;
+  --color-accent-blue: #7289da;
+  --color-panel-bg: #1f202e;
+  --color-accent-violet: #7f5ac8;
+  --color-bg-dark: #292b3d;
+  --color-bg-light: #2c2e32;
+  --color-border-medium: #2e2e2e;
+  --color-border-light: #bbb;
+  --color-gray-300: #999;
+  --color-gray-400: #aaa;
+  --color-gray-500: #888;
+  --color-highlight-blue: #3f51b5;
+  --color-shadow-black-30: rgba(0, 0, 0, 0.3);
+  --color-shadow-black-20: rgba(0, 0, 0, 0.2);
+  --color-bg-hover: rgba(255, 255, 255, 0.05);
+  --color-bg-focus: rgba(114, 137, 218, 0.2);
+  --color-white: #fff;
+  --color-black: #000;
+  --color-light-bg: #f5f5f5;
+}
