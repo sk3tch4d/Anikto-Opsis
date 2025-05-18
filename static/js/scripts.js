@@ -4,6 +4,8 @@
 
 // ----- Debugging -----
 import { initDebugToggle } from './debugging.js';
+// ----- Theme -----
+import { initThemeToggle } from /.theme.js';
 // ----- Typed -----
 import { initTypewriter } from './typing.js';
 // ----- Panels -----
@@ -38,6 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Debug Toggle -----
   if (document.querySelector("#debug-toggle")) initDebugToggle();
 
+  // ----- Theme -----
+  if (document.querySelector("#site-title")) {
+    initThemeToggle();
+    document.querySelector("#site-title").title = "Click to toggle theme";
+  }
+  
   // ----- Typed -----
   if (document.querySelector(".typed-text")) initTypewriter();
 
