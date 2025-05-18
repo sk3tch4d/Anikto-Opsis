@@ -7,31 +7,31 @@
 /* ============================= */
 :root {
   /* ====== AUTOCOMPLETE LIST*/
-  --disc_autocomplete-autocomplete-list-background: #ffffff;
-  --disc_autocomplete-autocomplete-list-border: 1px solid #cccccc;
+  --disc_autocomplete-autocomplete-list-background: #000000;
+  --disc_autocomplete-autocomplete-list-border: 1px solid #333ccc;
   --disc_autocomplete-autocomplete-list-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
   --disc_autocomplete-autocomplete-item-color: #000000;
-  --disc_autocomplete-autocomplete-itemhover-background: #ffffff;
+  --disc_autocomplete-autocomplete-itemhover-background: #000000;
   /* ====== BADGES */
-  --disc_badges-badge-day-background-color: #ffffff;
+  --disc_badges-badge-day-background-color: #000000;
   --disc_badges-badge-day-color: #000000;
-  --disc_badges-badge-evening-background-color: #ffffff;
-  --disc_badges-badge-night-background-color: #ffffff;
+  --disc_badges-badge-evening-background-color: #000000;
+  --disc_badges-badge-night-background-color: #000000;
   --disc_badges-badge-night-color: #000000;
   /* ====== BASE */
-  --disc_base-body-background-color: #ffffff;
+  --disc_base-body-background-color: #000000;
   /* ====== BUTTONS */
-  --disc_buttons-button-background-color: #ffffff;
-  --disc_buttons-button-border: 1px solid #cccccc;
+  --disc_buttons-button-background-color: #000000;
+  --disc_buttons-button-border: 1px solid #333ccc;
   --disc_buttons-button-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
   --disc_buttons-buttonhover-color: #000000;
   --disc_buttons-buttonfocus-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
   --disc_buttons-buttonpanel-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
   --disc_buttons-buttonpanelhover-color: #000000;
-  --disc_buttons-label-button-background-color: #ffffff;
-  --disc_buttons-label-buttonhover-background-color: #ffffff;
+  --disc_buttons-label-button-background-color: #000000;
+  --disc_buttons-label-buttonhover-background-color: #000000;
   /* ====== CARDS */
-  --disc_cards-panel-card-background: #ffffff;
+  --disc_cards-panel-card-background: #000000;
   --disc_cards-panel-card-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
   --disc_cards-panel-card-color: #000000;
   --disc_cards-panel-cardhover-color: #000000;
@@ -39,55 +39,55 @@
   --disc_cards-panel-delta-delta-item-strong-color: #000000;
   --disc_cards-panel-delta-delta-item-stronghover-color: #000000;
   --disc_cards-panel-delta-delta-item-off-color: #000000;
-  --disc_cards-clickable-delta-panel-delta-delta-itemhover-background-color: #ffffff;
+  --disc_cards-clickable-delta-panel-delta-delta-itemhover-background-color: #000000;
   --disc_cards-clickable-delta-on-panel-delta-delta-itemhover-color: #000000;
   /* ====== DROPZONE */
-  --disc_dropzone-drop-zone-border: 1px solid #cccccc;
-  --disc_dropzone-drop-zonehover-background-color: #ffffff;
+  --disc_dropzone-drop-zone-border: 1px solid #333ccc;
+  --disc_dropzone-drop-zonehover-background-color: #000000;
   --disc_dropzone-drop-zonehover-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-  --disc_dropzone-drop-zoneactive-background-color: #ffffff;
+  --disc_dropzone-drop-zoneactive-background-color: #000000;
   --disc_dropzone-drop-zoneactive-border-color: #000000;
-  --disc_dropzone-drop-zonedrag-over-background-color: #ffffff;
+  --disc_dropzone-drop-zonedrag-over-background-color: #000000;
   --disc_dropzone-drop-zonedrag-over-border-color: #000000;
-  --disc_dropzone-upload-zone-border: 1px solid #cccccc;
+  --disc_dropzone-upload-zone-border: 1px solid #333ccc;
   --disc_dropzone-upload-zone-color: #000000;
-  --disc_dropzone-file-action-background-color: #ffffff;
+  --disc_dropzone-file-action-background-color: #000000;
   --disc_dropzone-file-action-color: #000000;
-  --disc_dropzone-file-action-border: 1px solid #cccccc;
-  --disc_dropzone-file-uploadfocus-background-color: #ffffff;
-  --disc_dropzone-file-uploadmimic-drop-border: 1px solid #cccccc;
+  --disc_dropzone-file-action-border: 1px solid #333ccc;
+  --disc_dropzone-file-uploadfocus-background-color: #000000;
+  --disc_dropzone-file-uploadmimic-drop-border: 1px solid #333ccc;
   --disc_dropzone-file-actionshimmer-color: #000000;
   /* ====== FILEACTION */
-  --disc_fileaction-file-action-background-color: #ffffff;
-  --disc_fileaction-file-action-border: 1px solid #cccccc;
-  --disc_fileaction-file-actionfocus-background-color: #ffffff;
+  --disc_fileaction-file-action-background-color: #000000;
+  --disc_fileaction-file-action-border: 1px solid #333ccc;
+  --disc_fileaction-file-actionfocus-background-color: #000000;
   --disc_fileaction-file-actionfocus-color: #000000;
-  --disc_fileaction-ulfile-box-li-border: 1px solid #cccccc;
+  --disc_fileaction-ulfile-box-li-border: 1px solid #333ccc;
   /* ====== HEADINGS */
   --disc_headings-h1-color: #000000;
   --disc_headings-h3-color: #000000;
   /* ====== INPUTS */
-  --disc_inputs-inputfull-width-background: #ffffff;
-  --disc_inputs-inputfull-width-border: 1px solid #cccccc;
+  --disc_inputs-inputfull-width-background: #000000;
+  --disc_inputs-inputfull-width-border: 1px solid #333ccc;
   --disc_inputs-inputfull-width-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
   --disc_inputs-inputfull-widthfocus-border-color: #000000;
-  --disc_inputs-inputfull-widthinput-error-border: 1px solid #cccccc;
-  --disc_inputs-inputfull-widthinput-error-background: #ffffff;
+  --disc_inputs-inputfull-widthinput-error-border: 1px solid #333ccc;
+  --disc_inputs-inputfull-widthinput-error-background: #000000;
   --disc_inputs-inputfull-widthinput-error-color: #000000;
-  --disc_inputs-input[type="date"]-background-color: #ffffff;
+  --disc_inputs-input[type="date"]-background-color: #000000;
   --disc_inputs-input[type="date"]-color: #000000;
-  --disc_inputs-input[type="date"]-border: 1px solid #cccccc;
+  --disc_inputs-input[type="date"]-border: 1px solid #333ccc;
   --disc_inputs-input[type="date"]focus-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-  --disc_inputs-custom-date-displayhover-background-color: #ffffff;
+  --disc_inputs-custom-date-displayhover-background-color: #000000;
   /* ====== LABELS */
   --disc_labels-search-timestamp-color: #000000;
-  --disc_labels-toast-background: #ffffff;
-  --disc_labels-toast-border: 1px solid #cccccc;
+  --disc_labels-toast-background: #000000;
+  --disc_labels-toast-border: 1px solid #333ccc;
   --disc_labels-toastshow-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-  --disc_labels-saved-card-border: 1px solid #cccccc;
+  --disc_labels-saved-card-border: 1px solid #333ccc;
   --disc_labels-tag-label-color: #000000;
   --disc_labels-tag-toggle-color: #000000;
-  --disc_labels-tag-toggle-border: 1px solid #cccccc;
+  --disc_labels-tag-toggle-border: 1px solid #333ccc;
   --disc_labels-tag-togglehover-color: #000000;
   --disc_labels-usl-wrappershow-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
   --disc_labels-usl-wrappershow-color: #000000;
@@ -96,39 +96,39 @@
   /* ====== LISTS */
   --disc_lists-li-color: #000000;
   /* ====== LOADING */
-  --disc_loading-loadingspinner-spinner-border: 1px solid #cccccc;
+  --disc_loading-loadingspinner-spinner-border: 1px solid #333ccc;
   --disc_loading-bounce-ball-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
   /* ====== PANELS */
-  --disc_panels-root-border: 1px solid #cccccc;
+  --disc_panels-root-border: 1px solid #333ccc;
   --disc_panels-panel-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
   --disc_panels-panelopen-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
   --disc_panels-panel-header-color: #000000;
   --disc_panels-panelno-shadow-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-  --disc_panels-panelno-shadow-background: #ffffff;
-  --disc_panels-panelopen->-panel-bodybefore-background: #ffffff;
-  --disc_panels-panel-body-label-background: #ffffff;
-  --disc_panels-panel-body-labelhover-background: #ffffff;
-  --disc_panels-panel-scroll-bar-background-color: #ffffff;
+  --disc_panels-panelno-shadow-background: #000000;
+  --disc_panels-panelopen->-panel-bodybefore-background: #000000;
+  --disc_panels-panel-body-label-background: #000000;
+  --disc_panels-panel-body-labelhover-background: #000000;
+  --disc_panels-panel-scroll-bar-background-color: #000000;
   /* ====== RESPONSIVE */
-  --disc_responsive-highlight-background-color: #ffffff;
+  --disc_responsive-highlight-background-color: #000000;
   /* ====== SENIORITY */
-  --disc_seniority-filter-box-background: #ffffff;
-  --disc_seniority-filter-box-border: 1px solid #cccccc;
-  --disc_seniority-input[type="range"]year-slider-background: #ffffff;
+  --disc_seniority-filter-box-background: #000000;
+  --disc_seniority-filter-box-border: 1px solid #333ccc;
+  --disc_seniority-input[type="range"]year-slider-background: #000000;
   /* ====== SPINNER */
-  --disc_spinner-spinner-border: 1px solid #cccccc;
+  --disc_spinner-spinner-border: 1px solid #333ccc;
   /* ====== STATS */
   --disc_stats-panel-body-clickable-num-color: #000000;
   --disc_stats-panel-body-clickable-stat-color: #000000;
   --disc_stats-panel-body-clickable-stathover-color: #000000;
   /* ====== STATUSDOT */
-  --disc_status-dot-status-dotyellow-background: #ffffff;
-  --disc_status-dot-status-dotred-background: #ffffff;
-  --disc_status-dot-status-dotgreen-background: #ffffff;
+  --disc_status-dot-status-dotyellow-background: #000000;
+  --disc_status-dot-status-dotred-background: #000000;
+  --disc_status-dot-status-dotgreen-background: #000000;
   /* ====== TYPING */
   --disc_typing-typed-text-color: #000000;
   /* ====== UTILS */
-  --disc_utils-slider-background-color: #ffffff;
+  --disc_utils-slider-background-color: #000000;
 }
 
 /* ============================= */
