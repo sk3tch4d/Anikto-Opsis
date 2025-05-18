@@ -22,15 +22,16 @@ export function populateGlobalStats() {
   let casual = 0;  
   let tenPlus = 0, twentyPlus = 0, thirtyPlus = 0, fortyPlus = 0;
   const departments = new Set();
+  const positions = new Set();
 
   data.forEach(row => {
-    const position = row["Position"] || "";
+    const position = (row["Position"] || "").trim();
+    const department = (row["Department"] || "").trim();
     const status = (row["Status"] || "").toLowerCase();
     const years = parseFloat(row["Years"] || 0);
-
-    const dept = position.split("-")[0].trim();
-    if (dept) departments.add(dept);
-
+    
+    if (department) departments.add(department);
+    if (position) positions.add(position);
     if (status.includes("full")) fullTime++;
     if (status.includes("part")) partTime++;
     if (status.includes("casu")) casual++;
@@ -44,7 +45,7 @@ export function populateGlobalStats() {
   });
 
   totalYears = parseFloat(totalYears.toFixed(2));
-  const avgYears = total > 0 ? parseFloat((totalYears / total).toFixed(2)) : 0;
+  const avgYears = total > 0 ? (totalYears / total).toFixed(2) : "0.00";
 
   statsDiv.innerHTML = "";
 
@@ -65,6 +66,7 @@ export function populateGlobalStats() {
   }
 
   statsDiv.appendChild(createStatCard("Total Departments", departments.size));
+  statsDiv.appendChild(createStatCard("Total Positions", positions.size));
   statsDiv.appendChild(createStatCard("Total Employees", total));
   statsDiv.appendChild(createStatCard("Total Full-Time", fullTime, "Full-Time"));
   statsDiv.appendChild(createStatCard("Total Part-Time", partTime, "Part-Time"));
@@ -73,8 +75,8 @@ export function populateGlobalStats() {
   statsDiv.appendChild(createStatCard("20+ Years", twentyPlus, "20+"));
   statsDiv.appendChild(createStatCard("30+ Years", thirtyPlus, "30+"));
   statsDiv.appendChild(createStatCard("40+ Years", fortyPlus, "40+"));
-  statsDiv.appendChild(createStatCard("Average Years", avgYears));
-  statsDiv.appendChild(createStatCard("Total Combined", totalYears));
+  statsDiv.appendChild(createStatCard("Average Seniority", avgYears));
+  statsDiv.appendChild(createStatCard("Total Combined Seniority", totalYears.toFixed(2)));
 
   setupParseStats(".clickable-delta", "seniority-search", "data-name");
 }
