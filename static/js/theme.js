@@ -28,9 +28,10 @@ export function initThemeToggle() {
     setTheme(next);
   }
 
-  setTheme(getSavedOrSystemTheme());
-
+  // Run only after the DOM is ready
   document.addEventListener("DOMContentLoaded", () => {
+    setTheme(getSavedOrSystemTheme());
+
     const title = document.getElementById("site-title");
     if (title) {
       title.style.cursor = "pointer";
@@ -40,3 +41,4 @@ export function initThemeToggle() {
     }
   });
 }
+
