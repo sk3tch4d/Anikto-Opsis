@@ -8,19 +8,30 @@ import json
 import re
 
 # ==============================
-# NORMALIZE POSITIONS WITH DEPARTMENT + SUFFIX
+# NORMALIZE SENIORITY FIELDS
 # ==============================
-def normalize_positions(df, mapping_path="static/pos_adjust.json"):
-    """Normalize the Position column in-place, add Department and Note columns."""
-    try:
-        with open(mapping_path, "r") as f:
-            mapping = json.load(f)
-    except Exception as e:
-        app.logger.error(f"Failed to load normalization map: {e}")
-        return df
+def normalize_sen_fields(df, pos_map_path="static/sen_positions.json", dept_map_path="static/sen_departments.json"):
+    """Normalize the Position and Department columns, and extract Note."""
 
-    full_title_map = {k.upper(): v for k, v in mapping.items()}
+    # Load position mappings
+    try:
+        with open(pos_map_path, "r") as f:
+            pos_map = json.load(f)
+    except Exception as e:
+        app.logger.error(f"Failed to load position map: {e}")
+        pos_map = {}
+
+    # Load department mappings
+    try:
+        with open(dept_map_path, "r") as f:
+            dept_map = json.load(f)
+    except Exception as e:
+        app.logger.error(f"Failed to load department map: {e}")
+        dept_map = {}
+
+    full_title_map = {k.upper(): v for k, v in pos_map.items()}
     word_sub_map = full_title_map.copy()
+    dept_map_upper = {k.upper(): v for k, v in dept_map.items()}
 
     IGNORE_SUFFIXES = {"PT", "CAS"}
     NOTE_SUFFIXES = {"WW", "HOLD", "PSDC"}
@@ -28,8 +39,8 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
 
     def normalize(raw_position):
         raw_position = str(raw_position).strip()
-        raw_position = re.sub(r"[–—]", "-", raw_position)  # normalize dashes
-        raw_position = re.sub(r"\s*-\s*", " - ", raw_position)  # normalize space-hyphen-space     
+        raw_position = re.sub(r"[–—]", "-", raw_position)
+        raw_position = re.sub(r"\s*-\s*", " - ", raw_position)
         if not raw_position:
             return "", "", ""
 
@@ -38,7 +49,6 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
         department = parts[1].strip() if len(parts) > 1 else ""
         note = ""
 
-        # Check full string for suffix
         full_upper = raw_position.upper()
         for suffix in ALL_SUFFIXES:
             if full_upper.endswith(f" {suffix}"):
@@ -50,7 +60,6 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
                     base_title = " ".join(base_title.split()[:-1])
                 break
 
-        # Remove any remaining suffix from word list
         words = base_title.split()
         if words and words[-1].upper() in ALL_SUFFIXES:
             words = words[:-1]
@@ -62,7 +71,10 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
             normalized_words = [word_sub_map.get(w.upper(), w.title()) for w in words]
             normalized = " ".join(normalized_words)
 
-        return normalized.strip(), department.strip(), note.strip()
+        # Normalize department too
+        normalized_dept = dept_map_upper.get(department.upper(), department.title())
+
+        return normalized.strip(), normalized_dept.strip(), note.strip()
 
     if "Position" in df.columns:
         df = df.copy()
@@ -77,7 +89,7 @@ def normalize_positions(df, mapping_path="static/pos_adjust.json"):
 # ==============================
 def handle(df):
     try:
-        df = normalize_positions(df)
+        df = normalize_sen_fields(df)
 
         if "Years" not in df.columns:
             print("[WARNING] 'Years' column missing in seniority data!")
