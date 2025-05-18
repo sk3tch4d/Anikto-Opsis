@@ -1,8 +1,13 @@
 {
   "Env. Services": "Environmental Services",
   "Emergency Med.": "Emergency",
-  "Inventory Serv.": "Inventory Services",
-  "Inventory Servs": "Inventory Services",
+  "Rad. Therapy": "Radiation Therapy",
+
+  "Enviro": "Environmental",
+
+  "Admin": "Administration",
+  "Admin.": "Administration",
   "Onc.": "Oncology",
-  "Rad. Therapy": "Radiation Therapy"
+  "Serv.": "Services",
+  "Servs": "Services"
 }
