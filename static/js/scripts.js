@@ -41,11 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector("#debug-toggle")) initDebugToggle();
 
   // ----- Theme -----
-  const title = document.querySelector("#site-title");
-  if (title) {
-    initThemeToggle();
-    title.title = "Click to toggle theme";
-  }
+  initThemeToggle();
 
   // ----- Typed -----
   if (document.querySelector(".typed-text")) initTypewriter();
