@@ -2,11 +2,139 @@
 /* DISC_VARIABLES.CSS            */
 /* ============================= */
 
-
 /* ============================= */
-/* ROOT.                         */
+/* ROOT (LIGHT PLACEHOLDER)      */
 /* ============================= */
 :root {
+  /* ====== AUTOCOMPLETE LIST*/
+  --disc_autocomplete-autocomplete-list-background: #ffffff;
+  --disc_autocomplete-autocomplete-list-border: 1px solid #cccccc;
+  --disc_autocomplete-autocomplete-list-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_autocomplete-autocomplete-item-color: #000000;
+  --disc_autocomplete-autocomplete-itemhover-background: #ffffff;
+  /* ====== BADGES */
+  --disc_badges-badge-day-background-color: #ffffff;
+  --disc_badges-badge-day-color: #000000;
+  --disc_badges-badge-evening-background-color: #ffffff;
+  --disc_badges-badge-night-background-color: #ffffff;
+  --disc_badges-badge-night-color: #000000;
+  /* ====== BASE */
+  --disc_base-body-background-color: #ffffff;
+  /* ====== BUTTONS */
+  --disc_buttons-button-background-color: #ffffff;
+  --disc_buttons-button-border: 1px solid #cccccc;
+  --disc_buttons-button-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_buttons-buttonhover-color: #000000;
+  --disc_buttons-buttonfocus-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_buttons-buttonpanel-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_buttons-buttonpanelhover-color: #000000;
+  --disc_buttons-label-button-background-color: #ffffff;
+  --disc_buttons-label-buttonhover-background-color: #ffffff;
+  /* ====== CARDS */
+  --disc_cards-panel-card-background: #ffffff;
+  --disc_cards-panel-card-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_cards-panel-card-color: #000000;
+  --disc_cards-panel-cardhover-color: #000000;
+  --disc_cards-panel-delta-delta-itemhover-color: #000000;
+  --disc_cards-panel-delta-delta-item-strong-color: #000000;
+  --disc_cards-panel-delta-delta-item-stronghover-color: #000000;
+  --disc_cards-panel-delta-delta-item-off-color: #000000;
+  --disc_cards-clickable-delta-panel-delta-delta-itemhover-background-color: #ffffff;
+  --disc_cards-clickable-delta-on-panel-delta-delta-itemhover-color: #000000;
+  /* ====== DROPZONE */
+  --disc_dropzone-drop-zone-border: 1px solid #cccccc;
+  --disc_dropzone-drop-zonehover-background-color: #ffffff;
+  --disc_dropzone-drop-zonehover-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_dropzone-drop-zoneactive-background-color: #ffffff;
+  --disc_dropzone-drop-zoneactive-border-color: #000000;
+  --disc_dropzone-drop-zonedrag-over-background-color: #ffffff;
+  --disc_dropzone-drop-zonedrag-over-border-color: #000000;
+  --disc_dropzone-upload-zone-border: 1px solid #cccccc;
+  --disc_dropzone-upload-zone-color: #000000;
+  --disc_dropzone-file-action-background-color: #ffffff;
+  --disc_dropzone-file-action-color: #000000;
+  --disc_dropzone-file-action-border: 1px solid #cccccc;
+  --disc_dropzone-file-uploadfocus-background-color: #ffffff;
+  --disc_dropzone-file-uploadmimic-drop-border: 1px solid #cccccc;
+  --disc_dropzone-file-actionshimmer-color: #000000;
+  /* ====== FILEACTION */
+  --disc_fileaction-file-action-background-color: #ffffff;
+  --disc_fileaction-file-action-border: 1px solid #cccccc;
+  --disc_fileaction-file-actionfocus-background-color: #ffffff;
+  --disc_fileaction-file-actionfocus-color: #000000;
+  --disc_fileaction-ulfile-box-li-border: 1px solid #cccccc;
+  /* ====== HEADINGS */
+  --disc_headings-h1-color: #000000;
+  --disc_headings-h3-color: #000000;
+  /* ====== INPUTS */
+  --disc_inputs-inputfull-width-background: #ffffff;
+  --disc_inputs-inputfull-width-border: 1px solid #cccccc;
+  --disc_inputs-inputfull-width-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_inputs-inputfull-widthfocus-border-color: #000000;
+  --disc_inputs-inputfull-widthinput-error-border: 1px solid #cccccc;
+  --disc_inputs-inputfull-widthinput-error-background: #ffffff;
+  --disc_inputs-inputfull-widthinput-error-color: #000000;
+  --disc_inputs-input[type="date"]-background-color: #ffffff;
+  --disc_inputs-input[type="date"]-color: #000000;
+  --disc_inputs-input[type="date"]-border: 1px solid #cccccc;
+  --disc_inputs-input[type="date"]focus-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_inputs-custom-date-displayhover-background-color: #ffffff;
+  /* ====== LABELS */
+  --disc_labels-search-timestamp-color: #000000;
+  --disc_labels-toast-background: #ffffff;
+  --disc_labels-toast-border: 1px solid #cccccc;
+  --disc_labels-toastshow-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_labels-saved-card-border: 1px solid #cccccc;
+  --disc_labels-tag-label-color: #000000;
+  --disc_labels-tag-toggle-color: #000000;
+  --disc_labels-tag-toggle-border: 1px solid #cccccc;
+  --disc_labels-tag-togglehover-color: #000000;
+  --disc_labels-usl-wrappershow-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_labels-usl-wrappershow-color: #000000;
+  /* ====== LINKS */
+  --disc_links-a-color: #000000;
+  /* ====== LISTS */
+  --disc_lists-li-color: #000000;
+  /* ====== LOADING */
+  --disc_loading-loadingspinner-spinner-border: 1px solid #cccccc;
+  --disc_loading-bounce-ball-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  /* ====== PANELS */
+  --disc_panels-root-border: 1px solid #cccccc;
+  --disc_panels-panel-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_panels-panelopen-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_panels-panel-header-color: #000000;
+  --disc_panels-panelno-shadow-box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+  --disc_panels-panelno-shadow-background: #ffffff;
+  --disc_panels-panelopen->-panel-bodybefore-background: #ffffff;
+  --disc_panels-panel-body-label-background: #ffffff;
+  --disc_panels-panel-body-labelhover-background: #ffffff;
+  --disc_panels-panel-scroll-bar-background-color: #ffffff;
+  /* ====== RESPONSIVE */
+  --disc_responsive-highlight-background-color: #ffffff;
+  /* ====== SENIORITY */
+  --disc_seniority-filter-box-background: #ffffff;
+  --disc_seniority-filter-box-border: 1px solid #cccccc;
+  --disc_seniority-input[type="range"]year-slider-background: #ffffff;
+  /* ====== SPINNER */
+  --disc_spinner-spinner-border: 1px solid #cccccc;
+  /* ====== STATS */
+  --disc_stats-panel-body-clickable-num-color: #000000;
+  --disc_stats-panel-body-clickable-stat-color: #000000;
+  --disc_stats-panel-body-clickable-stathover-color: #000000;
+  /* ====== STATUSDOT */
+  --disc_status-dot-status-dotyellow-background: #ffffff;
+  --disc_status-dot-status-dotred-background: #ffffff;
+  --disc_status-dot-status-dotgreen-background: #ffffff;
+  /* ====== TYPING */
+  --disc_typing-typed-text-color: #000000;
+  /* ====== UTILS */
+  --disc_utils-slider-background-color: #ffffff;
+}
+
+/* ============================= */
+/* DARK THEME                    */
+/* ============================= */
+[data-theme="dark"] {
   /* ====== AUTOCOMPLETE LIST*/
   --disc_autocomplete-autocomplete-list-background: #1e1f22;
   --disc_autocomplete-autocomplete-list-border: 1px solid #2e2e2e;
@@ -21,7 +149,7 @@
   --disc_badges-badge-night-color: #fff;
   /* ====== BASE */
   --disc_base-body-background-color: #212230 !important;
-  /* ====== BUTTONS */ 
+  /* ====== BUTTONS */
   --disc_buttons-button-background-color: #33364d;
   --disc_buttons-button-border: 1px solid #2f3136;
   --disc_buttons-button-box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -130,30 +258,4 @@
   --disc_typing-typed-text-color: #5a5dcf;
   /* ====== UTILS */
   --disc_utils-slider-background-color: #444;
-}
-
-/* ============================= */
-/* DARK THEME.                   */
-/* ============================= */
-[data-theme="dark"] {
-  --color-accent-purple: #5a5dcf;
-  --color-text-muted: #ccc;
-  --color-accent-blue: #7289da;
-  --color-panel-bg: #1f202e;
-  --color-accent-violet: #7f5ac8;
-  --color-bg-dark: #292b3d;
-  --color-bg-light: #2c2e32;
-  --color-border-medium: #2e2e2e;
-  --color-border-light: #bbb;
-  --color-gray-300: #999;
-  --color-gray-400: #aaa;
-  --color-gray-500: #888;
-  --color-highlight-blue: #3f51b5;
-  --color-shadow-black-30: rgba(0, 0, 0, 0.3);
-  --color-shadow-black-20: rgba(0, 0, 0, 0.2);
-  --color-bg-hover: rgba(255, 255, 255, 0.05);
-  --color-bg-focus: rgba(114, 137, 218, 0.2);
-  --color-white: #fff;
-  --color-black: #000;
-  --color-light-bg: #f5f5f5;
 }
