@@ -5,7 +5,7 @@
 // ----- Debugging -----
 import { initDebugToggle } from './debugging.js';
 // ----- Theme -----
-import { initThemeToggle } from '/.theme.js';
+import { initThemeToggle } from './theme.js';
 // ----- Typed -----
 import { initTypewriter } from './typing.js';
 // ----- Panels -----
