@@ -39,7 +39,7 @@ export function renderResults(matches) {
     const first = row["First Name"] || "";
     const last = row["Last Name"] || "";
     const position = row["Position"] || "";
-    const department = row["Department"] || "";
+    const department = row["Department"] ? ` - ${row["Department"]}` : "";
     const status = row["Status"] || "";
     const note = row["Note"] || "";
     const years = parseFloat(row["Years"] || 0);
@@ -50,7 +50,7 @@ export function renderResults(matches) {
     card.innerHTML = `
       <strong>${first} ${last}</strong><br>
       ${statusDot} ${status} ${note}<br>
-      <em>${position} - ${department}</em><br>
+      <em>${position} ${department}</em><br>
       ${years.toFixed(2)} Years
     `;
 
