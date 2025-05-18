@@ -2,6 +2,7 @@
 // THEME.JS
 // ==============================
 
+
 // ==============================
 // HANDLE THEME TOGGLE
 // ==============================
@@ -28,17 +29,17 @@ export function initThemeToggle() {
     setTheme(next);
   }
 
-  // Run only after the DOM is ready
   document.addEventListener("DOMContentLoaded", () => {
-    setTheme(getSavedOrSystemTheme());
-
     const title = document.getElementById("site-title");
+
     if (title) {
+      setTheme(getSavedOrSystemTheme()); // only after DOM is safe
       title.style.cursor = "pointer";
       title.title = "Tap to toggle theme";
       title.addEventListener("click", toggleTheme);
       title.addEventListener("touchstart", toggleTheme);
+    } else {
+      console.warn("[theme] #site-title not found");
     }
   });
 }
-
