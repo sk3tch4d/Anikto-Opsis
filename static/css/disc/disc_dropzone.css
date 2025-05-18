@@ -21,7 +21,7 @@
   justify-content: center;
   flex-direction: column;
 /* ============================== */
-  border: 0.18rem dashed #8080ff;
+  border: var(--disc_dropzone-drop-zone-border‎);
   border-radius: 18px;
   padding: 3rem 2.6rem;
 /* ============================== */
