@@ -77,15 +77,17 @@ function renderListItem(row) {
   const first = row["First Name"] || "";
   const last = row["Last Name"] || "";
   const position = row["Position"] || "";
+  const department = row["Department"] ? ` - ${row["Department"]}` : "";
   const status = row["Status"] || "";
   const years = parseFloat(row["Years"] || 0);
   const statusDot = getStatusDot({ status, position });
 
+  
   return `
     <div class="compare-card">
       <strong>${first} ${last}</strong><br>
-      ${statusDot}${status}<br>
-      <em>${position}</em><br>
+      ${statusDot} ${status}<br>
+      <em>${position} ${department}</em><br>
       ${years.toFixed(2)} Years
     </div>
   `;
