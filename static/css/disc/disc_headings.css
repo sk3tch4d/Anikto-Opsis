@@ -17,7 +17,7 @@ h1 {
   line-height: 1.4;
   text-align: center;
   letter-spacing: 0.8px;
-  color: var(--disc_headings-h1-color);
+  color: var(--h1-color);
   transition: 
     font-size 0.4s ease,
     margin 0.4s ease;
@@ -64,7 +64,7 @@ h3 {
   line-height: 1.4;
   text-align: center;
   letter-spacing: 0.7px;
-  color: var(--disc_headings-h3-color);
+  color: var(--h3-color);
   
   transition: 
     font-size 0.8s ease,
