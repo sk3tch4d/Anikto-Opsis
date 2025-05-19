@@ -11,14 +11,14 @@
   font-size: 1rem;
   font-weight: bold;
   padding: 0.72rem 1.2rem;
-  background-color: #33364d;
-  color: #ccc;
-  border: 1px solid #2f3136;
+  background-color: var(--button-background-color);
+  color: var(--buttonhover-color);
+  border: var(--button-border);
   border-radius: 10px;
   cursor: pointer;
   text-align: center;
   transition: all 0.2s ease-in-out
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: var(--button-box-shadow);
   margin-top: 2rem;
   user-select: none;
 }
@@ -31,7 +31,7 @@
 button:focus {
   outline: none;
   user-select: none;
-  box-shadow: 0 0 10px rgba(102, 102, 255, 0.3);
+  box-shadow: var(--buttonfocus-box-shadow);
   /*box-shadow: 0 0 0 2px #7289da; /* soft colored border
   animation: pulse-glow 2.8s ease-in-out infinite;
   transition:
@@ -80,7 +80,7 @@ button:disabled {
   background-image: linear-gradient(135deg, #6165d1, #9779d2);
   background-size: 160%;
   border-radius: 16px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  box-shadow: var(--buttonpanel-box-shadow);
   transform: translateY(-2px);
   color: #060614;
   transition: 
@@ -98,7 +98,7 @@ button:disabled {
 .button.panel:hover {
   background-image: linear-gradient(165deg, #7578d7, #9779d2);
   background-size: 180%;
-  color: #0c0c27;
+  color: var(--buttonpanelhover-color);
   font-size: 0.93rem;
   border-radius: 18px;
 }
@@ -120,7 +120,7 @@ button.panel:focus {
   width: 100%;
   max-width: 500px;
   padding: 0.8rem 1rem;
-  background-color: #40444b;
+  background-color: var(--label-button-background-color);
   color: #fff;
   font-weight: bold;
   text-align: center;
@@ -134,5 +134,5 @@ button.panel:focus {
   margin-top: 1rem;
 }
 .label-button:hover {
-  background-color: #50545b;
+  background-color: var(--label-buttonhover-background-color);
 }
