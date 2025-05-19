@@ -7,32 +7,32 @@
 /* ============================= */
 :root {
   /* ====== AUTOCOMPLETE LIST */
-  --disc_autocomplete-autocomplete-list-background: #fdfdfd;
-  --disc_autocomplete-autocomplete-list-border: 1px solid #dcdcdc;
-  --disc_autocomplete-autocomplete-list-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  --disc_autocomplete-autocomplete-item-color: #333;
-  --disc_autocomplete-autocomplete-itemhover-background: #f0f0f0;
+  --autocomplete-list-background: #fdfdfd;
+  --autocomplete-list-border: 1px solid #dcdcdc;
+  --autocomplete-list-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --autocomplete-item-color: #333;
+  --autocomplete-itemhover-background: #f0f0f0;
 
   /* ====== BADGES */
-  --disc_badges-badge-day-background-color: #fff3b0;
-  --disc_badges-badge-day-color: #000;
-  --disc_badges-badge-evening-background-color: #ffd1a6;
-  --disc_badges-badge-night-background-color: #a3c9ff;
-  --disc_badges-badge-night-color: #000;
+  --badge-day-background-color: #fff3b0;
+  --badge-day-color: #000;
+  --badge-evening-background-color: #ffd1a6;
+  --badge-night-background-color: #a3c9ff;
+  --badge-night-color: #000;
 
   /* ====== BASE */
   --disc_base-body-background-color: #f5f5f7 !important;
 
   /* ====== BUTTONS */
-  --disc_buttons-button-background-color: #e0e0e0;
-  --disc_buttons-button-border: 1px solid #ccc;
-  --disc_buttons-button-box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  --disc_buttons-buttonhover-color: #eaeaea;
-  --disc_buttons-buttonfocus-box-shadow: 0 0 0 2px #5d5df8;
-  --disc_buttons-buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-  --disc_buttons-buttonpanelhover-color: #dcdcdc;
-  --disc_buttons-label-button-background-color: #f0f0f0;
-  --disc_buttons-label-buttonhover-background-color: #e0e0e0;
+  --button-background-color: #e0e0e0;
+  --button-border: 1px solid #ccc;
+  --button-box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  --buttonhover-color: #eaeaea;
+  --buttonfocus-box-shadow: 0 0 0 2px #5d5df8;
+  --buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  --buttonpanelhover-color: #dcdcdc;
+  --label-button-background-color: #f0f0f0;
+  --label-buttonhover-background-color: #e0e0e0;
 
   /* ====== CARDS */
   --disc_cards-panel-card-background: #ffffff;
@@ -102,10 +102,10 @@
   --disc_labels-usl-wrappershow-color: #4a90e2;
 
   /* ====== LINKS */
-  --disc_links-a-color: #1a0dab;
+  --links-a-color: #1a0dab;
 
   /* ====== LISTS */
-  --disc_lists-li-color: #555;
+  --lists_li-color: #555;
 
   /* ====== LOADING */
   --disc_loading-loadingspinner-spinner-border: 10px solid rgba(0, 0, 0, 0.05);
@@ -171,15 +171,15 @@
   /* ====== BASE */
   --disc_base-body-background-color: #212230 !important;
   /* ====== BUTTONS */
-  --disc_buttons-button-background-color: #33364d;
-  --disc_buttons-button-border: 1px solid #2f3136;
-  --disc_buttons-button-box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  --disc_buttons-buttonhover-color: #060614;
-  --disc_buttons-buttonfocus-box-shadow: 0 0 0 2px #7289da;
-  --disc_buttons-buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
-  --disc_buttons-buttonpanelhover-color: #0c0c27;
-  --disc_buttons-label-button-background-color: #40444b;
-  --disc_buttons-label-buttonhover-background-color: #50545b;
+  --button-background-color: #33364d;
+  --button-border: 1px solid #2f3136;
+  --button-box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  --buttonhover-color: #060614;
+  --buttonfocus-box-shadow: 0 0 0 2px #7289da;
+  --buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  --buttonpanelhover-color: #0c0c27;
+  --label-button-background-color: #40444b;
+  --label-buttonhover-background-color: #50545b;
   /* ====== CARDS */
   --disc_cards-panel-card-background: #29293d;
   --disc_cards-panel-card-box-shadow: inset 0 0 0 1.4px #1a1b1f;
