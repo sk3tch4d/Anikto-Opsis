@@ -71,8 +71,8 @@
   --disc_fileaction-ulfile-box-li-border: none;
 
   /* ====== HEADINGS */
-  --disc_headings-h1-color: #3366cc;
-  --disc_headings-h3-color: #222;
+  --h1-color: #3366cc;
+  --h3-color: #222;
 
   /* ====== INPUTS */
   --disc_inputs-inputfull-width-background: linear-gradient(-30deg, #ffffff, #f5f5f5, #ffffff);
@@ -214,8 +214,8 @@
   --disc_fileaction-file-actionfocus-color: #eee;
   --disc_fileaction-ulfile-box-li-border: none;
   /* ====== HEADINGS */
-  --disc_headings-h1-color: #5e77d4;
-  --disc_headings-h3-color: #d0d0e1;
+  --h1-color: #5e77d4;
+  --h3-color: #d0d0e1;
   /* ====== INPUTS */
   --disc_inputs-inputfull-width-background: linear-gradient(-30deg, #15151e, #292b3d, #1f202e, #292b3d, #1f202e);
   --disc_inputs-inputfull-width-border: 2px solid #6666cc;
