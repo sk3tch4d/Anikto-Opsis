@@ -18,7 +18,7 @@
   margin: 1rem auto;
   letter-spacing: 1px;
   text-align: center;
-  /*color: #5a5dcf;    /* Unsupported Fallback */
+  /*color: var(--typed-text-color);    /* Unsupported Fallback */
 }
 
 /* ============================== */
