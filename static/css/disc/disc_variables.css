@@ -6,6 +6,7 @@
 /* ROOT (LIGHT PLACEHOLDER)      */
 /* ============================= */
 :root {
+
   /* ====== AUTOCOMPLETE LIST */
   --autocomplete-list-background: #fdfdfd;
   --autocomplete-list-border: 1px solid #dcdcdc;
@@ -30,7 +31,7 @@
   --button-border: 1px solid #ccc;
   --button-box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   --buttonhover-color: #eaeaea;
-  --buttonfocus-box-shadow: 0 0 0 2px #5d5df8;
+  --buttonfocus-box-shadow: 0 0 10px rgba(102, 102, 255, 0.3);
   --buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
   --buttonpanelhover-color: #dcdcdc;
   --label-button-background-color: #f0f0f0;
@@ -74,7 +75,7 @@
 
   /* ====== HEADINGS */
   --h1-color: #3366cc;
-  --h3-color: #222;
+  --h3-color: #1f004d;
 
   /* ====== INPUTS */
   --inputfull-width-background: linear-gradient(-30deg, #ffffff, #f5f5f5, #ffffff);
@@ -158,6 +159,7 @@
 /* DARK THEME                    */
 /* ============================= */
 [data-theme="dark"] {
+
   /* ====== AUTOCOMPLETE LIST*/
   --autocomplete-list-background: #1e1f22;
   --autocomplete-list-border: 1px solid #2e2e2e;
@@ -182,7 +184,7 @@
   --button-border: 1px solid #2f3136;
   --button-box-shadow: 0 0 10px rgba(0,0,0,0.1);
   --buttonhover-color: #060614;
-  --buttonfocus-box-shadow: 0 0 0 2px #7289da;
+  --buttonfocus-box-shadow: 0 0 10px rgba(102, 102, 255, 0.3);
   --buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
   --buttonpanelhover-color: #0c0c27;
   --label-button-background-color: #40444b;
