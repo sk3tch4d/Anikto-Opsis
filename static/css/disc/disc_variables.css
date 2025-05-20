@@ -21,9 +21,11 @@
   --badge-night-color: #000;
 
   /* ====== BASE */
-  --body-background-color: #f5f5f7 !important;
+  --body-background-color: #ccccff !important;
+  --body-color: #333333;
 
   /* ====== BUTTONS */
+  --button-color: #333333;
   --button-background-color: #e0e0e0;
   --button-border: 1px solid #ccc;
   --button-box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
@@ -172,8 +174,10 @@
   
   /* ====== BASE */
   --body-background-color: #212230 !important;
+  --body-color: #ccc;
   
   /* ====== BUTTONS */
+  --button-color: #cccccc;
   --button-background-color: #33364d;
   --button-border: 1px solid #2f3136;
   --button-box-shadow: 0 0 10px rgba(0,0,0,0.1);
