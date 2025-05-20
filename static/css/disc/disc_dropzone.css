@@ -8,8 +8,11 @@
 /* ============================== */
 #generate.select {
   background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
-  color: #060614;
   background-size: 160%;
+  color: var(--button-color);
+}
+#generate.select:hover {
+  color: var(--buttonhover-color);
 }
 
 /* ============================== */
