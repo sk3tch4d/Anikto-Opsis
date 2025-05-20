@@ -21,11 +21,15 @@
   --badge-night-background-color: #a3c9ff;
   --badge-night-color: #000;
 
-  /* ====== BASE */
+  /* ============================= */
+  /* DISC_BASE.CSS                 */
+  /* ============================= */
   --body-background-color: #ccccff !important;
   --body-color: #09092a;
 
-  /* ====== BUTTONS */
+  /* ============================= */
+  /* DISC_BUTTONS.CSS              */
+  /* ============================= */
   --button-color: #c4c4ed;
   --button-background-color: #666c99;
   --button-border: 1px solid #ccc;
@@ -38,8 +42,9 @@
   --label-button-background-color: #f0f0f0;
   --label-buttonhover-background-color: #e0e0e0;
 
-  /* ====== CARDS */
-  
+  /* ============================= */
+  /* DISC_CARDS.CSS                */
+  /* ============================= */
   /* Panel Card */  
   --panel-card-background: #9494b8;
   --panel-card-box-shadow: inset 0 0 0 1.4px #1a1b1f;
@@ -48,8 +53,8 @@
     /* Panel Delta */
   --panel-delta-delta-item-color: #ccc;
   --panel-delta-delta-item-background-color: #29293d;
+  --panel-delta-delta-item-box-shadow: inset 0 0 0 1.4px #1a1b1f;
   --panel-delta-delta-itemhover-color: #888bdd;
-  --panel-delta-delta-itemhover-box-shadow: inset 0 0 0 1.4px #1a1b1f;
   /* Panel Delta Strong */
   --panel-delta-delta-item-strong-color: #999;
   --panel-delta-delta-item-stronghover-color: #bbb;
@@ -58,7 +63,6 @@
   /* Clickable Delta */ 
   --clickable-delta-panel-delta-delta-itemhover-color: #888bdd;
   --clickable-delta-panel-delta-delta-itemhover-background-color: #2e2e44;
-  --clickable-delta-on-panel-delta-delta-itemhover-color: #a0a2f0;
   /* Clickable Delta On */
   --clickable-delta-on-panel-delta-delta-item-color: #888bdd;
   --clickable-delta-on-panel-delta-delta-itemhover-color: #2e2e44;
@@ -214,25 +218,25 @@
   
   /* ====== CARDS */
   
-  /* Panel Card */
+  /* ====== Panel Card */
   --panel-card-background: #29293d;
   --panel-card-box-shadow: inset 0 0 0 1.4px #1a1b1f;
   --panel-card-color: #c1c1d7;
   --panel-cardhover-color: #b0b2e8;
-  /* Panel Delta */
+  /* ====== Panel Delta */
   --panel-delta-delta-item-color: #ccc;
   --panel-delta-delta-item-background-color: #29293d;
+  --panel-delta-delta-item-box-shadow: inset 0 0 0 1.4px #1a1b1f;
   --panel-delta-delta-itemhover-color: #888bdd;
-  --panel-delta-delta-itemhover-box-shadow: inset 0 0 0 1.4px #1a1b1f;
-  /* Panel Delta Strong */
+  /* ====== Panel Delta Strong */
   --panel-delta-delta-item-strong-color: #999;
   --panel-delta-delta-item-stronghover-color: #bbb;
-  /* Panel Delta Off */
+  /* ====== Panel Delta Off */
   --panel-delta-delta-item-off-color: #999999;
-  /* Clickable Delta */
+  /* ====== Clickable Delta */
   --clickable-delta-panel-delta-delta-itemhover-color: #888bdd;
   --clickable-delta-panel-delta-delta-itemhover-background-color: #2e2e44;
-  /* Clickable Delta On */
+  /* ====== Clickable Delta On */
   --clickable-delta-on-panel-delta-delta-item-color: #888bdd;
   --clickable-delta-on-panel-delta-delta-itemhover-color: #2e2e44;
   --clickable-delta-on-panel-delta-delta-itemhover-background-color: #2e2e44;
