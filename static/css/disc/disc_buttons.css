@@ -67,7 +67,9 @@ button:disabled {
 /* ============================= */
 /* BUTTON: PANEL                 */
 /* ============================= */
-.button.panel {
+.panel .button {
+  box-sizing: border-box;
+  text-align: center;
   margin: 0.4rem 0;
   padding: 0.65rem;
   font-size: 0.9rem;
