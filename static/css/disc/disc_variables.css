@@ -59,15 +59,15 @@
   --panel-delta-delta-item-strong-color: #999;
   --panel-delta-delta-item-stronghover-color: #bbb;
   /* Panel Delta Off */
-  --panel-delta-delta-item-off-color: #0f0f24;
+  --panel-delta-delta-item-off-color: #363663;
   --panel-delta-delta-item-off-background-color: #b5b5e3;
   /* Clickable Delta */ 
-  --clickable-delta-panel-delta-delta-itemhover-color: #888bdd;
-  --clickable-delta-panel-delta-delta-itemhover-background-color: #2e2e44;
+  --clickable-delta-panel-delta-delta-itemhover-color: #2e329e;
+  --clickable-delta-panel-delta-delta-itemhover-background-color: #c2c2f0;
   /* Clickable Delta On */
   --clickable-delta-on-panel-delta-delta-item-color: #1b1b7e;
   --clickable-delta-on-panel-delta-delta-itemhover-color: #2828bd;
-  --clickable-delta-on-panel-delta-delta-itemhover-background-color: #c6c6ec;
+  --clickable-delta-on-panel-delta-delta-itemhover-background-color: #c2c2f0;
   
   /* ====== DROPZONE */
   --drop-text-color: #140033;
