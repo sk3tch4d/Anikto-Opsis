@@ -4,19 +4,6 @@
 
 
 /* ============================= */
-/* ROOT VARIABLES                */
-/* ============================= */
-:root {
-  --panel-bg: #33364d;
-  --panel-border: #232529;
-  --label-bg: #1f2023;
-  --label-hover: #2a2d33;
-  --highlight: #7289da;
-  --text-light: #ccc;
-  --text-dark: #060614;
-}
-
-/* ============================= */
 /* BODY VARIABLES                */
 /* ============================= */
 body.light {
@@ -33,7 +20,7 @@ body.light {
   user-select: none;
   margin-top: 1rem;
   width: clamp(320px, 85vw, 480px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--panel-box-shadow);
   border-radius: 10px;
   overflow: hidden;
   transition: 
@@ -45,7 +32,7 @@ body.light {
 /* PANEL: OPEN                   */
 /* ============================= */
 .panel.open {
-  box-shadow: 0 0 18px 3px rgba(0,0,0,0.4);
+  box-shadow: var(--panelopen-box-shadow);
   border-radius: 18px;
 }
 
@@ -53,12 +40,12 @@ body.light {
 /* PANEL HEADER                  */
 /* ============================= */
 .panel-header {
-  background-color: #33364d;
   padding: 0.65rem 1rem;
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: bold;
-  color: #cccccc;
+  color: var(--panel-header-color);
+  background-color: var(--panel-header-background-color);
   text-align: center;
   transition:
     background-image 1s ease,
@@ -73,7 +60,7 @@ body.light {
 .panel-header:hover {
   background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
   background-size: 160%;
-  color: #060614;
+  color: var(--panel-headerhover);
   /*box-shadow:
     inset 0 0.6px 4px rgba(255, 255, 255, 0.1),
     inset 0 -2px 8px rgba(0, 0, 0, 0.2);*/
@@ -165,7 +152,7 @@ body.light {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.2rem 1rem;
-  background: #1f2023;
+  background: var(--panel-body-label-background);
   border: 1px solid #7289da;
   border-radius: 6px;
   margin-bottom: 0.4rem;
@@ -178,7 +165,7 @@ body.light {
 /* PANEL BODY: LABEL HOVER       */
 /* ============================= */
 .panel-body label:hover {
-  background: #2a2d33;
+  background: var(--panel-body-labelhover-background);
 }
 
 /* ============================= */
@@ -301,7 +288,7 @@ body.lock-scroll {
 .panel-scroll-bar {
   height: 100%;
   width: 0%;
-  background-color: #7676d6; /*#8989dc;*/
+  background-color: var(--panel-scroll-bar-background-color); /* #7676d6; #8989dc;*/
   transition: width 0.2s ease;
 }
 
