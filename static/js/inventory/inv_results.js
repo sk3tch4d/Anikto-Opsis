@@ -30,7 +30,7 @@ export function renderInventoryResults(data, term, resultsList) {
     if (term) {
       const numMatch = numStr.toLowerCase().includes(term);
       const oldMatch = oldStr.toLowerCase().includes(term);
-
+    
       if (numMatch || (!numMatch && !oldMatch)) {
         html += `<span class="tag-label">Number:</span> ${highlightMatch(numStr, term)}`;
         if (oldStr) html += ` &nbsp;&nbsp; <span class="tag-label">Old:</span> (${highlightMatch(oldStr, term)})`;
@@ -51,38 +51,38 @@ export function renderInventoryResults(data, term, resultsList) {
     if (item.Description?.trim()) {
       html += `${highlightMatch(item.Description, term)}<br>`;
     }
-
+    // ===== USL
     if (item.USL?.trim() || item.Bin?.trim()) {
       html += `<span class="tag-label">Location:</span>`;
       if (item.USL?.trim()) html += ` ${highlightMatch(item.USL, term)}`;
       if (item.Bin?.trim()) html += ` - ${highlightMatch(item.Bin, term)}`;
       html += `<br>`;
     }
-
-    if (item.ROP?.trim() || item.ROQ?.trim()) {
-      if (item.ROP?.trim()) {
-        html += `<span class="tag-label">ROP:</span> ${item.ROP}`;
+    // ===== ROP / ROQ
+    if (item.ROP !== undefined && item.ROP !== null || item.ROQ !== undefined && item.ROQ !== null) {
+      if (item.ROP !== undefined && item.ROP !== null) {
+        html += `<span class="tag-label">ROP:</span> ${item.ROP} `;
       }
-      if (item.ROQ?.trim()) {
+      if (item.ROQ !== undefined && item.ROQ !== null) {
         html += `<span class="tag-label">ROQ:</span> ${item.ROQ}`;
       }
       html += `<br>`;
     }
-
+    // ===== QUANTITY
     if (item.QTY || item.UOM?.trim()) {
       html += `<span class="tag-label">Quantity:</span> ~${item.QTY}<br>`;
     }
-
+    // ===== COST / UOM
     if (item.Cost !== undefined && item.Cost !== null && item.Cost !== "") {
       html += `<span class="tag-label">Cost:</span> ${item.Cost}`;
       if (item.UOM?.trim()) html += ` / ${highlightMatch(item.UOM, term)}`;
       html += `<br>`;
     }
-
+    // ===== COST CENTER
     if (item.Cost_Center?.trim()) {
       html += `<span class="tag-label">Cost Center:</span> ${highlightMatch(item.Cost_Center, term)}<br>`;
     }
-
+    // ===== GROUP
     if (item.Group?.trim()) {
       html += `<span class="tag-label">Group:</span> ${highlightMatch(item.Group, term)}`;
     }
