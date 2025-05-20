@@ -23,7 +23,7 @@
   user-select: none;
 }
 .button:hover {
-  background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
+  background-image: var(--buttonhover-background-image);
   background-size: 160%;
   transform: translateY(-2px);
   color: var(--buttonhover-color);
