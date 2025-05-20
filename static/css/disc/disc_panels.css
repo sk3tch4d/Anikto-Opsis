@@ -78,7 +78,7 @@ body.light {
 .panel.open > .panel-header {
   background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
   background-size: 200%;
-  color: #060614;
+  color: var(--panel-open-panel-header-color);
   font-size: 1rem;
   border-radius: 18px 18px 0 0;
   box-shadow:
@@ -109,7 +109,7 @@ body.light {
 /* PANEL BODY                    */
 /* ============================= */
 .panel-body {
-  background-color: #33364d;
+  background-color: var(--panel-body-background-color);
   max-height: 0;
   overflow: hidden;
   padding: 0;
