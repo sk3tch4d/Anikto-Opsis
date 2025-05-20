@@ -50,21 +50,22 @@
   --clickable-delta-on-panel-delta-delta-itemhover-color: #2a2a99;
 
   /* ====== DROPZONE */
-  --disc_dropzone-drop-zone-border: 0.18rem dashed #b3b3ff;
-  --disc_dropzone-drop-zonehover-background-color: rgba(114, 137, 218, 0.05);
-  --disc_dropzone-drop-zonehover-box-shadow: 0 0 22px rgba(114, 137, 218, 0.15);
-  --disc_dropzone-drop-zoneactive-background-color: rgba(114, 137, 218, 0.08);
-  --disc_dropzone-drop-zoneactive-border-color: #5d5df8;
-  --disc_dropzone-drop-zonedrag-over-background-color: #f5f5ff;
-  --disc_dropzone-drop-zonedrag-over-border-color: #4a90e2;
-  --disc_dropzone-upload-zone-border: 0.18rem solid #a6a6ff;
-  --disc_dropzone-upload-zone-color: #4a4aff;
-  --disc_dropzone-file-action-background-color: #f2f2f2;
-  --disc_dropzone-file-action-color: #222 !important;
-  --disc_dropzone-file-action-border: 1px solid #4a90e2;
-  --disc_dropzone-file-uploadfocus-background-color: #e8e8ff;
-  --disc_dropzone-file-uploadmimic-drop-border: 2px solid #4a90e2;
-  --disc_dropzone-file-actionshimmer-color: transparent;
+  --drop-text-text-color: #140033;
+  --drop-zone-border: 0.18rem dashed #b3b3ff;
+  --drop-zonehover-background-color: rgba(114, 137, 218, 0.05);
+  --drop-zonehover-box-shadow: 0 0 22px rgba(114, 137, 218, 0.15);
+  --drop-zoneactive-background-color: rgba(114, 137, 218, 0.08);
+  --drop-zoneactive-border-color: #5d5df8;
+  --drop-zonedrag-over-background-color: #f5f5ff;
+  --drop-zonedrag-over-border-color: #4a90e2;
+  --upload-zone-border: 0.18rem solid #a6a6ff;
+  --upload-zone-color: #4a4aff;
+  --file-action-background-color: #f2f2f2;
+  --file-action-color: #222 !important;
+  --file-action-border: 1px solid #4a90e2;
+  --file-uploadfocus-background-color: #e8e8ff;
+  --file-uploadmimic-drop-border: 2px solid #4a90e2;
+  --file-actionshimmer-color: transparent;
 
   /* ====== FILEACTION */
   --disc_fileaction-file-action-background-color: #f7f7fc;
@@ -203,21 +204,22 @@
   --clickable-delta-on-panel-delta-delta-itemhover-color: #a0a2f0;
   
   /* ====== DROPZONE */
-  --disc_dropzone-drop-zone-border: 0.18rem dashed #8080ff;
-  --disc_dropzone-drop-zonehover-background-color: rgba(114, 137, 218, 0.05);
-  --disc_dropzone-drop-zonehover-box-shadow: 0 0 22px rgba(114, 137, 218, 0.2);
-  --disc_dropzone-drop-zoneactive-background-color: rgba(114, 137, 218, 0.1);
-  --disc_dropzone-drop-zoneactive-border-color: #9999ff;
-  --disc_dropzone-drop-zonedrag-over-background-color: #2b2e34;
-  --disc_dropzone-drop-zonedrag-over-border-color: #5a7fff;
-  --disc_dropzone-upload-zone-border: 0.18rem solid #8080ff;
-  --disc_dropzone-upload-zone-color: #b3b3ff;
-  --disc_dropzone-file-action-background-color: #26282c;
-  --disc_dropzone-file-action-color: #ccc !important;
-  --disc_dropzone-file-action-border: 1px solid #7289da;
-  --disc_dropzone-file-uploadfocus-background-color: #32353a;
-  --disc_dropzone-file-uploadmimic-drop-border: 2px solid #7289da;
-  --disc_dropzone-file-actionshimmer-color: transparent;
+  --drop-text-text-color: #ccc;
+  --drop-zone-border: 0.18rem dashed #8080ff;
+  --drop-zonehover-background-color: rgba(114, 137, 218, 0.05);
+  --drop-zonehover-box-shadow: 0 0 22px rgba(114, 137, 218, 0.2);
+  --drop-zoneactive-background-color: rgba(114, 137, 218, 0.1);
+  --drop-zoneactive-border-color: #9999ff;
+  --drop-zonedrag-over-background-color: #2b2e34;
+  --drop-zonedrag-over-border-color: #5a7fff;
+  --upload-zone-border: 0.18rem solid #8080ff;
+  --upload-zone-color: #b3b3ff;
+  --file-action-background-color: #26282c;
+  --file-action-color: #ccc !important;
+  --file-action-border: 1px solid #7289da;
+  --file-uploadfocus-background-color: #32353a;
+  --file-uploadmimic-drop-border: 2px solid #7289da;
+  --file-actionshimmer-color: transparent;
   
   /* ====== FILEACTION */
   --disc_fileaction-file-action-background-color: #3d405c;
