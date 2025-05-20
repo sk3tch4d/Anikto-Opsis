@@ -12,7 +12,7 @@
   font-weight: bold;
   padding: 0.72rem 1.2rem;
   background-color: var(--button-background-color);
-  color: var(--buttonhover-color);
+  color: var(--button-color);
   border: var(--button-border);
   border-radius: 10px;
   cursor: pointer;
@@ -26,7 +26,7 @@
   background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
   background-size: 160%;
   transform: translateY(-2px);
-  color: #060614;
+  color: var(--buttonhover-color);
 }
 button:focus {
   outline: none;
@@ -51,7 +51,6 @@ button:disabled {
   overflow: hidden; 
 }
 
-
 /* ============================= */
 /* BUTTON: FULL-WIDTH            */
 /* ============================= */
@@ -64,7 +63,6 @@ button:disabled {
   box-sizing: border-box;
   user-select: none;
 }
-
 
 /* ============================= */
 /* BUTTON: PANEL                 */
