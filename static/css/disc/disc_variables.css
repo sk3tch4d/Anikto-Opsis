@@ -26,11 +26,11 @@
   --body-color: #333333;
 
   /* ====== BUTTONS */
-  --button-color: #ccccff;
-  --button-background-color: #28288a;
+  --button-color: #220f3d;
+  --button-background-color: #666c99;
   --button-border: 1px solid #ccc;
   --button-box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  --buttonhover-color: #eaeaea;
+  --buttonhover-color: #c4c4ed;
   --buttonhover-background-image: linear-gradient(135deg, #2e329e, #6039ac);
   --buttonfocus-box-shadow: 0 0 10px rgba(102, 102, 255, 0.3);
   --buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
@@ -120,7 +120,9 @@
   --root-border: #e0e0e0;
   --panel-box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   --panelopen-box-shadow: 0 0 18px 3px rgba(0, 0, 0, 0.15);
-  --panel-header-color: #222;
+  --panel-header-color: #1f1736;
+  --panel-header-background-color: #666c99;
+  --panel-headerhover: #c4c4ed;
   --panelno-shadow-box-shadow: none !important;
   --panelno-shadow-background: transparent !important;
   --panelopen->-panel-bodybefore-background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), transparent);
@@ -276,6 +278,8 @@
   --panel-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   --panelopen-box-shadow: 0 0 18px 3px rgba(0,0,0,0.4);
   --panel-header-color: #cccccc;
+  --panel-header-background-color: #33364d;
+  --panel-headerhover: #060614;
   --panelno-shadow-box-shadow: none !important;
   --panelno-shadow-background: transparent !important;
   --panelopen->-panel-bodybefore-background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);
