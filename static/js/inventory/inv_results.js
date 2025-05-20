@@ -59,6 +59,16 @@ export function renderInventoryResults(data, term, resultsList) {
       html += `<br>`;
     }
 
+    if (item.ROP?.trim() || item.ROQ?.trim()) {
+      if (item.ROP?.trim()) {
+        html += `<span class="tag-label">ROP:</span> ${item.ROP}`;
+      }
+      if (item.ROQ?.trim()) {
+        html += `<span class="tag-label">ROQ:</span> ${item.ROQ}`;
+      }
+      html += `<br>`;
+    }
+
     if (item.QTY || item.UOM?.trim()) {
       html += `<span class="tag-label">Quantity:</span> ~${item.QTY}<br>`;
     }
