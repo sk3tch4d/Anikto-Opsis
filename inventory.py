@@ -74,7 +74,7 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
         df = df.sort_values(by=sort, ascending=ascending)
 
     final_df = df[[
-        "Num", "Old", "Bin", "ROP", "ROQ", "Description", "USL",
+        "Num", "Old", "Bin", "Description", "USL",
         "QTY", "UOM", "Cost", "Group", "Cost_Center"
     ]].head(100)
 
