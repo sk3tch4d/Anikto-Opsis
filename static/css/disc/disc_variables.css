@@ -46,27 +46,28 @@
   /* DISC_CARDS.CSS                */
   /* ============================= */
   /* Panel Card */  
-  --panel-card-background: #9494b8;
+  --panel-card-background: #b3b3e6;
   --panel-card-box-shadow: inset 0 0 0 1.4px #1a1b1f;
   --panel-card-color: #09092a;
   --panel-cardhover-color: #1d1f63;
-    /* Panel Delta */
-  --panel-delta-delta-item-color: #1d1f63;
-  --panel-delta-delta-item-background-color: #8585ad;
+  /* Panel Delta */
+  --panel-delta-delta-item-color: #09092a;
+  --panel-delta-delta-item-background-color: #b3b3e6;
   --panel-delta-delta-item-box-shadow: inset 0 0 0 1.4px #1a1b1f;
   --panel-delta-delta-itemhover-color: #2e329e;
   /* Panel Delta Strong */
   --panel-delta-delta-item-strong-color: #999;
   --panel-delta-delta-item-stronghover-color: #bbb;
   /* Panel Delta Off */
-  --panel-delta-delta-item-off-color: #999999;
+  --panel-delta-delta-item-off-color: #0f0f24;
+  --panel-delta-delta-item-off-background-color: #b5b5e3;
   /* Clickable Delta */ 
   --clickable-delta-panel-delta-delta-itemhover-color: #888bdd;
   --clickable-delta-panel-delta-delta-itemhover-background-color: #2e2e44;
   /* Clickable Delta On */
-  --clickable-delta-on-panel-delta-delta-item-color: #888bdd;
-  --clickable-delta-on-panel-delta-delta-itemhover-color: #2e2e44;
-  --clickable-delta-on-panel-delta-delta-itemhover-background-color: #2e2e44;
+  --clickable-delta-on-panel-delta-delta-item-color: #1b1b7e;
+  --clickable-delta-on-panel-delta-delta-itemhover-color: #2828bd;
+  --clickable-delta-on-panel-delta-delta-itemhover-background-color: #c6c6ec;
   
   /* ====== DROPZONE */
   --drop-text-color: #140033;
