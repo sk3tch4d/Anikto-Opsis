@@ -133,7 +133,7 @@
   --panel-scroll-bar-background-color: #ccccff;
 
   /* ====== RESPONSIVE */
-  --highlight-background-color: #bdd7f4;
+  --highlight-background-color: #d3e4f8;
 
   /* ====== SENIORITY */
   --filter-box-background: #fff;
@@ -145,8 +145,9 @@
 
   /* ====== STATS */
   --panel-body-clickable-num-color: #4a4ad6;
-  --panel-body-clickable-stat-color: #4a4aff !important;
-  --panel-body-clickable-stathover-color: #3333cc !important;
+  --panel-body-clickable-numhover-color: #4a4aff;
+  --panel-body-clickable-stat-color: #3333cc !important;
+  --panel-body-clickable-stathover-color: #4a4aff !important;
 
   /* ====== STATUSDOT */
   --dot-status-dotyellow-background: #ffd700;
