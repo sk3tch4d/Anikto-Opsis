@@ -21,7 +21,7 @@
   justify-content: center;
   flex-direction: column;
 /* ============================== */
-  border: var(--disc_dropzone-drop-zone-border);
+  border: var(--drop-zone-border);
   border-radius: 18px;
   padding: 3rem 2.6rem;
 /* ============================== */
@@ -45,17 +45,17 @@
 /* DROP-ZONE: HIDDEN              */
 /* ============================== */
 .drop-zone:hover {
-  background-color: var(--disc_dropzone-drop-zonehover-background-color);
+  background-color: var(--drop-zonehover-background-color);
   transform: scale(1.03);
-  box-shadow: var(--disc_dropzone-drop-zonehover-box-shadow);
+  box-shadow: var(--drop-zonehover-box-shadow);
 }
 
 /* ============================== */
 /* DROP-ZONE ACTIVE               */
 /* ============================== */
 .drop-zone.active {
-  background-color: var(--disc_dropzone-drop-zoneactive-background-color);
-  border-color: var(--disc_dropzone-drop-zoneactive-border-color);
+  background-color: var(--drop-zoneactive-background-color);
+  border-color: var(--drop-zoneactive-border-color);
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
@@ -70,8 +70,8 @@
 /* DROP-ZONE DRAG-OVER            */
 /* ============================== */
 .drop-zone.drag-over {
-  background-color: var(--disc_dropzone-drop-zonedrag-over-background-color);
-  border-color: var(--disc_dropzone-drop-zonedrag-over-border-color);
+  background-color: var(--drop-zonedrag-over-background-color);
+  border-color: var(--drop-zonedrag-over-border-color);
 }
 
 /* ============================== */
@@ -80,7 +80,7 @@
 .drop-text {
   font-size: 0.94rem;
   padding: 0.5rem;
-  color: #ccc;
+  color: var(--drop-text-color);
   max-width: 90%;
   word-wrap: break-word;
 }
@@ -110,7 +110,7 @@ input[type="file"] {
   justify-content: center;
   flex-direction: column;
 /* ============================== */
-  border: var(--disc_dropzone-upload-zone-border);
+  border: var(--upload-zone-border);
   border-radius: 18px;
   padding: 3rem 2.6rem;
 /* ============================== */
@@ -123,7 +123,7 @@ input[type="file"] {
   margin: 1.6rem auto 3rem;
 /* ============================== */
   font-size: 0.9rem;
-  color: var(--disc_dropzone-upload-zone-color);
+  color: var(--upload-zone-color);
   word-wrap: break-word;
 /* ============================== */
   animation: pulse-glow 2.8s ease-in-out infinite;
@@ -166,9 +166,9 @@ input[type="file"] {
   display: block;
   width: 100%;
   padding: 0.5rem 1rem;
-  background-color: var(--disc_dropzone-file-action-background-color);
+  background-color: var(--file-action-background-color);
   color: #ccc !important;
-  border: var(--disc_dropzone-file-action-border);
+  border: var(--file-action-border);
   border-radius: 10px;
   font-size: 1rem;
   text-align: center;
@@ -185,8 +185,8 @@ input[type="file"] {
 /* ============================== */
 .file-upload:hover,
 .file-upload:focus {
-  background-color: var(--disc_dropzone-file-uploadfocus-background-color);
-  color: var(--disc_dropzone-file-action-color);
+  background-color: var(--file-uploadfocus-background-color);
+  color: var(--file-action-color);
   text-decoration: none;
   outline: none;
 }
@@ -209,7 +209,7 @@ input[type="file"] {
 /* FILE-ACTION MIMIC-DROP         */
 /* ============================== */
 .file-upload.mimic-drop {
-  border: var(--disc_dropzone-file-uploadmimic-drop-border);
+  border: var(--file-uploadmimic-drop-border);
   padding: 1.5rem;
   border-radius: 10px;
   text-align: center;
