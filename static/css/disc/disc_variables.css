@@ -39,16 +39,16 @@
   --label-buttonhover-background-color: #e0e0e0;
 
   /* ====== CARDS */
-  --panel-card-background: #ffffff;
-  --panel-card-box-shadow: inset 0 0 0 1.4px #e0e0e0;
-  --panel-card-color: #333;
-  --panel-cardhover-color: #111;
-  --panel-delta-delta-itemhover-color: #5555cc;
-  --panel-delta-delta-item-strong-color: #444;
-  --panel-delta-delta-item-stronghover-color: #000;
-  --panel-delta-delta-item-off-color: #888;
-  --clickable-delta-panel-delta-delta-itemhover-background-color: #f3f3ff;
-  --clickable-delta-on-panel-delta-delta-itemhover-color: #2a2a99;
+  --panel-card-background: #8585ad;
+  --panel-card-box-shadow: inset 0 0 0 1.4px #1a1b1f;
+  --panel-card-color: #c1c1d7;
+  --panel-cardhover-color: #b0b2e8;
+  --panel-delta-delta-itemhover-color: #888bdd;
+  --panel-delta-delta-item-strong-color: #999;
+  --panel-delta-delta-item-stronghover-color: #bbb;
+  --panel-delta-delta-item-off-color: #999999;
+  --clickable-delta-panel-delta-delta-itemhover-background-color: #2e2e44;
+  --clickable-delta-on-panel-delta-delta-itemhover-color: #a0a2f0;
 
   /* ====== DROPZONE */
   --drop-text-color: #140033;
