@@ -7,12 +7,12 @@
 /* PANEL CARD                  */
 /* ============================= */
 .panel-card {
-  background: var(--panel-card-background); /* #292b3d;*/
   padding: 0.62rem 1.1rem;
   border-radius: 12px;
   margin: 0.5rem 0;
-  box-shadow: var(--panel-card-box-shadow);
   color: var(--panel-card-color);
+  background: var(--panel-card-background); /* #292b3d;*/
+  box-shadow: var(--panel-card-box-shadow);
   text-align: center;
   font-size: 0.9rem;
   font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -44,7 +44,7 @@
   border-radius: 12px;
   color: var(--panel-delta-delta-item-color);
   background: var(--panel-delta-delta-item-background-color);
-  box-shadow: var(--panel-delta-delta-itemhover-color);
+  box-shadow: var(--panel-delta-delta-item-box-shadow);
   font-size: 0.9rem;
   font-weight: 500;
   text-align: left;
