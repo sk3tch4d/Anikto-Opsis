@@ -51,7 +51,7 @@
 /* TAG LABELS                     */
 /* ============================== */
 .tag-label {
-  color: #9393ec;
+  color: var(--tag-label-color);
   font-size: 1rem;
   user-select: none;
 }
