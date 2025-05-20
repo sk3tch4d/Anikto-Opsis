@@ -2,6 +2,7 @@
 /* DISC_STATS.CSS                */
 /* ============================= */
 
+
 /* ============================= */
 /* INVENTORY LINE                */
 /* ============================= */
@@ -14,7 +15,7 @@
 /* ============================= */
 .panel-body .clickable-num {
   border-radius: 30rem;
-  color: #7578d7;
+  color: var(--panel-body-clickable-num-color);
   cursor: pointer;
   padding: 0.07rem;
   margin: 0; /* removed weird margin */
@@ -45,14 +46,14 @@
 /* CLICKABLE-STAT                */
 /* ============================= */
 .panel-body .clickable-stat {
-  color: #b3b3ff !important;
+  color: var(--panel-body-clickable-stat-color);
   font-size: 0.96rem;
   font-weight: bold;
   cursor: pointer;
   transition: color 0.2s ease;
 }
 .panel-body .clickable-stat:hover {
-  color: #ccccff !important;
+  color: var(--panel-body-clickable-stathover-color);
   font-size: 0.99rem;
 }
 .clickable-stat-container {
