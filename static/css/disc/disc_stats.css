@@ -11,7 +11,7 @@
 }
 
 /* ============================= */
-/* CLICKABLE-NUM                */
+/* CLICKABLE-NUM                 */
 /* ============================= */
 .panel-body .clickable-num {
   border-radius: 30rem;
@@ -25,13 +25,17 @@
   display: inline-block;
   transition: color 0.2s ease;
 }
+/* ============================= */
 .panel-body .clickable-num:hover {
-  color: #eee;
+  color: var(--panel-body-clickable-numhover-color);
   background-image: linear-gradient(25deg, #5a5dcf, #7f5ac8);
   background-size: 260%;
   transition: color 0.2s ease;
 }
 
+/* ============================= */
+/* CLICKABLE-NUM CONTAINER       */
+/* ============================= */
 .clickable-num-container {
   display: flex;
   flex-wrap: wrap;
@@ -52,10 +56,14 @@
   cursor: pointer;
   transition: color 0.2s ease;
 }
+/* ============================= */
 .panel-body .clickable-stat:hover {
   color: var(--panel-body-clickable-stathover-color);
   font-size: 0.99rem;
 }
+/* ============================= */
+/* CLICKABLE-STAT CONTAINER      */
+/* ============================= */
 .clickable-stat-container {
   display: flex;
   flex-wrap: wrap;
@@ -66,7 +74,7 @@
 }
 
 /* ============================= */
-/* CLICKABLE-MATCH  (tags/pills) */
+/* CLICKABLE-MATCH CONTNR (pill) */
 /* ============================= */
 .clickable-match-container {
   display: flex;
@@ -77,6 +85,10 @@
   margin-top: 4px;
   padding: 5px 10px;
 }
+
+/* ============================= */
+/* CLICKABLE-MATCH               */
+/* ============================= */
 .clickable-match {
   color: #9aaae4;
   cursor: pointer;
@@ -93,6 +105,7 @@
   display: inline-block;
   transition: background-color 0.5s ease, color 1s ease;
 }
+/* ============================= */
 .clickable-match:hover {
   background-image: linear-gradient(125deg, #7578d7, #9779d2);
   background-size: 120%;
