@@ -50,7 +50,7 @@
   --clickable-delta-on-panel-delta-delta-itemhover-color: #2a2a99;
 
   /* ====== DROPZONE */
-  --drop-text-text-color: #140033;
+  --drop-text-color: #140033;
   --drop-zone-border: 0.18rem dashed #b3b3ff;
   --drop-zonehover-background-color: rgba(114, 137, 218, 0.05);
   --drop-zonehover-box-shadow: 0 0 22px rgba(114, 137, 218, 0.15);
@@ -204,7 +204,7 @@
   --clickable-delta-on-panel-delta-delta-itemhover-color: #a0a2f0;
   
   /* ====== DROPZONE */
-  --drop-text-text-color: #ccc;
+  --drop-text-color: #ccc;
   --drop-zone-border: 0.18rem dashed #8080ff;
   --drop-zonehover-background-color: rgba(114, 137, 218, 0.05);
   --drop-zonehover-box-shadow: 0 0 22px rgba(114, 137, 218, 0.2);
