@@ -97,19 +97,19 @@
 /* COMPARE CARD                  */
 /* ============================= */
 .compare-card {
-  background: #29293d; /*#292b3d;*/
   padding: 0.62rem 1.1rem;
   border-radius: 12px;
   margin: 0.5rem 0;
-  box-shadow: inset 0 0 0 1.4px #1a1b1f;
-  color: #c1c1d7;
+  background: var(--panel-card-background); /* #292b3d;*/
+  box-shadow: var(--panel-card-box-shadow);
+  color: var(--panel-card-color);
   text-align: center;
   font-size: 0.9rem;
   font-family: 'Segoe UI', Tahoma, sans-serif;
   transition: transform 0.4s ease, color 0.4s ease;
 }
 .compare-card:hover {
-  color: #b0b2e8;
+  color: var(--panel-cardhover-color);
 }
 
 /* ============================= */
@@ -124,11 +124,11 @@
   gap: 0.5rem;
 }
 .compare-delta .delta-item {
-  background: #29293d;
   padding: 0.5rem 0.75rem;
   border-radius: 10px;
-  box-shadow: inset 0 0 0 1.4px #1a1b1f;
-  color: #ccc;
+  background: var(--panel-delta-delta-item-background-color); /* #292b3d;*/
+  box-shadow: var(--panel-delta-delta-item-box-shadow);
+  color: var(--panel-delta-delta-item-color);
   font-size: 0.9rem;
   font-weight: 500;
   text-align: left;
@@ -138,18 +138,18 @@
   transition: color 0.4s ease;
 }
 .compare-delta .delta-item:hover {
-  color: #888bdd;
+  color: var(--panel-delta-delta-itemhover-color);
 }
 
 .compare-delta .delta-item strong {
   font-size: 0.85rem;
-  color: #999;
+  color: var(--panel-delta-delta-item-color);
   font-weight: 600;
   margin-right: 0.5rem;
   transition: color 0.4s ease;
 }
 .compare-delta .delta-item strong:hover {
-  color: #BBB;
+  color: var(--panel-delta-delta-itemhover-color);
 }
 
 /* Optional: Better for small screens */
