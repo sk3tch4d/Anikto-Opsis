@@ -52,6 +52,7 @@
 }
 .panel-delta .delta-item:hover {
   color: var(--panel-delta-delta-itemhover-color);
+  /*background-color: var(--panel-delta-delta-itemhover-background-color);*/
 }
 /* ============================= */
 .panel-delta .delta-item strong {
@@ -67,6 +68,7 @@
 /* ============================= */
 .panel-delta .delta-item .off {
   color: var(--panel-delta-delta-item-off-color);
+  background-color: var(--panel-delta-delta-item-off-background-color);
 }
 
 /* ============================= */
@@ -74,7 +76,7 @@
 /* ============================= */
 .clickable-delta .panel-delta .delta-item {
   cursor: pointer;
-  transition: background 0.3s ease, color 0.4s ease;
+  transition: background 0.2s ease, color 0.3s ease;
 }
 .clickable-delta .panel-delta .delta-item:hover {
   color: var(--clickable-delta-panel-delta-delta-itemhover-color);
