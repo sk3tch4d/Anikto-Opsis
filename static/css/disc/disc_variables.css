@@ -26,11 +26,11 @@
   --body-color: #333333;
 
   /* ====== BUTTONS */
-  --button-color: #220f3d;
+  --button-color: #c4c4ed;
   --button-background-color: #666c99;
   --button-border: 1px solid #ccc;
   --button-box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  --buttonhover-color: #c4c4ed;
+  --buttonhover-color: #d8d8f3;
   --buttonhover-background-image: linear-gradient(135deg, #2e329e, #6039ac);
   --buttonfocus-box-shadow: 0 0 10px rgba(102, 102, 255, 0.3);
   --buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
