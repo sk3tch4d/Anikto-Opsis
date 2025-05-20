@@ -4,20 +4,22 @@
 
 
 /* ============================= */
-/* BODY VARIABLES                */
+/* #PANEL-CONTAINER              */
 /* ============================= */
-body.light {
-  --panel-bg: #f5f5f5;
-  --text-light: #333;
-  --label-bg: #fff;
-  --label-hover: #ddd;
+#panel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* ============================= */
+#panel-container:has(.panel.open) .panel {
+  width: clamp(320px, 95vw, 480px);
 }
 
 /* ============================= */
 /* PANEL                         */
 /* ============================= */
 .panel {
-  user-select: none;
   margin-top: 1rem;
   width: clamp(320px, 85vw, 480px);
   box-shadow: var(--panel-box-shadow);
@@ -25,10 +27,11 @@ body.light {
   overflow: hidden;
   transition: 
     border-radius 0.6s ease,
-    box-shadow 2s ease-out;
+    box-shadow 2s ease-out,
+    width 1s ease;
 }
 
-/* ============================= */
+/* ============1================ */
 /* PANEL: OPEN                   */
 /* ============================= */
 .panel.open {
@@ -81,7 +84,9 @@ body.light {
   color: var(--panel-open-panel-header-color);
   font-size: 1rem;
   border-radius: 18px 18px 0 0;
-  box-shadow:
+  border-top: 1px solid #3d3d5c;
+  border-left: 1px solid #3d3d5c;
+  border-right: 1px solid #3d3d5c;
 }
 /* ============================= */
 .panel.open > .panel-header:hover {
@@ -120,6 +125,7 @@ body.light {
 /* PANEL BODY: OPEN              */
 /* ============================= */
 .panel-body.open {
+  border: 1px solid #232529;
   border-top: 1px solid #232529;
   border-bottom: 1px solid #232529;
   max-height: 3000px;
