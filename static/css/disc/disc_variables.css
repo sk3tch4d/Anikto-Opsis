@@ -120,9 +120,9 @@
   --root-border: #e0e0e0;
   --panel-box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   --panelopen-box-shadow: 0 0 18px 3px rgba(0, 0, 0, 0.15);
-  --panel-header-color: #1f1736;
+  --panel-header-color: #c4c4ed;
   --panel-header-background-color: #666c99;
-  --panel-headerhover: #c4c4ed;
+  --panel-headerhover: #d8d8f3;
   --panelno-shadow-box-shadow: none !important;
   --panelno-shadow-background: transparent !important;
   --panel-body-background-color: #666c99;
