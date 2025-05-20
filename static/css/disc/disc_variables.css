@@ -51,10 +51,10 @@
   --panel-card-color: #09092a;
   --panel-cardhover-color: #1d1f63;
     /* Panel Delta */
-  --panel-delta-delta-item-color: #ccc;
-  --panel-delta-delta-item-background-color: #29293d;
+  --panel-delta-delta-item-color: #1d1f63;
+  --panel-delta-delta-item-background-color: #8585ad;
   --panel-delta-delta-item-box-shadow: inset 0 0 0 1.4px #1a1b1f;
-  --panel-delta-delta-itemhover-color: #888bdd;
+  --panel-delta-delta-itemhover-color: #2e329e;
   /* Panel Delta Strong */
   --panel-delta-delta-item-strong-color: #999;
   --panel-delta-delta-item-stronghover-color: #bbb;
