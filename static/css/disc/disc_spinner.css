@@ -10,7 +10,7 @@
   color: #7289da;
 }
 .spinner {
-  border: 6px solid rgba(255, 255, 255, 0.1);
+  border: var(--spinner-border);
   border-top: 4px solid #7289da;
   border-radius: 50%;
   width: 50px;
