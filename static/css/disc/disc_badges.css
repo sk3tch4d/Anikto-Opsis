@@ -1,3 +1,11 @@
+/* ============================= */
+/* DISC_BADGES.CSS               */
+/* ============================= */
+
+
+/* ============================= */
+/* BADGE                         */
+/* ============================= */
 .badge {
   display: inline-block;
   padding: 0.25em 0.6em;
@@ -6,6 +14,9 @@
   font-weight: bold;
   margin-left: 0.3rem;
 }
-.badge-day { background-color: #ffde59; color: #000; }
-.badge-evening { background-color: #ff914d; color: #000; }
-.badge-night { background-color: #4d9aff; color: #fff; }
+/* ============================= */
+.badge-day { background-color: var(--badge-day-background-color); color: var(--badge-day-color); }
+/* ============================= */
+.badge-evening { background-color: var(--badge-evening-background-color); color: #000; }
+/* ============================= */
+.badge-night { background-color: var(--badge-night-background-color); color: var(--badge-night-color); }
