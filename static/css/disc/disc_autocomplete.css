@@ -1,29 +1,43 @@
+/* ============================= */
+/* DISC_AUTOCOMPLETE.CSS         */
+/* ============================= */
+
+
+/* ============================= */
+/* AUTOCOMPLETE WRAPPER          */
+/* ============================= */
 .autocomplete-wrapper {
   position: relative;
   width: 100%;
 }
 
+/* ============================= */
+/* AUTOCOMPLETE LIST             */
+/* ============================= */
 .autocomplete-list {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
   z-index: 10;
-  background: #1e1f22;
-  border: 1px solid #2e2e2e;
+  background: var(--autocomplete-list-background);
+  border: var(--autocomplete-list-border);
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  box-shadow: var(--autocomplete-list-box-shadow);
   max-height: 180px;
   overflow-y: auto;
   margin-top: 0.25rem;
 }
 
+/* ============================= */
+/* AUTOCOMPLETE ITEM             */
+/* ============================= */
 .autocomplete-item {
   padding: 0.6rem 1rem;
-  color: #ccc;
+  color: var(--autocomplete-item-color);
   font-size: 0.95rem;
   cursor: pointer;
 }
 .autocomplete-item:hover {
-  background: #2c2e32;
+  background: var(--autocomplete-itemhover-background);
 }
