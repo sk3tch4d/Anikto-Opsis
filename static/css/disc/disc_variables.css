@@ -26,11 +26,12 @@
   --body-color: #333333;
 
   /* ====== BUTTONS */
-  --button-color: #333333;
+  --button-color: #ccccff;
   --button-background-color: #e0e0e0;
   --button-border: 1px solid #ccc;
   --button-box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   --buttonhover-color: #eaeaea;
+  --buttonhover-background-image: linear-gradient(135deg, #2e329e, #6039ac);
   --buttonfocus-box-shadow: 0 0 10px rgba(102, 102, 255, 0.3);
   --buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
   --buttonpanelhover-color: #dcdcdc;
@@ -51,7 +52,7 @@
 
   /* ====== DROPZONE */
   --drop-text-color: #140033;
-  --drop-zone-border: 0.18rem dashed #b3b3ff;
+  --drop-zone-border: 0.18rem dashed #6666ff;
   --drop-zonehover-background-color: rgba(114, 137, 218, 0.05);
   --drop-zonehover-box-shadow: 0 0 22px rgba(114, 137, 218, 0.15);
   --drop-zoneactive-background-color: rgba(114, 137, 218, 0.08);
@@ -185,6 +186,7 @@
   --button-border: 1px solid #2f3136;
   --button-box-shadow: 0 0 10px rgba(0,0,0,0.1);
   --buttonhover-color: #060614;
+  --buttonhover-background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
   --buttonfocus-box-shadow: 0 0 10px rgba(102, 102, 255, 0.3);
   --buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
   --buttonpanelhover-color: #0c0c27;
