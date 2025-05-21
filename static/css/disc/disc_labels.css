@@ -49,7 +49,7 @@
 /* SAVED CARD                     */
 /* ============================== */
 .saved-card {
-  border: 2px solid #8080ff !important;
+  border: var(--saved-card-border);
   transition: all 0.3s ease;
   user-select: none;
 }
@@ -67,15 +67,14 @@
 /* TAG TOGGLES                    */
 /* ============================== */
 .tag-toggle {
-  color: #9aaae4;
   cursor: pointer;
   padding: 0.06rem 1.2rem;
-  background-image: linear-gradient(25deg, #5a5dcf, #7f5ac8);
-  background-size: 260%;
-  color: #0a0b0f;
-  border-radius: 0.6rem;
   font-weight: bold;
-  border: 2px solid  #1f202e;
+  background-image: var(--tag-toggle-background-image);
+  background-size: 260%;
+  color: var(--tag-toggle-color);
+  border: var(--tag-toggle-border);
+  border-radius: 0.6rem;
   margin: 0; /* removed weird margin */
   min-width: 100px;
   text-align: center;
@@ -85,9 +84,9 @@
     border-radius 0.28s ease-in;
 }
 .tag-toggle:hover {
-  background-image: linear-gradient(125deg, #7578d7, #9779d2);
+  background-image: var(--tag-toggle_hover-color);
   background-size: 120%;
-  color: #0b0613;
+  color: var(--tag-toggle_hover-background-image);
   border-radius: 16px;
   animation:
     bounce 320ms
