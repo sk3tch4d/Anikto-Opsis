@@ -211,6 +211,13 @@
   /* ============================= */
   /* DISC_STATS.CSS        (LIGHT) */
   /* ============================= */
+  --clickable-match-color: #0a0b0f;
+  --clickable-match-border: 2px solid #1f202e;
+  --clickable-match-background-image: linear-gradient(25deg, #5a5dcf, #7f5ac8);
+  /* ============================= */
+  --clickable-match_hover-color: #0b0613;
+  --clickable-match_hover-background-image: linear-gradient(125deg, #7578d7, #9779d2);
+  /* ============================= */
   --panel-body-clickable-num-color: #4a4ad6;
   --panel-body-clickable-numhover-color: #4a4aff;
   --panel-body-clickable-stat-color: #3333cc !important;
@@ -436,6 +443,13 @@
 
   /* ============================= */
   /* DISC_STATS.CSS         (DARK) */
+  /* ============================= */
+  --clickable-match-color: #0a0b0f;
+  --clickable-match-border: 2px solid #1f202e;
+  --clickable-match-background-image: linear-gradient(25deg, #5a5dcf, #7f5ac8);
+  /* ============================= */
+  --clickable-match_hover-color: #0b0613;
+  --clickable-match_hover-background-image: linear-gradient(125deg, #7578d7, #9779d2);
   /* ============================= */
   --panel-body-clickable-num-color: #7578d7;
   --panel-body-clickable-stat-color: #b3b3ff !important;
