@@ -65,18 +65,18 @@ export function populateGlobalStats() {
     return card;
   }
 
-  statsDiv.appendChild(createStatCard("Total Departments", departments.size));
-  statsDiv.appendChild(createStatCard("Total Positions", positions.size));
-  statsDiv.appendChild(createStatCard("Total Employees", total));
-  statsDiv.appendChild(createStatCard("Total Full-Time", fullTime, "Full-Time"));
-  statsDiv.appendChild(createStatCard("Total Part-Time", partTime, "Part-Time"));
-  statsDiv.appendChild(createStatCard("Total Casual", casual, "Casual"));
-  statsDiv.appendChild(createStatCard("10+ Years", tenPlus, "10+"));
-  statsDiv.appendChild(createStatCard("20+ Years", twentyPlus, "20+"));
-  statsDiv.appendChild(createStatCard("30+ Years", thirtyPlus, "30+"));
-  statsDiv.appendChild(createStatCard("40+ Years", fortyPlus, "40+"));
-  statsDiv.appendChild(createStatCard("Average Seniority", avgYears));
-  statsDiv.appendChild(createStatCard("Total Combined Seniority", totalYears.toFixed(2)));
+  statsDiv.appendChild(createStatCard("Total Departments:", departments.size));
+  statsDiv.appendChild(createStatCard("Total Positions:", positions.size));
+  statsDiv.appendChild(createStatCard("Total Employees:", total));
+  statsDiv.appendChild(createStatCard("Total Full-Time:", fullTime, "Full-Time"));
+  statsDiv.appendChild(createStatCard("Total Part-Time:", partTime, "Part-Time"));
+  statsDiv.appendChild(createStatCard("Total Casual:", casual, "Casual"));
+  statsDiv.appendChild(createStatCard("10+ Years:", tenPlus, "10+"));
+  statsDiv.appendChild(createStatCard("20+ Years:", twentyPlus, "20+"));
+  statsDiv.appendChild(createStatCard("30+ Years:", thirtyPlus, "30+"));
+  statsDiv.appendChild(createStatCard("40+ Years:", fortyPlus, "40+"));
+  statsDiv.appendChild(createStatCard("Average Seniority:", avgYears));
+  statsDiv.appendChild(createStatCard("Total Combined Seniority:", totalYears.toFixed(2)));
 
   setupParseStats(".clickable-delta", "seniority-search", "data-name");
 }
@@ -161,25 +161,25 @@ export function populateStats(data) {
   }
 
   // Append remaining stats
-  statsDiv.appendChild(createStatCard("Total Employees", total));
-  statsDiv.appendChild(createStatCard("Full-Time", fullTime, "Full-Time"));
-  statsDiv.appendChild(createStatCard("Part-Time", partTime, "Part-Time"));
-  statsDiv.appendChild(createStatCard("Casual", casual, "Casual"));
+  statsDiv.appendChild(createStatCard("Total Employees:", total));
+  statsDiv.appendChild(createStatCard("Full-Time:", fullTime, "Full-Time"));
+  statsDiv.appendChild(createStatCard("Part-Time:", partTime, "Part-Time"));
+  statsDiv.appendChild(createStatCard("Casual:", casual, "Casual"));
 
   // Bottom stats (non-clickable)
   const bottomPanel = document.createElement("div");
   bottomPanel.className = "panel-delta";
   bottomPanel.innerHTML = `
     <div class="delta-item">
-      <span>Average Seniority</span>
+      <span>Average Seniority:</span>
       <span>${avgYears} Yrs</span>
     </div>
     <div class="delta-item">
-      <span>Top</span>
-      <span>${mostSenior.name} ${mostSenior.years.toFixed(2)} Yrs</span>
+      <span>Top Senior:</span>
+      <span>${mostSenior.name}</span>
     </div>
     <div class="delta-item">
-      <span>Total Combined</span>
+      <span>Total Combined:</span>
       <span>${totalYears} Yrs</span>
     </div>
   `;
