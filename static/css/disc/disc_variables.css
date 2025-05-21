@@ -122,7 +122,7 @@
   --input-box-shadow: inset 0 0 0 1px #e0e0e0;
   /* ============================= */
   --input_hoverfocus-background: #b3b3e6;
-  --input_hoverfocus-border: #5d5df8;
+  --input_hoverfocus-border: #8080ff; /*#5d5df8;*/
   /* ============================= */
   --input-error-color: #aa0000;
   --input-error-background: linear-gradient(-30deg, #fff0f0, #ffe6e6, #fff0f0) !important;
@@ -203,7 +203,9 @@
   /* ============================= */
   /* DISC_SPINNER.CSS      (LIGHT) */
   /* ============================= */
-  --spinner-border: 6px solid rgba(0, 0, 0, 0.05);
+  --loading-color: #253c8d;
+  --spinner-border: 6.5px solid rgba(0, 0, 0, 0.15);
+  --spinner-border-top: 6.5px solid #5e5ed4;
 
   /* ============================= */
   /* DISC_STATS.CSS        (LIGHT) */
@@ -426,7 +428,9 @@
   /* ============================= */
   /* DISC_SPINNER.CSS       (DARK) */
   /* ============================= */
-  --spinner-border: 6px solid rgba(255, 255, 255, 0.1);
+  --loading-color: #7289da;
+  --spinner-border: 6.5px solid rgba(255, 255, 255, 0.1);
+  --spinner-border-top: 6.5px solid #7272da; /*#7289da;*/
 
   /* ============================= */
   /* DISC_STATS.CSS         (DARK) */
