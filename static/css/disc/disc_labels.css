@@ -10,7 +10,7 @@
   margin-bottom: 0.4rem;
   text-align: center;
   font-size: 0.95rem !important;
-  color: #ddd;
+  color: var(--search-timestamp-color);
   user-select: none;
 }
 
@@ -18,17 +18,17 @@
 /* TOASTS                         */
 /* ============================== */
 .toast {
+  pointer-events: none;
   position: fixed;
+  padding: 10px 40px;
+  border-radius: 60px;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #2a2c3f;
-  color: #ddd;
-  padding: 10px 40px;
-  border-radius: 60px;
-  border: 1.6px solid #8080ff;
+  background: var(--toast-background);
+  color: var(--toast-color);
+  border: var(--toast-border);
   opacity: 0;
-  pointer-events: none;
   transition: opacity 1s ease, bottom 1.2s ease, border 3s ease;
   z-index: 1000;
 }
