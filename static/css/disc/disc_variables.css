@@ -125,6 +125,11 @@
   --inputfull-widthinput-error-border: 1px solid #ff4d4f !important;
   --inputfull-widthinput-error-background: linear-gradient(-30deg, #fff0f0, #ffe6e6, #fff0f0) !important;
   --inputfull-widthinput-error-color: #aa0000;
+
+  --select-input-full-width-color: #bbb;
+  --select-input-full-width-background: #bbb;
+  --select-input-full-width-border: #bbb;
+  --select-input-full-width-box-shadow: #bbb;
   
   --input[type="date"]-background-color: #ffffff;
   --input[type="date"]-color: #000000;
