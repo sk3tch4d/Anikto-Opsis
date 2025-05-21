@@ -147,13 +147,20 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
 // HELPER: CREATE ITEM CARD
 // ==============================
 function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
-  const old = base.Old?.trim() ? ` (Old: ${base.Old})` : "";
   const totalQty = matching.reduce((sum, item) => sum + item.QTY, 0);
-
   const card = document.createElement("div");
   card.className = "panel-card";
 
-  const numberHTML = highlightMatch(base.Num + old, currentSearch);
+  const firstUSL = matching.length === 1 ? matching[0].USL : null;
+  
+  const numberHTML = `<span class="clickable-stat" data-search="${base.Num}" ${firstUSL ? `data-filter="${firstUSL}"` : ""}>
+    ${highlightMatch(base.Num, currentSearch)}
+  </span>`;
+  
+  const oldHTML = base.Old?.trim()
+    ? ` (Old: <span class="clickable-stat" data-search="${base.Old}">${highlightMatch(base.Old, currentSearch)}</span>)`
+    : "";
+
   const descHTML = highlightMatch(base.Description, currentSearch);
 
   const binInfo = matching.length === 1 && matching[0].Bin
@@ -174,18 +181,14 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
   const quantityLabel = (currentFilter === "all" && uniqueUSLs.length > 1) ? "Total Quantity" : "Quantity";
 
-  const firstUSL = matching.length === 1 ? matching[0].USL : null;
-
   const detailsHTML = joinAsDivs(
-    `<span class="tag-label">Stores Number:</span> 
-     <span class="clickable-stat" data-search="${base.Num}" ${firstUSL ? `data-filter="${firstUSL}"` : ""}>
-       ${numberHTML}
-     </span>`,
+    `<span class="tag-label">Stores Number:</span> ${numberHTML}&nbsp;<span class="tag-label">Old:</span>${oldHTML}`,
     descHTML,
     `<span class="tag-label">${quantityLabel}:</span> ${totalQty} ${binInfo}`,
     groupLine,
     costCenterLine
   );
+
 
   const infoBlock = document.createElement("div");
   infoBlock.innerHTML = detailsHTML;
