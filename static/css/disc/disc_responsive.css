@@ -7,9 +7,9 @@
 
 /* Used in Inventory */
 .highlight {
-  background-color: #7289da44;
-  color: #ffffff;
+  background-color: var(--highlight-background-color);
+  color: var(--highlight-color);
   font-weight: bold;
-  padding: 0 2px;
-  border-radius: 2px;
+  padding: 0.5px 2px;
+  border-radius: 2.5px;
 }
