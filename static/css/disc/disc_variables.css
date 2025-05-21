@@ -116,26 +116,22 @@
   /* ============================= */
   /* DISC_INPUTS.CSS       (LIGHT) */
   /* ============================= */
-  --inputfull-width-color: #09092a;
-  --inputfull-width-background: linear-gradient(-30deg, #9f9fdf, #9f9fdf, #b3b3e6, #9f9fdf, #9f9fdf);
-  --inputfull-width-backgroundhover: #b3b3e6;
-  --inputfull-width-border: 2px solid #a6a6ff;
-  --inputfull-width-box-shadow: inset 0 0 0 1px #e0e0e0;
-  
-  --inputfull-widthinput-error-border: 1px solid #ff4d4f !important;
-  --inputfull-widthinput-error-background: linear-gradient(-30deg, #fff0f0, #ffe6e6, #fff0f0) !important;
-  --inputfull-widthinput-error-color: #aa0000;
-
-  --select-input-full-width-color: #bbb;
-  --select-input-full-width-background: #bbb;
-  --select-input-full-width-border: #bbb;
-  --select-input-full-width-box-shadow: #bbb;
-  
+  --input-color: #09092a;
+  --input-background: linear-gradient(-30deg, #9f9fdf, #9f9fdf, #b3b3e6, #9f9fdf, #9f9fdf);
+  --input-border: 2px solid #a6a6ff;
+  --input-box-shadow: inset 0 0 0 1px #e0e0e0;
+  /* ============================= */
+  --input_hoverfocus-background: #b3b3e6;
+  /* ============================= */
+  --input-error-color: #aa0000;
+  --input-error-background: linear-gradient(-30deg, #fff0f0, #ffe6e6, #fff0f0) !important;
+  --input-error-border: 1px solid #ff4d4f !important;
+  /* ============================= */  
   --input[type="date"]-background-color: #ffffff;
   --input[type="date"]-color: #000000;
   --input[type="date"]-border: 1px solid #ccc;
   --input[type="date"]focus-box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.4);
-
+  /* ============================= */
   --custom-date-displayhover-background-color: #f0f0f0;
 
   /* ============================= */
@@ -341,21 +337,22 @@
   /* ============================= */
   /* DISC_INPUTS.CSS        (DARK) */
   /* ============================= */
-  --inputfull-width-color: #a6a6ff;
-  --inputfull-width-background: linear-gradient(-30deg, #15151e, #292b3d, #1f202e, #292b3d, #1f202e);
-  --inputfull-width-backgroundhover: #29293d;
-  --inputfull-width-border: 2px solid #6666cc;
-  --inputfull-width-box-shadow: inset 0 0 0 1px #1f1f1f;
-  
-  --inputfull-widthinput-error-border: 1px solid #ff4d4f !important;
-  --inputfull-widthinput-error-background: linear-gradient(-30deg, #3b1e1e, #4b2a2a, #3b1e1e) !important;
-  --inputfull-widthinput-error-color: #f8dada;
-  
+  --input-color: #a6a6ff;
+  --input-background: linear-gradient(-30deg, #15151e, #292b3d, #1f202e, #292b3d, #1f202e);
+  --input-border: 2px solid #6666cc;
+  --input-box-shadow: inset 0 0 0 1px #1f1f1f;
+  /* ============================= */
+  --input_hover-background: #29293d;
+  /* ============================= */  
+  --input-error-border: 1px solid #ff4d4f !important;
+  --input-error-background: linear-gradient(-30deg, #3b1e1e, #4b2a2a, #3b1e1e) !important;
+  --input-error-color: #f8dada;
+  /* ============================= */  
   --input[type="date"]-background-color: #2f3136;
   --input[type="date"]-color: #ffffff;
   --input[type="date"]-border: 1px solid #40444b;
   --input[type="date"]focus-box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.4);
-
+  /* ============================= */
   --custom-date-displayhover-background-color: #36393f;
 
   /* ============================= */
