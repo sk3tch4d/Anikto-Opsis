@@ -3,7 +3,7 @@
 # ==============================
 
 import pandas as pd
-DEBUG = False
+DEBUG = True
 
 # ==============================
 # INVENTORY DATA
