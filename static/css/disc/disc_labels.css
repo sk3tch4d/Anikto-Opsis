@@ -84,10 +84,10 @@
     border-radius 0.28s ease-in;
 }
 .tag-toggle:hover {
-  background-image: var(--tag-toggle_hover-color);
-  background-size: 120%;
-  color: var(--tag-toggle_hover-background-image);
   border-radius: 16px;
+  color: var(--tag-toggle_hover-color);
+  background-image: var(--tag-toggle_hover-background-image); 
+  background-size: 120%;
   animation:
     bounce 320ms
     alternate infinite
@@ -132,7 +132,6 @@
   max-height: 2000px;
   opacity: 1;
   /*box-shadow: inset 0 0 0.4rem 0.1rem #0d0c0d;*/
-  color: #7289da;
   padding: 0.8rem 0.2rem 0.6rem;
   border-radius: 8px;
   transition: background-color 0.5s ease;
