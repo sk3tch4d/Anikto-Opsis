@@ -158,7 +158,7 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   </span>`;
   
   const oldHTML = base.Old?.trim()
-    ? ` (Old: <span class="clickable-stat" data-search="${base.Old}">${highlightMatch(base.Old, currentSearch)}</span>)`
+    ? `&nbsp;<span class="tag-label">Old:</span> <span class="clickable-stat old-value" data-search="${base.Old}">${highlightMatch(base.Old, currentSearch)}</span>`
     : "";
 
   const descHTML = highlightMatch(base.Description, currentSearch);
@@ -182,13 +182,12 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   const quantityLabel = (currentFilter === "all" && uniqueUSLs.length > 1) ? "Total Quantity" : "Quantity";
 
   const detailsHTML = joinAsDivs(
-    `<span class="tag-label">Stores Number:</span> ${numberHTML}&nbsp;<span class="tag-label">Old:</span>${oldHTML}`,
+    `<span class="tag-label">Stores Number:</span> ${numberHTML}${oldHTML}`,
     descHTML,
     `<span class="tag-label">${quantityLabel}:</span> ${totalQty} ${binInfo}`,
     groupLine,
     costCenterLine
   );
-
 
   const infoBlock = document.createElement("div");
   infoBlock.innerHTML = detailsHTML;
