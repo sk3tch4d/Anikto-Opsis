@@ -140,6 +140,8 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
     return;
   }
 
+  console.log(`🔎 Inventory Search: ${searchInput} - (${uslFilter})`);
+
   const key = generateSearchKey({ term, usl, sort, dir: sortDirection });
 
   withLoadingToggle(
