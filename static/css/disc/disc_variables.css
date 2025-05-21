@@ -193,7 +193,8 @@
   /* ============================= */
   /* DISC_RESPONSIVE.CSS   (LIGHT) */
   /* ============================= */
-  --highlight-background-color: #e9f2fc;
+  --highlight-color: #d7d7f4;
+  --highlight-background-color: #5b36c9;
 
   /* ====== SENIORITY */
   --filter-box-background: #fff;
@@ -418,6 +419,7 @@
   /* ============================= */
   /* DISC_RESPONSIVE.CSS    (DARK) */
   /* ============================= */
+  --highlight-color: #ffffff;
   --highlight-background-color: #7289da44;
 
   /* ====== SENIORITY */
