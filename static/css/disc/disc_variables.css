@@ -139,14 +139,13 @@
   /* DISC_LABELS.CSS       (LIGHT) */
   /* ============================= */
   --p-color: #09092a;
-
+  /* ============================= */ 
   --search-timestamp-color: #09092a;
-
+  /* ============================= */ 
   --toast-color: #09092a;
   --toast-background: #fafafa;
   --toast-border: 1.6px solid #4a90e2;
-  --toastshow-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
+  /* ============================= */ 
   --saved-card-border: 2px solid #4a90e2 !important;
   /* ============================= */  
   --tag-label-color: #111155;
@@ -157,11 +156,6 @@
   /* ============================= */
   --tag-toggle_hover-color: #0b0613;
   --tag-toggle_hover-background-image: linear-gradient(125deg, #9c9fe2, #b59fdf);
-  /* ============================= */  
-
-  --togglehover-color: #ebebeb;
-  --wrappershow-box-shadow: inset 0 0 0.4rem 0.1rem #cccccc;
-  --usl-wrappershow-color: #4a90e2;
 
   /* ============================= */
   /* DISC_LINKS.CSS        (LIGHT) */
@@ -383,10 +377,9 @@
   --toast-color: #ddd;
   --toast-background: #2a2c3f;
   --toast-border: 1.6px solid #8080ff;
-  --toastshow-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-
+  /* ============================= */ 
   --saved-card-border: 2px solid #8080ff !important;
-
+  /* ============================= */  
   --tag-label-color: #9393ec;
   /* ============================= */  
   --tag-toggle-color: #0a0b0f;
@@ -395,9 +388,6 @@
   /* ============================= */
   --tag-toggle_hover-color: #0b0613;
   --tag-toggle_hover-background-image: linear-gradient(125deg, #7578d7, #9779d2);
-
-  --usl-wrappershow-box-shadow: inset 0 0 0.4rem 0.1rem #0d0c0d;
-  --usl-wrappershow-color: #7289da;
 
   /* ============================= */
   /* DISC_LINKS.CSS         (DARK) */
