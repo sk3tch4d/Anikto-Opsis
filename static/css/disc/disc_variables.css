@@ -148,7 +148,7 @@
   /* ============================= */ 
   --saved-card-border: 2px solid #4a90e2 !important;
   /* ============================= */  
-  --tag-label-color: #111155;
+  --tag-label-color: #0c0c40;
   /* ============================= */  
   --tag-toggle-color: #0a0b0f;
   --tag-toggle-background-image: linear-gradient(25deg, #7578d7, #9779d2);
@@ -210,6 +210,8 @@
 
   /* ============================= */
   /* DISC_STATS.CSS        (LIGHT) */
+  /* ============================= */
+  --old-number-color: #151537;
   /* ============================= */
   --clickable-match-color: #0a0b0f;
   --clickable-match-border: 2px solid #1f202e;
@@ -443,6 +445,8 @@
 
   /* ============================= */
   /* DISC_STATS.CSS         (DARK) */
+  /* ============================= */
+  --old-number-color: #9f9fdf;
   /* ============================= */
   --clickable-match-color: #0a0b0f;
   --clickable-match-border: 2px solid #1f202e;
