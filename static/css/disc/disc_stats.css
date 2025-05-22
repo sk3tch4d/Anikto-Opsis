@@ -14,11 +14,11 @@
 /* OLD NUMBER                    */
 /* ============================= */
 .old-number {
-  color: var(--old-number-color);
+  opacity: 0.6;
 }
 /* ============================= */
 .old-number .highlight {
-  color: inherit;
+  opacity: 1;
 }
 
 /* ============================= */
