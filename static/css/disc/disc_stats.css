@@ -16,6 +16,10 @@
 .old-number {
   color: var(--old-number-color);
 }
+/* ============================= */
+.old-number .highlight {
+  color: inherit;
+}
 
 /* ============================= */
 /* CLICKABLE-NUM                 */
