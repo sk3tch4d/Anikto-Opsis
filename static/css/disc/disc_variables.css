@@ -143,10 +143,10 @@
   --search-timestamp-color: #09092a;
   /* ============================= */ 
   --toast-color: #09092a;
-  --toast-background: #fafafa;
-  --toast-border: 1.6px solid #4a90e2;
+  --toast-background: linear-gradient(335deg, #9c9fe2, #b59fdf);
+  --toast-border: 2px solid #0d0033;
   /* ============================= */ 
-  --saved-card-border: 2px solid #4a90e2 !important;
+  --saved-card-border: 2px solid #6633ff !important;
   /* ============================= */  
   --tag-label-color: #0c0c40;
   /* ============================= */  
@@ -374,9 +374,9 @@
   /* ============================= */
   --search-timestamp-color: #ddd;
   /* ============================= */
-  --toast-color: #ddd;
-  --toast-background: #2a2c3f;
-  --toast-border: 1.6px solid #8080ff;
+  --toast-color: #0a0b0f;
+  --toast-background: linear-gradient(335deg, #7578d7, #9779d2);
+  --toast-border: 2px solid #1f222e;
   /* ============================= */ 
   --saved-card-border: 2px solid #8080ff !important;
   /* ============================= */  
