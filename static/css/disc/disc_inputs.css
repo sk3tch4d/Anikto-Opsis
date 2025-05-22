@@ -30,7 +30,7 @@ input.full-width:hover,
 input.full-width:focus {
   border-color: var(--input_hoverfocus-border);
   font-size: 1.1rem;
-  background-color: var(--input_hover-background);
+  background: var(--input_hoverfocus-background);
 }
 
 /* ============================= */
@@ -69,6 +69,7 @@ select.input.full-width {
 select.input.full-width:focus,
 select.input.full-width:hover {
   border-color: var(--input_hoverfocus-border);
+  background: var(--input_hoverfocus-background);
   font-size: 1.12rem;
 }
 
@@ -97,6 +98,7 @@ select.input.full-width:hover {
 .input.sort-button:focus,
 .input.sort-button:hover {
   border-color: var(--input_hoverfocus-border);
+  background: var(--input_hoverfocus-background);
   font-size: 1.12rem;
 }
 
@@ -163,6 +165,7 @@ input[type="date"]:focus {
   transition: border 0.2s ease-in-out, font-size 0.4s ease;
 }
 .custom-date-display:hover {
-  background: var(--input-background);
+  border-color: var(--input_hoverfocus-border);
+  background: var(--input_hoverfocus-background);
   font-size: 1.05rem;
 }
