@@ -353,7 +353,7 @@
   --input-border: 2px solid #6666cc;
   --input-box-shadow: inset 0 0 0 1px #1f1f1f;
   /* ============================= */
-  --input_hover-background: #29293d;
+  --input_hoverfocus-background: #29293d;
   --input_hoverfocus-border: #8080ff;
   /* ============================= */  
   --input-error-border: 1px solid #ff4d4f !important;
