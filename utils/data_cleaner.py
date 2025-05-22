@@ -173,37 +173,45 @@ def clean_format(df):
 # XLSX CLEANING PIPELINE
 # ==============================
 def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True):
-    df = pd.read_excel(file_stream, header=header)
-    print(f"[DEBUG] Loaded file: {file_stream}")
+    sheet_dict = pd.read_excel(file_stream, sheet_name=None, header=header)
+    cleaned_dfs = []
+
+    for sheet_name, df in sheet_dict.items():
+        df.attrs["name"] = sheet_name
+
+        # Strip column names
+        df.columns = [str(col).strip() for col in df.columns]
+
+        # Drop fully empty rows
+        df = df.dropna(how="all")
+
+        if detect_header:
+            df = detect_and_set_header(df)
+
+        log_cleaning("Cleaning Sheet", df, extra=f"Sheet: {sheet_name}")
+
+        for step in steps:
+            df = step(df)
+
+        # Normalize dates
+        for col in ['Created', 'Date', 'First']:
+            if col in df.columns:
+                df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
+                log_cleaning("Normalized Date", df)
+
+        cleaned_dfs.append(df)
+
+    # Combine all sheets into one DataFrame
+    if not cleaned_dfs:
+        return pd.DataFrame()
     
-    df.attrs["name"] = name or "Unnamed DataFrame"
+    df_combined = pd.concat(cleaned_dfs, ignore_index=True)
 
-    # String Headers & Remove whitespace
-    df.columns = [str(col).strip() for col in df.columns]
-    print(f"[DEBUG] Columns: {list(df.columns)}")
-    
-    # Remove full rows where all values are missing
-    df = df.dropna(how="all")
-    print(f"[DEBUG] Rows after dropna: {len(df)}")
+    # Handle Cart Ops Edge Format once for combined df
+    df_combined = adjust_cart_ops(df_combined)
 
-    if detect_header:
-        df = detect_and_set_header(df) # Adjust Header if needed
-
-    log_cleaning("Cleaning File", df)
-
-    for step in steps:
-        df = step(df)
-
-    # Normalize Date after cleaning
-    for col in ['Created', 'Date', 'First']:
-        if col in df.columns:
-            df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
-            log_cleaning("Normalized Date", df)
-
-    # Handle Cart Ops Edge Format
-    df = adjust_cart_ops(df) 
-
-    return df
+    df_combined.attrs["name"] = name or "Combined Sheets"
+    return df_combined
 
 # ==============================
 # DB CLEANING PIPELINE
