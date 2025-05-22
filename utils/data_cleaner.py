@@ -123,9 +123,6 @@ def adjust_cart_ops(df):
             df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
             log_cleaning("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
 
-        # Create a sample DataFrame
-        data = {'col1': [1, 2], 'col2': [3, 4]}
-        df = pd.DataFrame(data)
         # Insert an empty column at the beginning (index 0)
         df.insert(0, 'new_col', np.nan)
         # Print the modified DataFrame
