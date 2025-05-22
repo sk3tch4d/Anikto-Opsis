@@ -124,7 +124,7 @@ def adjust_cart_ops(df):
             log_cleaning("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
 
     # Insert an empty column (index 0)
-    df.insert(0, 'new_col', np.nan)
+    df.insert(0, ' ', np.nan)
     return df
 
 # ==============================
