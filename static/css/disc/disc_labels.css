@@ -33,6 +33,7 @@
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
+  font-weight: 600;
   background: var(--toast-background);
   color: var(--toast-color);
   border: var(--toast-border);
