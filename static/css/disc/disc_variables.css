@@ -231,6 +231,12 @@
   --dot-status-dotgreen-background: #2ecc71;
 
   /* ============================= */
+  /* DISC_TEXT.CSS         (LIGHT) */
+  /* ============================= */
+  --gradient-title-background-image: linear-gradient(25deg, #5a5dcf, #6a40bf);
+  --gradient-title_hover-background-image: linear-gradient(225deg, #5a5dcf, #6a40bf);
+
+  /* ============================= */
   /* DISC_TYPING.CSS       (LIGHT) */
   /* ============================= */
   --typed-text-color: #4a4ad6;
@@ -461,6 +467,12 @@
   --status-dotyellow-background: #ffd700;
   --status-dotred-background: #e74c3c;
   --status-dotgreen-background: #2ecc71;
+
+  /* ============================= */
+  /* DISC_TEXT.CSS          (DARK) */
+  /* ============================= */
+  --gradient-title-background-image: linear-gradient(25deg, #5a5dcf, #7f5ac8);
+  --gradient-title_hover-background-image: linear-gradient(225deg, #5a5dcf, #7f5ac8);
 
   /* ============================= */
   /* DISC_TYPING.CSS        (DARK) */
