@@ -43,7 +43,7 @@
   --buttonhover-background-image: linear-gradient(135deg, #2e329e, #6039ac);
   --buttonfocus-box-shadow: 0 0 10px rgba(102, 102, 255, 0.3);
   --buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-  --buttonpanelhover-color: #dcdcdc;
+  --buttonpanel_hover-color: #d8d8f3;
   --label-button-background-color: #f0f0f0;
   --label-buttonhover-background-color: #e0e0e0;
 
@@ -272,15 +272,15 @@
   /* ============================= */
   /* DISC_BUTTONS.CSS       (DARK) */
   /* ============================= */
-  --button-color: #cccccc;
+  --button-color: #060614;
   --button-background-color: #33364d;
   --button-border: 1.4px solid #1b1b32;
   --button-box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  --buttonhover-color: #060614;
+  --buttonhover-color: #120c27;
   --buttonhover-background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
   --buttonfocus-box-shadow: 0 0 10px rgba(102, 102, 255, 0.3);
   --buttonpanel-box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
-  --buttonpanelhover-color: #0c0c27;
+  --buttonpanel_hover-color: #120c27;
   --label-button-background-color: #40444b;
   --label-buttonhover-background-color: #50545b;
   
