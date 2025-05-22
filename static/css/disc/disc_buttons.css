@@ -82,7 +82,7 @@ button:disabled {
   border-radius: 16px;
   box-shadow: var(--buttonpanel-box-shadow);
   transform: translateY(-2px);
-  color: #060614;
+  color: var(--button-color);
   transition: 
     background-image 1s ease,
     background-size 1s ease,
@@ -95,10 +95,10 @@ button:disabled {
 /* ============================= */
 /* BUTTON: PANEL HOVER           */
 /* ============================= */
-.button.panel:hover {
+.panel .button:hover {
   background-image: linear-gradient(165deg, #7578d7, #9779d2);
   background-size: 180%;
-  color: var(--buttonpanelhover-color);
+  color: var(--buttonpanel_hover-color);
   font-size: 0.93rem;
   border-radius: 18px;
 }
