@@ -4,6 +4,23 @@
 
 
 /* ============================== */
+/* TEXT GRADIENT: MAIN            */
+/* ============================== */
+.gradient-title {
+  display: inline-block;
+  font-size: inherit;
+  font-weight: inherit;
+  background-image: var(--gradient-title-background-image);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gradient-title:hover {
+  background-image: var(--gradient-title_hover-background-image);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================== */
 /* TEXT GRADIENT: DARK            */
 /* ============================== */
 .gradient-text-dark {
@@ -19,7 +36,6 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 
 /* ============================== */
 /* TEXT GRADIENT: LIGHT           */
