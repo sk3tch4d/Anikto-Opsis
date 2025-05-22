@@ -60,6 +60,7 @@ COLUMN_RENAMES = {
     "Vendors name": "Vendor_Name",
     "years": "Years",
     "Employee Subgroup": "Status",
+    "Limited Sen. Yrs": "Years",
     "Limited Seniority Years": "Years",
     "Vendor material numTer": "Vendor_Material",
     "Vendor material number": "Vendor_Material"
