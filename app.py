@@ -7,6 +7,7 @@ from routes import register_routes
 
 # Initialize Flask app
 app = Flask(__name__)
+app.secret_key = "False"
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
