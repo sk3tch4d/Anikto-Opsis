@@ -12,8 +12,12 @@ from flask import (
     render_template,
     jsonify,
     send_file,
+    redirect, 
+    session, 
+    url_for,
 )
 from config import UPLOAD_FOLDER
+from config import DEV_MODE
 from dataman import (
     export_shifts_csv,
     export_shifts_json,
@@ -204,6 +208,19 @@ def register_routes(app):
     def testing():
         return render_template("testing.html", table=[])
 
+    # ==============================
+    # DEV MODE SESSION / CHECK
+    # ==============================
+    @app.route("/check-dev")
+    def check_dev():
+        return jsonify({"dev": session.get("dev", False)})
+    # ==============================
+    @app.route("/dev-mode", methods=["POST"])
+    def dev_mode():
+        token = request.form.get("token", "")
+        if token == DEV_MODE:
+            session["dev"] = True
+        return redirect(url_for("index"))
     # ==============================
     # HANDLE DOWNLOADS
     # ==============================
