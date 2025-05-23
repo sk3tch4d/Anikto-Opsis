@@ -158,7 +158,7 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   </span>`;
   
   const oldHTML = base.Old?.trim()
-    ? `&nbsp;<span class="tag-label">Old:</span> <span class="clickable-stat old-number" data-search="${base.Old}">${highlightMatch(base.Old, currentSearch)}</span>`
+    ? `&nbsp;<span class="tag-label">Old Number:</span> <span class="clickable-stat old-number" data-search="${base.Old}">${highlightMatch(base.Old, currentSearch)}</span>`
     : "";
 
   const descHTML = highlightMatch(base.Description, currentSearch);
