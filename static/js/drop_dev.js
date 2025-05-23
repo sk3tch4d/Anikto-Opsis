@@ -46,6 +46,17 @@ export function renderDevPanel() {
         panel.appendChild(btn);
       });
 
+      // ADD LOGOUT BUTTON
+      const logout = document.createElement("button");
+      logout.textContent = "Main Menu";
+      logout.type = "button";
+      logout.style.margin = "1rem";
+      logout.style.padding = "0.5rem 1.2rem";
+      logout.style.background = "#c0392b";
+      logout.style.color = "#fff";
+      logout.onclick = () => window.location.href = "/logout-dev";
+      panel.appendChild(logout);
+
       form.appendChild(panel);
 
       panel.addEventListener("click", (e) => {
@@ -73,7 +84,6 @@ export function renderDevPanel() {
       });
     });
 }
-
 
 // ==============================
 // ENABLE DEV MODE
@@ -111,15 +121,6 @@ export function enableDevModeTrigger() {
     closeBtn.style.fontSize = "1.2rem";
     closeBtn.onclick = () => form.remove();
 
-    const logout = document.createElement("button");
-    logout.textContent = "Main Menu";
-    logout.type = "button";
-    logout.style.margin = "1rem";
-    logout.style.padding = "0.5rem 1.2rem";
-    logout.style.background = "#c0392b";
-    logout.style.color = "#fff";
-    logout.onclick = () => window.location.href = "/logout-dev";
-
     form.innerHTML = `
       <label style="font-size: 1.2rem;">Enter Access Token</label><br><br>
       <input type="password" name="token" style="padding: 0.5rem; width: 100%; margin-bottom: 1rem;"><br>
@@ -127,7 +128,6 @@ export function enableDevModeTrigger() {
     `;
 
     form.appendChild(closeBtn); 
-    form.appendChild(logout);
     document.body.appendChild(form);
   };
 
