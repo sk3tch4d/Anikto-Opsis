@@ -17,7 +17,7 @@
   border-radius: 10px;
   cursor: pointer;
   text-align: center;
-  transition: all 0.2s ease-in-out
+  transition: all 0.2s ease-in-out;
   box-shadow: var(--button-box-shadow);
   margin-top: 2rem;
   user-select: none;
@@ -62,6 +62,35 @@ button:disabled {
   max-width: 500px;
   box-sizing: border-box;
   user-select: none;
+}
+
+/* ============================= */
+/* BUTTON: FULL-WIDTH-ON         */
+/* ============================= */
+.button.full-width-on {
+  padding: 0.82rem 1rem;
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.72rem 1.2rem;
+  background-color: var(--buttonhover-background-image);
+  color: var(--buttonhover-color);
+  border: var(--button-border);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--button-box-shadow);
+  margin-top: 2rem;
+  user-select: none;
+}
+.button.full-width-on:hover {
+  background-size: 160%;
+  transform: translateY(-2px);
+  color: var(--buttonhover-color);
 }
 
 /* ============================= */
