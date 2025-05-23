@@ -14,6 +14,7 @@ input.full-width {
   max-width: 100%;
   font-size: 1.05rem;
   font-weight: 600;
+  line-height: 2.4rem;
   color: var(--input-color);
   background: var(--input-background);
   background-size: 600% 600%;
