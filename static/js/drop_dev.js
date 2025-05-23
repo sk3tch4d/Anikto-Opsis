@@ -42,11 +42,6 @@ export function renderDevPanel() {
         panel.appendChild(btn);
       });
 
-      // Spacer
-      const spacer = document.createElement("div");
-      spacer.style.height = "1.5rem";
-      panel.appendChild(spacer);
-
       // Main Menu Button
       const logout = document.createElement("button");
       logout.textContent = "Main Menu";
