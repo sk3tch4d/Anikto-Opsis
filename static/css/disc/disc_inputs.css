@@ -12,15 +12,14 @@ input.full-width {
   /**/
   width: 100%;
   max-width: 100%;
-  padding: 0.5rem 1rem;
   font-size: 1.05rem;
+  font-weight: 600;
   color: var(--input-color);
   background: var(--input-background);
   background-size: 600% 600%;
   animation: gradientShift 20s ease infinite;
   border: var(--input-border);
   border-radius: 24px;
-  box-shadow: inset 0 0 0 0.5px #09092a;
   outline: none;
   text-align: center;
   box-sizing: border-box;
@@ -51,15 +50,15 @@ select.input.full-width {
   /**/
   width: 100%;
   max-width: 100%;
-  padding: 0.5rem 1rem;
+  height: 2.6rem;
   font-size: 1.05rem;
+  font-weight: 600;
   color: var(--input-color);
   background: var(--input-background);
   background-size: 600% 600%;
   animation: gradientShift 20s ease infinite;
   border: var(--input-border);
   border-radius: 24px;
-  box-shadow: inset 0 0 0 1px #1f1f1f;
   outline: none;
   text-align: center;
   box-sizing: border-box;
@@ -70,30 +69,28 @@ select.input.full-width:focus,
 select.input.full-width:hover {
   border-color: var(--input_hoverfocus-border);
   background: var(--input_hoverfocus-background);
-  font-size: 1.12rem;
+  font-size: 1.08rem;
 }
 
 /* ============================= */
 /* INPUT.SORT-BUTTON             */
 /* ============================= */
 .input.sort-button {
-  width: 2.6rem;
+  width: 2.66rem;
   text-align: center;
-  padding: 0.5rem 0;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   font-weight: bold;
   color: var(--input-color);
   background: var(--input-background);
   background-size: 600% 600%;
   animation: gradientShift 20s ease infinite;
   border: var(--input-border);
-  border-radius: 24px;
-  box-shadow: inset 0 0 0 1px #1f1f1f;
+  border-radius: 26px;
   outline: none;
   text-align: center;
   box-sizing: border-box;
-  transition: border 0.2s ease-in-out, font-size 0.4s ease;
   appearance: none;
+  transition: border 0.2s ease-in-out, font-size 0.4s ease;
 }
 .input.sort-button:focus,
 .input.sort-button:hover {
@@ -149,8 +146,10 @@ input[type="date"]:focus {
   /**/
   width: 100%;
   max-width: 100%;
-  padding: 0.5rem 1rem;
-  font-size: 1.05rem;
+  height: 2.66rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 2.4rem;
   color: var(--input-color);
   background: var(--input-background);
   background-size: 600% 600%;
@@ -166,5 +165,5 @@ input[type="date"]:focus {
 .custom-date-display:hover {
   border-color: var(--input_hoverfocus-border);
   background: var(--input_hoverfocus-background);
-  font-size: 1.05rem;
+  font-size: 1.04rem;
 }
