@@ -111,13 +111,13 @@ def process_index_upload():
                 if re.match(CLEAN_REGEX, fname, re.IGNORECASE):
                     logging.debug("Matched CLEAN — using optimize cleaning pipeline")
                     steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
-                    df = clean_xlsx(file, *steps, name=fname)
+                    df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
                     return handle_cleaner(df)
 
                 elif re.match(OPTIMIZE_REGEX, fname, re.IGNORECASE):
                     logging.debug("Matched OPTIMIZE — using optimize cleaning pipeline")
                     steps = [clean_headers, clean_deleted_rows, clean_flags, clean_columns, clean_format]
-                    df = clean_xlsx(file, *steps, name=fname)
+                    df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
                     return handle_optimize(df)
 
                 elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
@@ -141,7 +141,7 @@ def process_index_upload():
                 else:
                     logging.debug("No match — using fallback cleaning pipeline")
                     steps = [clean_headers, clean_columns, clean_flags, clean_deleted_rows, clean_format]
-                    df = clean_xlsx(file, *steps, name=fname)
+                    df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
                     return handle_cleaner(df)
 
             except Exception as clean_err:
