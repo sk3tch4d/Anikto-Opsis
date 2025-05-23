@@ -172,17 +172,52 @@ def clean_format(df):
 # ==============================
 # XLSX CLEANING PIPELINE
 # ==============================
-def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True):
-    sheet_dict = pd.read_excel(file_stream, sheet_name=None, header=header)
-    cleaned_dfs = []
+def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, multi_sheet=True):
+    if multi_sheet:
+        sheet_dict = pd.read_excel(file_stream, sheet_name=None, header=header)
+        cleaned_dfs = []
 
-    for sheet_name, df in sheet_dict.items():
-        df.attrs["name"] = sheet_name
+        for sheet_name, df in sheet_dict.items():
+            df.attrs["name"] = sheet_name
 
-        # Strip column names
+            # Strip column names
+            df.columns = [str(col).strip() for col in df.columns]
+
+            # Drop fully empty rows
+            df = df.dropna(how="all")
+
+            if detect_header:
+                df = detect_and_set_header(df)
+
+            log_cleaning("Cleaning Sheet", df, extra=f"Sheet: {sheet_name}")
+
+            for step in steps:
+                df = step(df)
+
+            # Normalize dates
+            for col in ['Created', 'Date', 'First']:
+                if col in df.columns:
+                    df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
+                    log_cleaning("Normalized Date", df)
+
+            cleaned_dfs.append(df)
+
+        if not cleaned_dfs:
+            return pd.DataFrame()
+
+        df_combined = pd.concat(cleaned_dfs, ignore_index=True)
+        df_combined = adjust_cart_ops(df_combined)
+        df_combined.attrs["name"] = name or "Combined Sheets"
+        return df_combined
+
+    else:
+        # Load only the first sheet
+        xls = pd.ExcelFile(file_stream)
+        sheet_name = xls.sheet_names[0]
+        df = pd.read_excel(file_stream, header=header, sheet_name=sheet_name)
+        df.attrs["name"] = name or sheet_name
+
         df.columns = [str(col).strip() for col in df.columns]
-
-        # Drop fully empty rows
         df = df.dropna(how="all")
 
         if detect_header:
@@ -193,25 +228,13 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True):
         for step in steps:
             df = step(df)
 
-        # Normalize dates
         for col in ['Created', 'Date', 'First']:
             if col in df.columns:
                 df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
                 log_cleaning("Normalized Date", df)
 
-        cleaned_dfs.append(df)
-
-    # Combine all sheets into one DataFrame
-    if not cleaned_dfs:
-        return pd.DataFrame()
-    
-    df_combined = pd.concat(cleaned_dfs, ignore_index=True)
-
-    # Handle Cart Ops Edge Format once for combined df
-    df_combined = adjust_cart_ops(df_combined)
-
-    df_combined.attrs["name"] = name or "Combined Sheets"
-    return df_combined
+        df = adjust_cart_ops(df)
+        return df
 
 # ==============================
 # DB CLEANING PIPELINE
