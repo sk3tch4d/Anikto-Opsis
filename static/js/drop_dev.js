@@ -38,7 +38,7 @@ export function renderDevPanel() {
         btn.type = "submit";
         btn.dataset.file = file;
         btn.classList.add("button", "full-width");
-        btn.style.marginBottom = "0.5rem";
+        btn.style.marginTop = "unset";
         panel.appendChild(btn);
       });
 
@@ -47,6 +47,7 @@ export function renderDevPanel() {
       logout.textContent = "Main Menu";
       logout.type = "button";
       logout.classList.add("button", "full-width");
+      btn.style.marginTop = "1.5rem";
       logout.onclick = () => window.location.href = "/logout-dev";
       panel.appendChild(logout);
 
