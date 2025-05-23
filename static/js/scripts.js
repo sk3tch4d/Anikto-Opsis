@@ -4,6 +4,8 @@
 
 // ----- Debugging -----
 import { initDebugToggle } from './debugging.js';
+// ----- Dev Mode -----
+import { enableDevModeTrigger, renderDevPanel } from './drop_dev.js';
 // ----- Theme -----
 import { initThemeToggle } from './theme.js';
 // ----- Typed -----
@@ -39,6 +41,12 @@ import { initializeOptimizationApp } from './optimization/opt_init.js';
 document.addEventListener("DOMContentLoaded", () => {
   // ----- Debug Toggle -----
   if (document.querySelector("#debug-toggle")) initDebugToggle();
+
+  // ----- Dev Mode -----  
+  if (document.getElementById("drop-zone")) {
+    enableDevModeTrigger();
+    renderDevPanel();
+  }
 
   // ----- Theme -----
   initThemeToggle();
