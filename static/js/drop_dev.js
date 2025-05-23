@@ -16,8 +16,6 @@ export function renderDevPanel() {
       if (dropZone) dropZone.style.display = "none";
       const generateBtn = document.getElementById("generate");
       if (generateBtn) generateBtn.style.display = "none";
-      const h3 = document.querySelector("h3");
-      if (h3) h3.style.display = "none";
 
       // CREATE Dev Panel
       const panel = document.createElement("div");
@@ -37,8 +35,8 @@ export function renderDevPanel() {
         btn.textContent = label;
         btn.type = "submit";
         btn.dataset.file = file;
-        btn.classList.add("button", "full-width");
-        btn.style.marginTop = "unset";
+        btn.classList.add("button", "full-width", "on");
+        btn.style.marginTop = "0.6rem";
         panel.appendChild(btn);
       });
 
@@ -46,8 +44,8 @@ export function renderDevPanel() {
       const logout = document.createElement("button");
       logout.textContent = "Main Menu";
       logout.type = "button";
-      logout.classList.add("button", "full-width");
-      logout.style.marginTop = "1.5rem";
+      logout.classList.add("button", "full-width", "on");
+      logout.style.marginTop = "2rem";
       logout.onclick = () => window.location.href = "/logout-dev";
       panel.appendChild(logout);
 
