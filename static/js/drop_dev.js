@@ -15,6 +15,11 @@ export function renderDevPanel() {
       const form = document.querySelector("form");
       if (!form || document.getElementById("dev-panel")) return;
 
+      // REMOVE DROPZONE
+      const dropZone = document.getElementById("drop-zone");
+      if (dropZone) dropZone.style.display = "none";
+
+      // CREATE DEV PANEL
       const panel = document.createElement("div");
       panel.id = "dev-panel";
       panel.style.marginTop = "2rem";
@@ -47,11 +52,9 @@ export function renderDevPanel() {
 
         const fileName = button.dataset.file;
 
-        // Remove any existing hidden checkbox
         const existing = document.getElementById("autofile");
         if (existing) existing.remove();
-        
-        // Inject fresh hidden checkbox
+
         const hidden = document.createElement("input");
         hidden.type = "checkbox";
         hidden.name = "existing_files";
@@ -66,6 +69,7 @@ export function renderDevPanel() {
       });
     });
 }
+
 
 // ==============================
 // ENABLE DEV MODE
