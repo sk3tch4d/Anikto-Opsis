@@ -222,6 +222,12 @@ def register_routes(app):
             session["dev"] = True
         return redirect(url_for("index"))
     # ==============================
+    @app.route("/logout-dev")
+    def logout_dev():
+        session.pop("dev", None)
+        return redirect(url_for("index"))
+
+    # ==============================
     # HANDLE DOWNLOADS
     # ==============================
     @app.route("/download/<filename>")
