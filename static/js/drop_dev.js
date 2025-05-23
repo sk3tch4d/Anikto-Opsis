@@ -28,32 +28,29 @@ export function renderDevPanel() {
       panel.id = "dev-panel";
       panel.style.marginTop = "2rem";
       panel.style.textAlign = "center";
-
+      panel.style.display = "flex";
+      panel.style.flexDirection = "column";
+      panel.style.alignItems = "center";
+      panel.style.gap = "1rem";
+      
       const buttons = [
-        { label: "Inventory", file: "Cat_V7.7.db" },
-        { label: "Seniority", file: "Seniority_List.xlsx" }
+        { label: "Inventory Catalog", file: "Cat_V7.7.db" },
+        { label: "Seniority Viewer", file: "Sen_lst.xlsx" }
       ];
-
+      
       buttons.forEach(({ label, file }) => {
         const btn = document.createElement("button");
         btn.textContent = label;
         btn.type = "submit";
         btn.dataset.file = file;
-        btn.style.margin = "0.5rem";
-        btn.style.padding = "0.75rem 1.5rem";
-        btn.style.fontSize = "1rem";
         btn.classList.add("button");
         panel.appendChild(btn);
       });
-
-      // ADD LOGOUT BUTTON
+      
       const logout = document.createElement("button");
       logout.textContent = "Main Menu";
       logout.type = "button";
-      logout.style.margin = "1rem";
-      logout.style.padding = "0.5rem 1.2rem";
-      logout.style.background = "#c0392b";
-      logout.style.color = "#fff";
+      logout.classList.add("button");
       logout.onclick = () => window.location.href = "/logout-dev";
       panel.appendChild(logout);
 
