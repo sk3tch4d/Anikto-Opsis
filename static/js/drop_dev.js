@@ -18,10 +18,12 @@ export function renderDevPanel() {
       // REMOVE DROPZONE
       const dropZone = document.getElementById("drop-zone");
       if (dropZone) dropZone.style.display = "none";
-      
       // REMOVE GENERATE BUTTON
       const generateBtn = document.getElementById("generate");
       if (generateBtn) generateBtn.style.display = "none";
+      // REMOVE H3
+      const h3 = document.querySelector("h3");
+      if (h3) h3.style.display = "none";
 
       // CREATE DEV PANEL
       const panel = document.createElement("div");
@@ -31,7 +33,6 @@ export function renderDevPanel() {
       panel.style.display = "flex";
       panel.style.flexDirection = "column";
       panel.style.alignItems = "center";
-      panel.style.gap = "1rem";
       
       const buttons = [
         { label: "Inventory Catalog", file: "Cat_V7.7.db" },
@@ -43,14 +44,15 @@ export function renderDevPanel() {
         btn.textContent = label;
         btn.type = "submit";
         btn.dataset.file = file;
-        btn.classList.add("button");
+        btn.classList.add("button full-width");
         panel.appendChild(btn);
       });
       
       const logout = document.createElement("button");
       logout.textContent = "Main Menu";
       logout.type = "button";
-      logout.classList.add("button");
+      logout.classList.add("button full-width");
+      logout.style.marginTop = "1.5rem";
       logout.onclick = () => window.location.href = "/logout-dev";
       panel.appendChild(logout);
 
