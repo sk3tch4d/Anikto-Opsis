@@ -99,7 +99,6 @@ select.input.full-width:hover {
 .input.sort-button:hover {
   border-color: var(--input_hoverfocus-border);
   background: var(--input_hoverfocus-background);
-  font-size: 1.12rem;
 }
 
 /* ============================= */
