@@ -2,6 +2,11 @@
 // DROP_DEV.JS
 // ==============================
 
+import { refreshDropUI } from './drop_utils.js';
+
+// ==============================
+// RENDER DEV PANEL
+// ==============================
 export function renderDevPanel() {
   fetch("/check-dev")
     .then(res => res.json())
