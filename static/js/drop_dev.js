@@ -44,7 +44,7 @@ export function renderDevPanel() {
       const logout = document.createElement("button");
       logout.textContent = "Main Menu";
       logout.type = "button";
-      logout.classList.add("button", "full-width-on", "main-menu-btn");
+      logout.classList.add("button", "full-width-on");
       logout.onclick = () => window.location.href = "/logout-dev";
       panel.appendChild(logout);
 
@@ -96,7 +96,7 @@ export function enableDevModeTrigger() {
 
     const closeBtn = document.createElement("div");
     closeBtn.textContent = "×";
-    closeBtn.classList.add("close-btn");
+    closeBtn.classList.add("button", "full-width");
     closeBtn.onclick = () => form.remove();
 
     const label = document.createElement("label");
