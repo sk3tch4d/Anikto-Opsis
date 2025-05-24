@@ -217,8 +217,8 @@ def register_routes(app):
     # ==============================
     @app.route("/dev-mode", methods=["POST"])
     def dev_mode():
-        token = request.form.get("token", "")
-        if token == DEV_MODE:
+        token = request.form.get("token", "").strip().lower()
+        if token in DEV_MODE:
             session["dev"] = True
         return redirect(url_for("index"))
     # ==============================
