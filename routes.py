@@ -218,8 +218,12 @@ def register_routes(app):
     @app.route("/dev-mode", methods=["POST"])
     def dev_mode():
         token = request.form.get("token", "").strip().lower()
+        print("Access Token:", repr(token))
         if token in DEV_MODE:
             session["dev"] = True
+            print("Valid Access Token!")
+        else:
+            print("Invalid Access Token!")
         return redirect(url_for("index"))
     # ==============================
     @app.route("/logout-dev")
