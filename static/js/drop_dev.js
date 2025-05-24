@@ -8,22 +8,31 @@ import { refreshDropUI } from './drop_utils.js';
 // FADE ELEMENTS
 // ==============================
 function fadeOutAndHide(el) {
-  // Ensure display is visible before fading
-  el.style.display = "block";
+  el.style.display = "block"; // Ensure not hidden
+  el.style.opacity = "1"; // Reset opacity
 
-  // Force a reflow to allow transition
-  requestAnimationFrame(() => {
-    el.classList.add("hidden-fade");
+  // Force reflow: make opacity change visible
+  void el.offsetWidth;
+  
+  el.classList.add("hidden-fade");
+  let handled = false;
+  const hide = () => {
+    if (!handled) {
+      el.style.display = "none";
+      el.removeEventListener("transitionend", handler);
+      handled = true;
+    }
+  };
 
-    el.addEventListener("transitionend", function handler(e) {
-      if (e.propertyName === "opacity") {
-        el.style.display = "none";
-        el.removeEventListener("transitionend", handler);
-      }
-    });
-  });
+  const handler = (e) => {
+    if (e.propertyName === "opacity") hide();
+  };
+
+  el.addEventListener("transitionend", handler);
+
+  // Fallback to transitionend missed
+  setTimeout(hide, 500);
 }
-
 function showWithFade(el) {
   el.style.display = "block";
   requestAnimationFrame(() => el.classList.remove("hidden-fade"));
