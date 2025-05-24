@@ -11,10 +11,16 @@
   transition: opacity 0.4s ease;
   opacity: 1;
 }
-
 .hidden-fade {
-  opacity: 0;
+  opacity: 0 !important;
   pointer-events: none;
+  visibility: hidden;
+}
+#drop-zone.hidden-fade,
+#drop-zone.hidden-fade * {
+  opacity: 0 !important;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 /* ============================== */
