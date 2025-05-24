@@ -46,7 +46,7 @@ export function renderDevPanel() {
       logout.textContent = "Main Menu";
       logout.type = "button";
       logout.classList.add("button", "full-width-on");
-      logout.style.marginTop: "3rem";
+      logout.style.marginTop = "3rem";
       logout.onclick = () => window.location.href = "/logout-dev";
       panel.appendChild(logout);
 
