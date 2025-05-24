@@ -99,9 +99,9 @@ export function enableDevModeTrigger() {
     form.action = "/dev-mode";
     form.method = "post";
     form.style.position = "fixed";
-    form.style.top = "40%";
+    form.style.top = "50%";
     form.style.left = "50%";
-    form.style.width = "clamp(220px, 75vw, 400px)";
+    form.style.width = "clamp(240px, 80vw, 420px)";
     form.style.transform = "translate(-50%, -50%)";
     form.style.background = "#222";
     form.style.padding = "2rem";
