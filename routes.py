@@ -217,13 +217,25 @@ def register_routes(app):
     # ==============================
     @app.route("/dev-mode", methods=["POST"])
     def dev_mode():
-        token = request.form.get("token", "").strip().lower()
+        # Handle both JSON and form
+        if request.is_json:
+            data = request.get_json()
+            token = data.get("token", "").strip().lower()
+        else:
+            token = request.form.get("token", "").strip().lower()
+    
         print("Access Token:", repr(token))
+        
         if token in DEV_MODE:
             session["dev"] = True
             print("Valid Access Token!")
-        else:
-            print("Invalid Access Token!")
+            if request.is_json:
+                return jsonify(success=True)
+            return redirect(url_for("index"))
+    
+        print("Invalid Access Token!")
+        if request.is_json:
+            return jsonify(success=False), 401
         return redirect(url_for("index"))
     # ==============================
     @app.route("/logout-dev")
