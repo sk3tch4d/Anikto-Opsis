@@ -37,7 +37,7 @@ export function renderDevPanel() {
         btn.type = "submit";
         btn.dataset.file = file;
         btn.classList.add("button", "full-width-on");
-        btn.style.marginTop: "1rem";
+        btn.style.marginTop = "1rem";
         panel.appendChild(btn);
       });
 
