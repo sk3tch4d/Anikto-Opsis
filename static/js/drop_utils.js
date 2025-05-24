@@ -136,55 +136,6 @@ function detectFileTypeKey() {
 }
 
 // ==============================
-// LOAD DB / LOAD SETTINGS
-// ==============================
-export function enableAutoIndexTrigger() {
-  const form = document.querySelector("form");
-  const dbTrigger = document.getElementById("drop-zone");
-  const title = document.querySelector("h1");
-
-  if (!form || !dbTrigger || !title) return;
-
-  // Inject Checkbox
-  const autoCheckbox = document.createElement("input");
-  autoCheckbox.type = "checkbox";
-  autoCheckbox.name = "existing_files";
-  autoCheckbox.value = "Cat_V7.7.db";
-  autoCheckbox.id = "autofile";
-  autoCheckbox.style.display = "none";
-  form.appendChild(autoCheckbox);
-
-  // Utility function
-  const pressHold = (targetElement, action, holdTime = 2000) => {
-    let pressTimer;
-
-    const start = () => {
-      pressTimer = setTimeout(action, holdTime);
-    };
-
-    const cancel = () => clearTimeout(pressTimer);
-
-    targetElement.addEventListener("touchstart", start);
-    targetElement.addEventListener("touchend", cancel);
-    targetElement.addEventListener("touchcancel", cancel);
-    targetElement.addEventListener("mousedown", start);
-    targetElement.addEventListener("mouseup", cancel);
-    targetElement.addEventListener("mouseleave", cancel);
-  };
-
-  // Redirect on h1 hold
-  pressHold(title, () => {
-    window.location.href = "/1902";
-  });
-
-  // Trigger db load on drop-zone hold
-  pressHold(dbTrigger, () => {
-    autoCheckbox.checked = true;
-    refreshDropUI();
-  });
-}
-
-// ==============================
 // START FORM LOADING UI
 // ==============================
 export function startFormLoadingUI() {
