@@ -101,7 +101,7 @@ export function enableDevModeTrigger() {
     form.style.position = "fixed";
     form.style.top = "40%";
     form.style.left = "50%";
-    form.style.width - "clamp(220px, 75vw, 400px)";
+    form.style.width = "clamp(220px, 75vw, 400px)";
     form.style.transform = "translate(-50%, -50%)";
     form.style.background = "#222";
     form.style.padding = "2rem";
