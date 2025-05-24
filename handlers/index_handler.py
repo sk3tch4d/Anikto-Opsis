@@ -1,3 +1,4 @@
+
 # ==============================
 # INDEX_HANDLER.PY
 # FILE ROUTING & DELEGATION
@@ -30,6 +31,49 @@ from utils.data_cleaner import (
     clean_format,
     clean_db
 )
+
+# ==============================
+# SHARED .XLSX HANDLER
+# ROUTES EXCEL BASED ON CONTENT
+# ==============================
+def handle_excel_file(file, fname):
+    fname_lower = fname.lower()
+
+    # DETERMINE CLEANING PIPELINE
+    if re.match(CLEAN_REGEX, fname, re.IGNORECASE):
+        logging.debug("Matched CLEAN — using optimize cleaning pipeline")
+        steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
+        df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
+        return handle_cleaner(df)
+
+    elif re.match(OPTIMIZE_REGEX, fname, re.IGNORECASE):
+        logging.debug("Matched OPTIMIZE — using optimize cleaning pipeline")
+        steps = [clean_headers, clean_deleted_rows, clean_flags, clean_columns, clean_format]
+        df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
+        return handle_optimize(df)
+
+    elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
+        logging.debug("Matched SENIORITY — using optimize cleaning pipeline")
+        steps = [clean_headers]
+        df = clean_xlsx(file, *steps, name=fname)
+        return handle_seniority(df)
+
+    elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
+        logging.debug("Matched CATALOG")
+        df = pd.read_excel(file)
+        return handle_inventory(df)
+
+    elif re.search(ZWDISEG_REGEX, fname_lower, re.IGNORECASE):
+        logging.debug("Matched ZWDISEG — using zwdiseg cleaning pipeline")
+        steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
+        df = clean_xlsx(file, *steps, name=fname)
+        return handle_zwdiseg(df)
+
+    else:
+        logging.debug("No match — using fallback cleaning pipeline")
+        steps = [clean_headers, clean_columns, clean_flags, clean_deleted_rows, clean_format]
+        df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
+        return handle_cleaner(df)
 
 # ==============================
 # MAIN ENTRYPOINT
@@ -66,6 +110,15 @@ def process_index_upload():
 
                 df = clean_db(df, name="DB Inventory Load")
                 return handle_inventory(df)
+
+            # ==============================
+            # Excel: Clean and reroute based on cleaned content
+            # ==============================
+            elif fname_lower.endswith(".xlsx"):
+                static_path = os.path.join("static", fname)
+                logging.debug("Routed to cleaner logic for static .xlsx file")
+                with open(static_path, "rb") as f:
+                    return handle_excel_file(f, fname)
 
             # ==============================
             # UNSUPPORTED STATIC FILE TYPE
@@ -105,48 +158,8 @@ def process_index_upload():
         # Excel: Clean and reroute based on cleaned content
         # ==============================
         if fname_lower.endswith(".xlsx"):
-            logging.debug("Routed to cleaner logic for .xlsx file")
-            try:
-                # DETERMINE CLEANING PIPELINE
-                if re.match(CLEAN_REGEX, fname, re.IGNORECASE):
-                    logging.debug("Matched CLEAN — using optimize cleaning pipeline")
-                    steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
-                    df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
-                    return handle_cleaner(df)
-
-                elif re.match(OPTIMIZE_REGEX, fname, re.IGNORECASE):
-                    logging.debug("Matched OPTIMIZE — using optimize cleaning pipeline")
-                    steps = [clean_headers, clean_deleted_rows, clean_flags, clean_columns, clean_format]
-                    df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
-                    return handle_optimize(df)
-
-                elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
-                    logging.debug("Matched SENIORITY — using optimize cleaning pipeline")
-                    steps = [clean_headers]
-                    df = clean_xlsx(file, *steps, name=fname)
-                    #df = pd.read_excel(file, sheet_name=0, header=2)
-                    return handle_seniority(df)
-
-                elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
-                    logging.debug("Matched CATALOG")
-                    df = pd.read_excel(file)
-                    return handle_inventory(df)
-
-                elif re.search(ZWDISEG_REGEX, fname_lower, re.IGNORECASE):
-                    logging.debug("Matched ZWDISEG — using zwdiseg cleaning pipeline")
-                    steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
-                    df = clean_xlsx(file, *steps, name=fname)
-                    return handle_zwdiseg(df)
-
-                else:
-                    logging.debug("No match — using fallback cleaning pipeline")
-                    steps = [clean_headers, clean_columns, clean_flags, clean_deleted_rows, clean_format]
-                    df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
-                    return handle_cleaner(df)
-
-            except Exception as clean_err:
-                logging.exception("Cleaning failed")
-                return render_template("index.html", error=f"Cleaning failed: {str(clean_err)}")
+            logging.debug("Routed to cleaner logic for uploaded .xlsx file")
+            return handle_excel_file(file, fname)
 
         # ==============================
         # SQLite: Inventory Database (Uploaded)
