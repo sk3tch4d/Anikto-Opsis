@@ -120,7 +120,7 @@ def process_index_upload():
                     df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
                     return handle_optimize(df)
 
-                elif re.match(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
+                elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
                     logging.debug("Matched SENIORITY — using optimize cleaning pipeline")
                     steps = [clean_headers]
                     df = clean_xlsx(file, *steps, name=fname)
