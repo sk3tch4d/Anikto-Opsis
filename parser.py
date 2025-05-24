@@ -59,11 +59,15 @@ def parse_pdf(pdf_path, stop_on_date=None):
             for line in lines:
                 if "Inventory Services" in line:
                     print("[DEBUG] Date line found:", line)
-                    try:
-                        processing_date = datetime.strptime(line.split()[-1], "%d/%b/%Y").date()
-                        print("[DEBUG] Parsed processing_date:", processing_date)
-                    except ValueError as e:
-                        print("[ERROR] Date parsing failed:", e)
+                    match = re.search(r"(Mon|Tue|Wed|Thu|Fri|Sat|Sun),\s*\d{2}/[A-Za-z]{3}/\d{4}", line)
+                    if match:
+                        try:
+                            processing_date = datetime.strptime(match.group(), "%a, %d/%b/%Y").date()
+                            print("[DEBUG] Parsed processing_date:", processing_date)
+                        except ValueError as e:
+                            print("[ERROR] Date parsing failed:", e)
+                    else:
+                        print("[WARN] No valid date found.")
                     break
 
             for line in lines:
@@ -110,7 +114,9 @@ def parse_pdf(pdf_path, stop_on_date=None):
 
                 except Exception:
                     continue
-
+            if not any(r["DateObj"] == processing_date for r in records):
+                print(f"[DEBUG] No valid shifts parsed for {processing_date}")
+    
             if processing_date and "Exceptions Day Unit:" in text:
                 from swaps import parse_exceptions_section
                 swaps_found = parse_exceptions_section(
