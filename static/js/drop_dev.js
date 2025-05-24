@@ -25,10 +25,6 @@ export function renderDevPanel() {
       // CREATE Dev Panel
       const panel = document.createElement("div");
       panel.id = "dev-panel";
-      panel.style.textAlign = "center";
-      panel.style.display = "flex";
-      panel.style.flexDirection = "column";
-      panel.style.alignItems = "center";
 
       const buttons = [
         { label: "Inventory Catalog", file: "Cat_V7.7.db" },
@@ -41,7 +37,6 @@ export function renderDevPanel() {
         btn.type = "submit";
         btn.dataset.file = file;
         btn.classList.add("button", "full-width-on");
-        btn.style.marginTop = "1rem";
         panel.appendChild(btn);
       });
 
@@ -49,8 +44,7 @@ export function renderDevPanel() {
       const logout = document.createElement("button");
       logout.textContent = "Main Menu";
       logout.type = "button";
-      logout.classList.add("button", "full-width-on");
-      logout.style.marginTop = "3rem";
+      logout.classList.add("button", "full-width-on", "main-menu-btn");
       logout.onclick = () => window.location.href = "/logout-dev";
       panel.appendChild(logout);
 
@@ -98,26 +92,11 @@ export function enableDevModeTrigger() {
     form.id = "dev-form";
     form.action = "/dev-mode";
     form.method = "post";
-    form.style.position = "fixed";
-    form.style.top = "45%";
-    form.style.left = "50%";
-    form.style.width = "clamp(240px, 85vw, 440px)";
-    form.style.height = "clamp(280px, 45vw, 440px)";
-    form.style.transform = "translate(-50%, -50%)";
-    form.style.background = "#222";
-    form.style.padding = "2rem";
-    form.style.borderRadius = "12px";
-    form.style.zIndex = 9999;
-    form.style.color = "#fff";
-    form.style.textAlign = "center";
+    form.classList.add("dev-popup-form");
 
     const closeBtn = document.createElement("div");
     closeBtn.textContent = "×";
-    closeBtn.style.position = "absolute";
-    closeBtn.style.top = "10px";
-    closeBtn.style.right = "15px";
-    closeBtn.style.cursor = "pointer";
-    closeBtn.style.fontSize = "1.2rem";
+    closeBtn.classList.add("close-btn");
     closeBtn.onclick = () => form.remove();
 
     const label = document.createElement("label");
@@ -127,14 +106,10 @@ export function enableDevModeTrigger() {
     const input = document.createElement("input");
     input.type = "password";
     input.name = "token";
-    input.style.padding = "0.5rem";
-    input.style.width = "100%";
-    input.style.margin = "1rem 0";
 
     const submit = document.createElement("button");
     submit.type = "submit";
     submit.textContent = "Developer Mode";
-    submit.style.padding = "0.5rem 1.5rem";
 
     form.appendChild(label);
     form.appendChild(document.createElement("br"));
