@@ -117,15 +117,20 @@ export function enableDevModeTrigger() {
     submit.classList.add("button", "full-width-on");
     submit.disabled = true;
 
-    form.appendChild(label);
-    form.appendChild(document.createElement("br"));
-    form.appendChild(document.createElement("br"));
-    form.appendChild(input); 
-    form.appendChild(submit);
-    form.appendChild(closeBtn);
+    // Enable button if input is not empty
+    input.addEventListener("input", () => {
+      submit.disabled = input.value.trim().length === 0;
+    });
 
-    document.body.appendChild(form);
-  };
+  form.appendChild(label);
+  form.appendChild(document.createElement("br"));
+  form.appendChild(document.createElement("br"));
+  form.appendChild(input);
+  form.appendChild(submit);
+  form.appendChild(closeBtn);
+
+  document.body.appendChild(form);
+};
 
   const startPress = () => {
     pressTimer = setTimeout(injectDevForm, 3000);
