@@ -96,7 +96,7 @@ export function enableDevModeTrigger() {
 
     const closeBtn = document.createElement("div");
     closeBtn.textContent = "×";
-    closeBtn.classList.add("button", "full-width");
+    closeBtn.classList.add("close-btn");
     closeBtn.onclick = () => form.remove();
 
     const label = document.createElement("label");
@@ -110,6 +110,7 @@ export function enableDevModeTrigger() {
     const submit = document.createElement("button");
     submit.type = "submit";
     submit.textContent = "Developer Mode";
+    submit.classList.add("button", "full-width");
 
     form.appendChild(label);
     form.appendChild(document.createElement("br"));
