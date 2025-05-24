@@ -8,19 +8,17 @@
 /* ============================== */
 #drop-zone,
 #dev-panel {
-  transition: opacity 0.4s ease;
   opacity: 1;
+  transition: opacity 0.4s ease;
 }
 .hidden-fade {
-  opacity: 0 !important;
+  opacity: 0;
   pointer-events: none;
-  visibility: hidden;
 }
 #drop-zone.hidden-fade,
 #drop-zone.hidden-fade * {
   opacity: 0 !important;
   pointer-events: none;
-  visibility: hidden;
 }
 
 /* ============================== */
