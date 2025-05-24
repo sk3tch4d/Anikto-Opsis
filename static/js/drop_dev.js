@@ -83,14 +83,18 @@ export function renderDevPanel() {
       logout.classList.add("button", "full-width-on");
       logout.style.marginTop = "3rem";
       logout.onclick = () => {
-        const panel = document.getElementById("dev-panel");
-        const dropZone = document.getElementById("drop-zone");
-        const generateBtn = document.getElementById("generate");
+        fetch("/logout-dev")
+          .then(() => {
+            const panel = document.getElementById("dev-panel");
+            const dropZone = document.getElementById("drop-zone");
+            const generateBtn = document.getElementById("generate");
       
-        if (panel) panel.remove();
-        if (dropZone) showWithFade(dropZone);
-        if (generateBtn) showWithFade(generateBtn);
+            if (panel) panel.remove();
+            if (dropZone) showWithFade(dropZone);
+            if (generateBtn) showWithFade(generateBtn);
+          });
       };
+
       panel.appendChild(logout);
 
       // Attach Panel
@@ -191,8 +195,11 @@ export function enableDevModeTrigger() {
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            form.remove();           // fade form out or just remove it
-            renderDevPanel();        // show the dev panel immediately
+            form.classList.add("hidden-fade");
+              setTimeout(() => {
+                form.remove();
+                renderDevPanel(); // after fade-out
+              }, 400); // match CSS transition duration
           } else {
             alert("Invalid access token.");
           }
