@@ -4,41 +4,8 @@
 
 
 /* ============================== */
-/* DEV MODE FORM                  */
+/* DEV PANEL                      */
 /* ============================== */
-.dev-popup-form {
-  position: fixed;
-  top: 45%;
-  left: 50%;
-  width: clamp(240px, 85vw, 440px);
-  height: clamp(280px, 45vw, 440px);
-  transform: translate(-50%, -50%);
-  background: #222;
-  padding: 2rem;
-  border-radius: 12px;
-  z-index: 9999;
-  color: #fff;
-  text-align: center;
-}
-
-.dev-popup-form input[type="password"] {
-  padding: 0.5rem;
-  width: 100%;
-  margin: 1rem 0;
-}
-
-.dev-popup-form button[type="submit"] {
-  padding: 0.5rem 1.5rem;
-}
-
-.dev-popup-form .close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-
 #dev-panel {
   text-align: center;
   display: flex;
@@ -46,10 +13,58 @@
   align-items: center;
 }
 
-#dev-panel button {
-  margin-top: 1rem;
+/* ============================== */
+/* DEV POPUP FORM                 */
+/* ============================== */
+.dev-popup-form {
+  position: fixed;
+  top: 18rem;
+  left: 50%;
+  width: clamp(240px, 80vw, 440px);
+  height: clamp(280px, 30vw, 280px);
+  transform: translate(-50%, -50%);
+  background: var(--panel-card-background);
+  padding: 2rem;
+  border-radius: 22px;
+  border: var(--input-border);
+  z-index: 9999;
+  color: var(--input-color);
+  text-align: center;
 }
 
-#dev-panel .main-menu-btn {
-  margin-top: 3rem;
+/* ============================== */
+/* DEV POPUP FORM INPUT           */
+/* ============================== */
+.dev-popup-form input[type="password"] {
+  padding: 0.5rem;
+  width: 100%;
+  margin: 1rem 0;
+  background: var(--input-background);
+  color: var(--input-color);
+  border: var(--input-border);
+  border-radius: 12px;
+}
+/* ============================== */
+.dev-popup-form input:hover[type="password"] {
+  padding: 0.5rem;
+  width: 100%;
+  margin: 1rem 0;
+  background: var(--input_hoverfocus-background);
+  border: var(-input_hoverfocus-border);
+}
+
+/* ============================== */
+/* DEV POPUP CLOSE BUTTON         */
+/* ============================== */
+.dev-popup-form .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+/* ============================== */
+.dev-popup-form .close-btn:hover {
+  font-size: 1.22rem;
+  color: var(--panel-card_hove-color);
 }
