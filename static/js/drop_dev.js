@@ -16,11 +16,11 @@ export function renderDevPanel() {
       const form = document.querySelector("form");
       if (!form || document.getElementById("dev-panel")) return;
 
-      // HIDE existing UI
+      // HIDE existing UI      
       const dropZone = document.getElementById("drop-zone");
-      if (dropZone) dropZone.style.display = "none";
+      if (dropZone) dropZone.classList.add("hidden-fade");
       const generateBtn = document.getElementById("generate");
-      if (generateBtn) generateBtn.style.display = "none";
+      if (generateBtn) generateBtn.classList.add("hidden-fade");
 
       // CREATE Dev Panel
       const panel = document.createElement("div");
@@ -47,7 +47,15 @@ export function renderDevPanel() {
       logout.type = "button";
       logout.classList.add("button", "full-width-on");
       logout.style.marginTop = "3rem";
-      logout.onclick = () => window.location.href = "/logout-dev";
+      logout.onclick = () => {
+        const panel = document.getElementById("dev-panel");
+        const dropZone = document.getElementById("drop-zone");
+        const generateBtn = document.getElementById("generate");
+      
+        if (panel) panel.remove();
+        if (dropZone) dropZone.classList.remove("hidden-fade");
+        if (generateBtn) generateBtn.classList.remove("hidden-fade");
+      };
       panel.appendChild(logout);
 
       // Attach Panel
@@ -106,6 +114,7 @@ export function enableDevModeTrigger() {
     label.style.fontSize = "1.2rem";
 
     const input = document.createElement("input");
+    input.classList.add("input full-width");
     input.type = "password";
     input.name = "token";
     input.required = true;
