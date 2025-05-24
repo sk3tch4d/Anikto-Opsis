@@ -4,6 +4,20 @@
 
 
 /* ============================== */
+/* MODE SWITCHING                 */
+/* ============================== */
+#drop-zone,
+#dev-panel {
+  transition: opacity 0.4s ease;
+  opacity: 1;
+}
+
+.hidden-fade {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ============================== */
 /* DEV PANEL                      */
 /* ============================== */
 #dev-panel {
@@ -11,6 +25,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  display: flex;
+  justify-content: center;
 }
 
 /* ============================== */
@@ -20,7 +36,7 @@
   position: fixed;
   top: 18rem;
   left: 50%;
-  width: clamp(240px, 85vw, 440px);
+  width: clamp(265px, 85vw, 440px);
   height: clamp(280px, 30vw, 280px);
   transform: translate(-50%, -50%);
   background: var(--panel-card-background);
@@ -35,22 +51,23 @@
 /* ============================== */
 /* DEV POPUP FORM INPUT           */
 /* ============================== */
-.dev-popup-form input[type="password"] {
-  padding: 0.5rem;
+.dev-popup-form input.full-width[type="password"] {
+  margin: 1rem 0 0;
   width: 100%;
-  margin: 1rem 0;
   background: var(--input-background);
+  background-size: 600% 600%;
+  animation: gradientShift 20s ease infinite;
   color: var(--input-color);
   border: var(--input-border);
   border-radius: 12px;
 }
 /* ============================== */
-.dev-popup-form input:hover[type="password"] {
-  padding: 0.5rem;
+.dev-popup-form input.full-width:hover[type="password"],
+.dev-popup-form input.full-width:focus[type="password"]{
   width: 100%;
-  margin: 1rem 0;
   background: var(--input_hoverfocus-background);
-  border: var(--input_hoverfocus-border);
+  border-color: var(--input_hoverfocus-border);
+  box-shadow: unset;
 }
 
 /* ============================== */
