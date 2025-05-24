@@ -174,7 +174,33 @@ export function enableDevModeTrigger() {
   form.appendChild(closeBtn);
 
   document.body.appendChild(form);
-};
+
+  form.addEventListener("submit", (e) => {
+      e.preventDefault(); // prevent reload
+    
+      const token = input.value.trim();
+      if (!token) return;
+    
+      fetch("/dev-mode", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ token })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            form.remove();           // fade form out or just remove it
+            renderDevPanel();        // show the dev panel immediately
+          } else {
+            alert("Invalid access token.");
+          }
+        })
+        .catch(() => alert("Something went wrong. Please try again."));
+    });
+  
+  };
 
   const startPress = () => {
     pressTimer = setTimeout(injectDevForm, 3000);
