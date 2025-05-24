@@ -5,6 +5,25 @@
 import { refreshDropUI } from './drop_utils.js';
 
 // ==============================
+// FADE ELEMENTS
+// ==============================
+function fadeOutAndHide(el) {
+  el.classList.add("hidden-fade");
+
+  el.addEventListener("transitionend", function handler(e) {
+    if (e.propertyName === "opacity") {
+      el.style.display = "none";
+      el.removeEventListener("transitionend", handler);
+    }
+  });
+}
+
+function showWithFade(el) {
+  el.style.display = "block";
+  requestAnimationFrame(() => el.classList.remove("hidden-fade"));
+}
+
+// ==============================
 // RENDER DEV PANEL
 // ==============================
 export function renderDevPanel() {
@@ -18,9 +37,7 @@ export function renderDevPanel() {
 
       // HIDE existing UI      
       const dropZone = document.getElementById("drop-zone");
-      if (dropZone) dropZone.classList.add("hidden-fade");
-      const generateBtn = document.getElementById("generate");
-      if (generateBtn) generateBtn.classList.add("hidden-fade");
+      if (dropZone) fadeOutAndHide(dropZone);
 
       // CREATE Dev Panel
       const panel = document.createElement("div");
@@ -53,8 +70,7 @@ export function renderDevPanel() {
         const generateBtn = document.getElementById("generate");
       
         if (panel) panel.remove();
-        if (dropZone) dropZone.classList.remove("hidden-fade");
-        if (generateBtn) generateBtn.classList.remove("hidden-fade");
+        if (dropZone) showWithFade(dropZone);
       };
       panel.appendChild(logout);
 
