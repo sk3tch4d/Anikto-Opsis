@@ -241,8 +241,8 @@ def register_routes(app):
     @app.route("/logout-dev")
     def logout_dev():
         session.pop("dev", None)
-        return redirect(url_for("index"))
-
+        return jsonify(success=True)
+    
     # ==============================
     # HANDLE DOWNLOADS
     # ==============================
