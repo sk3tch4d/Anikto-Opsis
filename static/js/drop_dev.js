@@ -8,13 +8,19 @@ import { refreshDropUI } from './drop_utils.js';
 // FADE ELEMENTS
 // ==============================
 function fadeOutAndHide(el) {
-  el.classList.add("hidden-fade");
+  // Ensure display is visible before fading
+  el.style.display = "block";
 
-  el.addEventListener("transitionend", function handler(e) {
-    if (e.propertyName === "opacity") {
-      el.style.display = "none";
-      el.removeEventListener("transitionend", handler);
-    }
+  // Force a reflow to allow transition
+  requestAnimationFrame(() => {
+    el.classList.add("hidden-fade");
+
+    el.addEventListener("transitionend", function handler(e) {
+      if (e.propertyName === "opacity") {
+        el.style.display = "none";
+        el.removeEventListener("transitionend", handler);
+      }
+    });
   });
 }
 
