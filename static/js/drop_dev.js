@@ -38,6 +38,9 @@ export function renderDevPanel() {
       // HIDE existing UI      
       const dropZone = document.getElementById("drop-zone");
       if (dropZone) fadeOutAndHide(dropZone);
+      const generateBtn = document.getElementById("generate");
+      if (generateBtn) fadeOutAndHide(generateBtn);
+
 
       // CREATE Dev Panel
       const panel = document.createElement("div");
@@ -71,6 +74,7 @@ export function renderDevPanel() {
       
         if (panel) panel.remove();
         if (dropZone) showWithFade(dropZone);
+        if (generateBtn) showWithFade(generateBtn);
       };
       panel.appendChild(logout);
 
