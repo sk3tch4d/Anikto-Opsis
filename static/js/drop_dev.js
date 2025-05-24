@@ -37,6 +37,7 @@ export function renderDevPanel() {
         btn.type = "submit";
         btn.dataset.file = file;
         btn.classList.add("button", "full-width-on");
+        btn.style.marginTop: "1rem";
         panel.appendChild(btn);
       });
 
@@ -45,6 +46,7 @@ export function renderDevPanel() {
       logout.textContent = "Main Menu";
       logout.type = "button";
       logout.classList.add("button", "full-width-on");
+      logout.style.marginTop: "3rem";
       logout.onclick = () => window.location.href = "/logout-dev";
       panel.appendChild(logout);
 
@@ -106,19 +108,22 @@ export function enableDevModeTrigger() {
     const input = document.createElement("input");
     input.type = "password";
     input.name = "token";
+    input.required = true;
+    input.minLength = 1;
 
     const submit = document.createElement("button");
     submit.type = "submit";
     submit.textContent = "Developer Mode";
-    submit.classList.add("button", "full-width");
+    submit.classList.add("button", "full-width-on");
+    submit.disabled = true;
 
     form.appendChild(label);
     form.appendChild(document.createElement("br"));
     form.appendChild(document.createElement("br"));
-    form.appendChild(input);
-    form.appendChild(document.createElement("br"));
+    form.appendChild(input); 
     form.appendChild(submit);
     form.appendChild(closeBtn);
+
     document.body.appendChild(form);
   };
 
