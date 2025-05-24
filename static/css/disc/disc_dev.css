@@ -50,7 +50,7 @@
   width: 100%;
   margin: 1rem 0;
   background: var(--input_hoverfocus-background);
-  border: var(-input_hoverfocus-border);
+  border: var(--input_hoverfocus-border);
 }
 
 /* ============================== */
