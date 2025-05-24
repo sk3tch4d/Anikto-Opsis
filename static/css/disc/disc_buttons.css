@@ -94,6 +94,15 @@ button:disabled {
 }
 
 /* ============================= */
+/* INPUT VALID: FULL-WIDTH-ON    */
+/* ============================= */
+.dev-popup-form input:valid + .button.full-width-on {
+  opacity: 1;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* ============================= */
 /* BUTTON: PANEL                 */
 /* ============================= */
 .panel .button {
