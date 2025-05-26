@@ -88,7 +88,7 @@ def process_index_upload():
         # HANDLE MISSING FILES
         # ==============================
         if not uploaded_files and not existing_files:
-            return render_template("index.html", error="No files uploaded.")
+            return render_template("index.html", error="[HANDLER] No files uploaded.")
 
         # ==============================
         # HANDLE EXISTING FILE SELECTION (STATIC)
@@ -123,7 +123,7 @@ def process_index_upload():
             # ==============================
             # UNSUPPORTED STATIC FILE TYPE
             # ==============================
-            return render_template("index.html", error="Unsupported file type.")
+            return render_template("index.html", error="[HANDLER] Unsupported file type.")
 
         # ==============================
         # FILE UPLOAD FLOW
@@ -178,8 +178,8 @@ def process_index_upload():
         # ==============================
         # UNKNOWN FILE TYPE
         # ==============================
-        return render_template("index.html", error="Unsupported file type.")
+        return render_template("index.html", error="[HANDLER] Unsupported file type.")
 
     except Exception as e:
         logging.exception("[HANDLER] Error during file processing")
-        return render_template("index.html", error=f"Unexpected error during routing: {str(e)}")
+        return render_template("index.html", error=f"[HANDLER] Unexpected error during routing: {str(e)}")
