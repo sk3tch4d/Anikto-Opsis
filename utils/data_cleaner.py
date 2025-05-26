@@ -190,7 +190,7 @@ def clean_format(df):
 # ==============================
 # XLSX CLEANING PIPELINE
 # ==============================
-def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, multi_sheet=True):
+def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, multi_sheet=True):
     if multi_sheet:
         sheet_dict = pd.read_excel(file_stream, sheet_name=None, header=header)
         cleaned_dfs = []
