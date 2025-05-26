@@ -36,7 +36,7 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
 
     term = term.strip().lower()
     if DEBUG:
-        print(f"[DEBUG] Starting search: term='{term}', usl='{usl}', sort='{sort}', direction='{direction}'")
+        print(f"[SEARCH]🔎 Starting search: term='{term}', usl='{usl}', sort='{sort}', direction='{direction}'")
 
     # ✅ Filter by USL
     usl = usl.strip().lower()
