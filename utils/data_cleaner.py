@@ -198,25 +198,19 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, mul
         for sheet_name, df in sheet_dict.items():
             df.attrs["name"] = sheet_name
 
-            # Strip column names
+            # Strip column names and drop empty rows
             df.columns = [str(col).strip() for col in df.columns]
-
-            # Drop fully empty rows
             df = df.dropna(how="all")
 
+            # Detect union BEFORE header stripping
             union = detect_union_value(df)
 
-            # Existing: clean headers
             if detect_header:
                 df = detect_and_set_header(df)
-            
-            # Apply union label after header detection
-            if union:
-                df["Union"] = union
-                log_cleaning("Detected Union", df, extra=union)
 
             log_cleaning("Cleaning Sheet", df, extra=f"Sheet: {sheet_name}")
 
+            # Apply all cleaning steps
             for step in steps:
                 df = step(df)
 
@@ -225,6 +219,11 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, mul
                 if col in df.columns:
                     df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
                     log_cleaning("Normalized Date", df)
+
+            # Attach union value AFTER cleaning
+            if union:
+                df["Union"] = union
+                log_cleaning("Detected Union", df, extra=union)
 
             cleaned_dfs.append(df)
 
@@ -242,23 +241,15 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, mul
         sheet_name = xls.sheet_names[0]
         df = pd.read_excel(file_stream, header=header, sheet_name=sheet_name)
         df.attrs["name"] = name or sheet_name
-    
+
+        # Detect union BEFORE header stripping
         union = detect_union_value(df)
 
-        # Existing: clean headers
         if detect_header:
             df = detect_and_set_header(df)
-        
-        # Apply union label after header detection
-        if union:
-            df["Union"] = union
-            log_cleaning("Detected Union", df, extra=union)
 
         df.columns = [str(col).strip() for col in df.columns]
         df = df.dropna(how="all")
-
-        if detect_header:
-            df = detect_and_set_header(df)
 
         log_cleaning("Cleaning Sheet", df, extra=f"Sheet: {sheet_name}")
 
@@ -269,6 +260,11 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, mul
             if col in df.columns:
                 df[col] = pd.to_datetime(df[col], errors='coerce').dt.date
                 log_cleaning("Normalized Date", df)
+
+        # Attach union value AFTER cleaning
+        if union:
+            df["Union"] = union
+            log_cleaning("Detected Union", df, extra=union)
 
         df = adjust_cart_ops(df)
         return df
