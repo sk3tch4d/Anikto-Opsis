@@ -222,7 +222,7 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, mul
 
             # Attach union value AFTER cleaning
             if union:
-                df["Union"] = union
+                df["Union"] = [union] * len(df)
                 log_cleaning("Detected Union", df, extra=union)
 
             cleaned_dfs.append(df)
@@ -263,7 +263,7 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, mul
 
         # Attach union value AFTER cleaning
         if union:
-            df["Union"] = union
+            df["Union"] = [union] * len(df)
             log_cleaning("Detected Union", df, extra=union)
 
         df = adjust_cart_ops(df)
