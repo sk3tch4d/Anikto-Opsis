@@ -25,7 +25,8 @@ export function setupSeniorityDownloadCleaned() {
         row["Status"] || "",
         row["Position"] || "",
         row["Department"] || "",
-        row["Note"] || ""
+        row["Note"] || "",
+        row["Union"] || ""
       ]);
   
       downloadTable({
@@ -55,7 +56,8 @@ export function setupSeniorityDownloadSearch() {
       row["Status"] || "",
       row["Position"] || "",
       row["Department"] || "",
-      row["Note"] || ""
+      row["Note"] || "",
+      row["Union"] || ""
     ]);
 
     downloadTable({
