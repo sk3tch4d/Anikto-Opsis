@@ -224,16 +224,16 @@ def register_routes(app):
         else:
             token = request.form.get("token", "").strip().lower()
     
-        print("Access Token:", repr(token))
+        print("🔑 Access Token:", repr(token))
         
         if token in DEV_MODE:
             session["dev"] = True
-            print("Valid Access Token!")
+            print("🔓 Valid Access Token!")
             if request.is_json:
                 return jsonify(success=True)
             return redirect(url_for("index"))
     
-        print("Invalid Access Token!")
+        print("🔒 Invalid Access Token!")
         if request.is_json:
             return jsonify(success=False), 401
         return redirect(url_for("index"))
