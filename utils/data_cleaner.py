@@ -138,13 +138,13 @@ def detect_union_value(df):
     logging.debug(f"[DEBUG] Preview flattened text: {text!r}")
 
     if "OPSEU" in text:
-        log_cleaning("Union Found", df, extra="OPSEU")
+        log_cleaning("Union Found:", df, extra="OPSEU")
         return "OPSEU"
     elif "CUPE" in text:
-        log_cleaning("Union Found", df, extra="CUPE")
+        log_cleaning("Union Found:", df, extra="CUPE")
         return "CUPE"
 
-    log_cleaning("No Union Found", df)
+    log_cleaning("No Union Found:", df)
     return None
 
 # ==============================
