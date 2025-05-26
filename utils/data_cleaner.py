@@ -134,8 +134,9 @@ def adjust_cart_ops(df):
 # ==============================
 def detect_union_value(df):
     preview = df.head(5).fillna("").astype(str).apply(lambda x: x.str.upper())
-
     text = " ".join(preview.values.flatten())
+    logging.debug(f"[DEBUG] Preview flattened text: {text!r}")
+
     if "OPSEU" in text:
         log_cleaning("Union Found", df, extra="OPSEU")
         return "OPSEU"
