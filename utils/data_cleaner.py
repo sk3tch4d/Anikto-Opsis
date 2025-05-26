@@ -130,6 +130,24 @@ def adjust_cart_ops(df):
     return df
 
 # ==============================
+# DETECT UNION AND SET
+# ==============================
+def detect_union(df):
+    search_rows = df.head(5).astype(str).apply(lambda x: x.str.upper())
+
+    union = None
+    if search_rows.apply(lambda row: row.str.contains("OPSEU").any(), axis=1).any():
+        union = "OPSEU"
+    elif search_rows.apply(lambda row: row.str.contains("CUPE").any(), axis=1).any():
+        union = "CUPE"
+
+    if union:
+        df["Union"] = union
+        log_cleaning("Detected Union", df, extra=union)
+
+    return df
+
+# ==============================
 # CLEANING FUNCTIONS (STEP MODULES)
 # ==============================
 def clean_headers(df):
@@ -179,6 +197,9 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, mul
 
         for sheet_name, df in sheet_dict.items():
             df.attrs["name"] = sheet_name
+                
+            # Handle Union Col
+            df = detect_union(df)
 
             # Strip column names
             df.columns = [str(col).strip() for col in df.columns]
@@ -216,6 +237,9 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, mul
         sheet_name = xls.sheet_names[0]
         df = pd.read_excel(file_stream, header=header, sheet_name=sheet_name)
         df.attrs["name"] = name or sheet_name
+    
+        # Handle Union Col
+        df = detect_union(df)
 
         df.columns = [str(col).strip() for col in df.columns]
         df = df.dropna(how="all")
