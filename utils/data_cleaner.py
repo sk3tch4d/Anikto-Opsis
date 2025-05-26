@@ -192,7 +192,7 @@ def clean_format(df):
 # ==============================
 def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, multi_sheet=True):
     if multi_sheet:
-        sheet_dict = pd.read_excel(file_stream, sheet_name=None, header=header)
+        sheet_dict = pd.read_excel(file_stream, sheet_name=None, header=None)
         cleaned_dfs = []
 
         for sheet_name, df in sheet_dict.items():
@@ -239,7 +239,7 @@ def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, 
         # Load only the first sheet
         xls = pd.ExcelFile(file_stream)
         sheet_name = xls.sheet_names[0]
-        df = pd.read_excel(file_stream, header=header, sheet_name=sheet_name)
+        df = pd.read_excel(file_stream, header=None, sheet_name=sheet_name)
         df.attrs["name"] = name or sheet_name
 
         # Detect union BEFORE header stripping
