@@ -130,22 +130,15 @@ def adjust_cart_ops(df):
     return df
 
 # ==============================
-# DETECT UNION AND SET
+# DETECT UNION VALUE
 # ==============================
-def detect_union(df):
-    search_rows = df.head(5).astype(str).apply(lambda x: x.str.upper())
-
-    union = None
-    if search_rows.applymap(lambda val: "OPSEU" in val).any().any():
-        union = "OPSEU"
-    elif search_rows.applymap(lambda val: "CUPE" in val).any().any():
-        union = "CUPE"
-
-    if union:
-        df["Union"] = union
-        log_cleaning("Detected Union", df, extra=union)
-
-    return df
+def detect_union_value(df):
+    preview = df.head(5).astype(str).apply(lambda x: x.str.upper())
+    if preview.applymap(lambda v: "OPSEU" in v).any().any():
+        return "OPSEU"
+    if preview.applymap(lambda v: "CUPE" in v).any().any():
+        return "CUPE"
+    return None
 
 # ==============================
 # CLEANING FUNCTIONS (STEP MODULES)
@@ -197,9 +190,6 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, mul
 
         for sheet_name, df in sheet_dict.items():
             df.attrs["name"] = sheet_name
-                
-            # Handle Union Col
-            df = detect_union(df)
 
             # Strip column names
             df.columns = [str(col).strip() for col in df.columns]
@@ -207,8 +197,16 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, mul
             # Drop fully empty rows
             df = df.dropna(how="all")
 
+            union = detect_union_value(df)
+
+            # Existing: clean headers
             if detect_header:
                 df = detect_and_set_header(df)
+            
+            # Apply union label after header detection
+            if union:
+                df["Union"] = union
+                log_cleaning("Detected Union", df, extra=union)
 
             log_cleaning("Cleaning Sheet", df, extra=f"Sheet: {sheet_name}")
 
@@ -238,8 +236,16 @@ def clean_xlsx(file_stream, *steps, header=0, name=None, detect_header=True, mul
         df = pd.read_excel(file_stream, header=header, sheet_name=sheet_name)
         df.attrs["name"] = name or sheet_name
     
-        # Handle Union Col
-        df = detect_union(df)
+        union = detect_union_value(df)
+
+        # Existing: clean headers
+        if detect_header:
+            df = detect_and_set_header(df)
+        
+        # Apply union label after header detection
+        if union:
+            df["Union"] = union
+            log_cleaning("Detected Union", df, extra=union)
 
         df.columns = [str(col).strip() for col in df.columns]
         df = df.dropna(how="all")
