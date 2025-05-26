@@ -30,7 +30,7 @@ UPLOAD_FOLDER = "/tmp"
 MAX_PDFS = 30
 ALLOWED_UPLOAD_TYPES = ["pdf", "xlsx", "db"]
 DEBUG_MODE = True
-DEV_MODE = {"112737", "ryce", "lemon"}
+DEV_MODE = {"112737", "ryce", "rvp", "lemon"}
 COLS_ORDER = [
     "Cost_Center", "USL", "Num", "QTY", "ROP", "ROQ", "Counted", "Consumed",
     "Difference", "Changed", "MVT", "Description", "Cost", "UOM",
