@@ -106,10 +106,10 @@ def detect_and_set_header(df, max_rows=20):
             df.columns = row
             df = df.iloc[i + 1:].reset_index(drop=True)
             
-            log_cleaning(f"Detected header at row {i} with {num_strings} strings and {unique_values} unique values")
+            logging.debug(f"[CLEAN]Detected header at row {i} with {num_strings} strings and {unique_values} unique values")
             return df
 
-    log_cleaning("No valid header row detected in preview window.")
+    logging.debug("[CLEAN] No valid header row detected in preview window.")
     return df  # Fallback: return unchanged
 
 # ==============================
@@ -135,7 +135,7 @@ def adjust_cart_ops(df):
 def detect_union_value(df):
     preview = df.head(5).fillna("").astype(str).apply(lambda x: x.str.upper())
     text = " ".join(preview.values.flatten())
-    log_cleaning(f"Preview flattened text: {text!r}")
+    logging.debug(f"[DEBUG] Preview flattened text: {text!r}")
 
     if "OPSEU" in text:
         log_cleaning("Union Found", df, extra="OPSEU")
