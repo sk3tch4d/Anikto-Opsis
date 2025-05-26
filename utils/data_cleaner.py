@@ -135,11 +135,12 @@ def adjust_cart_ops(df):
 def detect_union_value(df):
     preview = df.head(5).astype(str).apply(lambda x: x.str.upper())
     if preview.applymap(lambda v: "OPSEU" in v).any().any():
+        log_cleaning("Union Found:", df, extra="OPSEU")
         return "OPSEU"
-        log_cleaning("Union Found: OPSEU")
-    if preview.applymap(lambda v: "CUPE" in v).any().any():
+    elif preview.applymap(lambda v: "CUPE" in v).any().any():
+        log_cleaning("Union Found:", df, extra="CUPE")
         return "CUPE"
-        log_cleaning("Union Found: CUPE")
+    
     log_cleaning("No Union Found:", df)
     return None
 
