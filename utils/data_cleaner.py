@@ -92,7 +92,7 @@ REMOVE_COLUMNS = [
 # ==============================
 def log_cleaning(step, df, extra=""):
     name = df.attrs.get("name", "Unnamed")
-    logging.debug(f"[CLEAN] {step} -> {name}{f' — {extra}' if extra else ''}")
+    logging.debug(f"[CLEAN]🧹 {step} -> {name}{f' — {extra}' if extra else ''}")
 
 # ==============================
 # DETECT AND SET HEADER
@@ -106,10 +106,10 @@ def detect_and_set_header(df, max_rows=20):
             df.columns = row
             df = df.iloc[i + 1:].reset_index(drop=True)
             
-            logging.debug(f"[CLEAN]Detected header at row {i} with {num_strings} strings and {unique_values} unique values")
+            logging.debug(f"[CLEAN]🧹 Detected header at row {i} with {num_strings} strings and {unique_values} unique values")
             return df
 
-    logging.debug("[CLEAN] No valid header row detected in preview window.")
+    logging.debug("[CLEAN]🧹 No valid header row detected in preview window.")
     return df  # Fallback: return unchanged
 
 # ==============================
