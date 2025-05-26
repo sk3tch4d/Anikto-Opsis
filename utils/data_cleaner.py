@@ -136,9 +136,9 @@ def detect_union(df):
     search_rows = df.head(5).astype(str).apply(lambda x: x.str.upper())
 
     union = None
-    if search_rows.apply(lambda row: row.str.contains("OPSEU").any(), axis=1).any():
+    if search_rows.applymap(lambda val: "OPSEU" in val).any().any():
         union = "OPSEU"
-    elif search_rows.apply(lambda row: row.str.contains("CUPE").any(), axis=1).any():
+    elif search_rows.applymap(lambda val: "CUPE" in val).any().any():
         union = "CUPE"
 
     if union:
