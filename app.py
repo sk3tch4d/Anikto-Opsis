@@ -1,29 +1,51 @@
+# ==============================
+# APP.PY
+# ==============================
+
 import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
 from models import db, ShiftRecord, CoverageShift, Employee
 from routes import register_routes
+from routes.inventory_routes import inventory_bp
 
-# Initialize Flask app
+# ==============================
+# INITIALIZE FLASK APP
+# ==============================
 app = Flask(__name__)
 app.secret_key = "False"
 
-# Set up logging
+# ==============================
+# SETUP BLUEPRINTS
+# ==============================
+app.register_blueprint(inventory_bp)
+
+# ==============================
+# SETUP LOGGING
+# ==============================
 logging.basicConfig(level=logging.DEBUG)
 app.logger.setLevel(logging.DEBUG)
 
-# Quiet down pdfminer
+# ==============================
+# SILENCE PDFMINER
+# ==============================
 logging.getLogger("pdfminer").setLevel(logging.WARNING)
 
-# Database configuration
+# ==============================
+# SETUP DATABASE CONFIG
+# ==============================
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///local.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Initialize DB
+# ==============================
+# INITIALIZE DATABASE
+# ==============================
 db.init_app(app)
 
-# Register routes
+# ==============================
+# REGISTER ROUTES
+# ==============================
 register_routes(app)
 
 # Add a minimal health check
