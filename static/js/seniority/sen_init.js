@@ -6,13 +6,13 @@
 // ==============================
 // IMPORT 
 // ==============================
-import { initSenioritySearch } from "./search.js";
-import { initComparisonPanel } from "./compare.js";
-import { populateStats, populateGlobalStats } from './stats.js';
-import { populatePositionList } from "./positions.js";
+import { initSenioritySearch } from "./sen_search.js";
+import { initComparisonPanel } from "./sen_compare.js";
+import { populateStats, populateGlobalStats } from './sen_stats.js';
+import { populatePositionList } from "./sen_positions.js";
 import { setupSeniorityDownloadCleaned, setupSeniorityDownloadSearch } from "./sen_downloads.js";
-import { fixMobileDatalist } from "./datalist.js";
-import { initSeniorityFilters } from "./filters.js";
+import { fixMobileDatalist } from "./sen_datalist.js";
+import { initSeniorityFilters } from "./sen_filters.js";
 
 // ==============================
 // EXPORT 
