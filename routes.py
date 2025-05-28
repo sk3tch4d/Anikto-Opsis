@@ -25,6 +25,7 @@ from dataman import (
     import_shifts_from_csv,
 )
 from inv_cleaner import clean_xlsx_and_save
+from data_search import handle_search_request
 from report import get_working_on_date, get_shifts_for_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
@@ -66,16 +67,7 @@ def register_routes(app):
     # ==============================
     @app.route("/inventory-search")
     def inventory_search():
-        term = request.args.get("term", "")
-        usl = request.args.get("usl", "Any")
-        sort = request.args.get("sort", "QTY")
-        direction = request.args.get("dir", "desc")
-        results = search_inventory(config.INVENTORY_DF, term, usl, sort, direction)
-        for r in results:
-            for k, v in r.items():
-                if isinstance(v, float) and np.isnan(v):
-                    r[k] = None
-        return jsonify(results)
+        return handle_search_request(config.INVENTORY_DF, search_inventory)
 
     # ==============================
     # ZWDISEG API ROUTES
@@ -89,16 +81,7 @@ def register_routes(app):
     # ==============================
     @app.route("/zwdiseg-search")
     def zwdiseg_search():
-        term = request.args.get("term", "")
-        usl = request.args.get("usl", "Any")
-        sort = request.args.get("sort", "QTY")
-        direction = request.args.get("dir", "desc")
-        results = search_zwdiseg(config.ZWDISEG_DF, term, usl, sort, direction)
-        for r in results:
-            for k, v in r.items():
-                if isinstance(v, float) and np.isnan(v):
-                    r[k] = None
-        return jsonify(results)
+        return handle_search_request(config.ZWDISEG_DF, search_zwdiseg)
 
     # ==============================
     # OPTIMIZATION API ROUTES
@@ -112,16 +95,7 @@ def register_routes(app):
     # ==============================
     @app.route("/optimization-search")
     def optimization_search():
-        term = request.args.get("term", "")
-        cart = request.args.get("cart", "All")
-        sort = request.args.get("sort", "site_suggested_rop")
-        direction = request.args.get("dir", "desc")
-        results = search_optimization(config.OPTIMIZATION_DF, term, cart, sort, direction)
-        for r in results:
-            for k, v in r.items():
-                if isinstance(v, float) and np.isnan(v):
-                    r[k] = None
-        return jsonify(results)
+        return handle_search_request(config.OPTIMIZATION_DF, search_optimization, default_sort="site_suggested_rop")
 
     # ==============================
     # CLEAN INVENTORY
