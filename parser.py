@@ -57,17 +57,17 @@ def parse_pdf(pdf_path, stop_on_date=None):
             lines = text.splitlines()
 
             for line in lines:
-                if "Inventory Services" in line:
-                    print("[DEBUG] Date line found:", line)
+                if "Unit: Inventory Services" in line:
+                    print("[PARSER] Date line found:", line)
                     match = re.search(r"(Mon|Tue|Wed|Thu|Fri|Sat|Sun),\s*\d{2}/[A-Za-z]{3}/\d{4}", line)
                     if match:
                         try:
                             processing_date = datetime.strptime(match.group(), "%a, %d/%b/%Y").date()
-                            print("[DEBUG] Parsed processing_date:", processing_date)
+                            print("[PARSER] Parsed processing_date:", processing_date)
                         except ValueError as e:
-                            print("[ERROR] Date parsing failed:", e)
+                            print("[PARSER] Date parsing failed:", e)
                     else:
-                        print("[WARN] No valid date found.")
+                        print("[PARSER] Warning: No valid date found.")
                     break
 
             for line in lines:
