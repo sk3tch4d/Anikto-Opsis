@@ -34,6 +34,8 @@ from zwdiseg import load_zwdiseg_data, get_zwdiseg_usls, search_zwdiseg
 from optimization import search_optimization
 from handlers.index_handler import process_index_upload
 
+from .inventory_routes import inventory_bp
+
 # ==============================
 # ENSURE UPLOAD FOLDER EXISTS
 # ==============================
@@ -45,6 +47,11 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def register_routes(app):
 
     # ==============================
+    # REGISTER BLUEPRINTS
+    # ==============================
+    app.register_blueprint(inventory_bp)
+    
+    # ==============================
     # INDEX HANDLING: POST & GET
     # ==============================
     @app.route("/", methods=["GET"])
@@ -54,20 +61,6 @@ def register_routes(app):
     @app.route("/", methods=["POST"])
     def post_index():
         return process_index_upload()
-
-    # ==============================
-    # INVENTORY API ROUTES
-    # ==============================
-    @app.route("/inventory-usls")
-    def inventory_usls():
-        result = get_inventory_usls(config.INVENTORY_DF)
-        if isinstance(result, tuple):
-            return jsonify(result[0]), result[1]
-        return jsonify(result)
-    # ==============================
-    @app.route("/inventory-search")
-    def inventory_search():
-        return handle_search_request(config.INVENTORY_DF, search_inventory)
 
     # ==============================
     # ZWDISEG API ROUTES
