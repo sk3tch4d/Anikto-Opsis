@@ -3,7 +3,7 @@
 // Global + Filtered Statistics
 // ==============================
 
-import { renderResults } from './results.js';
+import { renderResults } from './sen_results.js';
 import { setupParseStats, searchFromStat } from "../search-utils.js";
 import { openPanelById } from "../panels.js";
 
