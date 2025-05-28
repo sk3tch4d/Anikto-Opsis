@@ -3,9 +3,9 @@
 // Core Search + Filter Utilities
 // ==============================
 
-import { renderResults } from './results.js';
-import { populateStats, populateGlobalStats } from './stats.js';
-import { populatePositionList } from './positions.js';
+import { renderResults } from './sen_results.js';
+import { populateStats, populateGlobalStats } from './sen_stats.js';
+import { populatePositionList } from './sen_positions.js';
 import { searchFromStat } from '../search-utils.js'; // centralized function
 
 // ==============================
