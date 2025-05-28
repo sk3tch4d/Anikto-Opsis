@@ -17,11 +17,6 @@ app = Flask(__name__)
 app.secret_key = "False"
 
 # ==============================
-# SETUP BLUEPRINTS
-# ==============================
-app.register_blueprint(inventory_bp)
-
-# ==============================
 # SETUP LOGGING
 # ==============================
 logging.basicConfig(level=logging.DEBUG)
