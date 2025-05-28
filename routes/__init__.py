@@ -24,7 +24,6 @@ from dataman import (
     import_shifts_from_json,
     import_shifts_from_csv,
 )
-from inv_cleaner import clean_xlsx_and_save
 from utils.data_search import handle_search_request
 from report import get_working_on_date, get_shifts_for_date, process_report
 from models import ShiftRecord, CoverageShift
@@ -76,31 +75,6 @@ def register_routes(app):
     @app.route("/optimization-search")
     def optimization_search():
         return handle_search_request(config.OPTIMIZATION_DF, search_optimization, default_sort="site_suggested_rop")
-
-    # ==============================
-    # CLEAN INVENTORY
-    # ==============================
-    @app.route("/clean-inventory-xlsx", methods=["POST"])
-    def clean_inventory_xlsx():
-        file = request.files.get('file')
-        if not file:
-            return jsonify({"error": "No file uploaded"}), 400
-        try:
-            tmp_path = clean_xlsx_and_save(file)
-            response = send_file(tmp_path, as_attachment=True, download_name='cleaned_inventory.xlsx')
-
-            @response.call_on_close
-            def cleanup():
-                try:
-                    os.unlink(tmp_path)
-                except Exception as e:
-                    app.logger.error(f"Error deleting temp file: {e}")
-            return response
-
-        except ValueError as ve:
-            return jsonify({"error": str(ve)}), 400
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500
 
     # ==============================
     # ARG SCHEDULE API ROUTES
