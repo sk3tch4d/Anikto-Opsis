@@ -1,5 +1,5 @@
 # ==============================
-# ROUTES.PY — MAIN ROUTE HANDLER
+# __INIT__.PY MAIN ROUTE HANDLER
 # ==============================
 
 import os
