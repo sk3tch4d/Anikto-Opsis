@@ -3,7 +3,7 @@
 // Comparison Panel Logic
 // ==============================
 
-import { normalize } from './search.js';
+import { normalize } from './sen_search.js';
 import { getStatusDot } from '../statusdot.js';
 import { scrollPanel } from '../panels.js';
 //import { initAutocomplete } from './autocomplete.js';
