@@ -25,7 +25,7 @@ from dataman import (
     import_shifts_from_csv,
 )
 from inv_cleaner import clean_xlsx_and_save
-from data_search import handle_search_request
+from utils.data_search import handle_search_request
 from report import get_working_on_date, get_shifts_for_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
