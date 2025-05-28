@@ -29,12 +29,12 @@ from utils.data_search import handle_search_request
 from report import get_working_on_date, get_shifts_for_date, process_report
 from models import ShiftRecord, CoverageShift
 from seniority import load_seniority_file
-from inventory import load_inventory_data, get_inventory_usls, search_inventory
 from zwdiseg import load_zwdiseg_data, get_zwdiseg_usls, search_zwdiseg
 from optimization import search_optimization
 from handlers.index_handler import process_index_upload
 
 from .inventory_routes import inventory_bp
+from .zwdiseg_routes import zwdiseg_bp
 
 # ==============================
 # ENSURE UPLOAD FOLDER EXISTS
@@ -50,6 +50,7 @@ def register_routes(app):
     # REGISTER BLUEPRINTS
     # ==============================
     app.register_blueprint(inventory_bp)
+    app.register_blueprint(zwdiseg_bp)
     
     # ==============================
     # INDEX HANDLING: POST & GET
@@ -61,20 +62,6 @@ def register_routes(app):
     @app.route("/", methods=["POST"])
     def post_index():
         return process_index_upload()
-
-    # ==============================
-    # ZWDISEG API ROUTES
-    # ==============================
-    @app.route("/zwdiseg-usls")
-    def zwdiseg_usls():
-        result = get_zwdiseg_usls(config.ZWDISEG_DF)
-        if isinstance(result, tuple):
-            return jsonify(result[0]), result[1]
-        return jsonify(result)
-    # ==============================
-    @app.route("/zwdiseg-search")
-    def zwdiseg_search():
-        return handle_search_request(config.ZWDISEG_DF, search_zwdiseg)
 
     # ==============================
     # OPTIMIZATION API ROUTES
