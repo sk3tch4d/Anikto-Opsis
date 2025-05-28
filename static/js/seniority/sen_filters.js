@@ -2,9 +2,9 @@
 // FILTERS.JS
 // Search Filter Controls
 // ==============================
-import { renderResults } from './results.js';
-import { populateStats } from './stats.js';
 
+import { renderResults } from './sen_results.js';
+import { populateStats } from './sen_stats.js';
 
 // ==============================
 // INIT FILTERS PANEL
