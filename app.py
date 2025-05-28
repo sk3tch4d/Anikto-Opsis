@@ -8,7 +8,6 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from models import db, ShiftRecord, CoverageShift, Employee
 from routes import register_routes
-from routes.inventory_routes import inventory_bp
 
 # ==============================
 # INITIALIZE FLASK APP
