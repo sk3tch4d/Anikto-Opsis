@@ -4,7 +4,7 @@
 // ==============================
 
 import { searchFromStat } from '../search-utils.js';
-import { toTitleCase } from './helpers.js';
+import { toTitleCase } from './sen_helpers.js';
 
 // ==============================
 // INIT POSITION PANEL
