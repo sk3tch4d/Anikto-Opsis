@@ -9,6 +9,9 @@ import os
 from models import db, ShiftRecord, CoverageShift, Employee
 from routes import register_routes
 
+import config
+from inventory import load_inventory_data
+
 # ==============================
 # INITIALIZE FLASK APP
 # ==============================
@@ -46,3 +49,10 @@ register_routes(app)
 @app.route("/healthz")
 def health_check():
     return "OK", 200
+
+
+try:
+    config.INVENTORY_DF = load_inventory_data("/tmp/catalog.xlsx")  # or your default path
+    app.logger.info(f"Preloaded inventory: {config.INVENTORY_DF.shape}")
+except Exception as e:
+    app.logger.warning(f"Could not preload inventory: {e}")
