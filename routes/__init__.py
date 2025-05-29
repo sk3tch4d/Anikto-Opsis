@@ -31,7 +31,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # REGISTER APPLICATION ROUTES
 # ==============================
 def register_routes(app):
-    current_app.logger.debug("🚀 Initializing application routes and filters")
+    app.logger.debug("🚀 Initializing application routes and filters")
 
     # ==============================
     # REGISTER BLUEPRINTS
@@ -39,7 +39,7 @@ def register_routes(app):
     blueprints = [arg_bp, file_bp, dev_bp, inventory_bp, optimization_bp, zwdiseg_bp]
     for bp in blueprints:
         app.register_blueprint(bp)
-        current_app.logger.debug(f"🔗 Registered blueprint: {bp.name}")
+        app.logger.debug(f"🔗 Registered blueprint: {bp.name}")
 
     # ==============================
     # INDEX HANDLING: POST & GET
