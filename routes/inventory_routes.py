@@ -20,14 +20,27 @@ inventory_bp = Blueprint("inventory", __name__)
 # ==============================
 @inventory_bp.route("/inventory-usls")
 def inventory_usls():
-    df = config.INVENTORY_DF  # Dynamic reference
+    df = config.INVENTORY_DF  # dynamic access
     current_app.logger.debug("📦 /inventory-usls route hit")
-    result = get_inventory_usls(df)
-    current_app.logger.debug(f"🧪 USLs result: {result}")
 
-    if isinstance(result, tuple):
-        return jsonify(result[0]), result[1]
-    return jsonify(result), 200
+    if df is None:
+        current_app.logger.warning("⚠️ INVENTORY_DF is None.")
+        return jsonify({"error": "Inventory data not loaded."}), 400
+    else:
+        current_app.logger.debug(f"📊 INVENTORY_DF shape: {df.shape}")
+
+    try:
+        result = get_inventory_usls(df)
+        current_app.logger.debug(f"🧪 USLs result: {result}")
+
+        if isinstance(result, tuple):
+            return jsonify(result[0]), result[1]
+        return jsonify(result), 200
+
+    except Exception as e:
+        current_app.logger.exception("🔥 Error in get_inventory_usls")
+        return jsonify({"error": "Failed to retrieve Inventory USLs"}), 500
+
 
 # ==============================
 # INVENTORY SEARCH
