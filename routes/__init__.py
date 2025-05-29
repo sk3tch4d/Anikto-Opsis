@@ -24,6 +24,7 @@ from seniority import load_seniority_file
 from optimization import search_optimization
 from handlers.index_handler import process_index_upload
 
+from .arg_routes import arg_bp
 from .file_routes import file_bp
 from .dev_routes import dev_bp
 from .inventory_routes import inventory_bp
@@ -42,10 +43,8 @@ def register_routes(app):
     # ==============================
     # REGISTER BLUEPRINTS
     # ==============================
-    app.register_blueprint(file_bp)
-    app.register_blueprint(dev_bp)
-    app.register_blueprint(inventory_bp)
-    app.register_blueprint(zwdiseg_bp)
+    for bp in (arg_bp, file_bp, dev_bp, inventory_bp, zwdiseg_bp):
+        app.register_blueprint(bp)
     
     # ==============================
     # INDEX HANDLING: POST & GET
