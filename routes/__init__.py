@@ -15,6 +15,7 @@ from flask import (
     redirect, 
     session, 
     url_for,
+    current_app,
 )
 from config import UPLOAD_FOLDER
 from config import DEV_MODE
