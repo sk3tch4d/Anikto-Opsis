@@ -12,6 +12,7 @@ from flask import (
 import config
 from config import DEV_MODE, UPLOAD_FOLDER
 
+from utils.data_tools import reorder_name
 from utils.data_search import handle_search_request
 from handlers.index_handler import process_index_upload
 
@@ -39,8 +40,16 @@ def register_routes(app):
     blueprints = [arg_bp, file_bp, dev_bp, inventory_bp, optimization_bp, zwdiseg_bp]
     for bp in blueprints:
         app.register_blueprint(bp)
-        app.logger.debug(f"🔗 Registered blueprint: {bp.name}")
+        app.logger.debug(f"🔗 Registered Blueprint: {bp.name}")
 
+    # ==============================
+    # ADD TEMPLATE FILTERS
+    # ==============================
+    template_filters = {"reorder_name": reorder_name}
+    for name, func in template_filters.items():
+        app.add_template_filter(func, name=name)
+        app.logger.debug(f"🔗 Added Template Filter: {name}")
+    
     # ==============================
     # INDEX HANDLING: POST & GET
     # ==============================
@@ -71,18 +80,3 @@ def register_routes(app):
     def testing():
         current_app.logger.debug("🧪 /test route hit — Rendering testing.html")
         return render_template("testing.html", table=[])
-
-    # ==============================
-    # REORDER NAMES FOR ARG
-    # ==============================
-    @app.template_filter("reorder_name")
-    def reorder_name(value):
-        """Reorders 'Last, First' to 'First Last' if applicable."""
-        current_app.logger.debug(f"🔃 Applying reorder_name filter on: '{value}'")
-        parts = value.split(", ")
-        if len(parts) == 2:
-            reordered = f"{parts[1]} {parts[0]}"
-            current_app.logger.debug(f"✅ Reordered to: '{reordered}'")
-            return reordered
-        current_app.logger.debug("⚠️ Value did not match 'Last, First' format")
-        return value
