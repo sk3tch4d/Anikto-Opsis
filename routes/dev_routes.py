@@ -17,7 +17,7 @@ dev_bp = Blueprint("dev", __name__)
 @dev_bp.route("/check-dev")
 def check_dev():
     dev_status = session.get("dev", False)
-    current_app.logger.debug(f"🔍 /check-dev route hit — Current dev mode: {dev_status}")
+    current_app.logger.debug(f" 🔍 Dev Check Route — Dev Mode: {dev_status}")
     return jsonify({"dev": dev_status})
 
 # ==============================
@@ -25,7 +25,7 @@ def check_dev():
 # ==============================
 @dev_bp.route("/dev-mode", methods=["POST"])
 def dev_mode():
-    current_app.logger.debug("🚪 /dev-mode route hit")
+    current_app.logger.debug(" 🚪 Dev Mode Routing")
 
     if request.is_json:
         data = request.get_json()
@@ -33,16 +33,16 @@ def dev_mode():
     else:
         token = request.form.get("token", "").strip().lower()
 
-    current_app.logger.debug(f"🔑 Access Token received: {repr(token)}")
+    current_app.logger.debug(f" 🔑 Access Token Received: {repr(token)}")
 
     if token in DEV_MODE:
         session["dev"] = True
-        current_app.logger.info("✅ Dev mode enabled")
+        current_app.logger.info(" ✅ Dev Mode: Enabled")
         if request.is_json:
             return jsonify(success=True)
         return redirect(url_for("index"))
 
-    current_app.logger.warning("❌ Invalid dev mode token")
+    current_app.logger.warning(f" ❌ Invalid Dev Mode Token: {repr(token)}")
     if request.is_json:
         return jsonify(success=False), 401
     return redirect(url_for("index"))
@@ -52,10 +52,10 @@ def dev_mode():
 # ==============================
 @dev_bp.route("/logout-dev")
 def logout_dev():
-    current_app.logger.debug("🚪 /logout-dev route hit")
+    current_app.logger.debug(" 🚪 Dev Mode: Logout Routing")
     if "dev" in session:
         session.pop("dev")
-        current_app.logger.info("🧹 Dev mode disabled")
+        current_app.logger.info(" 🔒 Dev mode: Disabled")
     else:
-        current_app.logger.debug("ℹ️ No active dev session to clear")
+        current_app.logger.debug(" ℹ️ No Active Dev Session!")
     return jsonify(success=True)
