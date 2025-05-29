@@ -127,11 +127,11 @@
             <div class="panel-content">
               {% for file in outputs %}
                 {% if "ARGX" in file %}
-                  <a class="button panel" href="{{ url_for('download', filename=file) }}" download>Spreadsheet</a>
+                  <a class="button panel" href="{{ url_for('file.download', filename=file) }}" download>Spreadsheet</a>
                 {% elif "ARGM" in file %}
-                  <a class="button panel" href="{{ url_for('download', filename=file) }}" download>Heatmap</a>
+                  <a class="button panel" href="{{ url_for('file.download', filename=file) }}" download>Heatmap</a>
                 {% else %}
-                  <a class="button panel" href="{{ url_for('download', filename=file) }}" download>{{ file }}</a>
+                  <a class="button panel" href="{{ url_for('file.download', filename=file) }}" download>{{ file }}</a>
                 {% endif %}
               {% endfor %}
             </div>
