@@ -22,7 +22,6 @@ from .inventory_routes import inventory_bp
 from .optimization_routes import optimization_bp
 from .zwdiseg_routes import zwdiseg_bp
 
-
 # ==============================
 # ENSURE UPLOAD FOLDER EXISTS
 # ==============================
@@ -32,22 +31,27 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # REGISTER APPLICATION ROUTES
 # ==============================
 def register_routes(app):
+    current_app.logger.debug("🚀 Initializing application routes and filters")
 
     # ==============================
     # REGISTER BLUEPRINTS
     # ==============================
-    for bp in (arg_bp, file_bp, dev_bp, inventory_bp, optimization_bp, zwdiseg_bp):
+    blueprints = [arg_bp, file_bp, dev_bp, inventory_bp, optimization_bp, zwdiseg_bp]
+    for bp in blueprints:
         app.register_blueprint(bp)
+        current_app.logger.debug(f"🔗 Registered blueprint: {bp.name}")
 
     # ==============================
     # INDEX HANDLING: POST & GET
     # ==============================
     @app.route("/", methods=["GET"])
     def index():
+        current_app.logger.debug("📥 GET / — Rendering index.html")
         return render_template("index.html")
-    # ==============================
+
     @app.route("/", methods=["POST"])
     def post_index():
+        current_app.logger.debug("📤 POST / — Handling index upload")
         return process_index_upload()
 
     # ==============================
@@ -55,14 +59,17 @@ def register_routes(app):
     # ==============================
     @app.route("/1902")
     def panel():
+        current_app.logger.debug("🧭 /1902 route hit — Rendering panel.html")
         return render_template("panel.html")
-    # ==============================
+
     @app.route("/61617")
     def inventory():
+        current_app.logger.debug("🧾 /61617 route hit — Rendering inventory.html")
         return render_template("inventory.html", table=[])
-    # ==============================
+
     @app.route("/test")
     def testing():
+        current_app.logger.debug("🧪 /test route hit — Rendering testing.html")
         return render_template("testing.html", table=[])
 
     # ==============================
