@@ -1,5 +1,5 @@
 # ==============================
-# INVENTORY HANDLERS
+# INVENTORY.PY
 # ==============================
 
 import pandas as pd
@@ -12,7 +12,6 @@ def load_inventory_data(path):
     df = pd.read_excel(path).fillna("")
     df.columns = [c.strip() for c in df.columns]
     return df
-
 
 # ==============================
 # INVENTORY USLS
