@@ -49,6 +49,7 @@ def register_routes(app):
     # ==============================
     # REGISTER BLUEPRINTS
     # ==============================
+    app.register_blueprint(file_bp)
     app.register_blueprint(inventory_bp)
     app.register_blueprint(zwdiseg_bp)
     
