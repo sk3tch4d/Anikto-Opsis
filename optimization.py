@@ -4,6 +4,9 @@
 
 import pandas as pd
 
+# ==============================
+# SEARCH OPTIMIZATION
+# ==============================
 def search_optimization(df, term, cart_filter="All", sort="site_suggested_rop", direction="desc"):
     if df is None or df.empty:
         return []
