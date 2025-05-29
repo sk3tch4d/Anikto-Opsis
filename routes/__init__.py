@@ -72,6 +72,21 @@ def register_routes(app):
         return handle_search_request(config.OPTIMIZATION_DF, search_optimization, default_sort="site_suggested_rop")
 
     # ==============================
+    # REORDER NAMES FOR ARG
+    # ==============================
+    @app.template_filter("reorder_name")
+    def reorder_name(value):
+        """Reorders 'Last, First' to 'First Last' if applicable."""
+        current_app.logger.debug(f"🔃 Applying reorder_name filter on: '{value}'")
+        parts = value.split(", ")
+        if len(parts) == 2:
+            reordered = f"{parts[1]} {parts[0]}"
+            current_app.logger.debug(f"✅ Reordered to: '{reordered}'")
+            return reordered
+        current_app.logger.debug("⚠️ Value did not match 'Last, First' format")
+        return value
+
+    # ==============================
     # REDIRECT ROUTES
     # ==============================
     @app.route("/1902")
