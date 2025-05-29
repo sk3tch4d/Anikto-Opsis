@@ -32,6 +32,7 @@ from zwdiseg import load_zwdiseg_data, get_zwdiseg_usls, search_zwdiseg
 from optimization import search_optimization
 from handlers.index_handler import process_index_upload
 
+from .file_routes import file_bp
 from .inventory_routes import inventory_bp
 from .zwdiseg_routes import zwdiseg_bp
 
@@ -171,13 +172,3 @@ def register_routes(app):
         session.pop("dev", None)
         return jsonify(success=True)
     
-    # ==============================
-    # HANDLE DOWNLOADS
-    # ==============================
-    @app.route("/download/<filename>")
-    def download(filename):
-        file_path = os.path.join("/tmp", filename)
-        if os.path.exists(file_path):
-            return send_file(file_path, as_attachment=True)
-        else:
-            return "File not found", 404
