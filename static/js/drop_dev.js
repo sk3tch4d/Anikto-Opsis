@@ -96,7 +96,7 @@ export function renderDevPanel() {
         if (uploadBtn.textContent === "Upload File") {
           fileInput.click();
         } else {
-          // Submit Form
+          form.enctype = "multipart/form-data";
           startFormLoadingUI();
           form.submit();
         }
