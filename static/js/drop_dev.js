@@ -247,6 +247,7 @@ export function enableDevModeTrigger() {
   form.appendChild(closeBtn);
 
   document.body.appendChild(form);
+  requestAnimationFrame(() => input.focus());
 
   form.addEventListener("submit", (e) => {
       e.preventDefault(); // prevent reload
