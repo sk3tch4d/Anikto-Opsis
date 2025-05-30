@@ -71,8 +71,12 @@ function updateGenerateButtonText() {
 
   generateBtn.textContent = label;
   generateBtn.disabled = allFiles.length === 0;
-  generateBtn.focus();
-  generateBtn.classList.add("select");
+
+  if (allFiles.length === 0) {
+    generateBtn.classList.remove("select");
+  } else {
+    generateBtn.classList.add("select");
+  }
 }
 
 // ==============================
