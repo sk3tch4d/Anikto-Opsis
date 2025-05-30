@@ -82,17 +82,44 @@ export function renderDevPanel() {
       fileInput.accept = ".xlsx,.pdf,.db";
       fileInput.style.display = "none";
       
-      // Upload Button (as a real <button>)
+      // Upload Button
       const uploadBtn = document.createElement("button");
       uploadBtn.textContent = "Upload File";
-      uploadBtn.type = "button"; // don't submit the form
+      uploadBtn.type = "button";
       uploadBtn.classList.add("button", "full-width-on");
       uploadBtn.style.marginTop = "1rem";
       
-      // Click opens file input
-      uploadBtn.addEventListener("click", () => fileInput.click());
+      let pressTimer = null;
       
-      // Handle file selection
+      // open file selection or submit form
+      uploadBtn.addEventListener("click", () => {
+        if (uploadBtn.textContent === "Upload File") {
+          fileInput.click();
+        } else {
+          // Simulate generate behavior
+          startFormLoadingUI();
+          form.submit();
+        }
+      });
+      
+      // Long Press Reset Button
+      const resetButton = () => {
+        uploadBtn.textContent = "Upload File";
+        fileInput.value = "";
+      };
+      
+      uploadBtn.addEventListener("mousedown", () => {
+        pressTimer = setTimeout(resetButton, 2000);
+      });
+      uploadBtn.addEventListener("mouseup", () => clearTimeout(pressTimer));
+      uploadBtn.addEventListener("mouseleave", () => clearTimeout(pressTimer));
+      uploadBtn.addEventListener("touchstart", () => {
+        pressTimer = setTimeout(resetButton, 2000);
+      });
+      uploadBtn.addEventListener("touchend", () => clearTimeout(pressTimer));
+      uploadBtn.addEventListener("touchcancel", () => clearTimeout(pressTimer));
+      
+      // Handle File Selection
       fileInput.addEventListener("change", () => {
         const fileNames = Array.from(fileInput.files).map(f => f.name.trim());
       
