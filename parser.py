@@ -27,28 +27,39 @@ def extract_shift_info(line, processing_date):
     is_weekend = processing_date.weekday() >= 5
     day_type = "Weekend" if is_weekend else "Weekday"
 
+    # Explicit mappings for 'w' shift codes
+    w_day = {"w406", "w408", "w409", "w503", "w504", "w507", "w401", "w502"}
+    w_evening = {"w505", "w508"}
+    w_night = {"w501", "w506"}
+
     for m in matches:
-        if re.match(r'^SA\d$', m, re.IGNORECASE):
-            results.append({"id": m, "type": "Day", "DayType": day_type})
-            continue
-        if re.match(r'^od\d+', m, re.IGNORECASE) or m.upper() == "OE":
-            results.append({"id": m, "type": "Other", "DayType": day_type})
-            continue
+        m_lower = m.lower()
 
-        cleaned = re.sub(r'^[dDeEnwW]', '', m)
-        if cleaned.isdigit() and len(cleaned) == 4:
-            continue
-
-        if re.match(r'^[dD]', m):
+        if re.match(r'^sa\d$', m_lower):
+            shift_type = "Day"
+        elif re.match(r'^od\d+', m_lower) or m.upper() == "OE":
+            shift_type = "Day"
+        elif m_lower in w_day:
+            shift_type = "Day"
+        elif m_lower in w_evening:
+            shift_type = "Evening"
+        elif m_lower in w_night:
+            shift_type = "Night"
+        elif re.match(r'^[dD]', m):
             shift_type = "Day"
         elif re.match(r'^[eE]', m):
             shift_type = "Evening"
         elif re.match(r'^[nN]', m):
             shift_type = "Night"
         else:
-            shift_type = "Other"
+            shift_type = "Day"  # default fallback
 
-        results.append({"id": cleaned, "type": shift_type, "DayType": day_type})
+        cleaned = re.sub(r'^[dDeEnwW]', '', m)
+        results.append({
+            "id": cleaned,
+            "type": shift_type,
+            "DayType": day_type
+        })
 
     return results
 
