@@ -132,6 +132,8 @@ export function renderDevPanel() {
       
         uploadBtn.textContent = getActionLabelForFiles(fileNames);
         refreshDropUI();
+
+        uploadBtn.focus();
       });
       
       // Attach to panel
