@@ -128,20 +128,20 @@ export function renderDevPanel() {
           return;
         }
       
-        let realFileInput = document.getElementById("file-input");
-        if (!realFileInput) {
-          realFileInput = document.createElement("input");
-          realFileInput.type = "file";
-          realFileInput.name = "files";
-          realFileInput.multiple = true;
-          realFileInput.id = "file-input";
-          realFileInput.style.display = "none";
-          form.appendChild(realFileInput);
+        let devInput = document.getElementById("dev-upload-input");
+        if (!devInput) {
+          devInput = document.createElement("input");
+          devInput.type = "file";
+          devInput.name = "dev_files";
+          devInput.multiple = true;
+          devInput.id = "dev-upload-input";
+          devInput.style.display = "none";
+          form.appendChild(devInput);
         }
-      
+        
         const dt = new DataTransfer();
         for (const file of fileInput.files) dt.items.add(file);
-        realFileInput.files = dt.files;
+        devInput.files = dt.files;
       
         uploadBtn.textContent = getActionLabelForFiles(fileNames);
         refreshDropUI();
