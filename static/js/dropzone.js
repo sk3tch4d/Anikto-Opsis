@@ -60,6 +60,9 @@ function setupFileInput(fileInput, fileList) {
       e.preventDefault();
       fileInput.click();
     });
+    
+    const generateBtn = document.getElementById("generate");
+    if (generateBtn) generateBtn.focus();
   });
 }
 
