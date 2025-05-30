@@ -1,3 +1,6 @@
+# ==============================
+# PARSER.PY
+# ==============================
 
 import re
 import os
@@ -7,13 +10,17 @@ import pandas as pd
 from datetime import datetime, timedelta
 from swaps import parse_exceptions_section
 
-# === Load Names from JSON ===
+# ==============================
+# LOAD NAMES FROM JSON
+# ==============================
 STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
 EMP_LIST_PATH = os.path.join(STATIC_DIR, 'emp_ext.json')
 with open(EMP_LIST_PATH, 'r') as f:
     VALID_NAMES = set(json.load(f))
 
-# === Helpers ===
+# ==============================
+# EXTRACT SHIFT INFO
+# ==============================
 def extract_shift_info(line, processing_date):
     matches = re.findall(r'\b(SA\d|od\d+|OE|\w{1,3}\d{2,4}|\d{3,4})\b', line, re.IGNORECASE)
     results = []
@@ -45,7 +52,9 @@ def extract_shift_info(line, processing_date):
 
     return results
 
-# === PDF Parser ===
+# ==============================
+# PARSE PDF
+# ==============================
 def parse_pdf(pdf_path, stop_on_date=None):
     records = []
     swaps = []
@@ -70,31 +79,45 @@ def parse_pdf(pdf_path, stop_on_date=None):
                         print("[PARSER] Warning: No valid date found.")
                     break
 
+            if not processing_date:
+                continue
+
             for line in lines:
                 if any(x in line for x in ["Off:", "On Call", "Relief"]):
                     continue
-
-                tokens = line.strip().split()
-                if len(tokens) < 5:
+                if not re.search(r'\d{2}:\d{2}.*\d{2}:\d{2}', line):
                     continue
 
                 try:
-                    start_time = tokens[-4]
-                    end_time   = tokens[-3]
-                    full_name  = f"{tokens[-2].rstrip(',')}, {tokens[-1]}"
+                    # ==============================
+                    # UNIFIED SHIFT PARSING BLOCK
+                    # ==============================
+
+                    # Extract two time strings
+                    time_matches = re.findall(r'\d{2}:\d{2}', line)
+                    if len(time_matches) < 2:
+                        continue
+                    start_time, end_time = time_matches[:2]
+
+                    # Extract name from end of line
+                    name_match = re.search(r'([A-Za-z-]+,\s+[A-Za-z-]+)$', line)
+                    if not name_match:
+                        continue
+                    full_name = name_match.group()
                     if full_name not in VALID_NAMES:
                         continue
 
+                    # Extract shift info
                     infos = extract_shift_info(line, processing_date)
                     if not infos:
                         continue
 
                     full_shift_id = " ".join(i["id"] for i in infos)
-                    shift_type    = infos[0]["type"]
-                    day_type      = infos[0]["DayType"]
+                    shift_type = infos[0]["type"]
+                    day_type = infos[0]["DayType"]
 
                     dt_start = datetime.strptime(f"{processing_date} {start_time}", "%Y-%m-%d %H:%M")
-                    dt_end   = datetime.strptime(f"{processing_date} {end_time}",   "%Y-%m-%d %H:%M")
+                    dt_end = datetime.strptime(f"{processing_date} {end_time}", "%Y-%m-%d %H:%M")
                     if dt_end <= dt_start:
                         dt_end += timedelta(days=1)
 
@@ -114,11 +137,11 @@ def parse_pdf(pdf_path, stop_on_date=None):
 
                 except Exception:
                     continue
+
             if not any(r["DateObj"] == processing_date for r in records):
                 print(f"[DEBUG] No valid shifts parsed for {processing_date}")
-    
+
             if processing_date and "Exceptions Day Unit:" in text:
-                from swaps import parse_exceptions_section
                 swaps_found = parse_exceptions_section(
                     text,
                     pd.DataFrame(records),
@@ -133,7 +156,7 @@ def parse_pdf(pdf_path, stop_on_date=None):
                 print(f"[DEBUG] stop_on_date {stop_on_date} reached. Stopping processing.")
                 return pd.DataFrame(records), swaps
             ##
-    
+
     print("[DEBUG] Total swaps found:", len(swaps))
-    
+
     return pd.DataFrame(records), swaps
