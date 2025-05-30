@@ -56,7 +56,6 @@ export function renderDevPanel() {
       const generateBtn = document.getElementById("generate");
       if (generateBtn) fadeOutAndHide(generateBtn);
 
-
       // CREATE Dev Panel
       const panel = document.createElement("div");
       panel.id = "dev-panel";
@@ -76,6 +75,43 @@ export function renderDevPanel() {
         panel.appendChild(btn);
       });
 
+      // Upload File Button
+      const uploadLabel = document.createElement("label");
+      uploadLabel.textContent = "Upload File";
+      uploadLabel.classList.add("button", "full-width-on");
+      uploadLabel.style.marginTop = "1rem";
+      uploadLabel.style.cursor = "pointer";
+
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.id = "dev-file-input";
+      fileInput.accept = ".xlsx,.pdf,.db";
+      fileInput.style.display = "none";
+
+      fileInput.addEventListener("change", () => {
+        if (fileInput.files.length === 0) return;
+
+        let realFileInput = document.getElementById("file-input");
+        if (!realFileInput) {
+          realFileInput = document.createElement("input");
+          realFileInput.type = "file";
+          realFileInput.name = "files";
+          realFileInput.multiple = true;
+          realFileInput.id = "file-input";
+          realFileInput.style.display = "none";
+          form.appendChild(realFileInput);
+        }
+
+        const dt = new DataTransfer();
+        for (const file of fileInput.files) dt.items.add(file);
+        realFileInput.files = dt.files;
+
+        refreshDropUI();
+      });
+
+      uploadLabel.appendChild(fileInput);
+      panel.appendChild(uploadLabel);
+
       // Main Menu Button
       const logout = document.createElement("button");
       logout.textContent = "Main Menu";
@@ -88,7 +124,7 @@ export function renderDevPanel() {
             const panel = document.getElementById("dev-panel");
             const dropZone = document.getElementById("drop-zone");
             const generateBtn = document.getElementById("generate");
-      
+
             if (panel) panel.remove();
             if (dropZone) showWithFade(dropZone);
             if (generateBtn) showWithFade(generateBtn);
