@@ -1,10 +1,19 @@
+# ==============================
+# MODELS.PY
+# ==============================
 
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
+# ==============================
+# DATABASE
+# ==============================
+
 db = SQLAlchemy()
 
-# Employee Model
+# ==============================
+# EMPLOYEE MODEL
+# ==============================
 class Employee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(128), nullable=False)
@@ -20,7 +29,9 @@ class Employee(db.Model):
     def __repr__(self):
         return f"<Employee {self.first_name} {self.last_name}>"
 
-# ShiftRecord Model (linked to Employee)
+# ==============================
+# SHIFT RECORD MODEL
+# ==============================
 class ShiftRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), nullable=False)  # Link to Employee
@@ -42,7 +53,9 @@ class ShiftRecord(db.Model):
     def __repr__(self):
         return f"<ShiftRecord {self.employee.first_name} {self.employee.last_name} on {self.date} ({self.shift})>"
 
-# CoverageShift Model (linked to Employee)
+# ==============================
+# COVERAGE SHIFT MODEL
+# ==============================
 class CoverageShift(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date, nullable=False)
