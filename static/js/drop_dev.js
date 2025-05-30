@@ -132,7 +132,7 @@ export function renderDevPanel() {
         if (!devInput) {
           devInput = document.createElement("input");
           devInput.type = "file";
-          devInput.name = "dev_files";
+          devInput.name = "files";
           devInput.multiple = true;
           devInput.id = "dev-upload-input";
           devInput.style.display = "none";
