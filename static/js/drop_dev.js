@@ -2,7 +2,7 @@
 // DROP_DEV.JS
 // ==============================
 
-import { refreshDropUI } from './drop_utils.js';
+import { refreshDropUI, getActionLabelForFiles } from './drop_utils.js';
 
 // ==============================
 // FADE ELEMENTS
@@ -90,7 +90,7 @@ export function renderDevPanel() {
 
       fileInput.addEventListener("change", () => {
         if (fileInput.files.length === 0) return;
-
+      
         let realFileInput = document.getElementById("file-input");
         if (!realFileInput) {
           realFileInput = document.createElement("input");
@@ -101,13 +101,19 @@ export function renderDevPanel() {
           realFileInput.style.display = "none";
           form.appendChild(realFileInput);
         }
-
+      
+        // Copy selected files into real input
         const dt = new DataTransfer();
         for (const file of fileInput.files) dt.items.add(file);
         realFileInput.files = dt.files;
-
+      
+        // Use helper to update the label
+        const fileNames = Array.from(fileInput.files).map(f => f.name.trim());
+        uploadLabel.textContent = getActionLabelForFiles(fileNames);
+      
         refreshDropUI();
       });
+
 
       uploadLabel.appendChild(fileInput);
       panel.appendChild(uploadLabel);
