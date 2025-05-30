@@ -61,8 +61,10 @@ function setupFileInput(fileInput, fileList) {
       fileInput.click();
     });
     
-    const generateBtn = document.getElementById("generate");
-    if (generateBtn) generateBtn.focus();
+    requestAnimationFrame(() => {
+      const generateBtn = document.getElementById("generate");
+      if (generateBtn) generateBtn.focus();
+    });
   });
 }
 
