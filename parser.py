@@ -69,12 +69,38 @@ def extract_shift_info(line, processing_date):
 def parse_pdf(pdf_path, stop_on_date=None):
     records = []
     swaps = []
-    processing_date = None
 
     with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
+        date_to_page = {}
+
+        # ==============================
+        # INDEX DATES TO PAGES
+        # ==============================
+        for i, page in enumerate(pdf.pages):
+            text = page.extract_text() or ""
+            match = re.search(r"(Mon|Tue|Wed|Thu|Fri|Sat|Sun),\s*\d{2}/[A-Za-z]{3}/\d{4}", text)
+            if match:
+                try:
+                    parsed_date = datetime.strptime(match.group(), "%a, %d/%b/%Y").date()
+                    date_to_page[parsed_date] = i
+                except ValueError:
+                    continue
+
+        # ==============================
+        # SELECT PAGES TO PROCESS
+        # ==============================
+        if stop_on_date and stop_on_date in date_to_page:
+            pages_to_process = [pdf.pages[date_to_page[stop_on_date]]]
+        else:
+            pages_to_process = pdf.pages
+
+        # ==============================
+        # PROCESS SELECTED PAGES
+        # ==============================
+        for page in pages_to_process:
             text = page.extract_text() or ""
             lines = text.splitlines()
+            processing_date = None
 
             for line in lines:
                 if "Unit: Inventory Services" in line:
@@ -104,13 +130,11 @@ def parse_pdf(pdf_path, stop_on_date=None):
                     # UNIFIED SHIFT PARSING BLOCK
                     # ==============================
 
-                    # Extract two time strings
                     time_matches = re.findall(r'\d{2}:\d{2}', line)
                     if len(time_matches) < 2:
                         continue
                     start_time, end_time = time_matches[:2]
 
-                    # Extract name from end of line
                     name_match = re.search(r'([A-Za-z-]+,\s+[A-Za-z-]+)$', line)
                     if not name_match:
                         continue
@@ -118,7 +142,6 @@ def parse_pdf(pdf_path, stop_on_date=None):
                     if full_name not in VALID_NAMES:
                         continue
 
-                    # Extract shift info
                     infos = extract_shift_info(line, processing_date)
                     if not infos:
                         continue
@@ -162,11 +185,9 @@ def parse_pdf(pdf_path, stop_on_date=None):
                 print("SWAPS FOUND:", swaps_found)
                 swaps += swaps_found
 
-            ## Check if processing_date matches stop_on_date
             if stop_on_date and processing_date == stop_on_date:
                 print(f"[DEBUG] stop_on_date {stop_on_date} reached. Stopping processing.")
                 return pd.DataFrame(records), swaps
-            ##
 
     print("[DEBUG] Total swaps found:", len(swaps))
 
