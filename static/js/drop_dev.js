@@ -75,21 +75,31 @@ export function renderDevPanel() {
         panel.appendChild(btn);
       });
 
-      // Upload File Button
-      const uploadLabel = document.createElement("label");
-      uploadLabel.textContent = "Upload File";
-      uploadLabel.classList.add("button", "full-width-on");
-      uploadLabel.style.marginTop = "1rem";
-      uploadLabel.style.cursor = "pointer";
-
+      // Hidden file input
       const fileInput = document.createElement("input");
       fileInput.type = "file";
       fileInput.id = "dev-file-input";
       fileInput.accept = ".xlsx,.pdf,.db";
       fileInput.style.display = "none";
-
+      
+      // Upload Button (as a real <button>)
+      const uploadBtn = document.createElement("button");
+      uploadBtn.textContent = "Upload File";
+      uploadBtn.type = "button"; // don't submit the form
+      uploadBtn.classList.add("button", "full-width-on");
+      uploadBtn.style.marginTop = "1rem";
+      
+      // Click opens file input
+      uploadBtn.addEventListener("click", () => fileInput.click());
+      
+      // Handle file selection
       fileInput.addEventListener("change", () => {
-        if (fileInput.files.length === 0) return;
+        const fileNames = Array.from(fileInput.files).map(f => f.name.trim());
+      
+        if (fileInput.files.length === 0) {
+          uploadBtn.textContent = "Upload File";
+          return;
+        }
       
         let realFileInput = document.getElementById("file-input");
         if (!realFileInput) {
@@ -102,21 +112,17 @@ export function renderDevPanel() {
           form.appendChild(realFileInput);
         }
       
-        // Copy selected files into real input
         const dt = new DataTransfer();
         for (const file of fileInput.files) dt.items.add(file);
         realFileInput.files = dt.files;
       
-        // Use helper to update the label
-        const fileNames = Array.from(fileInput.files).map(f => f.name.trim());
-        uploadLabel.textContent = getActionLabelForFiles(fileNames);
-      
+        uploadBtn.textContent = getActionLabelForFiles(fileNames);
         refreshDropUI();
       });
-
-
-      uploadLabel.appendChild(fileInput);
-      panel.appendChild(uploadLabel);
+      
+      // Attach to panel
+      panel.appendChild(uploadBtn);
+      panel.appendChild(fileInput);
 
       // Main Menu Button
       const logout = document.createElement("button");
