@@ -1,6 +1,5 @@
 // ==============================
-// DROP_UTILS MODULE
-// Handles Button/Loading Text
+// DROP_UTILS.JS
 // ==============================
 
 import { toggleLoadingState } from './loading.js';
@@ -14,7 +13,7 @@ const CLEAN_REGEX = /.*clean.*\.xlsx$/i;
 const CATALOG_REGEX = /(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$/i;
 const ZWDISEG_REGEX = /.*zwdiseg.*\.xlsx$/i;
 const ARG_REGEX = /(arg|flowsheet).*?\.(pdf)$/i;
-const SENIORITY_REGEX = /(cupe|opseu).*seniority.*(lists?)?.*\.xlsx$/i
+const SENIORITY_REGEX = /(cupe|opseu).*seniority.*(lists?)?.*\.xlsx$/i;
 const UNCLEANED_REGEX = /(list|ven|vendor|cost|usl|cc).*\.xlsx$/i;
 
 const isOptimizationFile = name => OPTIMIZE_REGEX.test(name);
@@ -27,6 +26,16 @@ const isUncleanedFile = name => UNCLEANED_REGEX.test(name);
 
 const isValidFile = name => /\.(pdf|xlsx|db)$/i.test(name);
 
+// SHARED MATCHERS ARRAY
+const typeMatchers = [
+  { key: "clean", label: "Clean Uploaded File", match: isCleaningFile },
+  { key: "catalog", label: "Generate Catalog", match: isCatalogFile },
+  { key: "zwdiseg", label: "Analyze Zwdiseg", match: isZwdisegFile },
+  { key: "seniority", label: "Generate Seniority Summary", match: isSeniorityFile },
+  { key: "arg", label: "Generate ARG Summary", match: isArgFile },
+  { key: "uncleaned", label: "Generate Cleaned File", match: isUncleanedFile }
+];
+
 // ==============================
 // REFRESH DROPZONE UI
 // ==============================
@@ -35,7 +44,18 @@ export function refreshDropUI() {
 }
 
 // ==============================
-// UPDATE BUTTON TEXT
+// GET ACTION LABEL FOR FILES
+// ==============================
+export function getActionLabelForFiles(fileNames) {
+  const validFiles = fileNames.filter(isValidFile);
+  if (validFiles.length === 0) return "Generate";
+
+  const match = typeMatchers.find(t => validFiles.some(t.match));
+  return match ? match.label : "Generate";
+}
+
+// ==============================
+// UPDATE GENERATE BUTTON TEXT
 // ==============================
 function updateGenerateButtonText() {
   const fileInput = document.getElementById("file-input");
@@ -46,31 +66,11 @@ function updateGenerateButtonText() {
   const existingCheckboxes = document.querySelectorAll('input[name="existing_files"]:checked');
   const existingFiles = Array.from(existingCheckboxes).map(cb => cb.value);
 
-  const allFiles = uploadedFiles.map(f => f.name.trim())
-    .concat(existingFiles.map(name => name.trim()))
-    .filter(isValidFile);
+  const allFiles = uploadedFiles.map(f => f.name.trim()).concat(existingFiles);
+  const label = getActionLabelForFiles(allFiles);
 
-  if (allFiles.length === 0) {
-    generateBtn.textContent = "Generate";
-    generateBtn.disabled = true;
-    return;
-  }
-
-  const typeMatchers = [
-    //{ label: "Generate Optimization", match: isOptimizationFile },
-    { label: "Clean Uploaded File", match: isCleaningFile},
-    { label: "Generate Catalog", match: isCatalogFile },
-    { label: "Analyze Zwdiseg", match: isZwdisegFile },
-    { label: "Generate Seniority Summary", match: isSeniorityFile },
-    { label: "Generate ARG Summary", match: isArgFile },
-    { label: "Generate Cleaned File", match: isUncleanedFile }
-  ];
-
-  const match = typeMatchers.find(t => allFiles.some(t.match));
-  generateBtn.textContent = match ? match.label : "Generate";
-  generateBtn.disabled = false;
-
-  // Focus the button after updating text
+  generateBtn.textContent = label;
+  generateBtn.disabled = allFiles.length === 0;
   generateBtn.focus();
   generateBtn.classList.add("select");
 }
@@ -102,8 +102,6 @@ export function updateGenText(typeKey) {
   }
 
   statusEl.textContent = matchingTexts[Math.floor(Math.random() * matchingTexts.length)];
-
-  // Optional: smooth fade
   statusEl.classList.remove('show');
   void statusEl.offsetWidth;
   statusEl.classList.add('show');
@@ -121,15 +119,6 @@ function detectFileTypeKey() {
   const allFiles = uploadedFiles.map(f => f.name.trim())
     .concat(existingFiles.map(name => name.trim()))
     .filter(isValidFile);
-
-  const typeMatchers = [
-    { key: "arg", match: isArgFile },
-    { key: "clean", match: isCleaningFile },
-    { key: "catalog", match: isCatalogFile },
-    { key: "zwdiseg", match: isZwdisegFile },
-    { key: "seniority", match: isSeniorityFile },
-    { key: "uncleaned", match: isUncleanedFile }
-  ];
 
   const matched = typeMatchers.find(t => allFiles.some(t.match));
   return matched ? matched.key : 'default';
