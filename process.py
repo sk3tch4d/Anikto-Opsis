@@ -1,3 +1,6 @@
+# ==============================
+# PROCESS.PY
+# ==============================
 
 import re
 import os 
@@ -7,8 +10,14 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta 
 from models import db, Employee, ShiftRecord, CoverageShift 
 
+# ==============================
+# SHIFT DATA SETUP
+# ==============================
 @dataclass class ShiftData: full_name: str date: datetime start: str end: str shift: str shift_type: str day_type: str hours: float source_pdf: str file_date: datetime is_coverage: bool = False coverage_pair: tuple[str, str] | None = None  # (original_name, covering_name) reason: str | None = None
 
+# ==============================
+# EXTRACT SHIFT INFO
+# ==============================
 def extract_shift_info(line, current_date): matches = re.findall(r'\b(SA\d|od\d+|OE|\w{1,3}\d{2,4}|\d{3,4})\b', line, re.IGNORECASE) results = [] day_type = "Weekend" if current_date.weekday() >= 5 else "Weekday"
 
 for m in matches:
@@ -31,6 +40,9 @@ for m in matches:
 
 return results
 
+# ==============================
+# PARSE PDF TO SHIFT DATA
+# ==============================
 def parse_pdf_to_shiftdata(pdf_path): records = [] coverage_entries = [] file_date = None base_name = os.path.basename(pdf_path)
 
 with pdfplumber.open(pdf_path) as pdf:
@@ -109,6 +121,9 @@ for original, coverer, reason in coverage_entries:
 
 return records
 
+# ==============================
+# SHIFT DATA TO DB
+# ==============================
 def insert_shiftdata_to_db(shift_data): if not shift_data: return "No data extracted."
 
 file_date = shift_data[0].file_date
