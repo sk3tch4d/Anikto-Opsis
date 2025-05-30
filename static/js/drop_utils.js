@@ -44,6 +44,17 @@ export function refreshDropUI() {
 }
 
 // ==============================
+// PROCESS SELECTED FILES
+// ==============================
+export function processSelectedFiles(sourceInput, targetInput) {
+  if (!sourceInput || !targetInput || sourceInput.files.length === 0) return;
+
+  const dt = new DataTransfer();
+  Array.from(sourceInput.files).forEach(file => dt.items.add(file));
+  targetInput.files = dt.files;
+}
+
+// ==============================
 // GET ACTION LABEL FOR FILES
 // ==============================
 export function getActionLabelForFiles(fileNames) {
