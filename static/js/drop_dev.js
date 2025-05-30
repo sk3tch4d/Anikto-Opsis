@@ -2,7 +2,7 @@
 // DROP_DEV.JS
 // ==============================
 
-import { refreshDropUI, getActionLabelForFiles } from './drop_utils.js';
+import { refreshDropUI, getActionLabelForFiles, startFormLoadingUI } from './drop_utils.js';
 
 // ==============================
 // FADE ELEMENTS
@@ -91,12 +91,12 @@ export function renderDevPanel() {
       
       let pressTimer = null;
       
-      // open file selection or submit form
+      // Open file selection or submit form
       uploadBtn.addEventListener("click", () => {
         if (uploadBtn.textContent === "Upload File") {
           fileInput.click();
         } else {
-          // Simulate generate behavior
+          // Submit Form
           startFormLoadingUI();
           form.submit();
         }
@@ -179,12 +179,14 @@ export function renderDevPanel() {
         const button = e.target.closest("button[data-file]");
         if (!button) return;
         e.preventDefault();
-
+      
         const fileName = button.dataset.file;
-
+      
+        // Remove any previous hidden checkbox
         const existing = document.getElementById("autofile");
         if (existing) existing.remove();
-
+      
+        // Add new hidden checkbox
         const hidden = document.createElement("input");
         hidden.type = "checkbox";
         hidden.name = "existing_files";
@@ -193,8 +195,11 @@ export function renderDevPanel() {
         hidden.checked = true;
         hidden.style.display = "none";
         form.appendChild(hidden);
-
+      
+        // Refresh UI so Button logic updates
         refreshDropUI();
+      
+        // Submit form
         form.submit();
       });
     });
