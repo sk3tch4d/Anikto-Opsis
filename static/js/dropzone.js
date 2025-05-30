@@ -3,7 +3,7 @@
 // Handles File Uploads
 // ==============================
 
-import { refreshDropUI, startFormLoadingUI } from './drop_utils.js';
+import { refreshDropUI, processSelectedFiles, startFormLoadingUI } from './drop_utils.js';
 
 // ==============================
 // INIT DROPZONE
@@ -81,7 +81,7 @@ function setupDragAndDrop(dropZone, fileInput) {
 
   dropZone.addEventListener("drop", e => {
     e.preventDefault();
-    fileInput.files = e.dataTransfer.files;
+    processSelectedFiles({ files: e.dataTransfer.files }, fileInput);
     fileInput.dispatchEvent(new Event("change"));
     dropZone.classList.remove("active");
   });
