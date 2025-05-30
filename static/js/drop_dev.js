@@ -2,7 +2,7 @@
 // DROP_DEV.JS
 // ==============================
 
-import { refreshDropUI, getActionLabelForFiles, startFormLoadingUI } from './drop_utils.js';
+import { refreshDropUI, processSelectedFiles, getActionLabelForFiles, startFormLoadingUI } from './drop_utils.js';
 
 // ==============================
 // FADE ELEMENTS
@@ -128,10 +128,7 @@ export function renderDevPanel() {
           return;
         }
       
-        const realInput = document.getElementById("file-input");
-        const dt = new DataTransfer();
-        for (const file of fileInput.files) dt.items.add(file);
-        realInput.files = dt.files;
+        processSelectedFiles(fileInput, document.getElementById("file-input"));
       
         uploadBtn.textContent = getActionLabelForFiles(fileNames);
         refreshDropUI();
