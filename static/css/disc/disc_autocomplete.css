@@ -19,7 +19,6 @@
   top: 100%;
   left: 0;
   right: 0;
-  z-index: 10;
   background: var(--autocomplete-list-background);
   border: var(--autocomplete-list-border);
   border-radius: 10px;
@@ -27,6 +26,8 @@
   max-height: 180px;
   overflow-y: auto;
   margin-top: 0.25rem;
+  z-index: 1000;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ============================= */
