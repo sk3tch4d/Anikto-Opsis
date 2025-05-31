@@ -73,17 +73,18 @@ export function renderResults(matches) {
   });
 
   if (matches.length > limit) {
-    const notice = document.createElement("div");
-    notice.className = "delta-item";
-    notice.style.justifyContent = "center";
-    notice.style.opacity = "0.65";
-    notice.style.fontSize = "0.9rem";
-    notice.style.marginTop = "1rem";
-    notice.innerHTML = `
+    const panelDelta = document.createElement("div");
+    panelDelta.className = "panel-delta";
+  
+    const footerDelta = document.createElement("div");
+    footerDelta.className = "delta-item";
+    footerDelta.innerHTML = `
       <span>Note:</span>
       <span>Only first ${limit} of ${matches.length} shown</span>
     `;
-    resultsDiv.appendChild(notice);
+  
+    panelDelta.appendChild(footerDelta);
+    resultsDiv.appendChild(panelDelta);
   }
 
   scrollPanelBody();
