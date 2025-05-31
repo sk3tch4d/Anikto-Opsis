@@ -16,6 +16,7 @@ function attachAutocompleteToInput(input, names) {
 
   input.removeAttribute("list");
   input.setAttribute("autocomplete", "off");
+  input.setAttribute("spellcheck", "false");
 
   let currentFocus = -1;
 
