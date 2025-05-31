@@ -36,6 +36,8 @@ export function updateCompareUI() {
 // HANDLE COMPARE SLOTS
 // ==============================
 export function handleCompareSlot(data) {
+  console.log("Employee Selected:", data);
+  
   if (!compareSlot1 && !compareSlot2) {
     compareSlot1 = data;
   } else if (compareSlot1 && !compareSlot2) {
