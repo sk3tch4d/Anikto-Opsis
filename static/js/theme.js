@@ -2,6 +2,7 @@
 // THEME.JS
 // ==============================
 
+import { hapticFeedback } from "./ui-utils.js";
 
 // ==============================
 // HANDLE THEME TOGGLE
@@ -49,11 +50,7 @@ export function initThemeToggle() {
     let pressStartTime = 0;
     const THRESHOLD_MS = 300;
   
-    function triggerHapticFeedback() {
-      if ("vibrate" in navigator) {
-        navigator.vibrate(50); // nice short buzz
-      }
-    }
+    hapticFeedback(100); // nice short buzz
   
     function handlePressEnd() {
       const pressDuration = Date.now() - pressStartTime;
