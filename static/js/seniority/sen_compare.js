@@ -8,6 +8,9 @@ import { getStatusDot } from '../statusdot.js';
 import { scrollPanel } from '../panels.js';
 //import { initAutocomplete } from './autocomplete.js';
 
+let compareSlot1 = null;
+let compareSlot2 = null;
+
 // ==============================
 // INIT AUTOCOMPLETE
 // ==============================
