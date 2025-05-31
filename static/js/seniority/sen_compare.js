@@ -17,6 +17,37 @@ import { scrollPanel } from '../panels.js';
 //}
 
 // ==============================
+// UPDATE COMPARE UI
+// ==============================
+let compareSlot1 = null;
+let compareSlot2 = null;
+
+export function updateCompareUI() {
+  const slot1Div = document.getElementById("compare-slot-1");
+  const slot2Div = document.getElementById("compare-slot-2");
+
+  if (slot1Div && slot2Div) {
+    slot1Div.textContent = compareSlot1 ? `${compareSlot1["First Name"]} ${compareSlot1["Last Name"]}` : "";
+    slot2Div.textContent = compareSlot2 ? `${compareSlot2["First Name"]} ${compareSlot2["Last Name"]}` : "";
+  }
+}
+
+// ==============================
+// HANDLE COMPARE SLOTS
+// ==============================
+export function handleCompareSlot(data) {
+  if (!compareSlot1 && !compareSlot2) {
+    compareSlot1 = data;
+  } else if (compareSlot1 && !compareSlot2) {
+    compareSlot2 = data;
+  } else {
+    compareSlot1 = data;
+    compareSlot2 = null;
+  }
+  updateCompareUI();
+}
+
+// ==============================
 // NAME MATCHING UTILITY
 // ==============================
 function findPersonByName(name) {
