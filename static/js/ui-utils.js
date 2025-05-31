@@ -24,9 +24,9 @@ export function hapticFeedback(timer = 100) {
 export function soundFeedback() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
+  // Required for some browsers that suspend AudioContext until user gesture
   if (ctx.state === "suspended") {
-    console.warn("AudioContext is suspended. Not triggering sound.");
-    return;
+    ctx.resume();
   }
 
   const oscillator = ctx.createOscillator();
