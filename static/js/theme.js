@@ -55,7 +55,7 @@ export function initThemeToggle() {
     function handlePressEnd() {
       const pressDuration = Date.now() - pressStartTime;
       if (pressDuration < THRESHOLD_MS) {
-        triggerHapticFeedback();
+        hapticFeedback();
         toggleTheme();
       } else {
         console.log("[theme] Ignored long press");
