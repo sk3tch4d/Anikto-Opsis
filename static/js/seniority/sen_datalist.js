@@ -45,6 +45,7 @@ function attachAutocompleteToInput(input, names) {
 
       item.addEventListener("click", () => {
         input.value = name;
+        input.dispatchEvent(new Event("input", { bubbles: true })); // Re-validate selection
         container.innerHTML = "";
         container.style.display = "none";
       });
@@ -84,6 +85,9 @@ function attachAutocompleteToInput(input, names) {
   function setActive(items, index) {
     items.forEach((el, i) => {
       el.classList.toggle("active", i === index);
+      if (i === index) {
+        el.scrollIntoView({ block: "nearest" }); // Keep selected visible
+      }
     });
   }
 
