@@ -5,7 +5,7 @@
 
 import { clearTextSelect ,setupParseStats, highlightMatch } from "../search-utils.js";
 import { getStatusDot } from '../statusdot.js';
-import { showToast } from '../ui-utils.js';
+import { showToast, hapticFeedback } from '../ui-utils.js';
 
 // ==============================
 // DEBUG TOGGLE
@@ -25,13 +25,6 @@ function joinAsDivs(...lines) {
     .filter(line => line && line.trim() !== "")
     .map(line => `<div class="zwdiseg-line">${line}</div>`)
     .join("");
-}
-
-// ==============================
-// HELPER: HAPTIC FEEDBACK
-// ==============================
-function vibrateShort() {
-  if (navigator.vibrate) navigator.vibrate(65);
 }
 
 // ==============================
@@ -80,7 +73,7 @@ function toggleSaveItem(card, base) {
     card.classList.add("saved-card");
     showToast("Saved!");
   }
-  vibrateShort();
+  hapticFeedback();
   clearTextSelect();
   updateSavedPanel();
 }
