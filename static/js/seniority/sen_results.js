@@ -80,7 +80,7 @@ export function renderResults(matches) {
     footerDelta.className = "delta-item";
     footerDelta.innerHTML = `
       <span>Note:</span>
-      <span>Only first ${limit} of ${matches.length} shown</span>
+      <span>Showing first ${limit} of ${matches.length} Matches</span>
     `;
   
     panelDelta.appendChild(footerDelta);
