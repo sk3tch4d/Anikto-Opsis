@@ -5,6 +5,7 @@
 
 import { getStatusDot } from '../statusdot.js';
 import { scrollPanelBody } from '../panels.js';
+import { handleCompareSlot } from './sen_compare.js';
 
 // ==============================
 // RENDER MATCHED RESULTS
@@ -13,8 +14,6 @@ export function renderResults(matches) {
   console.log("Rendering", matches.length, "results");
 
   const resultsDiv = document.getElementById("seniority-results");
-
-  // Clear previous content
   resultsDiv.innerHTML = "";
 
   if (!matches || matches.length === 0) {
@@ -22,7 +21,6 @@ export function renderResults(matches) {
     return;
   }
 
-  // ====== Add the "Results: X" delta at the top ======
   const delta = document.createElement("div");
   delta.className = "panel-delta";
   delta.style.marginBottom = "8px";
@@ -34,7 +32,6 @@ export function renderResults(matches) {
   `;
   resultsDiv.appendChild(delta);
 
-  // ====== Render matching results ======
   matches.forEach(row => {
     const first = row["First Name"] || "";
     const last = row["Last Name"] || "";
@@ -55,9 +52,22 @@ export function renderResults(matches) {
       ${union} ${years.toFixed(2)} Years
     `;
 
+    let lastTap = 0;
+
+    card.addEventListener("dblclick", () => handleCompareSlot(row));
+    card.addEventListener("touchend", (e) => {
+      const currentTime = new Date().getTime();
+      const tapLength = currentTime - lastTap;
+      if (tapLength < 300 && tapLength > 0) {
+        handleCompareSlot(row);
+        e.preventDefault(); // prevent simulated mouse events
+      }
+      lastTap = currentTime;
+    });
+
+
     resultsDiv.appendChild(card);
   });
 
-  // Reset scroll
   scrollPanelBody();
 }
