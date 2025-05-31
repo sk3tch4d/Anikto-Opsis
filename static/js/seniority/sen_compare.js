@@ -7,18 +7,11 @@ import { normalize } from './sen_search.js';
 import { getStatusDot } from '../statusdot.js';
 import { scrollPanel, openPanelById } from '../panels.js';
 import { showToast, hapticFeedback } from '../ui-utils.js';
-//import { initAutocomplete } from './autocomplete.js';
+
+// ==============================
 
 let compareSlot1 = null;
 let compareSlot2 = null;
-
-// ==============================
-// INIT AUTOCOMPLETE
-// ==============================
-//export function initComparisonPanel() {
-//  initAutocomplete("compare-input-1", "autocomplete-1");
-//  initAutocomplete("compare-input-2", "autocomplete-2");
-//}
 
 // ==============================
 // HANDLE COMPARE SLOTS
