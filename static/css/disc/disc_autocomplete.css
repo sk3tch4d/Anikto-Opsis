@@ -42,3 +42,8 @@
 .autocomplete-item:hover {
   background: var(--autocomplete-itemhover-background);
 }
+.autocomplete-item.active {
+  background: var(--autocomplete-itemhover-background);
+  font-weight: bold;
+}
+
