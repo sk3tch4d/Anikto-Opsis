@@ -37,7 +37,7 @@
   /* ============================= */
   --button-color: #c4c4ed;
   --button-background-color: #666c99;
-  --button-border: 1.4px solid #2d2d53;
+  --button-border: 1.4px solid #474785;
   --button-box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   --buttonhover-color: #d8d8f3;
   --buttonhover-background-image: linear-gradient(135deg, #2e329e, #6039ac);
@@ -280,7 +280,7 @@
   /* ============================= */
   --button-color: #060614;
   --button-background-color: #33364d;
-  --button-border: 1.4px solid #1b1b32;
+  --button-border: 0px;
   --button-box-shadow: 0 0 10px rgba(0,0,0,0.1);
   --buttonhover-color: #120c27;
   --buttonhover-background-image: linear-gradient(135deg, #5a5dcf, #7f5ac8);
