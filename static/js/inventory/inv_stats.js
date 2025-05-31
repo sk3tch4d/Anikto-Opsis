@@ -4,6 +4,7 @@
 // ==============================
 
 import { clearTextSelect, setupParseStats, highlightMatch } from "../search-utils.js";
+import { showToast } from './ui-utils.js';
 
 // ==============================
 // DEBUG TOGGLE
@@ -14,18 +15,6 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 // GLOBAL: SAVED ITEMS
 // ==============================
 window.savedItems = new Map();
-
-// ==============================
-// HELPER: SHOW TOAST
-// ==============================
-function showToast(message) {
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.classList.add("show");
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2000);
-}
 
 // ==============================
 // HELPER: JOIN CONTENT <div>
