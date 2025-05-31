@@ -5,7 +5,7 @@
 
 import { normalize } from './sen_search.js';
 import { getStatusDot } from '../statusdot.js';
-import { scrollPanel } from '../panels.js';
+import { scrollPanel, openPanelById } from '../panels.js';
 import { showToast } from '../ui-utils.js';
 //import { initAutocomplete } from './autocomplete.js';
 
@@ -36,17 +36,17 @@ export function handleCompareSlot(data) {
   if (!compareSlot1 && !compareSlot2) {
     compareSlot1 = data;
     if (input1) input1.value = `${data["First Name"]} ${data["Last Name"]}`;
-    showToast("First Compare Added!");
   } else if (compareSlot1 && !compareSlot2) {
     compareSlot2 = data;
     if (input2) input2.value = `${data["First Name"]} ${data["Last Name"]}`;
-    showToast("Second Compare Added!");
+    openPanelById("seniority-compare-panel");
   } else {
     compareSlot1 = data;
     compareSlot2 = null;
     if (input1) input1.value = `${data["First Name"]} ${data["Last Name"]}`;
     if (input2) input2.value = "";
   }
+  showToast("Added to Compare!");
 
   if (input1) input1.dispatchEvent(new Event("input", { bubbles: true }));
   if (input2) input2.dispatchEvent(new Event("input", { bubbles: true }));
