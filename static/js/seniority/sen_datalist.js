@@ -9,10 +9,15 @@
 function attachAutocompleteToInput(input, names) {
   const container = document.createElement("div");
   container.className = "autocomplete-list";
-
   container.style.display = "none";
-  input.parentNode.appendChild(container);
+  container.style.position = "absolute";
+  container.style.zIndex = "1000";
 
+  // Append to body to escape overflow clipping
+  document.body.appendChild(container);
+
+  // Disable native datalist rendering
+  input.removeAttribute("list");
   input.setAttribute("autocomplete", "off");
 
   input.addEventListener("input", function () {
@@ -23,7 +28,10 @@ function attachAutocompleteToInput(input, names) {
       return;
     }
 
-    const matches = names.filter(name => name.toLowerCase().includes(val)).slice(0, 10);
+    const matches = names
+      .filter(name => name.toLowerCase().includes(val))
+      .slice(0, 10);
+
     if (matches.length === 0) {
       container.style.display = "none";
       return;
@@ -41,11 +49,11 @@ function attachAutocompleteToInput(input, names) {
       container.appendChild(item);
     });
 
-    container.style.position = "absolute";
-    container.style.top = (input.offsetTop + input.offsetHeight) + "px";
-    container.style.left = input.offsetLeft + "px";
-    container.style.width = input.offsetWidth + "px";
-    container.style.zIndex = "999";
+    // Position below the input field
+    const rect = input.getBoundingClientRect();
+    container.style.top = `${rect.top + rect.height + window.scrollY}px`;
+    container.style.left = `${rect.left + window.scrollX}px`;
+    container.style.width = `${rect.width}px`;
     container.style.display = "block";
   });
 
@@ -55,7 +63,12 @@ function attachAutocompleteToInput(input, names) {
       container.style.display = "none";
     }
   });
+
+  // Hide on scroll or resize to avoid misaligned popups
+  window.addEventListener("resize", () => container.style.display = "none");
+  window.addEventListener("scroll", () => container.style.display = "none");
 }
+
 
 // ==============================
 // INIT AUTOCOMPLETE
@@ -64,7 +77,10 @@ export function initCompareAutocomplete() {
   if (!window.seniorityData) return;
 
   const names = window.seniorityData.map(row => `${row["First Name"]} ${row["Last Name"]}`);
-  const inputs = [document.getElementById("compare-input-1"), document.getElementById("compare-input-2")];
+  const inputs = [
+    document.getElementById("compare-input-1"),
+    document.getElementById("compare-input-2")
+  ];
 
   inputs.forEach(input => {
     if (input) {
