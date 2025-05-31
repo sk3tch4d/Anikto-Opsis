@@ -28,6 +28,8 @@ export function initAdminLogin() {
   if (DEBUG_MODE) console.log("[DEBUG] Admin login initialized.");
   collapseAllPanels({ excludeSelector: "#login-panel" });
 
+  input.focus();
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     if (DEBUG_MODE) console.log("[DEBUG] Login form submitted.");
