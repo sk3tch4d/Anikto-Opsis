@@ -6,7 +6,7 @@
 import { normalize } from './sen_search.js';
 import { getStatusDot } from '../statusdot.js';
 import { scrollPanel, openPanelById } from '../panels.js';
-import { showToast } from '../ui-utils.js';
+import { showToast, hapticFeedback } from '../ui-utils.js';
 //import { initAutocomplete } from './autocomplete.js';
 
 let compareSlot1 = null;
@@ -26,9 +26,7 @@ let compareSlot2 = null;
 export function handleCompareSlot(data) {
   console.log("Employee Selected:", data);
 
-  if (navigator.vibrate) {
-    navigator.vibrate(50);
-  }  
+  hapticFeedback();
 
   const input1 = document.getElementById("compare-input-1");
   const input2 = document.getElementById("compare-input-2");
@@ -116,6 +114,7 @@ function renderListItem(row) {
   const department = row["Department"] ? ` - ${row["Department"]}` : "";
   const status = row["Status"] || "";
   const years = parseFloat(row["Years"] || 0);
+  const union = row["Union"] || "";
   const statusDot = getStatusDot({ status, position });
 
   
@@ -124,7 +123,7 @@ function renderListItem(row) {
       <strong>${first} ${last}</strong><br>
       ${statusDot} ${status}<br>
       <em>${position} ${department}</em><br>
-      ${years.toFixed(2)} Years
+      ${union} - ${years.toFixed(2)} Years
     </div>
   `;
 }
