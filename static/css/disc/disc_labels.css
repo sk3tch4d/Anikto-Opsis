@@ -28,12 +28,11 @@
 .toast {
   pointer-events: none;
   position: fixed;
-  padding: 8px 32px;
+  padding: 10px 40px;
   border-radius: 60px;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.85rem;
   font-weight: 600;
   background: var(--toast-background);
   color: var(--toast-color);
@@ -41,6 +40,7 @@
   opacity: 0;
   transition: opacity 1s ease, bottom 1.2s ease, border 3s ease;
   z-index: 1000;
+  white-space: nowrap;
 }
 .toast.show {
   opacity: 1;
