@@ -22,6 +22,21 @@ logging.basicConfig(level=logging.DEBUG)
 app.logger.setLevel(logging.DEBUG)
 
 # ==============================
+# SETUP EXPORT LOGGING
+# ==============================
+# Ensure logs directory exists
+os.makedirs('logs', exist_ok=True)
+
+# Configure file handler
+file_handler = logging.FileHandler('logs/session.log')
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
+
+# Avoid adding multiple handlers during reload
+if not app.logger.handlers:
+    app.logger.addHandler(file_handler)
+
+# ==============================
 # SILENCE PDFMINER
 # ==============================
 logging.getLogger("pdfminer").setLevel(logging.WARNING)
