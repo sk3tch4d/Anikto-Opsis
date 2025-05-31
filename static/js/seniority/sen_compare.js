@@ -17,26 +17,14 @@ import { scrollPanel } from '../panels.js';
 //}
 
 // ==============================
-// UPDATE COMPARE UI
-// ==============================
-let compareSlot1 = null;
-let compareSlot2 = null;
-
-export function updateCompareUI() {
-  const slot1Div = document.getElementById("compare-slot-1");
-  const slot2Div = document.getElementById("compare-slot-2");
-
-  if (slot1Div && slot2Div) {
-    slot1Div.textContent = compareSlot1 ? `${compareSlot1["First Name"]} ${compareSlot1["Last Name"]}` : "";
-    slot2Div.textContent = compareSlot2 ? `${compareSlot2["First Name"]} ${compareSlot2["Last Name"]}` : "";
-  }
-}
-
-// ==============================
 // HANDLE COMPARE SLOTS
 // ==============================
 export function handleCompareSlot(data) {
   console.log("Employee Selected:", data);
+
+  if (navigator.vibrate) {
+    navigator.vibrate(50);
+  }  
 
   const input1 = document.getElementById("compare-input-1");
   const input2 = document.getElementById("compare-input-2");
@@ -54,7 +42,8 @@ export function handleCompareSlot(data) {
     if (input2) input2.value = "";
   }
 
-  updateCompareUI();
+  if (input1) input1.dispatchEvent(new Event("input", { bubbles: true }));
+  if (input2) input2.dispatchEvent(new Event("input", { bubbles: true }));
 }
 
 // ==============================
