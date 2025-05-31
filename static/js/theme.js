@@ -74,6 +74,11 @@ export function initThemeToggle() {
     // Optionally prevent context menu from long presses
     title.addEventListener("contextmenu", e => e.preventDefault());
 
+    // Handle edge cases from scroll + mid tap
+    title.addEventListener("pointercancel", () => {
+      pressStartTime = 0;
+    });
+
   }
 
   // Ensure it runs after DOM is loaded
