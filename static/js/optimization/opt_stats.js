@@ -4,7 +4,7 @@
 
 import { setupParseStats, highlightMatch } from "../search-utils.js";
 import { scrollPanel } from "../panels.js";
-import { showToast } from './ui-utils.js';
+import { showToast } from '../ui-utils.js';
 
 // ==============================
 // DEBUG TOGGLE
