@@ -65,15 +65,14 @@ export function initThemeToggle() {
       }
     }
   
-    ["touchstart", "mousedown"].forEach(evt =>
-      title.addEventListener(evt, () => {
-        pressStartTime = Date.now();
-      })
-    );
+    title.addEventListener("pointerdown", () => {
+      pressStartTime = Date.now();
+    });
     
-    ["touchend", "mouseup"].forEach(evt =>
-      title.addEventListener(evt, handlePressEnd)
-    );
+    title.addEventListener("pointerup", handlePressEnd);
+    
+    // Optionally prevent context menu from long presses
+    title.addEventListener("contextmenu", e => e.preventDefault());
 
   }
 
