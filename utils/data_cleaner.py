@@ -133,8 +133,8 @@ def adjust_cart_ops(df):
 # DETECT UNION VALUE
 # ==============================
 def detect_union_value(df):
-    if "Union" in df.columns:
-        log_cleaning("Union column already present — skipping detection", df)
+    if any(str(col).strip().upper() == "UNION" for col in df.iloc[0]):
+        log_cleaning("Union Column Present — Skipping Detection", df)
         return None
 
     preview = df.head(5).fillna("").astype(str).apply(lambda x: x.str.upper())
