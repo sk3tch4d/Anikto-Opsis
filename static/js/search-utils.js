@@ -5,7 +5,7 @@
 
 import { openPanelById, scrollPanel } from "./panels.js";
 import { removeFocus } from "./helpers.js";
-import { showToast, hapticFeedback } from "./ui-utils.js"
+import { showToast, hapticFeedback } from "./ui-utils.js";
 
 // ==============================
 // CLEAR TEXT SELECTION
