@@ -124,3 +124,40 @@ export function initFileUploadDisplay() {
     console.warn("[DEBUG] No file upload inputs found for auto-submit.");
   }
 }
+
+// ==============================
+// LOAD ADMIN PAGE
+// ==============================
+export function loadAdminPage() {
+  const title = document.querySelector("h1");
+  if (!title) return;
+
+  const pressHold = (targetElement, action, holdTime = 2000) => {
+    let pressTimer = null;
+
+    const start = () => {
+      if (!pressTimer) {
+        pressTimer = setTimeout(() => {
+          action();
+          pressTimer = null;
+        }, holdTime);
+      }
+    };
+
+    const cancel = () => {
+      clearTimeout(pressTimer);
+      pressTimer = null;
+    };
+
+    targetElement.addEventListener("touchstart", start);
+    targetElement.addEventListener("touchend", cancel);
+    targetElement.addEventListener("touchcancel", cancel);
+    targetElement.addEventListener("mousedown", start);
+    targetElement.addEventListener("mouseup", cancel);
+    targetElement.addEventListener("mouseleave", cancel);
+  };
+
+  pressHold(title, () => {
+    window.location.href = "/1902";
+  });
+}
