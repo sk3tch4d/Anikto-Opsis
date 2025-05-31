@@ -12,17 +12,18 @@ function attachAutocompleteToInput(input, names) {
   container.style.display = "none";
   container.style.position = "absolute";
   container.style.zIndex = "1000";
-
-  // Append to body to escape overflow clipping
   document.body.appendChild(container);
 
-  // Disable native datalist rendering
   input.removeAttribute("list");
   input.setAttribute("autocomplete", "off");
+
+  let currentFocus = -1;
 
   input.addEventListener("input", function () {
     const val = this.value.toLowerCase();
     container.innerHTML = "";
+    currentFocus = -1;
+
     if (!val) {
       container.style.display = "none";
       return;
@@ -37,25 +38,54 @@ function attachAutocompleteToInput(input, names) {
       return;
     }
 
-    matches.forEach(name => {
+    matches.forEach((name, index) => {
       const item = document.createElement("div");
       item.className = "autocomplete-item";
       item.textContent = name;
+
       item.addEventListener("click", () => {
         input.value = name;
         container.innerHTML = "";
         container.style.display = "none";
       });
+
       container.appendChild(item);
     });
 
-    // Position below the input field
     const rect = input.getBoundingClientRect();
     container.style.top = `${rect.top + rect.height + window.scrollY}px`;
     container.style.left = `${rect.left + window.scrollX}px`;
     container.style.width = `${rect.width}px`;
     container.style.display = "block";
   });
+
+  input.addEventListener("keydown", function (e) {
+    const items = container.querySelectorAll(".autocomplete-item");
+    if (!items.length) return;
+
+    if (e.key === "ArrowDown") {
+      currentFocus++;
+      if (currentFocus >= items.length) currentFocus = 0;
+      setActive(items, currentFocus);
+      e.preventDefault();
+    } else if (e.key === "ArrowUp") {
+      currentFocus--;
+      if (currentFocus < 0) currentFocus = items.length - 1;
+      setActive(items, currentFocus);
+      e.preventDefault();
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (currentFocus > -1 && items[currentFocus]) {
+        items[currentFocus].click();
+      }
+    }
+  });
+
+  function setActive(items, index) {
+    items.forEach((el, i) => {
+      el.classList.toggle("active", i === index);
+    });
+  }
 
   document.addEventListener("click", function (e) {
     if (e.target !== input) {
@@ -64,11 +94,9 @@ function attachAutocompleteToInput(input, names) {
     }
   });
 
-  // Hide on scroll or resize to avoid misaligned popups
   window.addEventListener("resize", () => container.style.display = "none");
   window.addEventListener("scroll", () => container.style.display = "none");
 }
-
 
 // ==============================
 // INIT AUTOCOMPLETE
