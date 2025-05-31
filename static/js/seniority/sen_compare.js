@@ -142,11 +142,27 @@ function renderDelta(a, b) {
 
   return `
     <div class="compare-delta">
-      <div class="delta-item"><strong>Years:</strong><br>${delta.toFixed(2)}</div>
-      <div class="delta-item"><strong>Months:</strong><br>${months.toFixed(1)}</div>
-      <div class="delta-item"><strong>Weeks:</strong><br>${weeks.toFixed(1)}</div>
-      <div class="delta-item"><strong>Days:</strong><br>${days.toFixed(0)}</div>
-      <div class="delta-item full-span"><strong>Hours:</strong><br>${hours.toFixed(0)}</div>
+      <div class="delta-item">
+        <div class="delta-label"><strong>Years:</strong></div>
+        <div class="delta-value">${delta.toFixed(2)}</div>
+      </div>
+      <div class="delta-item">
+        <div class="delta-label"><strong>Months:</strong></div>
+        <div class="delta-value">${months.toFixed(1)}</div>
+      </div>
+      <div class="delta-item">
+        <div class="delta-label"><strong>Weeks:</strong></div>
+        <div class="delta-value">${weeks.toFixed(1)}</div>
+      </div>
+      <div class="delta-item">
+        <div class="delta-label"><strong>Days:</strong></div>
+        <div class="delta-value">${days.toFixed(0)}</div>
+      </div>
+      <div class="delta-item full-span">
+        <div class="delta-label"><strong>Hours:</strong></div>
+        <div class="delta-value">${hours.toFixed(0)}</div>
+      </div>
     </div>
   `;
 }
+
