@@ -28,7 +28,7 @@
 .toast {
   pointer-events: none;
   position: fixed;
-  padding: 10px 40px;
+  padding: 8px 32px;
   border-radius: 60px;
   bottom: 20px;
   left: 50%;
