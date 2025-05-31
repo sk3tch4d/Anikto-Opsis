@@ -32,15 +32,16 @@ export function soundFeedback() {
   const oscillator = ctx.createOscillator();
   const gain = ctx.createGain();
 
-  oscillator.type = "square";
-  oscillator.frequency.setValueAtTime(1000, ctx.currentTime); // Frequency in Hz
-  gain.gain.setValueAtTime(0.1, ctx.currentTime); // Volume
+  oscillator.type = "triangle"; // Try 'sawtooth' or 'impulse' for variation
+  oscillator.frequency.setValueAtTime(60, ctx.currentTime); // Low frequency click
+  gain.gain.setValueAtTime(0.3, ctx.currentTime); // Higher for a solid click
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.02); // Quick fade-out
 
   oscillator.connect(gain);
   gain.connect(ctx.destination);
 
-  oscillator.start();
-  oscillator.stop(ctx.currentTime + 0.05); // 50ms blip
+  oscillator.start(ctx.currentTime);
+  oscillator.stop(ctx.currentTime + 0.03); // Very short for a sharp feel
 }
 
 // ==============================
