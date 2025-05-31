@@ -6,7 +6,7 @@
 // ==============================
 // HAPTIC FEEDBACK
 // ==============================
-function hapticFeedback(timer = 100) {
+export function hapticFeedback(timer = 100) {
   const duration = Math.max(0, Number(timer)); // Prevent Negative Values
   if ("vibrate" in navigator && typeof navigator.vibrate === "function") {
     navigator.vibrate(duration);
