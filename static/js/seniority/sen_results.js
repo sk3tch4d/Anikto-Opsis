@@ -21,6 +21,9 @@ export function renderResults(matches) {
     return;
   }
 
+  const limit = 100;
+  const limited = matches.slice(0, limit);
+
   const delta = document.createElement("div");
   delta.className = "panel-delta";
   delta.style.marginBottom = "8px";
@@ -32,7 +35,7 @@ export function renderResults(matches) {
   `;
   resultsDiv.appendChild(delta);
 
-  matches.forEach(row => {
+  limited.forEach(row => {
     const first = row["First Name"] || "";
     const last = row["Last Name"] || "";
     const position = row["Position"] || "";
@@ -68,6 +71,20 @@ export function renderResults(matches) {
 
     resultsDiv.appendChild(card);
   });
+
+  if (matches.length > limit) {
+    const notice = document.createElement("div");
+    notice.className = "delta-item";
+    notice.style.justifyContent = "center";
+    notice.style.opacity = "0.65";
+    notice.style.fontSize = "0.9rem";
+    notice.style.marginTop = "1rem";
+    notice.innerHTML = `
+      <span>Note:</span>
+      <span>Only first ${limit} of ${matches.length} shown</span>
+    `;
+    resultsDiv.appendChild(notice);
+  }
 
   scrollPanelBody();
 }
