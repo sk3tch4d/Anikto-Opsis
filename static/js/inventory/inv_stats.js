@@ -4,7 +4,7 @@
 // ==============================
 
 import { clearTextSelect, setupParseStats, highlightMatch } from "../search-utils.js";
-import { showToast } from './ui-utils.js';
+import { showToast } from '../ui-utils.js';
 
 // ==============================
 // DEBUG TOGGLE
