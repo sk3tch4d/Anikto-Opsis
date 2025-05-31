@@ -15,7 +15,7 @@ from config import DEV_MODE, UPLOAD_FOLDER
 from utils.data_tools import reorder_name
 from utils.data_search import handle_search_request
 from handlers.index_handler import process_index_upload
-from utils.log_user_info import new_session_info
+from utils.info_logging import new_session_info
 
 from .arg_routes import arg_bp
 from .dev_routes import dev_bp
