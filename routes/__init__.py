@@ -50,7 +50,7 @@ def register_routes(app):
     for name, func in template_filters.items():
         app.add_template_filter(func, name=name)
         app.logger.debug(f"🔗 Added Template Filter: {name}")
-    
+
     # ==============================
     # INDEX HANDLING: POST & GET
     # ==============================
@@ -82,3 +82,11 @@ def register_routes(app):
     def testing():
         current_app.logger.debug("🧪 /test route hit — Rendering testing.html")
         return render_template("testing.html", table=[])
+
+    # ==============================
+    # DOWNLOAD LOGS
+    # ==============================
+    @app.route("/download-logs")
+    def download_logs():
+        return send_file("logs/session.log", as_attachment=True, download_name="ao-session-logs.txt")
+    
