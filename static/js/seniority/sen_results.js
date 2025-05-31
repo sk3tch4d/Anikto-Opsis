@@ -49,7 +49,7 @@ export function renderResults(matches) {
       <strong>${first} ${last}</strong><br>
       ${statusDot} ${status} ${note}<br>
       <em>${position} ${department}</em><br>
-      ${union} ${years.toFixed(2)} Years
+      ${union} - ${years.toFixed(2)} Years
     `;
 
     let lastTap = 0;
