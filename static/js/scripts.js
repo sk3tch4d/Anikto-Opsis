@@ -25,7 +25,7 @@ import { initScheduleUI } from './schedule/working_date.js';
 // ----- Search-Utils -----
 import { setupParseStats, searchFromStat } from './search-utils.js';
 // ----- Admin -----
-import { initAdminLogin, initJsonUploadForm, initFileUploadDisplay } from './admin.js';
+import { initAdminLogin, initJsonUploadForm, initFileUploadDisplay, loadAdminPage } from './admin.js';
 // ----- Seniority -----
 import { initializeSeniorityApp } from './seniority/sen_init.js';
 // ----- Inventory -----
@@ -81,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector("#adpw")) initAdminLogin();
   if (document.querySelector("#json-upload")) initJsonUploadForm();
   if (document.querySelector("#file-upload-group")) initFileUploadDisplay();
+  if (document.querySelector("h1")) loadAdminPage();
 
   // ----- Seniority -----
   if (document.querySelector("#seniority-search")) initializeSeniorityApp();
