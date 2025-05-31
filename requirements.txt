@@ -8,3 +8,4 @@ matplotlib
 seaborn
 Flask-SQLAlchemy
 psycopg2-binary
+user-agents
