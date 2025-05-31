@@ -5,6 +5,7 @@
 
 import { openPanelById, scrollPanel } from "./panels.js";
 import { removeFocus } from "./helpers.js";
+import { showToast, hapticFeedback } from "./ui-utils.js"
 
 // ==============================
 // CLEAR TEXT SELECTION
@@ -89,7 +90,7 @@ export function setupParseStats(selector, inputId, attr, filterId = null, filter
       pressTimer = setTimeout(() => {
         inputEl.value = "";
         inputEl.dispatchEvent(new Event("input"));
-        triggerVibration();
+        hapticFeedback();
         showToast("Search cleared");
       }, 600);
     }
@@ -99,7 +100,7 @@ export function setupParseStats(selector, inputId, attr, filterId = null, filter
         filterEl.value = "All";
         filterEl.dispatchEvent(new Event("change"));
         removeFocus(filterEl);
-        triggerVibration();
+        hapticFeedback();
         showToast("Filter reset");
       }, 600);
     }
@@ -137,31 +138,4 @@ function escapeHtml(str) {
 
 function escapeRegExp(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-// ==============================
-// HAPTIC VIBRATION
-// ==============================
-function triggerVibration() {
-  if (navigator.vibrate) {
-    navigator.vibrate(50); // Slightly longer vibration (better feedback)
-  }
-}
-
-// ==============================
-// TOAST FEEDBACK
-// ==============================
-function showToast(message) {
-  let toast = document.getElementById("toast");
-  if (!toast) {
-    toast = document.createElement("div");
-    toast.id = "toast";
-    toast.className = "toast-message";
-    document.body.appendChild(toast);
-  }
-  toast.textContent = message;
-  toast.classList.add("show");
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 1800);
 }
