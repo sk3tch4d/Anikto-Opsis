@@ -84,6 +84,16 @@
             </p>
           </div>
         </div>
+
+        <!-- Downloads Panel -->
+        <div id="downloads-panel" class="panel">
+          <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
+          <div class="panel-body scrollable-panel">
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <a href="{{ url_for('download_logs') }}" class="button panel">Download Logs</a>
+            </div>
+          </div>
+        </div>
     
         <!-- Back to Main -->
         <div class="panel panel-animate no-shadow">
