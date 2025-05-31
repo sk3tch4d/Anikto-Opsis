@@ -37,15 +37,23 @@ export function updateCompareUI() {
 // ==============================
 export function handleCompareSlot(data) {
   console.log("Employee Selected:", data);
-  
+
+  const input1 = document.getElementById("compare-input-1");
+  const input2 = document.getElementById("compare-input-2");
+
   if (!compareSlot1 && !compareSlot2) {
     compareSlot1 = data;
+    if (input1) input1.value = `${data["First Name"]} ${data["Last Name"]}`;
   } else if (compareSlot1 && !compareSlot2) {
     compareSlot2 = data;
+    if (input2) input2.value = `${data["First Name"]} ${data["Last Name"]}`;
   } else {
     compareSlot1 = data;
     compareSlot2 = null;
+    if (input1) input1.value = `${data["First Name"]} ${data["Last Name"]}`;
+    if (input2) input2.value = "";
   }
+
   updateCompareUI();
 }
 
