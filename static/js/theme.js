@@ -10,6 +10,7 @@ export function initThemeToggle() {
   const THEME_KEY = "preferred-theme";
 
   function setTheme(theme) {
+    if (getTheme() === theme) return; // Avoid redundant set
     console.log(`[theme] Applying theme: ${theme}`);
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem(THEME_KEY, theme);
@@ -33,33 +34,47 @@ export function initThemeToggle() {
 
   function runThemeInit() {
     const title = document.getElementById("site-title");
-
+  
     if (!title) {
       console.warn("[theme] #site-title not found – theme toggle skipped");
       return;
     }
-
+  
     console.log("[theme] #site-title found, initializing theme toggle");
-
+  
     setTheme(getSavedOrSystemTheme());
     title.style.cursor = "pointer";
     title.title = "Tap to toggle theme";
+  
+    let pressStartTime = 0;
+    const THRESHOLD_MS = 300;
+  
+    function triggerHapticFeedback() {
+      if ("vibrate" in navigator) {
+        navigator.vibrate(50); // nice short buzz
+      }
+    }
+  
+    function handlePressEnd() {
+      const pressDuration = Date.now() - pressStartTime;
+      if (pressDuration < THRESHOLD_MS) {
+        triggerHapticFeedback();
+        toggleTheme();
+      } else {
+        console.log("[theme] Ignored long press");
+      }
+    }
+  
+    ["touchstart", "mousedown"].forEach(evt =>
+      title.addEventListener(evt, () => {
+        pressStartTime = Date.now();
+      })
+    );
+    
+    ["touchend", "mouseup"].forEach(evt =>
+      title.addEventListener(evt, handlePressEnd)
+    );
 
-    let recentlyTouched = false;
-
-    title.addEventListener("touchstart", () => {
-      toggleTheme();
-      recentlyTouched = true;
-
-      setTimeout(() => {
-        recentlyTouched = false;
-      }, 400);
-    });
-
-    title.addEventListener("click", () => {
-      if (recentlyTouched) return;
-      toggleTheme();
-    });
   }
 
   // Ensure it runs after DOM is loaded
