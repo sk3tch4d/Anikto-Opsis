@@ -43,6 +43,7 @@ export function renderResults(matches) {
     const status = row["Status"] || "";
     const note = row["Note"] || "";
     const years = parseFloat(row["Years"] || 0);
+    const union = row["Union"] || "";
     const statusDot = getStatusDot({ note, status });
 
     const card = document.createElement("div");
@@ -51,7 +52,7 @@ export function renderResults(matches) {
       <strong>${first} ${last}</strong><br>
       ${statusDot} ${status} ${note}<br>
       <em>${position} ${department}</em><br>
-      ${years.toFixed(2)} Years
+      ${union} ${years.toFixed(2)} Years
     `;
 
     resultsDiv.appendChild(card);
