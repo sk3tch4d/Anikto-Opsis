@@ -14,8 +14,8 @@ def new_session_info():
     ua_string = request.headers.get('User-Agent', '')
     ua = parse(ua_string)
 
-    current_app.logger.info("--[ New Active Session ]--")
-    current_app.logger.info(f"IP Address: {ip}")
-    current_app.logger.info(f"Browser: {ua.browser.family} {ua.browser.version_string}")
-    current_app.logger.info(f"OS: {ua.os.family} {ua.os.version_string}")
-    current_app.logger.info(f"Device: {ua.device.family}")
+    current_app.logger.info("--[ 📡 New Active Session ]--")
+    current_app.logger.info(f"🌐 IP Address: {ip}")
+    current_app.logger.info(f"🌐 Browser: {ua.browser.family} {ua.browser.version_string}")
+    current_app.logger.info(f"🌐 OS: {ua.os.family} {ua.os.version_string}")
+    current_app.logger.info(f"🌐 Device: {ua.device.family}")
