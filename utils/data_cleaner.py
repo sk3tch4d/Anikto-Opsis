@@ -133,6 +133,10 @@ def adjust_cart_ops(df):
 # DETECT UNION VALUE
 # ==============================
 def detect_union_value(df):
+    if "Union" in df.columns:
+        log_cleaning("Union column already present — skipping detection", df)
+        return None
+
     preview = df.head(5).fillna("").astype(str).apply(lambda x: x.str.upper())
     text = " ".join(preview.values.flatten())
     logging.debug(f"[DEBUG] Preview flattened text: {text!r}")
