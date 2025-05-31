@@ -4,6 +4,7 @@
 
 import { setupParseStats, highlightMatch } from "../search-utils.js";
 import { scrollPanel } from "../panels.js";
+import { showToast } from './ui-utils.js';
 
 // ==============================
 // DEBUG TOGGLE
@@ -14,16 +15,6 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 // GLOBAL: SAVED ITEMS
 // ==============================
 const savedItems = new Map();
-
-// ==============================
-// HELPER: TOAST
-// ==============================
-function showToast(message) {
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2000);
-}
 
 // ==============================
 // HELPER: UPDATE SAVED PANEL
