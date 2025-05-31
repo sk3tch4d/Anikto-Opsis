@@ -4,7 +4,17 @@
 
 
 // ==============================
-// HELPER: SHOW TOAST
+// HAPTIC FEEDBACK
+// ==============================
+function hapticFeedback(timer = 100) {
+  const duration = Math.max(0, Number(timer)); // Prevent Negative Values
+  if ("vibrate" in navigator && typeof navigator.vibrate === "function") {
+    navigator.vibrate(duration);
+  }
+}
+
+// ==============================
+// SHOW TOAST
 // ==============================
 export function showToast(message, timer = 2000) {
   const toast = document.getElementById("toast");
