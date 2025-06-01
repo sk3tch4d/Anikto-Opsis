@@ -1,7 +1,8 @@
 // ==============================
-// SCHEDULED.JS
-// ARG Working Date Logic
+// WORKING_DATE.JS
 // ==============================
+
+import { withLoadingToggle, createBounceLoader } from "../loading.js";
 
 // ==============================
 // FETCH SCHEDULE DATA
@@ -9,42 +10,49 @@
 export async function fetchWorkingOnDate() {
   const dateInput = document.getElementById('working-date');
   const resultsDiv = document.getElementById('working-date-results');
-  const loadingDiv = document.getElementById('working-date-loading');
+  const panelBody = document.querySelector('#scheduled-search-panel .panel-body');
 
-  if (!dateInput || !dateInput.value) return;
+  if (!dateInput || !dateInput.value || !resultsDiv || !panelBody) return;
 
   const dateStr = dateInput.value;
-  if (resultsDiv) resultsDiv.innerHTML = "";
-  if (loadingDiv) loadingDiv.style.display = "block";
+  const loader = createBounceLoader(panelBody);
 
-  try {
-    const response = await fetch(`/api/working_on_date?date=${dateStr}`);
-    const data = await response.json();
-    const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
-    let html = '';
+  withLoadingToggle(
+    {
+      show: [loader],
+      hide: [resultsDiv]
+    },
+    async () => {
+      resultsDiv.innerHTML = "";
 
-    if (data.error) {
-      html = `<p class="error">${data.error}</p>`;
-    } else {
-      ['Day', 'Evening', 'Night'].forEach(type => {
-        if (data[type]?.length) {
-          html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><div class="panel-delta">`;
-          data[type].forEach(([name, shift]) => {
-            html += `<div class="delta-item">${name} <span>(${shift})</span></div>`;
+      try {
+        const response = await fetch(`/api/working_on_date?date=${dateStr}`);
+        const data = await response.json();
+        const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
+        let html = '';
 
+        if (data.error) {
+          html = `<p class="error">${data.error}</p>`;
+        } else {
+          ['Day', 'Evening', 'Night'].forEach(type => {
+            if (data[type]?.length) {
+              html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><div class="panel-delta">`;
+              data[type].forEach(([name, shift]) => {
+                html += `<div class="delta-item">${name} <span>(${shift})</span></div>`;
+              });
+              html += `</div>`;
+            }
           });
-          html += `</div>`;
+          if (!html) html = "<p>No employees scheduled for this date.</p>";
         }
-      });
-      if (!html) html = "<p>No employees scheduled for this date.</p>";
-    }
 
-    if (resultsDiv) resultsDiv.innerHTML = html;
-  } catch (err) {
-    if (resultsDiv) resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
-  } finally {
-    if (loadingDiv) loadingDiv.style.display = "none";
-  }
+        resultsDiv.innerHTML = html;
+
+      } catch (err) {
+        resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
+      }
+    }
+  );
 }
 
 // ==============================
