@@ -111,10 +111,11 @@ def parse_pdf(pdf_path, stop_on_date=None):
                     start_time, end_time = time_matches[:2]
 
                     # Extract name from end of line
-                    name_match = re.search(r'([A-Za-z-]+,\s+[A-Za-z-]+)$', line)
+                    name_match = re.search(r'([A-Za-z-]+,\s+[A-Za-z\s-]+)$', line)
                     if not name_match:
                         continue
-                    full_name = name_match.group()
+
+                    full_name = " ".join(name_match.group().split())
                     if full_name not in VALID_NAMES:
                         continue
 
