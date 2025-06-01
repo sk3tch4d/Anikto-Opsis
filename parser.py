@@ -23,9 +23,8 @@ with open(EMP_LIST_PATH, 'r') as f:
     VALID_NAMES = set(" ".join(name.split()) for name in json.load(f))
 
 # ==============================
-# HELPER FUNCTIONS
+# EXTRACT PROCESSING DATE
 # ==============================
-
 def extract_processing_date(lines):
     for line in lines:
         if "Unit: Inventory Services" in line:
@@ -38,15 +37,24 @@ def extract_processing_date(lines):
                     logging.warning(f"Date parsing failed: {e}")
     return None
 
+# ==============================
+# CHECK VALID SHIFT LINE
+# ==============================
 def is_valid_shift_line(line):
     return not any(x in line for x in ["Off:", "On Call", "Relief"]) and re.search(r'\d{2}:\d{2}.*\d{2}:\d{2}', line)
 
+# ==============================
+# EXTRACT NAME
+# ==============================
 def extract_name(line):
     name_match = re.search(r'([A-Za-z-]+,\s+[A-Za-z\s-]+)$', line)
     if name_match:
         return " ".join(name_match.group().split())
     return None
 
+# ==============================
+# EXTRACT SHIFT INFO
+# ==============================
 def extract_shift_info(line, processing_date):
     matches = re.findall(r'\b(SA\d|od\d+|OE|\w{1,3}\d{2,4}|\d{3,4})\b', line, re.IGNORECASE)
     results = []
@@ -96,6 +104,9 @@ def extract_shift_info(line, processing_date):
 
     return results
 
+# ==============================
+# BUILD RECORD
+# ==============================
 def build_record(line, processing_date):
     time_matches = re.findall(r'\d{2}:\d{2}', line)
     if len(time_matches) < 2:
@@ -136,7 +147,6 @@ def build_record(line, processing_date):
 # ==============================
 # PARSE PDF
 # ==============================
-
 def parse_pdf(pdf_path, stop_on_date=None):
     records = []
     swaps = []
