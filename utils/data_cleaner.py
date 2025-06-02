@@ -7,7 +7,7 @@ import numpy as np
 import os
 import logging
 import tempfile
-from openpyxl.utils import get_column_letter
+from openpyxl.utils import get_column_letter, Border, Side
 
 # ==============================
 # CONFIG — RENAME AND REMOVE MAPS
@@ -306,7 +306,22 @@ def save_cleaned_df(df):
     with pd.ExcelWriter(path, engine="openpyxl") as writer:
         df.to_excel(writer, index=False)
         worksheet = writer.sheets["Sheet1"]
+
+        # Auto-fit columns
         autofit_columns(worksheet)
+
+        # Freeze header row
         worksheet.freeze_panes = worksheet["A2"]
+
+        # Apply borders to all cells with data
+        thin = Side(border_style="thin", color="000000")
+        border = Border(left=thin, right=thin, top=thin, bottom=thin)
+
+        for row in worksheet.iter_rows(min_row=1, max_row=worksheet.max_row,
+                                       min_col=1, max_col=worksheet.max_column):
+            for cell in row:
+                if cell.value is not None:
+                    cell.border = border
+
     log_cleaning("Saved File", df)
     return path
