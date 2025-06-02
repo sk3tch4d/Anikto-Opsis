@@ -7,7 +7,8 @@ import numpy as np
 import os
 import logging
 import tempfile
-from openpyxl.utils import get_column_letter, Border, Side
+from openpyxl.utils import get_column_letter
+from openpyxl.styles import Border, Side
 
 # ==============================
 # CONFIG — RENAME AND REMOVE MAPS
