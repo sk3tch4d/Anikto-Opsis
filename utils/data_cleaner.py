@@ -7,10 +7,10 @@ import numpy as np
 import os
 import logging
 import tempfile
-
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side
-from data_format import format_fillrate, format_cart_ops
+
+from .data_format import format_fillrate, format_cart_ops
 
 # ==============================
 # CONFIG — RENAME AND REMOVE MAPS
