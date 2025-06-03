@@ -167,14 +167,13 @@ def detect_union_value(df):
 def clean_fillrate(df):
     # Check if "Preferred" is one of the column headers
     if any(str(col).strip().upper() == "PREFERRED" for col in df.columns):
-        log_cleaning("Skipped Fill Rate Clean — 'Preferred' column detected", df)
-        return df  # <-- avoid returning None
-
-    # Drop duplicate DESCRIPTION rows
-    df = df.drop_duplicates(subset="DESCRIPTION", keep="first")
-    log_cleaning("Fill Rate Cleaned", df)
+        log_cleaning("Cleaning Fill Rate File", df)
+        df = df.drop_duplicates(subset="DESCRIPTION", keep="first")
+        log_cleaning("Fill Rate Cleaned", df)
+        return df
+        
+    log_cleaning("Skipped Fill Rate Clean — 'Preferred' column not detected", df)
     return df
-
 
 # ==============================
 # CLEANING FUNCTIONS (STEP MODULES)
