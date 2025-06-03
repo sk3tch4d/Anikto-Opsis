@@ -64,7 +64,14 @@ COLUMN_RENAMES = {
     "Limited Sen. Yrs": "Years",
     "Limited Seniority Years": "Years",
     "Vendor material numTer": "Vendor_Material",
-    "Vendor material number": "Vendor_Material"
+    "Vendor material number": "Vendor_Material",
+    "SKU": "Prefered",
+    "eta preferred": "Prefered ETA",
+    "soh": "On-Hand",
+    "sub eta": "Sub ETA",
+    "sub stock": "Sub Stock"
+    
+    
 }
 
 REMOVE_COLUMNS = [
@@ -87,7 +94,7 @@ REMOVE_COLUMNS = [
     "Recommended Max Stock Val.", "Cur. Max Stock Val.", "MA Price",
     "Reason Text for Departmental I", "Status of count", "MRP Controller",
     "SCI Comment", "MMC Comment", "HOSPITAL COMMENT", "Line Fill Status",
-    "PO number", "Order", "Ship", "Sold", "Code", "Del"
+    "PO number", "Order", "Ship", "Sold", "Code", "Del", "Prefered", "nan"
 ]
 
 # ==============================
