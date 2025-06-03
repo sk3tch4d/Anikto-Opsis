@@ -95,7 +95,7 @@ REMOVE_COLUMNS = [
     "Recommended Max Stock Val.", "Cur. Max Stock Val.", "MA Price",
     "Reason Text for Departmental I", "Status of count", "MRP Controller",
     "SCI Comment", "MMC Comment", "HOSPITAL COMMENT", "Line Fill Status",
-    "PO number", "Order", "Ship", "Sold", "Code", "Del", "Prefered", "nan"
+    "PO number", "Order", "Ship", "Sold", "Code", "Del", "nan"
 ]
 
 # ==============================
@@ -166,14 +166,17 @@ def detect_union_value(df):
 # DETECT/CLEAN FILL RATE FILE
 # ==============================
 def clean_fillrate(df):
-    # Check if "Preferred" is one of the column headers
-    if any(str(col).strip().upper() == "PREFERRED" for col in df.columns):
-        log_cleaning("Cleaning Fill Rate File", df)
-        df = df.drop_duplicates(subset="DESCRIPTION", keep="first")
-        log_cleaning("Fill Rate Cleaned", df)
+    if "Preferred" not in df.columns:
+        log_cleaning("Skipped Fill Rate Clean — 'Preferred' column not detected", df)
         return df
-        
-    log_cleaning("Skipped Fill Rate Clean — 'Preferred' column not detected", df)
+
+    log_cleaning("Cleaning Fill Rate File", df)
+
+    before = len(df)
+    df = df.drop_duplicates(subset="Description", keep="first")
+    after = len(df)
+    log_cleaning("Fill Rate Cleaned", df, extra=f"{before - after} duplicates removed")
+
     return df
 
 # ==============================
