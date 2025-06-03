@@ -3,20 +3,28 @@
 # ==============================
 
 import pandas as pd
-from data_cleaner import log_cleaning
+import numpy as np
+import logging
+
+# ==============================
+# LOGGING UTIL
+# ==============================
+def log_format(log="", df=None, extra=""):
+    name = df.attrs.get("name", "Unnamed") if df is not None else ""
+    logging.debug(f"[FORMAT]📐 {log} → {name}{f' — {extra}' if extra else ''}")
 
 # ==============================
 # FORMAT FILLRATE
 # ==============================
 def format_fillrate(df):
     if "Preferred" not in df.columns:
-        log_cleaning("Skipped Fill Rate Clean — 'Preferred' column not detected", df)
+        log_format("Skipped Fill Rate Clean — 'Preferred' column not detected", df)
         return df
 
-    log_cleaning("Cleaning Fill Rate File", df)
+    log_format("Cleaning Fill Rate File", df)
 
     if "Description" not in df.columns:
-        log_cleaning("Fill Rate Skipped — 'Description' column not found", df)
+        log_format("Fill Rate Skipped — 'Description' column not found", df)
         return df
 
     # Strip "13-" prefix
@@ -35,7 +43,7 @@ def format_fillrate(df):
     before = len(df)
     df = df.drop_duplicates(subset="Description", keep="first")
     after = len(df)
-    log_cleaning("Fill Rate Cleaned", df, extra=f"{before - after} duplicates removed")
+    log_format("Fill Rate Cleaned", df, extra=f"{before - after} duplicates removed")
 
     # Sort Preferred numerically
     df["Preferred"] = pd.to_numeric(df["Preferred"], errors="coerce")
@@ -63,7 +71,7 @@ def format_cart_ops(df):
             if 'Bin' in df.columns:
                 df.rename(columns={'Bin': bin_col_name}, inplace=True)
             df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
-            log_cleaning("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
+            log_format("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
 
     # Insert an empty column (index 0)
     df.insert(0, ' ', np.nan)
