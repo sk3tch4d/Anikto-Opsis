@@ -21,6 +21,7 @@ COLUMN_RENAMES = {
     "Total of Movements": "MVT",
     "New Bin": "New",
     "Count date": "Date",
+    "DATE": "Date",
     "Reorder point for storage loca": "ROP",
     "Replenishment quantity for slo": "ROQ",
     "Recommended ROP": "RROP",
@@ -170,15 +171,24 @@ def clean_fillrate(df):
 
     log_cleaning("Cleaning Fill Rate File", df)
 
+    if "Description" not in df.columns:
+        log_cleaning("Fill Rate Skipped — 'Description' column not found", df)
+        return df
+
     # Strip "13-" prefix from Preferred values
     df["Preferred"] = df["Preferred"].astype(str).str.replace(r"^13-", "", regex=True)
 
-    # Remove duplicate Descriptions
+    # Drop columns that are all NaN, 0, 0.0, or empty string
+    for col in df.columns:
+        if df[col].apply(lambda x: pd.isna(x) or str(x).strip() in {"", "0", "0.0"}).all():
+            df.drop(columns=col, inplace=True)
+
+    # Drop duplicate descriptions
     before = len(df)
     df = df.drop_duplicates(subset="Description", keep="first")
     after = len(df)
-    log_cleaning("Fill Rate Cleaned", df, extra=f"{before - after} duplicates removed")
 
+    log_cleaning("Fill Rate Cleaned", df, extra=f"{before - after} duplicates removed")
     return df
 
 # ==============================
