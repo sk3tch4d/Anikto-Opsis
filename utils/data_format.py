@@ -58,6 +58,14 @@ def format_fillrate(df):
     remaining_cols = [col for col in df.columns if col not in existing_order]
     df = df[existing_order + remaining_cols]
 
+    # Rename 'Preferred' to the first 'Date' value and drop 'Date'
+    if "Date" in df.columns:
+        first_date = df["Date"].dropna().astype(str).iloc[0] if not df["Date"].dropna().empty else None
+        if first_date:
+            df.rename(columns={"Preferred": first_date}, inplace=True)
+            df.drop(columns="Date", inplace=True)
+            log_format(f"Renamed 'Preferred' to '{first_date}' and dropped 'Date'", df)
+
     return df
 
 # ==============================
