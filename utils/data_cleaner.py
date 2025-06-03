@@ -7,8 +7,10 @@ import numpy as np
 import os
 import logging
 import tempfile
+
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side
+from data_format import format_fillrate, format_cart_ops
 
 # ==============================
 # CONFIG — RENAME AND REMOVE MAPS
@@ -123,23 +125,6 @@ def detect_and_set_header(df, max_rows=20):
     return df  # Fallback: return unchanged
 
 # ==============================
-# ADJUST CART OPS FORMAT
-# ==============================
-def adjust_cart_ops(df):
-    if 'USL' in df.columns:
-        usl_values = df['USL'].dropna().unique()
-        if len(usl_values) == 1:
-            bin_col_name = str(usl_values[0])
-            if 'Bin' in df.columns:
-                df.rename(columns={'Bin': bin_col_name}, inplace=True)
-            df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
-            log_cleaning("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
-
-    # Insert an empty column (index 0)
-    df.insert(0, ' ', np.nan)
-    return df
-
-# ==============================
 # DETECT UNION VALUE
 # ==============================
 def detect_union_value(df):
@@ -160,36 +145,6 @@ def detect_union_value(df):
 
     log_cleaning("No Union Found:", df)
     return None
-
-# ==============================
-# DETECT/CLEAN FILL RATE FILE
-# ==============================
-def clean_fillrate(df):
-    if "Preferred" not in df.columns:
-        log_cleaning("Skipped Fill Rate Clean — 'Preferred' column not detected", df)
-        return df
-
-    log_cleaning("Cleaning Fill Rate File", df)
-
-    if "Description" not in df.columns:
-        log_cleaning("Fill Rate Skipped — 'Description' column not found", df)
-        return df
-
-    # Strip "13-" prefix from Preferred values
-    df["Preferred"] = df["Preferred"].astype(str).str.replace(r"^13-", "", regex=True)
-
-    # Drop columns that are all NaN, 0, 0.0, or empty string
-    for col in df.columns:
-        if df[col].apply(lambda x: pd.isna(x) or str(x).strip() in {"", "0", "0.0"}).all():
-            df.drop(columns=col, inplace=True)
-
-    # Drop duplicate descriptions
-    before = len(df)
-    df = df.drop_duplicates(subset="Description", keep="first")
-    after = len(df)
-
-    log_cleaning("Fill Rate Cleaned", df, extra=f"{before - after} duplicates removed")
-    return df
 
 # ==============================
 # CLEANING FUNCTIONS (STEP MODULES)
@@ -310,8 +265,8 @@ def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, 
             df["Union"] = [union] * len(df)
             log_cleaning("Detected Union", df, extra=union)
 
-        df = adjust_cart_ops(df)
-        df = clean_fillrate(df)
+        df = format_cart_ops(df)
+        df = format_fillrate(df)
         return df
 
 # ==============================
