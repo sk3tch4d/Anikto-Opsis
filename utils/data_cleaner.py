@@ -66,7 +66,7 @@ COLUMN_RENAMES = {
     "Vendor material numTer": "Vendor_Material",
     "Vendor material number": "Vendor_Material",
     "SKU": "Prefered",
-    "eta preferred": "Prefered ETA",
+    "eta preferred": "Preferred ETA",
     "soh": "On-Hand",
     "sub eta": "Sub ETA",
     "sub stock": "Sub Stock"
@@ -160,6 +160,21 @@ def detect_union_value(df):
 
     log_cleaning("No Union Found:", df)
     return None
+
+# ==============================
+# DETECT/CLEAN FILL RATE FILE
+# ==============================
+def clean_fillrate(df):
+    # Check if "Preferred" is one of the column headers
+    if any(str(col).strip().upper() == "PREFERRED" for col in df.columns):
+        log_cleaning("Cleaning Fill Rate File", df)
+        return None
+
+    # Drop duplicate DESCRIPTION rows
+    df = df.drop_duplicates(subset="DESCRIPTION", keep="first")
+
+    log_cleaning("Fill Rate Cleaned", df)
+    return df
 
 # ==============================
 # CLEANING FUNCTIONS (STEP MODULES)
@@ -281,6 +296,7 @@ def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, 
             log_cleaning("Detected Union", df, extra=union)
 
         df = adjust_cart_ops(df)
+        df = clean_fillrate(df)
         return df
 
 # ==============================
