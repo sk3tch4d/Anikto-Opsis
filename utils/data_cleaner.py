@@ -71,8 +71,6 @@ COLUMN_RENAMES = {
     "soh": "On-Hand",
     "sub eta": "Sub ETA",
     "sub stock": "Sub Stock"
-    
-    
 }
 
 REMOVE_COLUMNS = [
@@ -172,6 +170,10 @@ def clean_fillrate(df):
 
     log_cleaning("Cleaning Fill Rate File", df)
 
+    # Strip "13-" prefix from Preferred values
+    df["Preferred"] = df["Preferred"].astype(str).str.replace(r"^13-", "", regex=True)
+
+    # Remove duplicate Descriptions
     before = len(df)
     df = df.drop_duplicates(subset="Description", keep="first")
     after = len(df)
