@@ -51,6 +51,18 @@
         <button id="generate" type="submit" class="button full-width">Generate</button>
       </div>
 
+      <!-- Download -->
+      {% if download_link %}
+        <div class="panel-animate no-shadow">
+          <a href="{{ download_link }}">
+            <button type="button" class="button full-width-on" style="margin-top: 1rem;">
+              Download Cleaned File
+            </button>
+          </a>
+        </div>
+      {% endif %}
+
+
     </form>
   </div>
 
@@ -61,12 +73,6 @@
 
   {% if message %}
     <div class="alert alert-success" style="margin-top: 1rem;">{{ message }}</div>
-  {% endif %}
-
-  {% if download_link %}
-    <div style="margin-top: 1rem;">
-      <a href="{{ download_link }}" class="btn btn-success" style="margin-bottom: 0.5rem;">Download Merged/Cleaned Inventory</a>
-    </div>
   {% endif %}
 
   {% if log_download_link %}
