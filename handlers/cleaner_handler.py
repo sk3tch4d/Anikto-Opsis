@@ -8,7 +8,7 @@ from flask import render_template, current_app as app
 from utils.data_cleaner import save_cleaned_df
 
 # ==============================
-# HANDLE UNKNOWN XLSX FILE (FALLBACK CLEAN)
+# HANDLE CLEANING XLSX FILE
 # ==============================
 def handle(df):
     try:
@@ -18,7 +18,7 @@ def handle(df):
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         cleaned_path = save_cleaned_df(df)
         cleaned_filename = os.path.basename(cleaned_path)
-
+        
         # ==============================
         # Provide cleaned file for download
         # ==============================
@@ -32,3 +32,4 @@ def handle(df):
     except Exception as e:
         app.logger.error(f"Cleaner handler failed: {e}")
         return render_template("index.html", error="Failed to clean uploaded file.")
+
