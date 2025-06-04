@@ -87,6 +87,12 @@ window.addEventListener("load", () => {
     initUpTexts();
   }
 
+  // ----- Generate -----
+  setTimeout(() => {
+    const generateBtn = document.getElementById("generate");
+    if (generateBtn) generateBtn.focus();
+  }, 0);
+
   // ----- Quotes -----
   if (document.querySelector("#quote")) initQuotes();
 
@@ -96,4 +102,3 @@ window.addEventListener("load", () => {
   // ----- Admin Post Load -----
   if (document.querySelector("h1")) loadAdminPage();
 });
-
