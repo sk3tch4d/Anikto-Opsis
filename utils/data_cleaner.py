@@ -73,7 +73,7 @@ COLUMN_RENAMES = {
     "Vendor material number": "Vendor_Material",
     "SKU": "Preferred",
     "eta preferred": "Preferred ETA",
-    "soh": "On-Hand",
+    "soh": "Stock",
     "sub eta": "Sub ETA",
     "sub stock": "Sub Stock"
 }
