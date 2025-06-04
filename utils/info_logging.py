@@ -21,10 +21,9 @@ def new_session_info():
     current_app.logger.info(f"🌐 Device: {ua.device.family}")
 
 # ==============================
-# GENERAL INFO LOGGING UTIL
+# GENERAL INFO LOGGING
 # ==============================
-def info_log(log="", df=None, title="", message="", logger=None, level=logging.INFO):
-
+def log_info(log="", df=None, title="", message="", logger=None, level=logging.INFO):
     logger = logger or (current_app.logger if has_request_context() else logging.getLogger(__name__))
     name = df.attrs.get("name", "Unnamed") if df is not None else ""
 
@@ -34,3 +33,10 @@ def info_log(log="", df=None, title="", message="", logger=None, level=logging.I
     
     log_message = " ".join(part for part in parts if part)
     logger.log(level, log_message)
+
+# ==============================
+# RAW INFO LOGGING
+# ==============================
+def log_raw(message, logger=None, level=logging.INFO):
+    logger = logger or (current_app.logger if has_request_context() else logging.getLogger(__name__))
+    logger.log(level, message)
