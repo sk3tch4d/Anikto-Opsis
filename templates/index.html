@@ -25,14 +25,6 @@
   <div id="upload-form" class="index-upload">
     <form method="POST" enctype="multipart/form-data">
 
-      <!-- Upload input -->
-      <label for="file-input" class="drop-zone" id="drop-zone">
-        <span class="drop-text">Tap or Drop files here</span>
-        <input type="file" id="file-input" name="uploads" multiple accept=".pdf,.xlsx" />
-      </label>
-
-      <ul id="file-list" class="file-box"></ul>
-
       <!-- Checkbox list for previous PDFs -->
       {% if recent_pdfs %}
       <div class="panel-wrapper">
@@ -51,11 +43,6 @@
         </div>
       </div>
       {% endif %}
-
-      <!-- Submit -->
-      <div class="panel-animate no-shadow">
-        <button id="generate" type="submit" class="button full-width">Generate</button>
-      </div>
 
       <!-- Download -->
       {% if download_link %}
