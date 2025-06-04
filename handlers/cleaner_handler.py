@@ -5,7 +5,7 @@
 import os
 from datetime import datetime
 from flask import render_template, current_app as app
-from utils.data_cleaner import save_cleaned_df
+from utils.data_cleaner import save_cleaned_df, schedule_file_deletion
 
 # ==============================
 # HANDLE CLEANING XLSX FILE
@@ -18,9 +18,11 @@ def handle(df, original_filename):
         friendly_name = f"Cleaned_{safe_base}_{timestamp}.xlsx"
 
         cleaned_path = save_cleaned_df(df, filename=friendly_name)
+        schedule_file_deletion(cleaned_path, delay_seconds=600)
         download_link = f"/download/{friendly_name}"
 
         return render_template("index.html", download_link=download_link)
+        
 
     except Exception as e:
         app.logger.error(f"Cleaner handler failed: {e}")
