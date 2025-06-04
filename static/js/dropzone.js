@@ -3,7 +3,7 @@
 // Handles File Uploads
 // ==============================
 
-import { refreshDropUI, processSelectedFiles, startFormLoadingUI } from './drop_utils.js';
+import { refreshDropUI, processSelectedFiles, startFormLoadingUI, initUpTexts } from './drop_utils.js';
 
 // ==============================
 // INIT DROPZONE
