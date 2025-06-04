@@ -5,7 +5,7 @@
 // ----- Debugging -----
 import { initDebugToggle } from './debugging.js';
 // ----- Dev Mode -----
-import { renderDevPanel } from './drop_dev.js';
+import { renderDevPanel, initDropzoneIfNotDev } from './drop_dev.js';
 // ----- Theme -----
 import { initThemeToggle } from './theme.js';
 // ----- Typed -----
