@@ -51,11 +51,11 @@ export function renderDevPanel() {
       const form = document.querySelector("form");
       if (!form || document.getElementById("dev-panel")) return;
 
-      // HIDE existing UI      
-      const dropZone = document.getElementById("drop-zone");
-      if (dropZone) fadeOutAndHide(dropZone);
-      const generateBtn = document.getElementById("generate");
-      if (generateBtn) fadeOutAndHide(generateBtn);
+      // REMOVE Existing UI      
+      ["drop-zone", "generate", "file-list"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+      });
 
       // CREATE Dev Panel
       const panel = document.createElement("div");
