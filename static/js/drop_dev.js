@@ -37,7 +37,7 @@ export function renderDevPanel() {
         btn.textContent = label;
         btn.type = "submit";
         btn.dataset.file = file;
-        btn.classList.add("button", "full-width-on");
+        btn.classList.add("button", "full-width-on", "panel-animate");
         btn.style.marginTop = "1rem";
         panel.appendChild(btn);
       });
@@ -53,7 +53,7 @@ export function renderDevPanel() {
       const uploadBtn = document.createElement("button");
       uploadBtn.textContent = "Upload File";
       uploadBtn.type = "button";
-      uploadBtn.classList.add("button", "full-width-on");
+      uploadBtn.classList.add("button", "full-width-on", "panel-animate");
       uploadBtn.style.marginTop = "1rem";
       
       let pressTimer = null;
@@ -111,7 +111,7 @@ export function renderDevPanel() {
       const logout = document.createElement("button");
       logout.textContent = "Main Menu";
       logout.type = "button";
-      logout.classList.add("button", "full-width-on");
+      logout.classList.add("button", "full-width-on", "panel-animate");
       logout.style.marginTop = "3rem";
       logout.onclick = () => {
         fetch("/logout-dev")
@@ -191,7 +191,7 @@ export function enableDevModeTrigger() {
     label.style.fontSize = "1.2rem";
 
     const input = document.createElement("input");
-    input.classList.add("input", "full-width");
+    input.classList.add("input", "full-width", "panel-animate");
     input.type = "password";
     input.name = "token";
     input.required = true;
@@ -200,7 +200,7 @@ export function enableDevModeTrigger() {
     const submit = document.createElement("button");
     submit.type = "submit";
     submit.textContent = "Developer Mode";
-    submit.classList.add("button", "full-width-on");
+    submit.classList.add("button", "full-width-on", "panel-animate");
     submit.disabled = true;
 
     // Enable button if input is not empty
