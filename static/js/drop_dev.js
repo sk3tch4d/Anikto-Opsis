@@ -150,12 +150,11 @@ export function renderDevPanel() {
         fetch("/logout-dev")
           .then(() => {
             const panel = document.getElementById("dev-panel");
-            const dropZone = document.getElementById("drop-zone");
-            const generateBtn = document.getElementById("generate");
-
             if (panel) panel.remove();
-            if (dropZone) showWithFade(dropZone);
-            if (generateBtn) showWithFade(generateBtn);
+      
+            // Rebuild Dropzone UI
+            renderDropzoneUI();
+            enableDevModeTrigger();
           });
       };
 
