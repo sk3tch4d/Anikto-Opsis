@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Theme -----
   initThemeToggle();
 
-  // ----- Typed -----
+  // ----- Typed Text -----
   if (document.querySelector(".typed-text")) initTypewriter();
 
   // ----- Panels -----
@@ -64,6 +64,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Sticky Bars -----
   if (document.querySelector(".sticky-bar")) initStickyBars();
 
+  // ----- Admin Forms -----
+  if (document.querySelector("#adpw")) initAdminLogin();
+  if (document.querySelector("#json-upload")) initJsonUploadForm();
+  if (document.querySelector("#file-upload-group")) initFileUploadDisplay();
+
+  // ----- App Modules -----
+  if (document.querySelector("#seniority-search")) initializeSeniorityApp();
+  if (document.querySelector("#inventory-search")) initializeInventoryApp();
+  if (document.querySelector("#zwdiseg-search")) initializeZwdisegApp();
+  if (document.querySelector("#optimization-search")) initializeOptimizationApp();
+});
+
+// ==============================
+// POST-LOAD INITIALIZATION (SAFE FOR LAYOUT)
+// ==============================
+window.addEventListener("load", () => {
   // ----- Dropzone -----
   if (document.querySelector(".drop-zone")) {
     initDropzone();
@@ -74,24 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Quotes -----
   if (document.querySelector("#quote")) initQuotes();
 
-  // ----- Schedule -----
+  // ----- Schedule UI -----
   if (document.querySelector("#working-date")) initScheduleUI();
 
-  // ----- Admin -----
-  if (document.querySelector("#adpw")) initAdminLogin();
-  if (document.querySelector("#json-upload")) initJsonUploadForm();
-  if (document.querySelector("#file-upload-group")) initFileUploadDisplay();
+  // ----- Admin Post Load -----
   if (document.querySelector("h1")) loadAdminPage();
-
-  // ----- Seniority -----
-  if (document.querySelector("#seniority-search")) initializeSeniorityApp();
-
-  // ----- Inventory -----
-  if (document.querySelector("#inventory-search")) initializeInventoryApp();
-
-  // ----- Zwdiseg -----
-  if (document.querySelector("#zwdiseg-search")) initializeZwdisegApp();
-  
-  // ----- Optimization -----
-  if (document.querySelector("#optimization-search")) initializeOptimizationApp();
 });
+
