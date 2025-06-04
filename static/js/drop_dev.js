@@ -191,7 +191,7 @@ export function enableDevModeTrigger() {
     label.style.fontSize = "1.2rem";
 
     const input = document.createElement("input");
-    input.classList.add("input", "full-width", "panel-animate");
+    input.classList.add("input", "full-width");
     input.type = "password";
     input.name = "token";
     input.required = true;
