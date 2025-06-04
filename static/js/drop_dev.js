@@ -231,6 +231,7 @@ export function enableDevModeTrigger() {
         },
         body: JSON.stringify({ token })
       })
+        .then(res => res.json())
         .then(data => {
           if (data.success) {
             form.remove();
