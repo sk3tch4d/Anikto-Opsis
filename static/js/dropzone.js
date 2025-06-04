@@ -101,3 +101,47 @@ function bindChangeEvents() {
 
   refreshDropUI(); // Set button on load if anything is pre-checked
 }
+
+// ==============================
+// RENDER DROPZONE UI
+// ==============================
+export function renderDropzoneUI() {
+  const form = document.querySelector("form");
+  if (!form) return;
+
+  // DROPZONE
+  const dropLabel = document.createElement("label");
+  dropLabel.id = "drop-zone";
+  dropLabel.className = "drop-zone";
+  dropLabel.innerHTML = `
+    <span class="drop-text">Tap or Drop files here</span>
+    <input type="file" id="file-input" name="uploads" multiple accept=".pdf,.xlsx" />
+  `;
+  form.prepend(dropLabel);
+
+  // FILE LIST
+  const fileList = document.createElement("ul");
+  fileList.id = "file-list";
+  fileList.className = "file-box";
+  form.insertBefore(fileList, form.querySelector(".panel-animate"));
+
+  // GENERATE BUTTON
+  const generateWrapper = document.createElement("div");
+  generateWrapper.className = "panel-animate no-shadow";
+
+  const generateBtn = document.createElement("button");
+  generateBtn.id = "generate";
+  generateBtn.type = "submit";
+  generateBtn.className = "button full-width";
+  generateBtn.textContent = "Generate";
+
+  generateWrapper.appendChild(generateBtn);
+  form.appendChild(generateWrapper);
+
+  // INIT DROPZONE LOGIC
+  initDropzone();
+  refreshDropUI();
+  initUpTexts();
+
+  setTimeout(() => generateBtn.focus(), 0);
+}
