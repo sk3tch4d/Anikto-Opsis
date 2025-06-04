@@ -5,7 +5,7 @@
 // ----- Debugging -----
 import { initDebugToggle } from './debugging.js';
 // ----- Dev Mode -----
-import { enableDevModeTrigger, renderDevPanel } from './drop_dev.js';
+import { renderDevPanel } from './drop_dev.js';
 // ----- Theme -----
 import { initThemeToggle } from './theme.js';
 // ----- Typed -----
@@ -71,15 +71,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ----- Dev Mode + Dropzone -----
   const form = document.querySelector("form");
-    if (form) {
-      renderDevPanel().then(isDev => {
-        if (isDev) return;
-    
-        // Inject Dropzone *only* if Dev Mode is off
-        renderDropzoneUI();
-        enableDevModeTrigger();
-      });
-    }
+  if (form) {
+    initDropzoneIfNotDev();
+  }
 
 });
 
