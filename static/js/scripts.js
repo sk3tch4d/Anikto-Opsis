@@ -71,14 +71,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ----- Dev Mode + Dropzone -----
   const form = document.querySelector("form");
-  if (form) {
-    renderDevPanel().then(isDev => {
-      if (!isDev) {
+    if (form) {
+      renderDevPanel().then(isDev => {
+        if (isDev) return;
+    
+        // Inject Dropzone *only* if Dev Mode is off
         renderDropzoneUI();
         enableDevModeTrigger();
-      }
-    });
-  }
+      });
+    }
+
 });
 
 // ==============================
