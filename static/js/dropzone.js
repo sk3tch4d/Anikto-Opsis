@@ -138,6 +138,12 @@ export function renderDropzoneUI() {
   generateWrapper.appendChild(generateBtn);
   form.appendChild(generateWrapper);
 
+  // Move existing #download-panel below if present
+  const downloadPanel = document.getElementById("download-panel");
+  if (downloadPanel) {
+    generateWrapper.insertAdjacentElement('afterend', downloadPanel);
+  }
+
   // INIT DROPZONE LOGIC
   initDropzone();
   refreshDropUI();
