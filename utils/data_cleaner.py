@@ -7,6 +7,8 @@ import numpy as np
 import os
 import logging
 import tempfile
+import threading
+import time
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side
 
@@ -326,3 +328,17 @@ def save_cleaned_df(df, filename=None):
 
     log_cleaning("Saved File", df)
     return path
+
+# ==============================
+# SCHEDULE FILE DELETION
+# ==============================
+def schedule_file_deletion(path, delay_seconds=600):
+    def delete_file():
+        try:
+            if os.path.exists(path):
+                os.remove(path)
+                logging.info(f"[CLEANUP] Deleted expired file: {path}")
+        except Exception as e:
+            logging.warning(f"[CLEANUP] Failed to delete {path}: {e}")
+
+    threading.Timer(delay_seconds, delete_file).start()
