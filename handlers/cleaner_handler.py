@@ -12,10 +12,10 @@ from utils.data_cleaner import save_cleaned_df, schedule_file_deletion
 # ==============================
 def handle(df, original_filename):
     try:
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
         base_name = os.path.splitext(original_filename)[0]
         safe_base = "".join(c for c in base_name if c.isalnum() or c in ('_', '-'))
-        friendly_name = f"Cleaned_{safe_base}_{timestamp}.xlsx"
+        friendly_name = f"Cleaned_{safe_base}.xlsx"
 
         cleaned_path = save_cleaned_df(df, filename=friendly_name)
         schedule_file_deletion(cleaned_path, delay_seconds=600)
