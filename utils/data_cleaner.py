@@ -296,9 +296,14 @@ def autofit_columns(worksheet, max_width=40, min_width=4, padding=2):
 # ==============================
 # SAVE TO TEMP FILE FOR DOWNLOAD
 # ==============================
-def save_cleaned_df(df):
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx", dir="/tmp") as tmp:
-        path = tmp.name
+def save_cleaned_df(df, filename=None):
+
+    if filename:
+        path = os.path.join("/tmp", filename)
+    else:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx", dir="/tmp") as tmp:
+            path = tmp.name
+
     with pd.ExcelWriter(path, engine="openpyxl") as writer:
         df.to_excel(writer, index=False)
         worksheet = writer.sheets["Sheet1"]
