@@ -42,10 +42,10 @@ function showWithFade(el) {
 // RENDER DEV PANEL
 // ==============================
 export function renderDevPanel() {
-  fetch("/check-dev")
+  return fetch("/check-dev")
     .then(res => res.json())
     .then(data => {
-      if (!data.dev) return;
+      if (!data.dev) return false;
 
       const form = document.querySelector("form");
       if (!form || document.getElementById("dev-panel")) return;
@@ -191,7 +191,10 @@ export function renderDevPanel() {
         // Submit form
         form.submit();
       });
-    });
+
+      return true;
+    })
+    .catch(() => false);
 }
 
 // ==============================
