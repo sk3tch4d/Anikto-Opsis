@@ -2,6 +2,7 @@
 // DROP_DEV.JS
 // ==============================
 
+import { renderDropzoneUI } from './dropzone.js';
 import { refreshDropUI, processSelectedFiles, getActionLabelForFiles, startFormLoadingUI } from './drop_utils.js';
 
 // ==============================
@@ -293,4 +294,19 @@ export function enableDevModeTrigger() {
   dropZone.addEventListener("touchstart", startPress);
   dropZone.addEventListener("touchend", cancelPress);
   dropZone.addEventListener("touchcancel", cancelPress);
+}
+
+// ==============================
+// INIT DROPZONE IF NOT IN DEV
+// ==============================
+export function initDropzoneIfNotDev() {
+  const form = document.querySelector("form");
+  if (!form) return;
+
+  renderDevPanel().then(isDev => {
+    if (!isDev) {
+      renderDropzoneUI();
+      enableDevModeTrigger();
+    }
+  });
 }
