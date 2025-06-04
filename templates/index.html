@@ -7,6 +7,11 @@
   <title>Anikto Opsis</title>
   <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
+  <script>
+    const theme = localStorage.getItem("preferred-theme") ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  </script>
 </head>
 <body>
   <h1><span id="site-title" class="gradient-title gradient-shift">Anikto Opsis</span></h1>
