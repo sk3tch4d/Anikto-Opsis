@@ -51,7 +51,7 @@ def format_fillrate(df):
 
     # Reorder columns if they exist
     desired_order = [
-        "Preferred", "Description", "Preferred ETA", "On-Hand",
+        "Preferred", "Description", "Preferred ETA", "Stock",
         "Vendor", "Sub 1", "Sub ETA", "Sub 2", "Sub Stock"
     ]
     existing_order = [col for col in desired_order if col in df.columns]
