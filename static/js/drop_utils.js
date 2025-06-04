@@ -62,7 +62,7 @@ export function getActionLabelForFiles(fileNames) {
   if (validFiles.length === 0) return "Generate";
 
   const match = typeMatchers.find(t => validFiles.some(t.match));
-  return match ? match.label : "Generate";
+  return match ? match.label : "Generate Cleaned File";
 }
 
 // ==============================
