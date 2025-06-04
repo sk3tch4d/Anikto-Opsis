@@ -44,7 +44,7 @@ def handle_excel_file(file, fname):
         logging.debug("[HANDLER] Matched CLEAN — using optimize cleaning pipeline")
         steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
         df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
-        return handle_cleaner(df)
+        return handle_cleaner(df, fname)
 
     elif re.match(OPTIMIZE_REGEX, fname, re.IGNORECASE):
         logging.debug("[HANDLER] Matched OPTIMIZE — using optimize cleaning pipeline")
@@ -73,7 +73,7 @@ def handle_excel_file(file, fname):
         logging.debug("[HANDLER] No match — using fallback cleaning pipeline")
         steps = [clean_headers, clean_columns, clean_flags, clean_deleted_rows, clean_format]
         df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
-        return handle_cleaner(df)
+        return handle_cleaner(df, fname)
 
 # ==============================
 # MAIN ENTRYPOINT
