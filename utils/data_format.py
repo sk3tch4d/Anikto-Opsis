@@ -43,7 +43,7 @@ def format_fillrate(df):
     before = len(df)
     df = df.drop_duplicates(subset="Description", keep="first")
     after = len(df)
-    log_format("Fill Rate Cleaned", df, extra=f"{before - after} duplicates removed")
+    log_format("Fill Rate Cleaned", df, extra=f"[{before - after}] duplicates removed")
 
     # Sort Preferred numerically
     df["Preferred"] = pd.to_numeric(df["Preferred"], errors="coerce")
