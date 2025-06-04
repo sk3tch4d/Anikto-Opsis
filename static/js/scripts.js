@@ -15,7 +15,7 @@ import { togglePanel, collapseAllPanels, openPanelById, initPanelScrollBars } fr
 // ----- Sticky Bars -----
 import { initStickyBars } from './sticky.js';
 // ----- Dropzone -----
-import { initDropzone } from './dropzone.js';
+import { renderDropzoneUI } from './dropzone.js';
 // ----- Drop Utils -----
 import { refreshDropUI, initUpTexts } from './drop_utils.js';
 // ----- Quotes -----
@@ -41,26 +41,6 @@ import { initializeOptimizationApp } from './optimization/opt_init.js';
 document.addEventListener("DOMContentLoaded", () => {
   // ----- Debug Toggle -----
   if (document.querySelector("#debug-toggle")) initDebugToggle();
-
-  // ----- Dev Mode + Dropzone Gate -----
-  const dropZone = document.getElementById("drop-zone");
-  if (dropZone) {
-    enableDevModeTrigger();
-
-    renderDevPanel().then(isDev => {
-      if (!isDev) {
-        initDropzone();
-        refreshDropUI();
-        initUpTexts();
-
-        // Focus Generate button after Dropzone is ready
-        setTimeout(() => {
-          const generateBtn = document.getElementById("generate");
-          if (generateBtn) generateBtn.focus();
-        }, 0);
-      }
-    });
-  }
 
   // ----- Theme -----
   initThemeToggle();
@@ -88,6 +68,17 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector("#inventory-search")) initializeInventoryApp();
   if (document.querySelector("#zwdiseg-search")) initializeZwdisegApp();
   if (document.querySelector("#optimization-search")) initializeOptimizationApp();
+
+  // ----- Dev Mode + Dropzone -----
+  const form = document.querySelector("form");
+  if (form) {
+    enableDevModeTrigger();
+    renderDevPanel().then(isDev => {
+      if (!isDev) {
+        renderDropzoneUI();
+      }
+    });
+  }
 });
 
 // ==============================
