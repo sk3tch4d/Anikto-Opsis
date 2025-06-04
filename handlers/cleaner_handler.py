@@ -15,7 +15,7 @@ def handle(df, original_filename):
 
         base_name = os.path.splitext(original_filename)[0]
         safe_base = "".join(c for c in base_name if c.isalnum() or c in ('_', '-'))
-        friendly_name = f"Cleaned_{safe_base}.xlsx"
+        friendly_name = f"AO_Cleaned_{safe_base}.xlsx"
 
         cleaned_path = save_cleaned_df(df, filename=friendly_name)
         schedule_file_deletion(cleaned_path, delay_seconds=600)
