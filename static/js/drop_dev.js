@@ -107,6 +107,12 @@ export function renderDevPanel() {
       panel.appendChild(uploadBtn);
       panel.appendChild(fileInput);
 
+      // Move #download-panel directly under the Upload File button
+      const downloadPanel = document.getElementById("download-panel");
+      if (downloadPanel) {
+        uploadBtn.insertAdjacentElement("afterend", downloadPanel);
+      }
+
       // Main Menu Button
       const logout = document.createElement("button");
       logout.textContent = "Main Menu";
