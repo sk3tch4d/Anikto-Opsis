@@ -10,24 +10,17 @@ from utils.data_cleaner import save_cleaned_df
 # ==============================
 # HANDLE CLEANING XLSX FILE
 # ==============================
-def handle(df):
+def handle(df, original_filename):
     try:
-        # ==============================
-        # Save cleaned DataFrame to /tmp with a generic filename
-        # ==============================
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        cleaned_path = save_cleaned_df(df)
-        cleaned_filename = os.path.basename(cleaned_path)
-        
-        # ==============================
-        # Provide cleaned file for download
-        # ==============================
-        download_link = f"/download/{cleaned_filename}"
-        return render_template(
-            "index.html",
-            message="File cleaned successfully!",
-            download_link=download_link
-        )
+        base_name = os.path.splitext(original_filename)[0]
+        safe_base = "".join(c for c in base_name if c.isalnum() or c in ('_', '-'))
+        friendly_name = f"Cleaned_{safe_base}_{timestamp}.xlsx"
+
+        cleaned_path = save_cleaned_df(df, filename=friendly_name)
+        download_link = f"/download/{friendly_name}"
+
+        return render_template("index.html", download_link=download_link)
 
     except Exception as e:
         app.logger.error(f"Cleaner handler failed: {e}")
