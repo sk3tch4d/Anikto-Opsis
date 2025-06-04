@@ -6,40 +6,6 @@ import { renderDropzoneUI } from './dropzone.js';
 import { refreshDropUI, processSelectedFiles, getActionLabelForFiles, startFormLoadingUI } from './drop_utils.js';
 
 // ==============================
-// FADE ELEMENTS
-// ==============================
-function fadeOutAndHide(el) {
-  el.style.display = "block"; // Ensure not hidden
-  el.style.opacity = "1"; // Reset opacity
-
-  // Force reflow: make opacity change visible
-  void el.offsetWidth;
-  
-  el.classList.add("hidden-fade");
-  let handled = false;
-  const hide = () => {
-    if (!handled) {
-      el.style.display = "none";
-      el.removeEventListener("transitionend", handler);
-      handled = true;
-    }
-  };
-
-  const handler = (e) => {
-    if (e.propertyName === "opacity") hide();
-  };
-
-  el.addEventListener("transitionend", handler);
-
-  // Fallback to transitionend missed
-  setTimeout(hide, 500);
-}
-function showWithFade(el) {
-  el.style.display = "block";
-  requestAnimationFrame(() => el.classList.remove("hidden-fade"));
-}
-
-// ==============================
 // RENDER DEV PANEL
 // ==============================
 export function renderDevPanel() {
@@ -265,14 +231,10 @@ export function enableDevModeTrigger() {
         },
         body: JSON.stringify({ token })
       })
-        .then(res => res.json())
         .then(data => {
           if (data.success) {
-            form.classList.add("hidden-fade");
-              setTimeout(() => {
-                form.remove();
-                renderDevPanel(); // after fade-out
-              }, 400); // match CSS transition duration
+            form.remove();
+            renderDevPanel();
           } else {
             alert("Invalid access token.");
           }
