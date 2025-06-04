@@ -42,10 +42,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Debug Toggle -----
   if (document.querySelector("#debug-toggle")) initDebugToggle();
 
-  // ----- Dev Mode -----  
-  if (document.getElementById("drop-zone")) {
+  // ----- Dev Mode + Dropzone Gate -----
+  const dropZone = document.getElementById("drop-zone");
+  if (dropZone) {
     enableDevModeTrigger();
-    renderDevPanel();
+
+    renderDevPanel().then(isDev => {
+      if (!isDev) {
+        initDropzone();
+        refreshDropUI();
+        initUpTexts();
+
+        // Focus Generate button after Dropzone is ready
+        setTimeout(() => {
+          const generateBtn = document.getElementById("generate");
+          if (generateBtn) generateBtn.focus();
+        }, 0);
+      }
+    });
   }
 
   // ----- Theme -----
@@ -80,19 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // POST-LOAD INITIALIZATION (SAFE FOR LAYOUT)
 // ==============================
 window.addEventListener("load", () => {
-  // ----- Dropzone -----
-  if (document.querySelector(".drop-zone")) {
-    initDropzone();
-    refreshDropUI();
-    initUpTexts();
-  }
-
-  // ----- Generate -----
-  setTimeout(() => {
-    const generateBtn = document.getElementById("generate");
-    if (generateBtn) generateBtn.focus();
-  }, 0);
-
   // ----- Quotes -----
   if (document.querySelector("#quote")) initQuotes();
 
