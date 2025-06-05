@@ -215,13 +215,9 @@ async function fillUpdatesPanel() {
       panel.className = "panel-delta";
 
       updates.forEach(update => {
-        const match = update.match(/^(\p{Emoji_Presentation}|\p{Extended_Pictographic})\s*(.*)$/u);
-        const icon = match ? match[1] : "ℹ️";
-        const text = match ? match[2] : update;
-
         const item = document.createElement("div");
         item.className = "delta-item";
-        item.innerHTML = `<span>${icon}</span><span>${text}</span>`;
+        item.textContent = update;
         panel.appendChild(item);
       });
 
@@ -235,4 +231,3 @@ async function fillUpdatesPanel() {
     container.textContent = "Failed to load updates.";
   }
 }
-
