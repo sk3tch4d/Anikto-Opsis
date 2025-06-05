@@ -192,26 +192,41 @@ export async function toggleUpdatesPanel() {
   await fillUpdatesPanel();
 }
 
+// ==============================
+// POPULATE UPDATES PANEL
+// ==============================
 async function fillUpdatesPanel() {
   const container = document.querySelector("#ao-updates-panel .panel-body");
   if (!container) return;
 
   try {
-    const response = await fetch("/static/updates.json"); // or updates.txt
+    const response = await fetch("/static/updates.json");
     const contentType = response.headers.get("content-type");
 
     if (contentType.includes("application/json")) {
-      const json = await response.json();
+      const updates = await response.json();
 
-      // Handle empty or invalid arrays
-      if (!Array.isArray(json) || json.length === 0) {
+      if (!Array.isArray(updates) || updates.length === 0) {
         container.innerHTML = "<p>No updates found.</p>";
         return;
       }
 
-      container.innerHTML = "<ul>" +
-        json.map(entry => `<li>${entry}</li>`).join("") +
-        "</ul>";
+      const panel = document.createElement("div");
+      panel.className = "panel-delta";
+
+      updates.forEach(update => {
+        const match = update.match(/^(\p{Emoji_Presentation}|\p{Extended_Pictographic})\s*(.*)$/u);
+        const icon = match ? match[1] : "ℹ️";
+        const text = match ? match[2] : update;
+
+        const item = document.createElement("div");
+        item.className = "delta-item";
+        item.innerHTML = `<span>${icon}</span><span>${text}</span>`;
+        panel.appendChild(item);
+      });
+
+      container.innerHTML = "";
+      container.appendChild(panel);
     } else {
       const text = await response.text();
       container.innerHTML = `<pre>${text}</pre>`;
@@ -220,3 +235,4 @@ async function fillUpdatesPanel() {
     container.textContent = "Failed to load updates.";
   }
 }
+
