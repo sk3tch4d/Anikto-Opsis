@@ -171,19 +171,16 @@ export async function toggleUpdatesPanel() {
       <div class="panel-header" onclick="togglePanel(this)">
         <span>Updates</span>
       </div>
+      <div class="panel-scroll-container">
+        <div class="panel-scroll-bar"></div>
+      </div>
       <div class="panel-body scrollable-panel"></div>
     </div>
   `;
 
-  const form = document.querySelector("form");
-  const downloadPanel = document.getElementById("download-panel");
-
-  if (form) {
-    if (downloadPanel) {
-      downloadPanel.insertAdjacentHTML("beforebegin", panelHTML);
-    } else {
-      form.insertAdjacentHTML("beforeend", panelHTML);
-    }
+  const container = document.getElementById("panel-container");
+  if (container) {
+    container.insertAdjacentHTML("beforeend", panelHTML);
   }
 
   await fillUpdatesPanel();
