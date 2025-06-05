@@ -186,7 +186,7 @@ export async function toggleUpdatesPanel() {
     }
   }
 
-  await fillUpdatesPanel();
+  setTimeout(() => fillUpdatesPanel(), 0);
 }
 
 async function fillUpdatesPanel() {
