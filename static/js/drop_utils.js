@@ -171,7 +171,7 @@ export async function toggleUpdatesPanel() {
       <div class="panel-header open" onclick="togglePanel(this)">
         <span>Updates</span>
       </div>
-      <div class="panel-body scrollable-panel open"></div>
+      <div class="panel-body scrollable-panel"></div>
     </div>
   `;
 
