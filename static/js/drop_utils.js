@@ -152,3 +152,68 @@ export function startFormLoadingUI() {
   updateGenText(typeKey);
   displayRandomQuote();
 }
+
+// ==============================
+// TOGGLE UPDATES PANEL
+// ==============================
+export async function toggleUpdatesPanel() {
+  const existingPanel = document.getElementById("ao-updates-panel");
+
+  // If it exists, remove it
+  if (existingPanel) {
+    existingPanel.remove();
+    return;
+  }
+
+  // Otherwise, inject new panel
+  const panelHTML = `
+    <div class="panel panel-animate" id="ao-updates-panel">
+      <div class="panel-header open" onclick="togglePanel(this)">
+        <span>Updates</span>
+      </div>
+      <div class="panel-body scrollable-panel open"></div>
+    </div>
+  `;
+
+  const form = document.querySelector("form");
+  const downloadPanel = document.getElementById("download-panel");
+
+  if (form) {
+    if (downloadPanel) {
+      downloadPanel.insertAdjacentHTML("beforebegin", panelHTML);
+    } else {
+      form.insertAdjacentHTML("beforeend", panelHTML);
+    }
+  }
+
+  await fillUpdatesPanel();
+}
+
+async function fillUpdatesPanel() {
+  const container = document.querySelector("#ao-updates-panel .panel-body");
+  if (!container) return;
+
+  try {
+    const response = await fetch("/static/updates.json"); // or updates.txt
+    const contentType = response.headers.get("content-type");
+
+    if (contentType.includes("application/json")) {
+      const json = await response.json();
+
+      // Handle empty or invalid arrays
+      if (!Array.isArray(json) || json.length === 0) {
+        container.innerHTML = "<p>No updates found.</p>";
+        return;
+      }
+
+      container.innerHTML = "<ul>" +
+        json.map(entry => `<li>${entry}</li>`).join("") +
+        "</ul>";
+    } else {
+      const text = await response.text();
+      container.innerHTML = `<pre>${text}</pre>`;
+    }
+  } catch (err) {
+    container.textContent = "Failed to load updates.";
+  }
+}
