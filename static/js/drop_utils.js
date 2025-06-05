@@ -159,13 +159,11 @@ export function startFormLoadingUI() {
 export async function toggleUpdatesPanel() {
   const existingPanel = document.getElementById("ao-updates-panel");
 
-  // If it exists, remove it
   if (existingPanel) {
     existingPanel.remove();
     return;
   }
 
-  // Otherwise, inject new panel
   const panelHTML = `
     <div class="panel panel-animate" id="ao-updates-panel">
       <div class="panel-header" onclick="togglePanel(this)">
@@ -178,15 +176,13 @@ export async function toggleUpdatesPanel() {
     </div>
   `;
 
-  const form = document.querySelector("form");
-  const downloadPanel = document.getElementById("download-panel");
+  const devPanel = document.getElementById("dev-panel");
+  const form = document.getElementById("upload-form");
 
-  if (form) {
-    if (downloadPanel) {
-      downloadPanel.insertAdjacentHTML("beforebegin", panelHTML);
-    } else {
-      form.insertAdjacentHTML("beforeend", panelHTML);
-    }
+  if (devPanel) {
+    devPanel.insertAdjacentHTML("beforeend", panelHTML);
+  } else if (form) {
+    form.insertAdjacentHTML("beforeend", panelHTML);
   }
 
   await fillUpdatesPanel();
