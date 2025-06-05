@@ -7,7 +7,7 @@ import { initDebugToggle } from './debugging.js';
 // ----- Index -----
 import { toggleUpdatesPanel } from './index/index_updates.js';
 // ----- Dev Mode -----
-import { renderDevPanel, initDropzoneIfNotDev } from './drop_dev.js';
+import { renderDevPanel, initDropzoneIfNotDev } from './index/index_dev.js';
 // ----- Theme -----
 import { initThemeToggle } from './theme.js';
 // ----- Typed -----
@@ -17,9 +17,9 @@ import { togglePanel, collapseAllPanels, openPanelById, initPanelScrollBars } fr
 // ----- Sticky Bars -----
 import { initStickyBars } from './sticky.js';
 // ----- Dropzone -----
-import { renderDropzoneUI } from './dropzone.js';
+import { renderDropzoneUI } from './index/index_dropzone.js';
 // ----- Drop Utils -----
-import { refreshDropUI, initUpTexts } from './drop_utils.js';
+import { refreshDropUI, initUpTexts } from './index/index_utils.js';
 // ----- Quotes -----
 import { initQuotes } from './quotes.js';
 // ----- Schedule -----
