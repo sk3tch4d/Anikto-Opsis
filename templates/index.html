@@ -46,6 +46,7 @@
       {% endif %}
 
       <!-- Download -->
+      {% if download_link %}
       <div id="download-panel" class="panel-animate no-shadow">
         <a href="{{ download_link }}">
           <button type="button" class="button full-width-on" style="margin-top: 1rem;">
@@ -53,6 +54,7 @@
           </button>
         </a>
       </div>
+      {% endif %}
 
     </form>
   </div>
