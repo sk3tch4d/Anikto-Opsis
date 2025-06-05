@@ -260,3 +260,8 @@ function setupTouchListeners(body, panelId, panel, header) {
     startY = null;
   });
 }
+
+// ==============================
+// GLOBAL WINDOW TOGGLE ATTACH
+// ==============================
+window.togglePanel = togglePanel;
