@@ -167,8 +167,8 @@ export async function toggleUpdatesPanel() {
 
   // Otherwise, inject new panel
   const panelHTML = `
-    <div class="panel panel-animate" id="ao-updates-panel">
-      <div class="panel-header open" onclick="togglePanel(this)">
+    <div class="panel panel-animate panel-closed" id="ao-updates-panel">
+      <div class="panel-header" onclick="togglePanel(this)">
         <span>Updates</span>
       </div>
       <div class="panel-body scrollable-panel"></div>
