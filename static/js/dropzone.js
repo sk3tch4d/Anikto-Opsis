@@ -106,6 +106,8 @@ function bindChangeEvents() {
 // RENDER DROPZONE UI
 // ==============================
 export function renderDropzoneUI() {
+  if (document.body.dataset.page !== "index") return;
+
   const form = document.querySelector("form");
   if (!form) return;
 
