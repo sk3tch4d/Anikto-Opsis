@@ -159,35 +159,35 @@ export function startFormLoadingUI() {
 export async function toggleUpdatesPanel() {
   const existingPanel = document.getElementById("ao-updates-panel");
 
-  // Remove if open
-  if (existingPanel?.classList.contains("open")) {
+  // If it exists, remove it
+  if (existingPanel) {
     existingPanel.remove();
     return;
   }
 
-  // Prevent duplicate if already exists
-  if (existingPanel) return;
-
+  // Otherwise, inject new panel
   const panelHTML = `
-    <div class="panel panel-animate panel-closed" id="ao-updates-panel">
+    <div class="panel panel-animate" id="ao-updates-panel">
       <div class="panel-header" onclick="togglePanel(this)">
         <span>Updates</span>
-      </div>
-      <div class="panel-scroll-container">
-        <div class="panel-scroll-bar"></div>
       </div>
       <div class="panel-body scrollable-panel"></div>
     </div>
   `;
 
-  const container = document.getElementById("panel-container");
-  if (container) {
-    container.insertAdjacentHTML("beforeend", panelHTML);
+  const form = document.querySelector("form");
+  const downloadPanel = document.getElementById("download-panel");
+
+  if (form) {
+    if (downloadPanel) {
+      downloadPanel.insertAdjacentHTML("beforebegin", panelHTML);
+    } else {
+      form.insertAdjacentHTML("beforeend", panelHTML);
+    }
   }
 
-  setTimeout(() => fillUpdatesPanel(), 0); // fine to defer fill
+  await fillUpdatesPanel();
 }
-
 
 async function fillUpdatesPanel() {
   const container = document.querySelector("#ao-updates-panel .panel-body");
