@@ -1,9 +1,9 @@
 // ==============================
-// DROP_UTILS.JS
+// INDEX_UTILS.JS
 // ==============================
 
-import { toggleLoadingState } from './loading.js';
-import { displayRandomQuote } from './quotes.js';
+import { toggleLoadingState } from '../loading.js';
+import { displayRandomQuote } from '../quotes.js';
 
 // ==============================
 // FILE TYPE MATCHERS
