@@ -17,7 +17,7 @@ import { initStickyBars } from './sticky.js';
 // ----- Dropzone -----
 import { renderDropzoneUI } from './dropzone.js';
 // ----- Drop Utils -----
-import { refreshDropUI, initUpTexts } from './drop_utils.js';
+import { refreshDropUI, initUpTexts, toggleUpdatesPanel } from './drop_utils.js';
 // ----- Quotes -----
 import { initQuotes } from './quotes.js';
 // ----- Schedule -----
@@ -44,6 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ----- Theme -----
   initThemeToggle();
+
+  document.querySelector(".typed-text")?.addEventListener("click", toggleUpdatesPanel);
 
   // ----- Typed Text -----
   if (document.querySelector(".typed-text")) initTypewriter();
