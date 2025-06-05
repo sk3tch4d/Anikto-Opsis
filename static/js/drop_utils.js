@@ -159,13 +159,11 @@ export function startFormLoadingUI() {
 export async function toggleUpdatesPanel() {
   const existingPanel = document.getElementById("ao-updates-panel");
 
-  // If it exists, remove it
   if (existingPanel) {
     existingPanel.remove();
     return;
   }
 
-  // Otherwise, inject new panel
   const panelHTML = `
     <div class="panel panel-animate panel-closed" id="ao-updates-panel">
       <div class="panel-header" onclick="togglePanel(this)">
@@ -186,6 +184,7 @@ export async function toggleUpdatesPanel() {
     }
   }
 
+  // Delay fetch until DOM is ready
   setTimeout(() => fillUpdatesPanel(), 0);
 }
 
