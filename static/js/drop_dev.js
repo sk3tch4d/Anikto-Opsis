@@ -45,6 +45,7 @@ export function renderDevPanel() {
       // Hidden file input
       const fileInput = document.createElement("input");
       fileInput.type = "file";
+      fileInput.name = "uploads";
       fileInput.id = "dev-file-input";
       fileInput.accept = ".xlsx,.pdf,.db";
       fileInput.style.display = "none";
