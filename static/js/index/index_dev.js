@@ -2,8 +2,8 @@
 // DROP_DEV.JS
 // ==============================
 
-import { renderDropzoneUI } from './dropzone.js';
-import { refreshDropUI, processSelectedFiles, getActionLabelForFiles, startFormLoadingUI } from './drop_utils.js';
+import { renderDropzoneUI } from './index_dropzone.js';
+import { refreshDropUI, processSelectedFiles, getActionLabelForFiles, startFormLoadingUI } from './index_utils.js';
 
 // ==============================
 // RENDER DEV PANEL
