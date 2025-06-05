@@ -159,13 +159,13 @@ export function startFormLoadingUI() {
 export async function toggleUpdatesPanel() {
   const existingPanel = document.getElementById("ao-updates-panel");
 
-  // If it's already open, remove it
+  // Remove if open
   if (existingPanel?.classList.contains("open")) {
     existingPanel.remove();
     return;
   }
 
-  // If it exists but is just closed, do nothing (let the click handle it)
+  // Prevent duplicate if already exists
   if (existingPanel) return;
 
   const panelHTML = `
@@ -185,8 +185,9 @@ export async function toggleUpdatesPanel() {
     container.insertAdjacentHTML("beforeend", panelHTML);
   }
 
-  setTimeout(() => fillUpdatesPanel(), 0);
+  setTimeout(() => fillUpdatesPanel(), 0); // fine to defer fill
 }
+
 
 async function fillUpdatesPanel() {
   const container = document.querySelector("#ao-updates-panel .panel-body");
