@@ -46,7 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initThemeToggle();
 
   // ----- Updates -----
-  document.getElementById("features")?.addEventListener("click", toggleUpdatesPanel);
+  document.getElementById("features")?.addEventListener("click", (e) => {
+    console.log("Clicked features");
+    toggleUpdatesPanel();
+  });
 
   // ----- Typed Text -----
   if (document.querySelector(".typed-text")) initTypewriter();
