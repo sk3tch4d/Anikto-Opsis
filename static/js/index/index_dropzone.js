@@ -1,9 +1,8 @@
 // ==============================
-// DROPZONE MODULE
-// Handles File Uploads
+// INDEX_DROPZONE.JS
 // ==============================
 
-import { refreshDropUI, processSelectedFiles, startFormLoadingUI, initUpTexts } from './drop_utils.js';
+import { refreshDropUI, processSelectedFiles, startFormLoadingUI, initUpTexts } from './index_utils.js';
 
 // ==============================
 // INIT DROPZONE
