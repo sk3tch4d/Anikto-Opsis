@@ -9,6 +9,8 @@ import { refreshDropUI, processSelectedFiles, getActionLabelForFiles, startFormL
 // RENDER DEV PANEL
 // ==============================
 export function renderDevPanel() {
+  if (document.body.dataset.page !== "index") return Promise.resolve(false);
+  
   return fetch("/check-dev")
     .then(res => res.json())
     .then(data => {
