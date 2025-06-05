@@ -4,6 +4,8 @@
 
 // ----- Debugging -----
 import { initDebugToggle } from './debugging.js';
+// ----- Index -----
+import { toggleUpdatesPanel } from './index/index_updates.js';
 // ----- Dev Mode -----
 import { renderDevPanel, initDropzoneIfNotDev } from './drop_dev.js';
 // ----- Theme -----
@@ -17,7 +19,7 @@ import { initStickyBars } from './sticky.js';
 // ----- Dropzone -----
 import { renderDropzoneUI } from './dropzone.js';
 // ----- Drop Utils -----
-import { refreshDropUI, initUpTexts, toggleUpdatesPanel } from './drop_utils.js';
+import { refreshDropUI, initUpTexts } from './drop_utils.js';
 // ----- Quotes -----
 import { initQuotes } from './quotes.js';
 // ----- Schedule -----
