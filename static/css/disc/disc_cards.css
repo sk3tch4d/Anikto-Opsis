@@ -24,76 +24,6 @@
 }
 
 /* ============================= */
-/* PANEL DELTA                   */
-/* ============================= */
-.panel-delta .full-span {
-  grid-column: span 2;
-}
-/* ============================= */
-.panel-delta {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-}
-/* ============================= */
-.panel-delta .delta-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.2rem 0;
-  padding: 0.5rem 0.75rem;
-  border-radius: 12px;
-  color: var(--panel-delta-delta-item-color);
-  background: var(--panel-delta-delta-item-background-color);
-  box-shadow: var(--panel-delta-delta-item-box-shadow);
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-align: left;
-  transition: color 0.8s ease;
-}
-.panel-delta .delta-item:hover {
-  color: var(--panel-delta-delta-itemhover-color);
-  /*background-color: var(--panel-delta-delta-itemhover-background-color);*/
-}
-/* ============================= */
-.panel-delta .delta-item strong {
-  margin-right: 0.5rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--panel-delta-delta-item-strong-color);
-  transition: color 0.4s ease;
-}
-.panel-delta .delta-item strong:hover {
-  color: var(--panel-delta-delta-item-stronghover-color);
-}
-/* ============================= */
-.panel-delta .delta-item .off {
-  color: var(--panel-delta-delta-item-off-color);
-  background-color: var(--panel-delta-delta-item-off-background-color);
-}
-
-/* ============================= */
-/* CLICKABLE DELTA               */
-/* ============================= */
-.clickable-delta .panel-delta .delta-item {
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.3s ease;
-}
-.clickable-delta .panel-delta .delta-item:hover {
-  color: var(--clickable-delta-panel-delta-delta-itemhover-color);
-  background-color: var(--clickable-delta-panel-delta-delta-itemhover-background-color);
-}
-/* ============================= */
-.clickable-delta-on .panel-delta .delta-item {
-  cursor: pointer;
-  transition: background 0.3s ease, color 0.4s ease;
-  color: var(--clickable-delta-on-panel-delta-delta-item-color);
-}
-.clickable-delta-on .panel-delta .delta-item:hover {
-  color: var(--clickable-delta-on-panel-delta-delta-itemhover-color); 
-  background-color: var(--clickable-delta-on-panel-delta-delta-itemhover-background-color);
-}
-
-/* ============================= */
 /* COMPARE CARD                  */
 /* ============================= */
 .compare-card {
@@ -108,53 +38,7 @@
   font-family: 'Segoe UI', Tahoma, sans-serif;
   transition: transform 0.4s ease, color 0.4s ease;
 }
+/* ============================= */
 .compare-card:hover {
   color: var(--panel-cardhover-color);
-}
-
-/* ============================= */
-/* COMPARE DELTA                 */
-/* ============================= */
-.compare-delta .full-span {
-  grid-column: span 2;
-}
-.compare-delta {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-}
-.compare-delta .delta-item {
-  padding: 0.5rem 0.75rem;
-  border-radius: 10px;
-  background: var(--panel-delta-delta-item-background-color); /* #292b3d;*/
-  box-shadow: var(--panel-delta-delta-item-box-shadow);
-  color: var(--panel-delta-delta-item-color);
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-align: left;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: color 0.4s ease;
-}
-.compare-delta .delta-item:hover {
-  color: var(--panel-delta-delta-itemhover-color);
-}
-
-.compare-delta .delta-item strong {
-  font-size: 0.85rem;
-  color: var(--panel-delta-delta-item-color);
-  font-weight: 600;
-  margin-right: 0.5rem;
-  transition: color 0.4s ease;
-}
-.compare-delta .delta-item strong:hover {
-  color: var(--panel-delta-delta-itemhover-color);
-}
-
-/* Optional: Better for small screens */
-@media (max-width: 600px) {
-  .compare-delta .delta-item {
-    flex: 1 1 100%;
-  }
 }
