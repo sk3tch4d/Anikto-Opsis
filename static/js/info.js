@@ -7,7 +7,7 @@
 // LOAD INFO UPDATES
 // ==============================
 export function loadInfoUpdates() {
-  const updatesContainer = document.getElementById("info-updates-panel");
+  const updatesContainer = document.getElementById("info-updates");
   if (!updatesContainer) return;
 
   fetch("/static/updates.json")
