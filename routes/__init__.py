@@ -68,6 +68,11 @@ def register_routes(app):
     # ==============================
     # REDIRECT ROUTES
     # ==============================
+    @app.route("/info")
+    def info():
+        current_app.logger.debug("ℹ️ /info route hit — Rendering info.html")
+        return render_template("info.html")
+
     @app.route("/1902")
     def panel():
         current_app.logger.debug("🧭 /1902 route hit — Rendering panel.html")
