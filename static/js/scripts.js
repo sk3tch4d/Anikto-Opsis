@@ -12,6 +12,8 @@ import { renderDevPanel, initDropzoneIfNotDev } from './index/index_dev.js';
 import { initThemeToggle } from './theme.js';
 // ----- Typed -----
 import { initTypewriter } from './typing.js';
+// ----- Info -----
+import { loadInfoUpdates } from './info.js';
 // ----- Panels -----
 import { togglePanel, collapseAllPanels, openPanelById, initPanelScrollBars } from './panels.js';
 // ----- Sticky Bars -----
@@ -55,6 +57,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ----- Typed Text -----
   if (document.querySelector(".typed-text")) initTypewriter();
+
+  // ----- Info Page -----
+  if (document.body.dataset.page === "info") {
+    loadInfoUpdates();
+  }
 
   // ----- Panels -----
   if (document.querySelector(".panel")) {
