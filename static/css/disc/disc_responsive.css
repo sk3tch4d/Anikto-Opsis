@@ -1,3 +1,11 @@
+/* ============================== */
+/* DISC_RESPONSIVE.CSS            */
+/* ============================== */
+
+
+/* ============================== */
+/* MEDIA STATES                   */
+/* ============================== */
 @media (max-width: 500px) {
   h1 { font-size: 1.8rem; }
   h2 { font-size: 1.4rem; }
@@ -5,7 +13,9 @@
   li { padding: 0.6rem; }
 }
 
-/* Used in Inventory */
+/* ============================== */
+/* HIGHLIGHT                       */
+/* ============================== */
 .highlight {
   background-color: var(--highlight-background-color);
   color: var(--highlight-color);
