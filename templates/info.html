@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anikto Opsis</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
+</head>
+<body>
+  <h2>
+    <span id="site-title" class="typed-text gradient-title gradient-shift" data-title="Informatiion|Anikto Opsis"></span>
+  </h2>
+  <div id="toast" class="toast"></div>
+
+  <div id="panel-wrapper">
+    <div id="panel-container">
+
+      <!-- ============================= -->
+      <!-- PANEL: INFO UPDATES -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="info-updates-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Updates</div>
+        <div class="panel-scroll-container">
+          <div class="panel-scroll-bar"></div>
+        </div>
+        <div class="panel-body scrollable-panel">
+          <ul id="info-updates" style="list-style: none; padding-left: 0; line-height: 1.8; text-align: center;">
+            <!--JS-->
+          </ul>
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: RETURN -->
+      <!-- ============================= -->
+      <div class="panel panel-animate no-shadow">
+        <form action="{{ url_for('index') }}" method="get" class="button-form">
+          <button type="submit" class="button full-width">Main Menu</button>
+        </form>
+      </div>
+
+    </div> <!-- END panel-container -->
+  </div> <!-- END panel-wrapper -->
+
+  <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
+</body>
+</html>
