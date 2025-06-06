@@ -1,3 +1,11 @@
+/* ============================= */
+/* DISC_STATUS-DOT.CSS           */
+/* ============================= */
+
+
+/* ============================= */
+/* STATUS DOT BASE               */
+/* ============================= */
 .status-dot {
   display: inline-block;
   width: 10px;
@@ -5,6 +13,10 @@
   border-radius: 50%;
   margin-right: 0.4rem;
 }
+
+/* ============================= */
+/* STATUS DOT COLORS             */
+/* ============================= */
 .status-dot.yellow { background: #ffd700; }
 .status-dot.red { background: #e74c3c; }
 .status-dot.green { background: #2ecc71; }
