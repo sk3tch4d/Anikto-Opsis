@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Updates -----
   document.getElementById("features")?.addEventListener("click", (e) => {
     console.log("Clicked features");
-    toggleUpdatesPanel();
+    window.location.href = "/info";
   });
 
   // ----- Typed Text -----
