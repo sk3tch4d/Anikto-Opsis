@@ -4,8 +4,6 @@
 
 // ----- Debugging -----
 import { initDebugToggle } from './debugging.js';
-// ----- Index -----
-import { toggleUpdatesPanel } from './index/index_updates.js';
 // ----- Dev Mode -----
 import { renderDevPanel, initDropzoneIfNotDev } from './index/index_dev.js';
 // ----- Theme -----
