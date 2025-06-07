@@ -90,7 +90,8 @@
           <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
           <div class="panel-body scrollable-panel">
             <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <a href="{{ url_for('download_logs') }}" class="button panel">Download Logs</a>
+              <a href="{{ url_for('download_logs') }}" class="button panel">Download Info Logs</a>
+              <a href="{{ url_for('download_all_logs') }}" class="button panel">Download All Logs</a>
             </div>
           </div>
         </div>
