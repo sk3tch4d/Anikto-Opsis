@@ -9,7 +9,7 @@ import os
 
 from models import db, ShiftRecord, CoverageShift, Employee
 from routes import register_routes
-from utils.info_logging import setup_log_export
+from utils.info_logging import configure_logging
 
 # ==============================
 # INITIALIZE FLASK APP
@@ -26,7 +26,7 @@ app.logger.setLevel(logging.DEBUG)
 # ==============================
 # SETUP EXPORT LOGGING
 # ==============================
-setup_log_export(app)
+configure_logging(app)
 
 # ==============================
 # SILENCE PDFMINER
