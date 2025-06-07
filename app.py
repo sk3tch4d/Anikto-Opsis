@@ -6,8 +6,10 @@ import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
+
 from models import db, ShiftRecord, CoverageShift, Employee
 from routes import register_routes
+from utils.info_logging import setup_log_export
 
 # ==============================
 # INITIALIZE FLASK APP
@@ -24,17 +26,7 @@ app.logger.setLevel(logging.DEBUG)
 # ==============================
 # SETUP EXPORT LOGGING
 # ==============================
-# Ensure logs directory exists
-os.makedirs('logs', exist_ok=True)
-
-# Configure file handler
-file_handler = logging.FileHandler('logs/session.log')
-file_handler.setLevel(logging.INFO)
-file_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
-
-# Avoid adding multiple handlers during reload
-if not app.logger.handlers:
-    app.logger.addHandler(file_handler)
+setup_log_export(app)
 
 # ==============================
 # SILENCE PDFMINER
