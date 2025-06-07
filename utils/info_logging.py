@@ -5,6 +5,8 @@
 from flask import current_app, request, has_request_context
 from user_agents import parse
 import logging
+import os
+from logging.handlers import RotatingFileHandler
 
 # ==============================
 # NEW SESSION INFO
@@ -40,3 +42,27 @@ def log_info(log="", df=None, title="", message="", logger=None, level=logging.I
 def log_raw(message, logger=None, level=logging.INFO):
     logger = logger or (current_app.logger if has_request_context() else logging.getLogger(__name__))
     logger.log(level, message)
+
+# ==============================
+# SETUP LOG EXPORT
+# ==============================
+def setup_log_export(app, logs_dir="logs"):
+    os.makedirs(logs_dir, exist_ok=True)
+
+    all_handler = RotatingFileHandler(os.path.join(logs_dir, "all.log"), maxBytes=10240, backupCount=5)
+    all_handler.setLevel(logging.DEBUG)
+    all_handler.setFormatter(logging.Formatter(
+        '%(asctime)s - %(levelname)s - %(message)s'
+    ))
+
+    info_handler = RotatingFileHandler(os.path.join(logs_dir, "session.log"), maxBytes=10240, backupCount=5)
+    info_handler.setLevel(logging.INFO)
+    info_handler.setFormatter(logging.Formatter(
+        '%(asctime)s - %(message)s'
+    ))
+
+    if not app.logger.handlers:
+        app.logger.addHandler(all_handler)
+        app.logger.addHandler(info_handler)
+
+    app.logger.setLevel(logging.DEBUG)
