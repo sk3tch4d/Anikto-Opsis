@@ -15,7 +15,7 @@ from config import DEV_MODE, UPLOAD_FOLDER
 from utils.data_tools import reorder_name
 from utils.data_search import handle_search_request
 from handlers.index_handler import process_index_upload
-from utils.info_logging import new_session_info
+from utils.info_logging import new_session_info, setup_log_export, export_log
 
 from .arg_routes import arg_bp
 from .dev_routes import dev_bp
@@ -93,5 +93,8 @@ def register_routes(app):
     # ==============================
     @app.route("/download-logs")
     def download_logs():
-        return send_file("logs/session.log", as_attachment=True, download_name="ao-session-logs.txt")
-    
+        return export_log("logs/session.log", "ao-session-logs.txt") or ("Log file not found", 404)
+
+    @app.route("/download-all-logs")
+    def download_all_logs():
+        return export_log("logs/all.log", "ao-all-logs.txt") or ("Log file not found", 404)
