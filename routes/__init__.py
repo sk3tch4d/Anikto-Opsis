@@ -21,6 +21,7 @@ from .arg_routes import arg_bp
 from .dev_routes import dev_bp
 from .file_routes import file_bp
 from .inventory_routes import inventory_bp
+from .logs_routes import log_view_bp
 from .optimization_routes import optimization_bp
 from .zwdiseg_routes import zwdiseg_bp
 
@@ -38,7 +39,7 @@ def register_routes(app):
     # ==============================
     # REGISTER BLUEPRINTS
     # ==============================
-    blueprints = [arg_bp, file_bp, dev_bp, inventory_bp, optimization_bp, zwdiseg_bp]
+    blueprints = [arg_bp, file_bp, dev_bp, inventory_bp, log_view_bp, optimization_bp, zwdiseg_bp]
     for bp in blueprints:
         app.register_blueprint(bp)
         app.logger.debug(f"🔗 Registered Blueprint: {bp.name}")
