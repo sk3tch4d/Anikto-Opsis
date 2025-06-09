@@ -4,14 +4,10 @@
 
 // ----- Debugging -----
 import { initDebugToggle } from './debugging.js';
-// ----- Dev Mode -----
-import { renderDevPanel, initDropzoneIfNotDev } from './index/index_dev.js';
 // ----- Theme -----
 import { initThemeToggle } from './theme.js';
 // ----- Typed -----
 import { initTypewriter } from './typing.js';
-// ----- Info -----
-import { loadInfoUpdates } from './info.js';
 // ----- Panels -----
 import { togglePanel, collapseAllPanels, openPanelById, initPanelScrollBars } from './panels.js';
 // ----- Sticky Bars -----
@@ -22,16 +18,22 @@ import { renderDropzoneUI } from './index/index_dropzone.js';
 import { refreshDropUI, initUpTexts } from './index/index_utils.js';
 // ----- Quotes -----
 import { initQuotes } from './quotes.js';
-// ----- Schedule -----
-import { initScheduleUI } from './schedule/working_date.js';
 // ----- Search-Utils -----
 import { setupParseStats, searchFromStat } from './search-utils.js';
+
 // ----- Admin -----
 import { initAdminLogin, initJsonUploadForm, initFileUploadDisplay, loadAdminPage, initLogViewer } from './admin.js';
+// ----- Dev Mode -----
+import { renderDevPanel, initDropzoneIfNotDev } from './index/index_dev.js';
+// ----- Info -----
+import { loadInfoUpdates } from './info.js';
+
+// ----- Schedule -----
+import { initScheduleUI } from './schedule/working_date.js';
 // ----- Seniority -----
 import { initializeSeniorityApp } from './seniority/sen_init.js';
 // ----- Inventory -----
-import { initializeInventoryApp } from './inventory/inv_init.js';
+//import { initializeInventoryApp } from './inventory/inv_init.js';
 // ----- Zwdiseg -----
 import { initializeZwdisegApp } from './zwdiseg/zw_init.js';
 // ----- Optimization -----
@@ -78,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector("#log-viewer-panel")) initLogViewer();
 
   // ----- App Modules -----
-  if (document.querySelector("#seniority-search")) initializeSeniorityApp();
+  //if (document.querySelector("#seniority-search")) initializeSeniorityApp();
   if (document.querySelector("#inventory-search")) initializeInventoryApp();
   if (document.querySelector("#zwdiseg-search")) initializeZwdisegApp();
   if (document.querySelector("#optimization-search")) initializeOptimizationApp();
