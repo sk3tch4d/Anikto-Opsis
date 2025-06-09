@@ -2,7 +2,7 @@
 // ADMIN.JS
 // ==============================
 
-import { collapseAllPanels } from './panels.js';
+import { collapseAllPanels, scrollPanel } from './panels.js';
 
 // ==============================
 // DEBUG MODE
@@ -200,6 +200,11 @@ export function initLogViewer() {
   // Load on select change & page init
   select.addEventListener("change", loadLog);
   loadLog();
+
+  // Adjust Log Window
+  const header = document.querySelector('#log-viewer-panel .panel-header');
+    scrollPanel(header);
+  }, DEBOUNCE_DELAY);
 
   // Double-click to toggle text wrapping
   output.addEventListener("dblclick", () => {
