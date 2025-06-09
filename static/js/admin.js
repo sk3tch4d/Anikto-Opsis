@@ -190,6 +190,12 @@ export function initLogViewer() {
       }
       const text = await res.text();
       output.textContent = text || "[No content in log file]";
+
+      // SCROLL after content is loaded
+      setTimeout(() => {
+        scrollPanel(document.querySelector('#log-viewer-panel .panel-header'));
+      }, 100);
+      
       if (DEBUG_MODE) console.log(`[DEBUG] Loaded ${type} log.`);
     } catch (err) {
       output.textContent = "⚠️ Error loading log file.";
@@ -200,12 +206,6 @@ export function initLogViewer() {
   // Load on select change & page init
   select.addEventListener("change", loadLog);
   loadLog();
-
-  // Adjust Log Window
-  setTimeout(() => {
-    scrollPanel(null, -14);
-  }, 300);
-
 
   // Double-click to toggle text wrapping
   output.addEventListener("dblclick", () => {
