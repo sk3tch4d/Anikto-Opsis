@@ -2,42 +2,12 @@
 // SCRIPTS.JS — APP BOOTSTRAP 🛠
 // ==============================
 
-// ----- Debugging -----
+// ----- Core -----
 import { initDebugToggle } from './debugging.js';
-// ----- Theme -----
 import { initThemeToggle } from './theme.js';
-// ----- Typed -----
 import { initTypewriter } from './typing.js';
-// ----- Panels -----
-import { togglePanel, collapseAllPanels, openPanelById, initPanelScrollBars } from './panels.js';
-// ----- Sticky Bars -----
+import { togglePanel, collapseAllPanels, initPanelScrollBars } from './panels.js';
 import { initStickyBars } from './sticky.js';
-// ----- Dropzone -----
-import { renderDropzoneUI } from './index/index_dropzone.js';
-// ----- Drop Utils -----
-import { refreshDropUI, initUpTexts } from './index/index_utils.js';
-// ----- Quotes -----
-import { initQuotes } from './quotes.js';
-// ----- Search-Utils -----
-import { setupParseStats, searchFromStat } from './search-utils.js';
-
-// ----- Admin -----
-import { initAdminLogin, initJsonUploadForm, initFileUploadDisplay, loadAdminPage, initLogViewer } from './admin.js';
-// ----- Dev Mode -----
-import { renderDevPanel, initDropzoneIfNotDev } from './index/index_dev.js';
-// ----- Info -----
-import { loadInfoUpdates } from './info.js';
-
-// ----- Schedule -----
-import { initScheduleUI } from './schedule/working_date.js';
-// ----- Seniority -----
-//import { initializeSeniorityApp } from './seniority/sen_init.js';
-// ----- Inventory -----
-import { initializeInventoryApp } from './inventory/inv_init.js';
-// ----- Zwdiseg -----
-import { initializeZwdisegApp } from './zwdiseg/zw_init.js';
-// ----- Optimization -----
-import { initializeOptimizationApp } from './optimization/opt_init.js';
 
 // ==============================
 // DOM-READY INITIALIZATION
@@ -49,19 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Theme -----
   initThemeToggle();
 
-  // ----- Updates -----
-  document.getElementById("features")?.addEventListener("click", (e) => {
-    console.log("Clicked features");
-    window.location.href = "/info";
-  });
-
   // ----- Typed Text -----
   if (document.querySelector(".typed-text")) initTypewriter();
-
-  // ----- Info Page -----
-  if (document.body.dataset.page === "info") {
-    loadInfoUpdates();
-  }
 
   // ----- Panels -----
   if (document.querySelector(".panel")) {
@@ -73,36 +32,64 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- Sticky Bars -----
   if (document.querySelector(".sticky-bar")) initStickyBars();
 
-  // ----- Admin Forms -----
-  if (document.querySelector("#adpw")) initAdminLogin();
-  if (document.querySelector("#json-upload")) initJsonUploadForm();
-  if (document.querySelector("#file-upload-group")) initFileUploadDisplay();
-  if (document.querySelector("#log-viewer-panel")) initLogViewer();
+  // ==============================
+  // INDEX
+  // ==============================
+  if (document.body.dataset.page === "index") {
+    // ----- Info Updates -----
+    import('./info.js').then(m => m.loadInfoUpdates());
 
-  // ----- App Modules -----
-  //if (document.querySelector("#seniority-search")) initializeSeniorityApp();
-  if (document.querySelector("#inventory-search")) initializeInventoryApp();
-  if (document.querySelector("#zwdiseg-search")) initializeZwdisegApp();
-  if (document.querySelector("#optimization-search")) initializeOptimizationApp();
+    // ----- Quotes -----
+    import('./quotes.js').then(m => m.initQuotes());
 
-  // ----- Dev Mode + Dropzone -----
-  const form = document.querySelector("form");
-  if (form) {
-    initDropzoneIfNotDev();
+    // ----- Dropzone -----
+    import('./index/index_dropzone.js').then(m => m.renderDropzoneUI());
+
+    // ----- Drop Utils -----
+    import('./index/index_utils.js').then(m => {
+      m.refreshDropUI();
+      m.initUpTexts();
+    });
+
+    // ----- Admin Features -----
+    import('./admin.js').then(m => {
+      if (document.querySelector("#adpw")) m.initAdminLogin();
+      if (document.querySelector("#json-upload")) m.initJsonUploadForm();
+      if (document.querySelector("#file-upload-group")) m.initFileUploadDisplay();
+      if (document.querySelector("#log-viewer-panel")) m.initLogViewer();
+      if (document.querySelector("h1")) m.loadAdminPage();
+    });
+
+    // ----- Dev Panel -----
+    if (document.querySelector("form")) {
+      import('./index/index_dev.js').then(m => m.initDropzoneIfNotDev());
+    }
   }
 
-});
+  // ==============================
+  // ARG
+  // ==============================
+  if (document.body.dataset.page === "arg") {
+    import('./schedule/working_date.js').then(m => m.initScheduleUI());
+  }
 
-// ==============================
-// POST-LOAD INITIALIZATION (SAFE FOR LAYOUT)
-// ==============================
-window.addEventListener("load", () => {
-  // ----- Quotes -----
-  if (document.querySelector("#quote")) initQuotes();
+  // ==============================
+  // FEATURE MODULES
+  // ==============================
+  if (document.querySelector("#seniority-search")) {
+    import('./seniority/sen_init.js').then(m => m.initializeSeniorityApp());
+  }
 
-  // ----- Schedule UI -----
-  if (document.querySelector("#working-date")) initScheduleUI();
+  if (document.querySelector("#inventory-search")) {
+    import('./inventory/inv_init.js').then(m => m.initializeInventoryApp());
+  }
 
-  // ----- Admin Post Load -----
-  if (document.querySelector("h1")) loadAdminPage();
+  if (document.querySelector("#zwdiseg-search")) {
+    import('./zwdiseg/zw_init.js').then(m => m.initializeZwdisegApp());
+  }
+
+  if (document.querySelector("#optimization-search")) {
+    import('./optimization/opt_init.js').then(m => m.initializeOptimizationApp());
+  }
+
 });
