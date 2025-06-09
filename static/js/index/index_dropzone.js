@@ -110,45 +110,54 @@ export function renderDropzoneUI() {
   const form = document.querySelector("form");
   if (!form) return;
 
-  // DROPZONE
-  const dropLabel = document.createElement("label");
-  dropLabel.id = "drop-zone";
-  dropLabel.className = "drop-zone";
-  dropLabel.innerHTML = `
-    <span class="drop-text">Tap or Drop files here</span>
-    <input type="file" id="file-input" name="uploads" multiple accept=".pdf,.xlsx" />
-  `;
-  form.prepend(dropLabel);
-
-  // FILE LIST
-  const fileList = document.createElement("ul");
-  fileList.id = "file-list";
-  fileList.className = "file-box";
-  form.insertBefore(fileList, form.querySelector(".panel-animate"));
-
-  // GENERATE BUTTON
-  const generateWrapper = document.createElement("div");
-  generateWrapper.className = "panel-animate no-shadow";
-
-  const generateBtn = document.createElement("button");
-  generateBtn.id = "generate";
-  generateBtn.type = "submit";
-  generateBtn.className = "button full-width";
-  generateBtn.textContent = "Generate";
-
-  generateWrapper.appendChild(generateBtn);
-  form.appendChild(generateWrapper);
-
-  // Move existing #download-panel below if present
-  const downloadPanel = document.getElementById("download-panel");
-  if (downloadPanel) {
-    generateWrapper.insertAdjacentElement('afterend', downloadPanel);
+  // ===== Dropzone =====
+  if (!document.getElementById("drop-zone")) {
+    const dropLabel = document.createElement("label");
+    dropLabel.id = "drop-zone";
+    dropLabel.className = "drop-zone";
+    dropLabel.innerHTML = `
+      <span class="drop-text">Tap or Drop files here</span>
+      <input type="file" id="file-input" name="uploads" multiple accept=".pdf,.xlsx" />
+    `;
+    form.prepend(dropLabel);
   }
 
-  // INIT DROPZONE LOGIC
+  // ===== File List =====
+  if (!document.getElementById("file-list")) {
+    const fileList = document.createElement("ul");
+    fileList.id = "file-list";
+    fileList.className = "file-box";
+    const before = form.querySelector(".panel-animate");
+    if (before) form.insertBefore(fileList, before);
+    else form.appendChild(fileList);
+  }
+
+  // ===== Generate Button =====
+  if (!document.getElementById("generate")) {
+    const generateWrapper = document.createElement("div");
+    generateWrapper.className = "panel-animate no-shadow";
+
+    const generateBtn = document.createElement("button");
+    generateBtn.id = "generate";
+    generateBtn.type = "submit";
+    generateBtn.className = "button full-width";
+    generateBtn.textContent = "Generate";
+
+    generateWrapper.appendChild(generateBtn);
+    form.appendChild(generateWrapper);
+
+    // Place download panel after the button if it exists
+    const downloadPanel = document.getElementById("download-panel");
+    if (downloadPanel) {
+      generateWrapper.insertAdjacentElement('afterend', downloadPanel);
+    }
+
+    // Focus the button after render
+    setTimeout(() => generateBtn.focus(), 0);
+  }
+
+  // ===== Initialize Dropzone Logic =====
   initDropzone();
   refreshDropUI();
   initUpTexts();
-
-  setTimeout(() => generateBtn.focus(), 0);
 }
