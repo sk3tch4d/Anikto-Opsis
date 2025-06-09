@@ -202,8 +202,7 @@ export function initLogViewer() {
   loadLog();
 
   // Adjust Log Window
-  const header = document.querySelector('#log-viewer-panel .panel-header');
-  scrollPanel(header);
+  scrollPanel(null, -14, 500);
 
   // Double-click to toggle text wrapping
   output.addEventListener("dblclick", () => {
