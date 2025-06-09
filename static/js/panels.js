@@ -264,6 +264,7 @@ function setupTouchListeners(body, panelId, panel, header) {
 }
 
 // ==============================
-// GLOBAL WINDOW TOGGLE ATTACH
+// GLOBAL WINDOW ATTACHMENTS
 // ==============================
 window.togglePanel = togglePanel;
+window.scrollPanel = scrollPanel;
