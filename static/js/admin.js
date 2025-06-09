@@ -202,7 +202,10 @@ export function initLogViewer() {
   loadLog();
 
   // Adjust Log Window
-  scrollPanel(null, -14, 500);
+  setTimeout(() => {
+    scrollPanel(null, -14);
+  }, 300);
+
 
   // Double-click to toggle text wrapping
   output.addEventListener("dblclick", () => {
