@@ -38,9 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==============================
   if (document.body.dataset.page === "index") {
 
-    // ----- Info Updates -----
-    import('./info.js').then(m => m.loadInfoUpdates());
-
     // ----- Quotes -----
     import('./quotes.js').then(m => m.initQuotes());
 
@@ -69,27 +66,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==============================
-  // ARG/SCHEDULE
+  // FEATURE MODULES
   // ==============================
+  // ----- ARG -----
   if (document.body.dataset.page === "arg") {
     import('./schedule/working_date.js').then(m => m.initScheduleUI());
   }
-
-  // ==============================
-  // FEATURE MODULES
-  // ==============================
+  // ----- INFO -----
+  if (document.body.dataset.page === "info") {
+    import('./info.js').then(m => m.loadInfoUpdates());
+  // ----- SENIORITY -----
   if (document.querySelector("#seniority-search")) {
     import('./seniority/sen_init.js').then(m => m.initializeSeniorityApp());
   }
-
+  // ----- INVENTORY -----  
   if (document.querySelector("#inventory-search")) {
     import('./inventory/inv_init.js').then(m => m.initializeInventoryApp());
   }
-
+  // ----- ZWDISEG -----
   if (document.querySelector("#zwdiseg-search")) {
     import('./zwdiseg/zw_init.js').then(m => m.initializeZwdisegApp());
   }
-
+  // ----- OPTIMIZATION -----
   if (document.querySelector("#optimization-search")) {
     import('./optimization/opt_init.js').then(m => m.initializeOptimizationApp());
   }
