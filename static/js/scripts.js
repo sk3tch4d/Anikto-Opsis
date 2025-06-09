@@ -13,6 +13,7 @@ import { initStickyBars } from './sticky.js';
 // DOM-READY INITIALIZATION
 // ==============================
 document.addEventListener("DOMContentLoaded", () => {
+
   // ----- Debug Toggle -----
   if (document.querySelector("#debug-toggle")) initDebugToggle();
 
@@ -36,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // INDEX
   // ==============================
   if (document.body.dataset.page === "index") {
+
     // ----- Info Updates -----
     import('./info.js').then(m => m.loadInfoUpdates());
 
@@ -67,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==============================
-  // ARG
+  // ARG/SCHEDULE
   // ==============================
   if (document.body.dataset.page === "arg") {
     import('./schedule/working_date.js').then(m => m.initScheduleUI());
