@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==============================
   // ----- ARG -----
   if (document.body.dataset.page === "arg") {
-    import('./schedule/working_date.js').then(m => m.initScheduleUI());
+    import('./schedule/arg_search_date.js').then(m => m.initScheduleUI());
   }
   // ----- INFO -----
   if (document.body.dataset.page === "info") {
