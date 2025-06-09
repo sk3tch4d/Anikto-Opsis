@@ -172,9 +172,8 @@ export function loadAdminPage() {
 export function initLogViewer() {
   const select = document.getElementById("logTypeSelect");
   const output = document.getElementById("logOutput");
-  const button = document.querySelector("#log-viewer-panel button");
 
-  if (!select || !output || !button) {
+  if (!select || !output) {
     if (DEBUG_MODE) console.warn("[DEBUG] Log viewer elements missing.");
     return;
   }
@@ -198,5 +197,7 @@ export function initLogViewer() {
     }
   }
 
-  button.addEventListener("click", loadLog);
+  // Load log on initial load and on select change
+  select.addEventListener("change", loadLog);
+  loadLog();
 }
