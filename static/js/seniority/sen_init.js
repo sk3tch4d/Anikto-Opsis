@@ -13,6 +13,7 @@ import { initSeniorityFilters } from "./sen_filters.js";
 // ==============================
 // INITIALIZE
 // ==============================
+export function initializeSeniorityApp() {
   initSenioritySearch();
   initSeniorityFilters();
   initComparisonPanel();
@@ -21,3 +22,4 @@ import { initSeniorityFilters } from "./sen_filters.js";
   setupSeniorityDownloadCleaned();
   setupSeniorityDownloadSearch();
   initCompareAutocomplete();
+}
