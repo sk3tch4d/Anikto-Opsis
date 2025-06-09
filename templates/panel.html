@@ -90,16 +90,13 @@
           <div class="panel-header" onclick="togglePanel(this)">Log Viewer</div>
           <div class="panel-body scrollable-panel">
             <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-              <label for="logTypeSelect">Select Log File:</label>
               <select id="logTypeSelect" class="input full-width">
                 <option value="info">View Info Logs</option>
                 <option value="all">View All Logs</option>
               </select>
         
-              <button class="button panel" onclick="loadLog()">Load Log</button>
-        
-              <pre id="logOutput" class="log-output" style="background: #111; color: #0f0; padding: 1rem; border-radius: 6px; max-height: 300px; overflow-y: auto;">
-                <!-- log content will appear here -->
+              <pre id="logOutput" class="log-output" style="background: #111; color: #0f0; padding: 0.5rem; border-radius: 6px; max-height: 300px; overflow: auto; font-size: 0.75rem; white-space: pre;">
+                Loading...
               </pre>
             </div>
           </div>
