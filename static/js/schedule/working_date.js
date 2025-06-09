@@ -3,6 +3,7 @@
 // ==============================
 
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
+import { scrollPanel } from "../panels.js";
 
 // ==============================
 // FETCH SCHEDULE DATA
@@ -52,6 +53,7 @@ export async function fetchWorkingOnDate() {
         resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
       }
     }
+    scrollPanel();
   );
 }
 
