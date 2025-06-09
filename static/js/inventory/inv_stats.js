@@ -5,6 +5,7 @@
 
 import { clearTextSelect, setupParseStats, highlightMatch } from "../search-utils.js";
 import { showToast, hapticFeedback } from '../ui-utils.js';
+import { scrollPanel } from '../panels.js';
 
 // ==============================
 // DEBUG TOGGLE
@@ -297,6 +298,11 @@ export function populateInventoryStats(results) {
   }
 
   statsBox.appendChild(fragment);
+
+  setTimeout(() => {
+    const header = document.querySelector('#inventory-search-panel .panel-header');
+    if (header) scrollPanel(header);
+  }, 100);
 
   setupParseStats(".clickable-match, .clickable-stat", "inventory-search", "data-search", "usl-filter", "data-filter");
 }
