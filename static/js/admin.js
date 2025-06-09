@@ -197,7 +197,14 @@ export function initLogViewer() {
     }
   }
 
-  // Load log on initial load and on select change
+  // Load on select change & page init
   select.addEventListener("change", loadLog);
   loadLog();
+
+  // Double-click to toggle text wrapping
+  output.addEventListener("dblclick", () => {
+    const isWrapped = output.style.whiteSpace === "pre-wrap";
+    output.style.whiteSpace = isWrapped ? "pre" : "pre-wrap";
+    if (DEBUG_MODE) console.log(`[DEBUG] Wrapping toggled: ${!isWrapped}`);
+  });
 }
