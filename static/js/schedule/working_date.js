@@ -43,6 +43,7 @@ export async function fetchWorkingOnDate() {
               });
               html += `</div>`;
             }
+            scrollPanel();
           });
           if (!html) html = "<p>No employees scheduled for this date.</p>";
         }
@@ -53,7 +54,6 @@ export async function fetchWorkingOnDate() {
         resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
       }
     }
-    scrollPanel();
   );
 }
 
