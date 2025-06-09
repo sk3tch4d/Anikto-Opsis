@@ -13,7 +13,7 @@ const CLEAN_REGEX = /.*clean.*\.xlsx$/i;
 const CATALOG_REGEX = /(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$/i;
 const ZWDISEG_REGEX = /.*zwdiseg.*\.xlsx$/i;
 const ARG_REGEX = /(arg|flowsheet).*?\.(pdf)$/i;
-const SENIORITY_REGEX = /(?i)(cupe|opseu)?[^/\\]*?(seniority|sen)[\s_-]*(list|lists|lst)?[^/\\]*\.xlsx$/i;
+const SENIORITY_REGEX = /(cupe|opseu)?[^/\\]*?(seniority|sen)[\s_-]*(list|lists|lst)?[^/\\]*\.xlsx$/i;
 const UNCLEANED_REGEX = /(list|ven|vendor|cost|usl|cc).*\.xlsx$/i;
 
 const isOptimizationFile = name => OPTIMIZE_REGEX.test(name);
