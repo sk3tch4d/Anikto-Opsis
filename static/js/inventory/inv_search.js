@@ -7,7 +7,6 @@ import { populateInventoryStats } from "./inv_stats.js";
 import { renderInventoryResults } from "./inv_results.js";
 import { addSearchToHistory } from "./inv_history.js";
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
-import { scrollPanel } from '../panels.js';
 
 // ==============================
 // DEBUGGING
@@ -201,7 +200,4 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
     }
   );
 
-  // Adjust Search Window
-  const header = document.querySelector('#inventory-search-panel .panel-header');
-  scrollPanel(header);
 }, DEBOUNCE_DELAY);
