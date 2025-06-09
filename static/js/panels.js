@@ -28,6 +28,7 @@ const nonClosableElements = [
   "OPTION",
   "TEXTAREA",
   "LABEL",
+  "PRE",
   "A"
 ];
 
