@@ -156,6 +156,9 @@ export function renderDevPanel() {
       
         // Refresh UI so Button logic updates
         refreshDropUI();
+
+        // Loading UI
+        startFormLoadingUI();
       
         // Submit form
         form.submit();
