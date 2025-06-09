@@ -31,9 +31,9 @@ import { loadInfoUpdates } from './info.js';
 // ----- Schedule -----
 import { initScheduleUI } from './schedule/working_date.js';
 // ----- Seniority -----
-import { initializeSeniorityApp } from './seniority/sen_init.js';
+//import { initializeSeniorityApp } from './seniority/sen_init.js';
 // ----- Inventory -----
-//import { initializeInventoryApp } from './inventory/inv_init.js';
+import { initializeInventoryApp } from './inventory/inv_init.js';
 // ----- Zwdiseg -----
 import { initializeZwdisegApp } from './zwdiseg/zw_init.js';
 // ----- Optimization -----
