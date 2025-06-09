@@ -2,10 +2,6 @@
 // SEN_INIT.JS
 // ==============================
 
-
-// ==============================
-// IMPORT
-// ==============================
 import { initSenioritySearch } from "./sen_search.js";
 import { initComparisonPanel } from "./sen_compare.js";
 import { populateStats, populateGlobalStats } from './sen_stats.js';
@@ -17,7 +13,6 @@ import { initSeniorityFilters } from "./sen_filters.js";
 // ==============================
 // INITIALIZE
 // ==============================
-export function initializeSeniorityApp() {
   initSenioritySearch();
   initSeniorityFilters();
   initComparisonPanel();
@@ -26,4 +21,3 @@ export function initializeSeniorityApp() {
   setupSeniorityDownloadCleaned();
   setupSeniorityDownloadSearch();
   initCompareAutocomplete();
-}
