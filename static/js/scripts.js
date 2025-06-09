@@ -75,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- INFO -----
   if (document.body.dataset.page === "info") {
     import('./info.js').then(m => m.loadInfoUpdates());
+  }
   // ----- SENIORITY -----
   if (document.querySelector("#seniority-search")) {
     import('./seniority/sen_init.js').then(m => m.initializeSeniorityApp());
