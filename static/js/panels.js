@@ -25,6 +25,7 @@ const nonClosableElements = [
   "BUTTON",
   "INPUT",
   "SELECT",
+  "OPTION",
   "TEXTAREA",
   "LABEL",
   "A"
