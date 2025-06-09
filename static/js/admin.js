@@ -165,3 +165,38 @@ export function loadAdminPage() {
     window.location.href = "/1902";
   });
 }
+
+// ==============================
+// LOG VIEWER PANEL
+// ==============================
+export function initLogViewer() {
+  const select = document.getElementById("logTypeSelect");
+  const output = document.getElementById("logOutput");
+  const button = document.querySelector("#log-viewer-panel button");
+
+  if (!select || !output || !button) {
+    if (DEBUG_MODE) console.warn("[DEBUG] Log viewer elements missing.");
+    return;
+  }
+
+  async function loadLog() {
+    const type = select.value;
+    output.textContent = "Loading...";
+
+    try {
+      const res = await fetch(`/view-log?type=${type}`);
+      if (!res.ok) {
+        output.textContent = "❌ Failed to load log file.";
+        return;
+      }
+      const text = await res.text();
+      output.textContent = text || "[No content in log file]";
+      if (DEBUG_MODE) console.log(`[DEBUG] Loaded ${type} log.`);
+    } catch (err) {
+      output.textContent = "⚠️ Error loading log file.";
+      console.error("[DEBUG] Error loading log:", err);
+    }
+  }
+
+  button.addEventListener("click", loadLog);
+}
