@@ -9,6 +9,7 @@ import logging
 import tempfile
 import threading
 import time
+from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side
 
@@ -111,29 +112,38 @@ def log_cleaning(step, df, extra=""):
 # ==============================
 # DETECT AND SET HEADER
 # ==============================
-def detect_and_set_header(df, header_search_range=10, fallback_row=9):
-    """
-    Tries to detect the header row in the first `header_search_range` rows using COLUMN_RENAMES.
-    Falls back to a hardcoded row (typically 9) if detection fails.
-    """
-    for i in range(header_search_range):
-        row = df.iloc[i].fillna("").astype(str).str.strip()
-        if row.isnull().all() or all(cell == "" for cell in row):
-            continue
+def detect_and_set_header(df, excel_path, sheet_name=None, max_rows=20):
+    wb = load_workbook(excel_path, data_only=True)
+    ws = wb[sheet_name or wb.sheetnames[0]]
 
-        known_matches = sum(
-            (cell in COLUMN_RENAMES or cell in COLUMN_RENAMES.values()) for cell in row
-        )
+    # Build dropdown map: cell coordinate → first dropdown option
+    dropdown_defaults = {}
+    for dv in ws.data_validations.dataValidation:
+        if dv.type == "list" and dv.formula1:
+            values = dv.formula1.strip('"').split(",")
+            for cell_ref in dv.cells:
+                if values:
+                    dropdown_defaults[cell_ref] = values[0].strip()
 
+    # Try each row and build header candidates using dropdowns if needed
+    for i in range(max_rows):
+        excel_row_idx = i + 1  # openpyxl is 1-indexed
+        header_candidate = []
+        for cell in ws[excel_row_idx]:
+            val = cell.value
+            if val is None:
+                val = dropdown_defaults.get(cell.coordinate)
+            header_candidate.append(str(val).strip() if val else "")
+
+        # Heuristic Checking
+        known_matches = sum((col in COLUMN_RENAMES or col in COLUMN_RENAMES.values()) for col in header_candidate)
         if known_matches >= 2:
-            df.columns = row
-            return df.iloc[i + 1:].reset_index(drop=True)
+            df.columns = header_candidate
+            df = df.iloc[i + 1:].reset_index(drop=True)
+            log_cleaning("Detected Header from Excel (w/ dropdowns)", df, extra=f"Row {i}")
+            return df
 
-    # Fallback: assume known header is at fallback_row
-    row = df.iloc[fallback_row].fillna("").astype(str).str.strip()
-    df.columns = row
-    return df.iloc[fallback_row + 1:].reset_index(drop=True)
-
+    raise ValueError("Unable to detect header row.")
 
 # ==============================
 # DETECT UNION VALUE
