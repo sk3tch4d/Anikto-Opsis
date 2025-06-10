@@ -111,22 +111,29 @@ def log_cleaning(step, df, extra=""):
 # ==============================
 # DETECT AND SET HEADER
 # ==============================
-def detect_and_set_header(df, max_rows=20):
-    for i in range(max_rows):
+def detect_and_set_header(df, header_search_range=10, fallback_row=9):
+    """
+    Tries to detect the header row in the first `header_search_range` rows using COLUMN_RENAMES.
+    Falls back to a hardcoded row (typically 9) if detection fails.
+    """
+    for i in range(header_search_range):
         row = df.iloc[i].fillna("").astype(str).str.strip()
-        non_empty = sum(cell != "" for cell in row)
-        known_matches = sum(cell in COLUMN_RENAMES or cell in COLUMN_RENAMES.values() for cell in row)
-        unique_vals = len(set(row)) - (1 if "" in row.values else 0)
+        if row.isnull().all() or all(cell == "" for cell in row):
+            continue
 
-        # Heuristic: non-empty, semi-unique, contains known columns
-        if non_empty >= len(row) // 3 and known_matches >= 3 and unique_vals >= 3:
+        known_matches = sum(
+            (cell in COLUMN_RENAMES or cell in COLUMN_RENAMES.values()) for cell in row
+        )
+
+        if known_matches >= 2:
             df.columns = row
-            df = df.iloc[i + 1:].reset_index(drop=True)
-            log_cleaning("Detected Header", df, extra=f"Row {i}")
-            return df
+            return df.iloc[i + 1:].reset_index(drop=True)
 
-    logging.debug("[CLEAN]🧹 No valid header row detected in preview window.")
-    return df
+    # Fallback: assume known header is at fallback_row
+    row = df.iloc[fallback_row].fillna("").astype(str).str.strip()
+    df.columns = row
+    return df.iloc[fallback_row + 1:].reset_index(drop=True)
+
 
 # ==============================
 # DETECT UNION VALUE
