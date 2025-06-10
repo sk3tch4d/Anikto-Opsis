@@ -52,10 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ----- Admin Features -----
     import('./admin.js').then(m => {
-      if (document.querySelector("#adpw")) m.initAdminLogin();
-      if (document.querySelector("#json-upload")) m.initJsonUploadForm();
-      if (document.querySelector("#file-upload-group")) m.initFileUploadDisplay();
-      if (document.querySelector("#log-viewer-panel")) m.initLogViewer();
       if (document.querySelector("h1")) m.loadAdminPage();
     });
 
@@ -68,6 +64,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==============================
   // FEATURE MODULES
   // ==============================
+  // ----- ADMIN
+  if (document.body.dataset.page === "panel") {
+      if (document.querySelector("#adpw")) m.initAdminLogin();
+      if (document.querySelector("#json-upload")) m.initJsonUploadForm();
+      if (document.querySelector("#file-upload-group")) m.initFileUploadDisplay();
+      if (document.querySelector("#log-viewer-panel")) m.initLogViewer();
+  }
   // ----- ARG -----
   if (document.body.dataset.page === "arg") {
     import('./schedule/arg_search_date.js').then(m => m.initScheduleUI());
