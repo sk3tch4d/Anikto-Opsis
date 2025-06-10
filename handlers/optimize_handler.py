@@ -18,12 +18,17 @@ def handle(df):
         # Extract USL code from column or fallback filename (assume passed separately if needed)
         # ==============================
         app.logger.debug(f"[OPTIMIZER] Columns available: {df.columns.tolist()}")
-        app.logger.debug(f"[OPTIMIZER] First 5 USL values:\n{df.get('USL', pd.Series([])).head().to_list()}")
 
         first_usl = df["USL"].dropna().astype(str).str.upper().iloc[0] if "USL" in df.columns else None
-        match = re.match(r"KG01-([A-Z0-9]{1,4})", first_usl) if first_usl else None
+        app.logger.debug(f"[OPTIMIZER] USL value: {first_usl}")
+
+        if "USL" not in df.columns:
+            app.logger.warning(f"[OPTIMIZER] Missing 'USL' column in file — available: {df.columns.tolist()}")
+        
+        match = re.match(r"([A-Z0-9]{1,4})", first_usl) if first_usl else None
         if not match:
-            return render_template("index.html", error="Invalid or missing USL format in data.")
+            app.logger.debug(f"[OPTIMIZER] Error: Invalid or missing USL format in data")
+            return render_template("index.html", error="Invalid File. Please use a valid Optimizaton Report File.")
 
         usl_code = match.group(1)
 
