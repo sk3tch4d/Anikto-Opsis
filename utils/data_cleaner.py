@@ -9,7 +9,6 @@ import logging
 import tempfile
 import threading
 import time
-from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side
 
@@ -112,38 +111,21 @@ def log_cleaning(step, df, extra=""):
 # ==============================
 # DETECT AND SET HEADER
 # ==============================
-def detect_and_set_header(df, excel_path, sheet_name=None, max_rows=20):
-    wb = load_workbook(excel_path, data_only=True)
-    ws = wb[sheet_name or wb.sheetnames[0]]
-
-    # Build dropdown map: cell coordinate → first dropdown option
-    dropdown_defaults = {}
-    for dv in ws.data_validations.dataValidation:
-        if dv.type == "list" and dv.formula1:
-            values = dv.formula1.strip('"').split(",")
-            for cell_ref in dv.cells:
-                if values:
-                    dropdown_defaults[cell_ref] = values[0].strip()
-
-    # Try each row and build header candidates using dropdowns if needed
+def detect_and_set_header(df, max_rows=20):
     for i in range(max_rows):
-        excel_row_idx = i + 1  # openpyxl is 1-indexed
-        header_candidate = []
-        for cell in ws[excel_row_idx]:
-            val = cell.value
-            if val is None:
-                val = dropdown_defaults.get(cell.coordinate)
-            header_candidate.append(str(val).strip() if val else "")
+        row = df.iloc[i].fillna("").astype(str).str.strip()
+        num_strings = sum(val != "" for val in row)
+        unique_values = len(set(val for val in row if val != ""))
 
-        # Heuristic Checking
-        known_matches = sum((col in COLUMN_RENAMES or col in COLUMN_RENAMES.values()) for col in header_candidate)
-        if known_matches >= 2:
-            df.columns = header_candidate
+        # Looser heuristic: allow header row with 1/3 strings and 2 unique values
+        if num_strings >= len(row) // 3 and unique_values >= 2:
+            df.columns = row
             df = df.iloc[i + 1:].reset_index(drop=True)
-            log_cleaning("Detected Header from Excel (w/ dropdowns)", df, extra=f"Row {i}")
+            logging.debug(f"[CLEAN]🧹 Detected header at row {i} with {num_strings} strings and {unique_values} unique values")
             return df
 
-    raise ValueError("Unable to detect header row.")
+    logging.debug("[CLEAN]🧹 No valid header row detected in preview window.")
+    return df
 
 # ==============================
 # DETECT UNION VALUE
