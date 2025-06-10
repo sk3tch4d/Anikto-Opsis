@@ -277,8 +277,8 @@ def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, 
             log_cleaning("Detected Union", df, extra=union)
 
         if file_formatting:
-            df_combined = format_cart_ops(df_combined)
-            df_combined = format_fillrate(df_combined)
+            df = format_cart_ops(df)
+            df = format_fillrate(df)
 
         return df
 
