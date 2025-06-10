@@ -117,11 +117,16 @@ def detect_and_set_header(df, max_rows=20):
         num_strings = sum(val != "" for val in row)
         unique_values = len(set(val for val in row if val != ""))
 
-        # Looser heuristic: allow header row with 1/3 strings and 2 unique values
+        # Debug: log each candidate row
+        logging.debug(f"[CLEAN]🧪 Row {i}: {num_strings} non-empty strings, {unique_values} unique values")
+        logging.debug(f"[CLEAN]🧪 Row {i} contents: {row.tolist()}")
+
         if num_strings >= len(row) // 3 and unique_values >= 2:
             df.columns = row
             df = df.iloc[i + 1:].reset_index(drop=True)
-            logging.debug(f"[CLEAN]🧹 Detected header at row {i} with {num_strings} strings and {unique_values} unique values")
+
+            logging.debug(f"[CLEAN]🧹 Detected header at row {i}")
+            logging.debug(f"[CLEAN]🧹 Set columns: {df.columns.tolist()}")
             return df
 
     logging.debug("[CLEAN]🧹 No valid header row detected in preview window.")
