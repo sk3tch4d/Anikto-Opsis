@@ -19,15 +19,15 @@
       <div id="login-panel" class="panel open" style="max-width: 400px; margin: 2rem auto;">
         <div class="panel-header">Access Panel</div>
         <div class="panel-body scrollable-panel open">
+          <!-- Login -->
           <form id="admin-login-form">
             <input type="password" id="adpw" class="input full-width" placeholder="••••••••" />
-            <!-- Login -->
             <button id="admin-login" class="button panel" type="submit">Login</button>
-            <!-- Return -->
-            <form action="{{ url_for('index') }}" method="get" class="button-form" style="margin-top: 0.5rem;">
-              <button type="submit" class="button panel">Return</button>
-            </form>
-          </form>  
+          </form>
+          <!-- Return -->
+          <form action="{{ url_for('index') }}" method="get" class="button-form" style="margin-top: 0.5rem;">
+            <button type="submit" class="button panel">Return</button>
+          </form>
           <p id="login-error" class="error-text" style="display: none;">Incorrect password. Try again.</p>
         </div>
       </div>
