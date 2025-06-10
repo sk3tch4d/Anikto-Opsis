@@ -66,10 +66,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==============================
   // ----- ADMIN
   if (document.body.dataset.page === "panel") {
+    import('./admin.js').then(m => {
       if (document.querySelector("#adpw")) m.initAdminLogin();
       if (document.querySelector("#json-upload")) m.initJsonUploadForm();
       if (document.querySelector("#file-upload-group")) m.initFileUploadDisplay();
       if (document.querySelector("#log-viewer-panel")) m.initLogViewer();
+    });
   }
   // ----- ARG -----
   if (document.body.dataset.page === "arg") {
