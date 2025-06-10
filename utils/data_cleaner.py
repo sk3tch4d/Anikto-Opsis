@@ -113,18 +113,20 @@ def log_cleaning(step, df, extra=""):
 # ==============================
 def detect_and_set_header(df, max_rows=20):
     for i in range(max_rows):
-        row = df.iloc[i]
-        num_strings = sum(isinstance(val, str) and val.strip() != "" for val in row)
-        unique_values = len(set(val for val in row if isinstance(val, str) and val.strip() != ""))
-        if num_strings >= len(row) // 2 and unique_values >= 3: # Heuristic: majority are valid strings
+        row = df.iloc[i].fillna("").astype(str).str.strip()
+        non_empty = sum(cell != "" for cell in row)
+        known_matches = sum(cell in COLUMN_RENAMES or cell in COLUMN_RENAMES.values() for cell in row)
+        unique_vals = len(set(row)) - (1 if "" in row.values else 0)
+
+        # Heuristic: non-empty, semi-unique, contains known columns
+        if non_empty >= len(row) // 3 and known_matches >= 3 and unique_vals >= 3:
             df.columns = row
             df = df.iloc[i + 1:].reset_index(drop=True)
-            
-            logging.debug(f"[CLEAN]🧹 Detected header at row {i} with {num_strings} strings and {unique_values} unique values")
+            log_cleaning("Detected Header", df, extra=f"Row {i}")
             return df
 
     logging.debug("[CLEAN]🧹 No valid header row detected in preview window.")
-    return df  # Fallback: return unchanged
+    return df
 
 # ==============================
 # DETECT UNION VALUE
