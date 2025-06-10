@@ -21,7 +21,12 @@
         <div class="panel-body scrollable-panel open">
           <form id="admin-login-form">
             <input type="password" id="adpw" class="input full-width" placeholder="••••••••" />
+            <!-- Login -->
             <button id="admin-login" class="button panel" type="submit">Login</button>
+            <!-- Return -->
+            <form action="{{ url_for('index') }}" method="get" class="button-form" style="margin-top: 0.5rem;">
+              <button type="submit" class="button panel">Return</button>
+            </form>
           </form>  
           <p id="login-error" class="error-text" style="display: none;">Incorrect password. Try again.</p>
         </div>
