@@ -17,6 +17,9 @@ def handle(df):
         # ==============================
         # Extract USL code from column or fallback filename (assume passed separately if needed)
         # ==============================
+        app.logger.debug(f"[OPTIMIZER] Columns available: {df.columns.tolist()}")
+        app.logger.debug(f"[OPTIMIZER] First 5 USL values:\n{df.get('USL', pd.Series([])).head().to_list()}")
+
         first_usl = df["USL"].dropna().astype(str).str.upper().iloc[0] if "USL" in df.columns else None
         match = re.match(r"KG01-([A-Z0-9]{1,4})", first_usl) if first_usl else None
         if not match:
