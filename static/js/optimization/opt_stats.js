@@ -115,7 +115,9 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
   const card = document.createElement("div");
   card.className = "panel-card";
 
-  const numberHTML = `<span class="clickable-stat" data-search="${base.Num}" ${firstUSL ? `data-filter="${firstUSL}"` : ""}>
+  const firstBin = matching.length === 1 ? matching[0].Bin : null;
+
+  const numberHTML = `<span class="clickable-stat" data-search="${base.Num}" ${firstBin ? `data-filter="${firstBin}"` : ""}>
     ${highlightMatch(base.Num, currentSearch)}
   </span>`;
 
