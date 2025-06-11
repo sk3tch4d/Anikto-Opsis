@@ -3,7 +3,7 @@
 # ==============================
 
 import pandas as pd
-from flask import current_app
+from flask import current_app as app
 
 # ==============================
 # SEARCH OPTIMIZATION
@@ -45,9 +45,8 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
             df = df.copy()
             df[sort] = pd.to_numeric(df[sort], errors="coerce")
             df = df.sort_values(by=sort, ascending=(direction == "asc"))
-            logger.info(f"🔃 Sorted by '{sort}' ({'asc' if direction == 'asc' else 'desc'})")
         except Exception as e:
-            logger.exception(f"❌ Sorting failed on column '{sort}': {e}")
+            app.logger.warning(f"[SEARCH] ❌ Failed to sort by '{sort}': {e}", exc_info=True)
     else:
         logger.warning(f"⚠️ Sort column '{sort}' not found in DF columns: {df.columns.tolist()}")
 
