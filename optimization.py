@@ -34,18 +34,23 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
     if term:
         try:
             excluded = {"ROP", "ROQ", "RROP", "RROQ", "SROP", "SROQ", "CU1", "CU2", "QTY", "Created", "Last_Change"}
-            logger.debug(f"[OPT_SEARCH]🧪 Column names before string_cols eval: {df.columns.tolist()}")
+    
+            logger.debug("[OPT_SEARCH]🐣 Reached pre-string_cols eval")
+            try:
+                col_list = df.columns.tolist()
+                logger.debug(f"[OPT_SEARCH]🧪 Column names before string_cols eval: {col_list}")
+            except Exception as col_err:
+                logger.warning(f"[OPT_SEARCH]🛑 Failed to list df.columns: {col_err}", exc_info=True)
+                raise  # Let it propagate to the outer handler
+    
             string_cols = [col for col in df.columns if col not in excluded and df[col].dtype == object]
             logger.debug(f"[OPT_SEARCH]🔤 Searching in columns: {string_cols}")
     
-            if not string_cols:
-                logger.warning(f"[OPT_SEARCH]⚠️ No searchable string columns found — skipping term filter")
-            else:
-                df = df[df[string_cols].apply(
-                    lambda row: any(term in str(val).lower() for val in row if pd.notna(val)),
-                    axis=1
-                )]
-                logger.debug(f"[OPT_SEARCH]🔍 Rows after search: {len(df)}")
+            df = df[df[string_cols].apply(
+                lambda row: any(term in str(val).lower() for val in row if pd.notna(val)),
+                axis=1
+            )]
+            logger.debug(f"[OPT_SEARCH]🔍 Rows after search: {len(df)}")
         except Exception as e:
             logger.warning(f"[OPT_SEARCH]⚠️ Search filtering failed: {e}", exc_info=True)
 
