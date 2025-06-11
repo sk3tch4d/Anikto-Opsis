@@ -6,6 +6,7 @@ import os
 import re
 import json
 import config
+import pandas as pd
 from datetime import datetime
 from flask import render_template, current_app as app
 from inv_optimizer import suggest_rop_roq
