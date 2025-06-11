@@ -45,10 +45,18 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
         except Exception as e:
             logger.warning(f"[OPT_SEARCH]⚠️ Search filtering failed: {e}", exc_info=True)
 
-    # ✅ Fallback for missing sort key
-    if sort not in df.columns:
+    # ✅ Normalize sort key by case
+    columns_map = {col.lower(): col for col in df.columns}
+    sort_key = sort.lower()
+    if sort_key not in columns_map:
         logger.warning(f"[OPT_SEARCH]⚠️ Sort column '{sort}' not found. Falling back to 'SROP'")
         sort = "SROP"
+    else:
+        sort = columns_map[sort_key]
+    
+    # ✅ Log resolved sort column for debugging
+    logger.debug(f"[OPT_SEARCH]🧭 Resolved sort column: '{sort}' from input: '{sort_key}'")
+    logger.debug(f"[OPT_SEARCH]📁 Column map: {columns_map}")
 
     # ✅ Sorting
     try:
@@ -56,7 +64,7 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
         df = df.sort_values(by=sort, ascending=(direction == "asc"))
     except Exception as e:
         logger.warning(f"[OPT_SEARCH]❌ Failed to sort by '{sort}': {e}", exc_info=True)
-
+    
     logger.debug(f"[OPT_SEARCH]📊 Final DF shape: {df.shape}")
 
     # ✅ Standardize return columns
