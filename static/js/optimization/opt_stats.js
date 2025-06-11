@@ -6,18 +6,15 @@ import { highlightMatch, setupParseStats, clearTextSelect } from "../search-util
 import { scrollPanel } from "../panels.js";
 import { showToast, hapticFeedback } from "../ui-utils.js";
 
-// ==============================
-// DEBUG TOGGLE
-// ==============================
 const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
-
-// ==============================
-// GLOBAL: SAVED ITEMS
-// ==============================
 window.savedItems = new Map();
 
+function debug(...args) {
+  if (DEBUG_MODE) console.debug("[OPT_STATS]", ...args);
+}
+
 // ==============================
-// HELPER: JOIN CONTENT <div>
+// JOIN LINES INTO HTML BLOCKS
 // ==============================
 function joinAsDivs(...lines) {
   return lines
@@ -27,9 +24,11 @@ function joinAsDivs(...lines) {
 }
 
 // ==============================
-// HELPER: TOGGLE LIST CREATOR
+// TOGGLEABLE MATCH LIST
 // ==============================
 function createToggleList({ label, items, itemAttributes = {}, sort = true, searchableValue = "" }) {
+  debug("Creating toggle list:", label, items);
+
   const toggle = document.createElement("span");
   toggle.className = "tag-label tag-toggle clickable-toggle";
   toggle.innerHTML = `${label} (${items.length}) <span class="chevron">▼</span>`;
@@ -69,13 +68,15 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
 }
 
 // ==============================
-// HELPER: UPDATE SAVED PANEL
+// UPDATE SAVED PANEL
 // ==============================
 function updateSavedPanel() {
+  debug("Updating saved panel");
   const panel = document.querySelector("#optimization-saved-panel .panel-body");
   panel.innerHTML = "";
 
   const cards = Array.from(savedItems.values()).map(entry => entry.card).reverse();
+  debug("Saved cards:", cards.length);
 
   if (!cards.length) {
     panel.innerHTML = `<p>No saved items yet.</p><br><p>Double click a tile to save!</p>`;
@@ -89,9 +90,10 @@ function updateSavedPanel() {
 }
 
 // ==============================
-// HELPER: TOGGLE SAVE ITEM
+// TOGGLE SAVE STATE
 // ==============================
 function toggleSaveItem(card, base, matching) {
+  debug("Toggling saved item:", base.Num);
   if (savedItems.has(base.Num)) {
     savedItems.delete(base.Num);
     card.classList.remove("saved-card");
@@ -108,9 +110,10 @@ function toggleSaveItem(card, base, matching) {
 }
 
 // ==============================
-// HELPER: CREATE ITEM CARD
+// CREATE OPTIMIZATION ITEM CARD
 // ==============================
 function createOptimizationItemCard(matching, base, currentSearch, currentFilter) {
+  debug("Creating card for:", base.Num, "Matches:", matching.length);
   const card = document.createElement("div");
   card.className = "panel-card";
 
@@ -121,22 +124,14 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
   </span>`;
 
   const descHTML = highlightMatch(base.Description || "", currentSearch);
-
   const binInfo = matching.length === 1 && matching[0].Bin
     ? `<span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
     : "";
 
-  const ropLine = base.ROP
-    ? `<span class="tag-label">Current ROP:</span> ${base.ROP}` : "";
-
-  const roqLine = base.ROQ
-    ? `<span class="tag-label">Current ROQ:</span> ${base.ROQ}` : "";
-  
-  const sropLine = base.SROP
-    ? `<span class="tag-label">Suggested ROP:</span> ${base.SROP}`  : "";
-
-  const sroqLine = base.SROQ
-    ? `<span class="tag-label">Suggested ROQ:</span> ${base.SROQ}` : "";
+  const ropLine = base.ROP ? `<span class="tag-label">Current ROP:</span> ${base.ROP}` : "";
+  const roqLine = base.ROQ ? `<span class="tag-label">Current ROQ:</span> ${base.ROQ}` : "";
+  const sropLine = base.SROP ? `<span class="tag-label">Suggested ROP:</span> ${base.SROP}` : "";
+  const sroqLine = base.SROQ ? `<span class="tag-label">Suggested ROQ:</span> ${base.SROQ}` : "";
 
   const detailsHTML = joinAsDivs(
     `<span class="tag-label">Stores Number:</span> ${numberHTML}`,
@@ -146,7 +141,7 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
     roqLine,
     sropLine,
     sroqLine
-  )
+  );
 
   const infoBlock = document.createElement("div");
   infoBlock.innerHTML = detailsHTML;
@@ -157,6 +152,7 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
   });
 
   const uniqueCarts = [...new Set(matching.map(item => item.Bin))];
+  debug("Unique carts for", base.Num, uniqueCarts);
 
   if (currentFilter === "all") {
     if (uniqueCarts.length === 1) {
@@ -184,11 +180,13 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
 }
 
 // ==============================
-// MAIN EXPORT
+// POPULATE OPTIMIZATION RESULTS
 // ==============================
 export function populateOptimizationStats(results) {
+  debug("Populating stats — total results:", results.length);
+
   const box = document.getElementById("optimization-stats");
-  if (!box) return;
+  if (!box) return console.warn("[OPT_STATS] Missing #optimization-stats container");
 
   const input = document.getElementById("optimization-search");
   const currentSearch = input?.value.trim().toLowerCase() || "";
@@ -196,9 +194,12 @@ export function populateOptimizationStats(results) {
   const filterInput = document.getElementById("opsh-filter");
   const currentFilter = filterInput?.value.trim().toLowerCase() || "all";
 
+  debug("Current search:", currentSearch, "Current filter:", currentFilter);
+
   box.innerHTML = "";
 
   const uniqueNums = [...new Set(results.map(item => item.Num))].sort();
+  debug("Unique item numbers:", uniqueNums.length, uniqueNums.slice(0, 5));
 
   const summary = document.createElement("div");
   summary.className = "panel-card";
@@ -209,6 +210,11 @@ export function populateOptimizationStats(results) {
 
   for (const num of uniqueNums) {
     const matching = results.filter(r => r.Num === num);
+    if (!matching.length) {
+      debug(`No matches found for item: ${num}`);
+      continue;
+    }
+
     const base = matching[0];
     const card = createOptimizationItemCard(matching, base, currentSearch, currentFilter);
     fragment.appendChild(card);
