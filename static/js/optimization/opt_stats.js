@@ -37,7 +37,7 @@ function updateSavedPanel() {
 // HELPER: TOGGLE SAVED ITEM
 // ==============================
 function toggleSaveItem(card, item) {
-  const key = item.material;
+  const key = item.num;
   if (savedItems.has(key)) {
     savedItems.delete(key);
     card.classList.remove("saved-card");
@@ -59,11 +59,11 @@ function createCard(item, term) {
   card.className = "panel-card";
 
   card.innerHTML = `
-    <div><strong>${highlightMatch(item.material, term)}</strong> — ${highlightMatch(item.material_description || "", term)}</div>
+    <div><strong>${highlightMatch(item.num, term)}</strong> — ${highlightMatch(item.description || "", term)}</div>
     <div><strong>Bin:</strong> ${highlightMatch(item.bin || "-", term)}</div>
-    <div><strong>ROP:</strong> ${item.site_suggested_rop || "-"}</div>
-    <div><strong>ROQ:</strong> ${item.site_suggested_roq || "-"}</div>
-    <div><strong>Cost:</strong> ${item.ma_price || 0} / ${item.bun_of_measure || "EA"}</div>
+    <div><strong>ROP:</strong> ${item.rrop || "-"}</div>
+    <div><strong>ROQ:</strong> ${item.rroq || "-"}</div>
+    <div><strong>Cost:</strong> ${item.price || 0} / ${item.uom || "EA"}</div>
   `;
 
   card.addEventListener("dblclick", () => toggleSaveItem(card, item));
