@@ -36,14 +36,18 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
             excluded = {"ROP", "ROQ", "RROP", "RROQ", "SROP", "SROQ", "CU1", "CU2", "QTY", "Created", "Last_Change"}
             string_cols = [col for col in df.columns if col not in excluded and df[col].dtype == object]
             logger.debug(f"[OPT_SEARCH]🔤 Searching in columns: {string_cols}")
-
-            df = df[df[string_cols].apply(
-                lambda row: any(term in str(val).lower() for val in row if pd.notna(val)),
-                axis=1
-            )]
-            logger.debug(f"[OPT_SEARCH]🔍 Rows after search: {len(df)}")
+    
+            if not string_cols:
+                logger.warning(f"[OPT_SEARCH]⚠️ No searchable string columns found.")
+            else:
+                df = df[df[string_cols].apply(
+                    lambda row: any(term in str(val).lower() for val in row if pd.notna(val)),
+                    axis=1
+                )]
+                logger.debug(f"[OPT_SEARCH]🔍 Rows after search: {len(df)}")
         except Exception as e:
             logger.warning(f"[OPT_SEARCH]⚠️ Search filtering failed: {e}", exc_info=True)
+
 
     # ✅ Normalize sort key by case
     columns_map = {col.lower(): col for col in df.columns}
