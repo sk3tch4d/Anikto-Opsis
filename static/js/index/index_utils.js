@@ -29,6 +29,7 @@ const isValidFile = name => /\.(pdf|xlsx|db)$/i.test(name);
 // SHARED MATCHERS ARRAY
 const typeMatchers = [
   { key: "clean", label: "Clean Uploaded File", match: isCleaningFile },
+  { key: "optimize", label: "Generate Optimization Report", match: isOptimizationFile },
   { key: "catalog", label: "Generate Catalog", match: isCatalogFile },
   { key: "zwdiseg", label: "Analyze Zwdiseg", match: isZwdisegFile },
   { key: "seniority", label: "Generate Seniority Summary", match: isSeniorityFile },
