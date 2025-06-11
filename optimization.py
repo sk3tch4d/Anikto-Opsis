@@ -9,7 +9,7 @@ from flask import current_app as app
 # SEARCH OPTIMIZATION
 # ==============================
 def search_optimization(df, term, cart_filter="All", sort="SROP", direction="desc"):
-    logger = app.logger
+    logger = app.logger  # current_app may not be available in all contexts
 
     if df is None or df.empty:
         logger.warning("⚠️ OPTIMIZATION_DF is None or empty.")
@@ -39,19 +39,18 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
         df = df[mask]
         logger.debug(f"🔍 Search match filter: {initial_count} → {len(df)} rows")
 
-    logger.debug(f"🧠 Columns in DF at search time: {df.columns.tolist()}")
+    # Log column headers
+    logger.debug(f"🧠 Columns in DataFrame: {df.columns.tolist()}")
+    logger.debug(f"⚙️ Requested sort: '{sort}' | direction: '{direction}'")
 
     # Sort if applicable
     if sort in df.columns:
         try:
-            # Try to preview dtype and values before sorting
-            try:
-                dtype = df[sort].dtype
-                preview = df[sort].head(5).tolist()
-                logger.debug(f"🧪 '{sort}' column dtype: {dtype}")
-                logger.debug(f"🔎 Top values in '{sort}': {preview}")
-            except Exception as inspect_err:
-                logger.warning(f"⚠️ Failed to inspect column '{sort}': {inspect_err}", exc_info=True)
+            # Preview data for debugging
+            dtype = df[sort].dtype
+            preview = df[sort].head(5).tolist()
+            logger.debug(f"🧪 '{sort}' column dtype: {dtype}")
+            logger.debug(f"🔎 Top values in '{sort}': {preview}")
 
             df = df.copy()
             df[sort] = pd.to_numeric(df[sort], errors="coerce")
@@ -59,10 +58,9 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
         except Exception as e:
             logger.warning(f"[SEARCH] ❌ Failed to sort by '{sort}': {e}", exc_info=True)
     else:
-        logger.warning(f"⚠️ Sort column '{sort}' not found in DF columns: {df.columns.tolist()}")
+        logger.warning(f"⚠️ Sort column '{sort}' not found in DF: {df.columns.tolist()}")
 
     logger.debug(f"📊 Final DF shape: {df.shape}")
-
     try:
         result = df.to_dict(orient="records")
         logger.debug(f"📦 Search results converted to list of dicts — sample: {result[0] if result else '[]'}")
@@ -70,3 +68,4 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
     except Exception as e:
         logger.error(f"❌ Failed to convert DataFrame to dict: {e}", exc_info=True)
         return []
+        
