@@ -34,11 +34,12 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
     if term:
         try:
             excluded = {"ROP", "ROQ", "RROP", "RROQ", "SROP", "SROQ", "CU1", "CU2", "QTY", "Created", "Last_Change"}
+            logger.debug(f"[OPT_SEARCH]🧪 Column names before string_cols eval: {df.columns.tolist()}")
             string_cols = [col for col in df.columns if col not in excluded and df[col].dtype == object]
             logger.debug(f"[OPT_SEARCH]🔤 Searching in columns: {string_cols}")
     
             if not string_cols:
-                logger.warning(f"[OPT_SEARCH]⚠️ No searchable string columns found.")
+                logger.warning(f"[OPT_SEARCH]⚠️ No searchable string columns found — skipping term filter")
             else:
                 df = df[df[string_cols].apply(
                     lambda row: any(term in str(val).lower() for val in row if pd.notna(val)),
