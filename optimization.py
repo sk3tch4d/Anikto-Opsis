@@ -51,4 +51,11 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
         logger.warning(f"⚠️ Sort column '{sort}' not found in DF columns: {df.columns.tolist()}")
 
     logger.debug(f"📊 Final DF shape: {df.shape}")
-    return df.to_dict(orient="records")
+    try:
+        result = df.to_dict(orient="records")
+        logger.debug(f"📦 Search results converted to list of dicts — sample: {result[0] if result else '[]'}")
+        return result
+    except Exception as e:
+        logger.error(f"❌ Failed to convert DataFrame to dict: {e}", exc_info=True)
+        return []
+
