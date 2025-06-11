@@ -12,12 +12,12 @@ def suggest_rop_roq(df):
     def strategic_suggested_rop_roq(row):
         try:
             # Use normalized field names from headers
-            cart_q = pd.to_numeric(row.get('cart_usage_1'), errors='coerce')
-            cost_q = pd.to_numeric(row.get('cost_centre_usage_1'), errors='coerce')
-            cart_a = pd.to_numeric(row.get('cart_usage_2'), errors='coerce')
-            cost_a = pd.to_numeric(row.get('cost_centre_usage_2'), errors='coerce')
-            prev_rop = pd.to_numeric(row.get('rop'), errors='coerce')
-            prev_roq = pd.to_numeric(row.get('roq'), errors='coerce')
+            cart_q = pd.to_numeric(row.get('CU1'), errors='coerce')
+            cost_q = pd.to_numeric(row.get('CC1'), errors='coerce')
+            cart_a = pd.to_numeric(row.get('CU2'), errors='coerce')
+            cost_a = pd.to_numeric(row.get('CC2'), errors='coerce')
+            prev_rop = pd.to_numeric(row.get('RROP'), errors='coerce')
+            prev_roq = pd.to_numeric(row.get('RROQ'), errors='coerce')
 
             # Estimate daily usage
             usage_quarterly = np.nanmax([cart_q, cost_q]) / 90 if pd.notna(cart_q) or pd.notna(cost_q) else 0
