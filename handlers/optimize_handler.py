@@ -5,6 +5,7 @@
 import os
 import re
 import json
+import config
 from datetime import datetime
 from flask import render_template, current_app as app
 from inv_optimizer import suggest_rop_roq
@@ -55,13 +56,20 @@ def handle(df, filename=None):
 
         # ============== Optimize =================
         df = suggest_rop_roq(df)
+        
+        # ============== Convert Numeric Columns =================
+        numeric_cols = ["ROP", "ROQ", "RROP", "RROQ", "SROP", "SROQ", "Num", "QTY", "CU1", "CU2"]
+        for col in numeric_cols:
+            if col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+                current_app.logger.debug(f"🔢 Coerced column '{col}' to numeric")
 
         # ============== Save Output =================
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         opt_path = os.path.join("/tmp", f"optimization_{usl_code}_{timestamp}_optimized.xlsx")
         df.to_excel(opt_path, index=False)
-
-        import config
+        
+        # ==============  Assign to config =================
         config.OPTIMIZATION_DF = df
         config.OPTIMIZATION_PATH = opt_path
 
