@@ -50,7 +50,7 @@ def handle(df, filename=None):
             return render_template("index.html", error="Could not load USL list.")
 
         if usl_code not in valid_usls:
-            app.logger.error(f"Failed to match USL from list {e}")
+            app.logger.error(f"[OPTIMIZER] USL '{usl_code}' not recognized — not in static usl_list.json")
             return render_template("index.html", error=f"USL '{usl_code}' not recognized.")
 
         # ============== Optimize =================
