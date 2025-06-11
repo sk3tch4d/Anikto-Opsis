@@ -32,14 +32,21 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
 
     # Filter by term match
     logger.debug(f"[OPT_SEARCH]🔍 Begin Search Count: {len(df)} rows")
+    # SAFE search matching across object/string columns only
     if term:
         initial_count = len(df)
-        mask = df.apply(
-            lambda row: term in " ".join(str(v).lower() for v in row.values if pd.notna(v)),
+    
+        # Restrict to string-compatible cols
+        string_cols = df.select_dtypes(include=["object", "string"]).columns
+        logger.debug(f"[OPT_SEARCH] 🔤 Searchable columns: {string_cols.tolist()}")
+    
+        df = df[df[string_cols].apply(
+            lambda row: any(term in str(val).lower() for val in row if pd.notna(val)),
             axis=1
-        )
-        df = df[mask]
-        logger.debug(f"[OPT_SEARCH]🔍 Search match filter: {initial_count} → {len(df)} rows")
+        )]
+    
+        logger.debug(f"[OPT_SEARCH] 🔍 Filtered rows: {initial_count} → {len(df)}")
+
 
     # Log full column header list
     logger.debug(f"[OPT_SEARCH]🧠 Columns in DataFrame: {df.columns.tolist()}")
