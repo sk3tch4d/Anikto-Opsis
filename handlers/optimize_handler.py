@@ -63,7 +63,7 @@ def handle(df, filename=None):
         for col in numeric_cols:
             if col in df.columns:
                 df[col] = pd.to_numeric(df[col], errors="coerce")
-                current_app.logger.debug(f"🔢 Coerced column '{col}' to numeric")
+                app.logger.debug(f"🔢 Coerced column '{col}' to numeric")
 
         # ============== Save Output =================
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
