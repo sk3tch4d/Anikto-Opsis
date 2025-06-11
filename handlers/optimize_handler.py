@@ -72,5 +72,5 @@ def handle(df, filename=None):
         )
 
     except Exception as e:
-        app.logger.error(f"Optimize handler failed: {e}")
+        app.logger.error(f"[OPTIMIZER] Handler Failed: {e}", exc_info=True)
         return render_template("index.html", error="Failed to optimize uploaded file.")
