@@ -65,6 +65,10 @@ def handle(df, filename=None):
                 df[col] = pd.to_numeric(df[col], errors="coerce")
                 app.logger.debug(f"🔢 Coerced column '{col}' to numeric")
 
+        # ============== Drop trailing nan in cols =================
+        required_cols = ["Bin", "ROP", "ROQ", "Num"]
+        df = df.dropna(subset=required_cols)
+
         # ============== Save Output =================
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         opt_path = os.path.join("/tmp", f"optimization_{usl_code}_{timestamp}_optimized.xlsx")
