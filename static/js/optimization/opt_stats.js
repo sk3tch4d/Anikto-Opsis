@@ -123,10 +123,11 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
     ${highlightMatch(base.Num, currentSearch)}
   </span>`;
 
-  const descHTML = highlightMatch(base.Description || "", currentSearch);
-  const binInfo = matching.length === 1 && matching[0].Bin
-    ? `<span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
+  const groupLine = groupMatch
+    ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}`
     : "";
+
+  const descHTML = highlightMatch(base.Description || "", currentSearch);
 
   const ropLine = base.ROP ? `<span class="tag-label">Current ROP:</span> ${base.ROP}` : "";
   const roqLine = base.ROQ ? `<span class="tag-label">Current ROQ:</span> ${base.ROQ}` : "";
@@ -136,11 +137,11 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
   const detailsHTML = joinAsDivs(
     `<span class="tag-label">Stores Number:</span> ${numberHTML}`,
     descHTML,
-    binInfo,
     ropLine,
     roqLine,
     sropLine,
-    sroqLine
+    sroqLine,
+    groupLine
   );
 
   const infoBlock = document.createElement("div");
@@ -151,21 +152,21 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
     toggleSaveItem(card, base, matching);
   });
 
-  const uniqueCarts = [...new Set(matching.map(item => item.Bin))];
-  debug("Unique carts for", base.Num, uniqueCarts);
+  const uniqueBins = [...new Set(matching.map(item => item.Bin))];
+  debug("Unique Bins for", base.Num, uniqueBins);
 
   if (currentFilter === "all") {
-    if (uniqueCarts.length === 1) {
+    if (uniqueBins.length === 1) {
       const pill = document.createElement("span");
       pill.className = "clickable-match";
-      pill.textContent = uniqueCarts[0];
-      pill.setAttribute("data-filter", uniqueCarts[0]);
+      pill.textContent = uniqueBins[0];
+      pill.setAttribute("data-filter", uniqueBins[0]);
       pill.setAttribute("data-search", base.Num);
       card.appendChild(pill);
-    } else if (uniqueCarts.length > 1) {
+    } else if (uniqueBins.length > 1) {
       const { toggle, wrapper } = createToggleList({
         label: "Carts",
-        items: uniqueCarts,
+        items: uniqueBins,
         itemAttributes: {
           "data-filter": usl => usl
         },
