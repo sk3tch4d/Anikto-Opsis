@@ -39,6 +39,10 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
         df = df[mask]
         logger.debug(f"🔍 Search match filter: {initial_count} → {len(df)} rows")
 
+    logger.debug(f"🧠 Columns in DF at search time: {df.columns.tolist()}")
+    logger.debug(f"🧪 '{sort}' column dtype: {df[sort].dtype if sort in df.columns else 'N/A'}")
+    logger.debug(f"🔎 Top values in '{sort}': {df[sort].head(5).tolist() if sort in df.columns else 'N/A'}")
+
     # Sort if applicable
     if sort in df.columns:
         try:
