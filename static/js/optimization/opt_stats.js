@@ -111,7 +111,6 @@ function toggleSaveItem(card, base, matching) {
 // HELPER: CREATE ITEM CARD
 // ==============================
 function createOptimizationItemCard(matching, base, currentSearch, currentFilter) {
-  const totalQty = matching.reduce((sum, item) => sum + (item.QTY || 0), 0);
   const card = document.createElement("div");
   card.className = "panel-card";
 
@@ -142,12 +141,12 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
   const detailsHTML = joinAsDivs(
     `<span class="tag-label">Stores Number:</span> ${numberHTML}`,
     descHTML,
-    `<span class="tag-label">Bin: </span> $${binInfo}`,
+    binInfo,
     ropLine,
     roqLine,
     sropLine,
     sroqLine
-  );
+  )
 
   const infoBlock = document.createElement("div");
   infoBlock.innerHTML = detailsHTML;
@@ -157,6 +156,8 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
     toggleSaveItem(card, base, matching);
   });
 
+  const uniqueCarts = [...new Set(matching.map(item => item.Bin))];
+
   if (currentFilter === "all") {
     if (uniqueCarts.length === 1) {
       const pill = document.createElement("span");
@@ -165,7 +166,7 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
       pill.setAttribute("data-filter", uniqueCarts[0]);
       pill.setAttribute("data-search", base.Num);
       card.appendChild(pill);
-    } else if (uniqueUSLs.length > 1) {
+    } else if (uniqueCarts.length > 1) {
       const { toggle, wrapper } = createToggleList({
         label: "Carts",
         items: uniqueCarts,
@@ -197,7 +198,7 @@ export function populateOptimizationStats(results) {
 
   box.innerHTML = "";
 
-  const uniqueNums = [...new Set(results.map(item => item.Num))];
+  const uniqueNums = [...new Set(results.map(item => item.Num))].sort();
 
   const summary = document.createElement("div");
   summary.className = "panel-card";
