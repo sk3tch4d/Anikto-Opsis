@@ -125,8 +125,11 @@
             <form action="/download/opt-saved-items.csv" method="get">
               <button type="submit" class="button panel">Download Saved Items</button>
             </form>
-            <form action="{{ url_for('download', filename=download_file) }}" method="get">
+            <form action="{{ url_for('file.download', filename=download_file) }}" method="get">
               <button type="submit" class="button panel">Download Report</button>
+            </form>
+            <form action="{{ url_for('file.download', filename=download_file) }}" method="get">
+              <button type="submit" class="button panel">Download Printable Report</button>
             </form>
           </div>
         </div>
