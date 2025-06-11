@@ -35,7 +35,7 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
   toggle.innerHTML = `${label} (${items.length}) <span class="chevron">▼</span>`;
 
   const wrapper = document.createElement("div");
-  wrapper.className = "usl-wrapper";
+  wrapper.className = "cart-wrapper";
 
   const container = document.createElement("div");
   container.className = "clickable-match-container";
@@ -126,20 +126,16 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
     : "";
 
   const ropLine = base.ROP
-    ? `<span class="tag-label">Current ROP:</span> ${base.ROP}`
-    : "";
+    ? `<span class="tag-label">Current ROP:</span> ${base.ROP}` : "";
 
   const roqLine = base.ROQ
-    ? `<span class="tag-label">Current ROQ:</span> ${base.ROQ}`
-    : "";
+    ? `<span class="tag-label">Current ROQ:</span> ${base.ROQ}` : "";
   
   const sropLine = base.SROP
-    ? `<span class="tag-label">Suggested ROP:</span> ${base.SROP}`
-    : "";
+    ? `<span class="tag-label">Suggested ROP:</span> ${base.SROP}`  : "";
 
   const sroqLine = base.SROQ
-    ? `<span class="tag-label">Suggested ROQ:</span> ${base.SROQ}`
-    : "";
+    ? `<span class="tag-label">Suggested ROQ:</span> ${base.SROQ}` : "";
 
   const detailsHTML = joinAsDivs(
     `<span class="tag-label">Stores Number:</span> ${numberHTML}`,
@@ -160,17 +156,17 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
   });
 
   if (currentFilter === "all") {
-    if (uniqueUSLs.length === 1) {
+    if (uniqueCarts.length === 1) {
       const pill = document.createElement("span");
       pill.className = "clickable-match";
-      pill.textContent = uniqueUSLs[0];
-      pill.setAttribute("data-filter", uniqueUSLs[0]);
+      pill.textContent = uniqueCarts[0];
+      pill.setAttribute("data-filter", uniqueCarts[0]);
       pill.setAttribute("data-search", base.Num);
       card.appendChild(pill);
     } else if (uniqueUSLs.length > 1) {
       const { toggle, wrapper } = createToggleList({
-        label: "USLs",
-        items: uniqueUSLs,
+        label: "Carts",
+        items: uniqueCarts,
         itemAttributes: {
           "data-filter": usl => usl
         },
