@@ -31,6 +31,7 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
         logger.debug(f"[OPT_SEARCH]🧺 Filtered by Cart {prefix}: {initial_count} → {len(df)} rows")
 
     # Filter by term match
+    logger.debug(f"[OPT_SEARCH]🔍 Begin Search Count: {len(df)} rows")
     if term:
         initial_count = len(df)
         mask = df.apply(
