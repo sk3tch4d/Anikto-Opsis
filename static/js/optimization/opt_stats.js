@@ -59,11 +59,11 @@ function createCard(item, term) {
   card.className = "panel-card";
 
   card.innerHTML = `
-    <div><strong>${highlightMatch(item.num, term)}</strong> — ${highlightMatch(item.description || "", term)}</div>
-    <div><strong>Bin:</strong> ${highlightMatch(item.bin || "-", term)}</div>
-    <div><strong>ROP:</strong> ${item.rrop || "-"}</div>
-    <div><strong>ROQ:</strong> ${item.rroq || "-"}</div>
-    <div><strong>Cost:</strong> ${item.price || 0} / ${item.uom || "EA"}</div>
+    <div><strong>${highlightMatch(item.Num, term)}</strong> — ${highlightMatch(item.Description || "", term)}</div>
+    <div><strong>Bin:</strong> ${highlightMatch(item.Bin || "-", term)}</div>
+    <div><strong>ROP:</strong> ${item.RROP || "-"}</div>
+    <div><strong>ROQ:</strong> ${item.RROQ || "-"}</div>
+    <div><strong>Cost:</strong> ${item.Cost || 0} / ${item.UOM || "EA"}</div>
   `;
 
   card.addEventListener("dblclick", () => toggleSaveItem(card, item));
