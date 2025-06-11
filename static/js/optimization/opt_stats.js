@@ -115,15 +115,9 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
   const card = document.createElement("div");
   card.className = "panel-card";
 
-  const firstUSL = matching.length === 1 ? matching[0].USL : null;
-
   const numberHTML = `<span class="clickable-stat" data-search="${base.Num}" ${firstUSL ? `data-filter="${firstUSL}"` : ""}>
     ${highlightMatch(base.Num, currentSearch)}
   </span>`;
-
-  const oldHTML = base.Old?.trim()
-    ? `&nbsp;<span class="tag-label">Old Number:</span> <span class="clickable-stat old-number" data-search="${base.Old}">${highlightMatch(base.Old, currentSearch)}</span>`
-    : "";
 
   const descHTML = highlightMatch(base.Description || "", currentSearch);
 
@@ -131,17 +125,14 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
     ? `<span class="tag-label">Bin:</span> ${highlightMatch(matching[0].Bin, currentSearch)}`
     : "";
 
-  const groupMatch = (base.Group || "").toLowerCase().includes(currentSearch.toLowerCase());
-  const costCenterMatch = (base.Cost_Center || "").toLowerCase().includes(currentSearch.toLowerCase());
-
-  const groupLine = groupMatch
-    ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}`
+  const ropLine = base.ROP
+    ? `<span class="tag-label">Current ROP:</span> ${base.ROP}`
     : "";
 
-  const costCenterLine = costCenterMatch
-    ? `<span class="tag-label">Cost Center:</span> ${highlightMatch(base.Cost_Center, currentSearch)}`
+  const roqLine = base.ROQ
+    ? `<span class="tag-label">Current ROQ:</span> ${base.ROQ}`
     : "";
-
+  
   const sropLine = base.SROP
     ? `<span class="tag-label">Suggested ROP:</span> ${base.SROP}`
     : "";
@@ -150,16 +141,12 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
     ? `<span class="tag-label">Suggested ROQ:</span> ${base.SROQ}`
     : "";
 
-  const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
-  const quantityLabel = (currentFilter === "all" && uniqueUSLs.length > 1) ? "Total Quantity" : "Quantity";
-
   const detailsHTML = joinAsDivs(
     `<span class="tag-label">Stores Number:</span> ${numberHTML}`,
-    oldHTML,
     descHTML,
-    `<span class="tag-label">${quantityLabel}:</span> ${totalQty} ${binInfo}`,
-    groupLine,
-    costCenterLine,
+    `<span class="tag-label">Bin: </span> $${binInfo}`,
+    ropLine,
+    roqLine,
     sropLine,
     sroqLine
   );
