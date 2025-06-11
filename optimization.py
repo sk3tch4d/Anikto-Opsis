@@ -11,6 +11,8 @@ from flask import current_app as app
 def search_optimization(df, term, cart_filter="All", sort="SROP", direction="desc"):
     logger = app.logger
 
+    logger.debug(f"[OPT_SEARCH]🧭 ENTERED search_optimization() with term={term!r}, cart={cart_filter}, sort={sort}, direction={direction}")
+
     if df is None or df.empty:
         logger.warning("[OPT_SEARCH]⚠️ OPTIMIZATION_DF is None or empty.")
         return []
