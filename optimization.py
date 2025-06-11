@@ -8,7 +8,7 @@ from flask import current_app as app
 # ==============================
 # SEARCH OPTIMIZATION
 # ==============================
-def search_optimization(df, term, cart_filter="All", sort="SROP", direction="desc"):
+def search_optimization(df, term, cart_filter="All", sort="Num", direction="desc"):
     logger = app.logger
 
     logger.debug(f"[OPT_SEARCH]🧭 ENTERED search_optimization() with term={term!r}, cart={cart_filter}, sort={sort}, direction={direction}")
