@@ -9,7 +9,7 @@ from flask import current_app as app
 # SEARCH OPTIMIZATION
 # ==============================
 def search_optimization(df, term, cart_filter="All", sort="SROP", direction="desc"):
-    logger = app.logger  # Safer than current_app in some async contexts
+    logger = app.logger
 
     if df is None or df.empty:
         logger.warning("[OPT_SEARCH]⚠️ OPTIMIZATION_DF is None or empty.")
@@ -17,61 +17,46 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
 
     logger.info("[OPT_SEARCH]🔍 Running optimization search")
     logger.debug(f"[OPT_SEARCH]🔢 Initial DF shape: {df.shape}")
-    logger.debug(f"[OPT_SEARCH]🧭 Reached search_optimization function with sort='{sort}', direction='{direction}'")
+    logger.debug(f"[OPT_SEARCH]🧭 Search with sort='{sort}', direction='{direction}'")
 
-    # Normalize term
-    term = str(term).lower().strip()
-    logger.debug(f"[OPT_SEARCH]🔡 Normalized search term: '{term}'")
+    term = str(term).strip().lower()
 
-    # Filter by cart
+    # Filter by Cart prefix
     if cart_filter and cart_filter != "All":
         prefix = cart_filter.split()[-1]
-        initial_count = len(df)
         df = df[df["bin"].astype(str).str.startswith(prefix)]
-        logger.debug(f"[OPT_SEARCH]🧺 Filtered by Cart {prefix}: {initial_count} → {len(df)} rows")
+        logger.debug(f"[OPT_SEARCH]🧺 Filtered by Cart {prefix}, now {len(df)} rows")
 
-    # Filter by term match
-    logger.debug(f"[OPT_SEARCH]🔍 Begin Search Count: {len(df)} rows")
-    # SAFE search matching across object/string columns only
+    # Filter by search term across relevant columns
     if term:
-        initial_count = len(df)
-    
-        # Restrict to string-compatible cols
-        string_cols = df.select_dtypes(include=["object", "string"]).columns
-        logger.debug(f"[OPT_SEARCH] 🔤 Searchable columns: {string_cols.tolist()}")
-    
-        df = df[df[string_cols].apply(
-            lambda row: any(term in str(val).lower() for val in row if pd.notna(val)),
-            axis=1
-        )]
-    
-        logger.debug(f"[OPT_SEARCH] 🔍 Filtered rows: {initial_count} → {len(df)}")
+        try:
+            excluded = {"ROP", "ROQ", "RROP", "RROQ", "SROP", "SROQ", "CU1", "CU2", "QTY", "Created", "Last_Change"}
+            search_cols = [col for col in df.columns if col not in excluded and df[col].dtype == object]
+            logger.debug(f"[OPT_SEARCH]🔤 Searching in columns: {search_cols}")
 
+            df = df[df[search_cols].apply(
+                lambda row: any(term in str(val).lower() for val in row if pd.notna(val)),
+                axis=1
+            )]
+            logger.debug(f"[OPT_SEARCH]🔍 Search result count: {len(df)}")
+        except Exception as e:
+            logger.warning(f"[OPT_SEARCH]⚠️ Term filtering failed: {e}", exc_info=True)
 
-    # Log full column header list
-    logger.debug(f"[OPT_SEARCH]🧠 Columns in DataFrame: {df.columns.tolist()}")
-
-    # Sort block
-    logger.debug("[OPT_SEARCH]🧭 Reached sort check...")
+    # Sorting
     if sort in df.columns:
         try:
-            dtype = df[sort].dtype
-            preview = df[sort].head(5).tolist()
-            logger.debug(f"[OPT_SEARCH]🧪 '{sort}' column dtype: {dtype}")
-            logger.debug(f"[OPT_SEARCH]🔎 Top values in '{sort}': {preview}")
-
-            df = df.copy()
             df[sort] = pd.to_numeric(df[sort], errors="coerce")
             df = df.sort_values(by=sort, ascending=(direction == "asc"))
         except Exception as e:
-            logger.warning(f"[OPT_SEARCH] ❌ Failed to sort by '{sort}': {e}", exc_info=True)
+            logger.warning(f"[OPT_SEARCH]❌ Failed to sort by '{sort}': {e}", exc_info=True)
     else:
-        logger.warning(f"[OPT_SEARCH]⚠️ Sort column '{sort}' not found in DF: {df.columns.tolist()}")
+        logger.warning(f"[OPT_SEARCH]⚠️ Sort column '{sort}' not found in DF.")
 
     logger.debug(f"[OPT_SEARCH]📊 Final DF shape: {df.shape}")
+
     try:
         result = df.to_dict(orient="records")
-        logger.debug(f"[OPT_SEARCH]📦 Search results converted to list of dicts — sample: {result[0] if result else '[]'}")
+        logger.debug(f"[OPT_SEARCH]📦 Returning {len(result)} results.")
         return result
     except Exception as e:
         logger.error(f"[OPT_SEARCH]❌ Failed to convert DataFrame to dict: {e}", exc_info=True)
