@@ -7,7 +7,7 @@
   <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
 </head>
-<body>
+<body data-page="optimize">
   <h2>
     <span id="site-title" class="typed-text gradient-title gradient-shift" data-title="USL Optimization|Anikto Opsis"></span>
   </h2>
@@ -17,7 +17,7 @@
     <div id="panel-container">
 
       <!-- ============================= -->
-      <!-- PANEL: OPTIMIZATION SEARCH   -->
+      <!-- PANEL: OPTIMIZATION SEARCH    -->
       <!-- ============================= -->
       <div class="panel panel-animate" id="optimization-search-panel">
         <div class="panel-header" onclick="togglePanel(this)">Optimization Search</div>
@@ -50,7 +50,7 @@
       </div>
 
       <!-- ============================= -->
-      <!-- PANEL: OPTIMIZATION STATS -->
+      <!-- PANEL: OPTIMIZATION STATS     -->
       <!-- ============================= -->
       <div class="panel panel-animate" id="optimization-stats-panel">
         <div class="panel-header" onclick="togglePanel(this)">Full Results</div>
@@ -93,7 +93,7 @@
 
 
       <!-- ============================= -->
-      <!-- PANEL: SAVED OPTIMIZATION -->
+      <!-- PANEL: SAVED OPTIMIZATION     -->
       <!-- ============================= -->
       <div class="panel panel-animate" id="optimization-saved-panel">
         <div class="panel-header" onclick="togglePanel(this)">Saved Items</div>
@@ -103,7 +103,7 @@
       </div>
       
       <!-- ============================= -->
-      <!-- PANEL: SEARCH HISTORY -->
+      <!-- PANEL: SEARCH HISTORY         -->
       <!-- ============================= -->
       <div class="panel panel-animate" id="search-history-panel">
         <div class="panel-header" onclick="togglePanel(this)">Search History</div>
@@ -113,7 +113,7 @@
       </div>
 
       <!-- ============================= -->
-      <!-- PANEL: DOWNLOADS -->
+      <!-- PANEL: DOWNLOADS              -->
       <!-- ============================= -->
       <div class="panel panel-animate no-shadow" id="downloads">
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
@@ -136,7 +136,7 @@
       </div>
 
       <!-- ============================= -->
-      <!-- PANEL: RETURN -->
+      <!-- PANEL: RETURN                 -->
       <!-- ============================= -->
       <div class="panel panel-animate no-shadow">
         <form action="{{ url_for('index') }}" method="get" class="button-form">
