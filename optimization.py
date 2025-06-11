@@ -9,7 +9,7 @@ from flask import current_app as app
 # SEARCH OPTIMIZATION
 # ==============================
 def search_optimization(df, term, cart_filter="All", sort="SROP", direction="desc"):
-    logger = app.logger  # current_app may not be available in all contexts
+    logger = app.logger  # Safer than current_app in some async contexts
 
     if df is None or df.empty:
         logger.warning("⚠️ OPTIMIZATION_DF is None or empty.")
@@ -17,6 +17,7 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
 
     logger.info("🔍 Running optimization search")
     logger.debug(f"🔢 Initial DF shape: {df.shape}")
+    logger.debug(f"🧭 Reached search_optimization function with sort='{sort}', direction='{direction}'")
 
     # Normalize term
     term = str(term).lower().strip()
@@ -39,14 +40,13 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
         df = df[mask]
         logger.debug(f"🔍 Search match filter: {initial_count} → {len(df)} rows")
 
-    # Log column headers
+    # Log full column header list
     logger.debug(f"🧠 Columns in DataFrame: {df.columns.tolist()}")
-    logger.debug(f"⚙️ Requested sort: '{sort}' | direction: '{direction}'")
 
-    # Sort if applicable
+    # Sort block
+    logger.debug("🧭 Reached sort check...")
     if sort in df.columns:
         try:
-            # Preview data for debugging
             dtype = df[sort].dtype
             preview = df[sort].head(5).tolist()
             logger.debug(f"🧪 '{sort}' column dtype: {dtype}")
@@ -68,4 +68,3 @@ def search_optimization(df, term, cart_filter="All", sort="SROP", direction="des
     except Exception as e:
         logger.error(f"❌ Failed to convert DataFrame to dict: {e}", exc_info=True)
         return []
-        
