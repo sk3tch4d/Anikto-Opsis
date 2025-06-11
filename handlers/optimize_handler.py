@@ -46,7 +46,7 @@ def handle(df, filename=None):
                 usl_list = json.load(f)
             valid_usls = {entry["usl"] for entry in usl_list}
         except Exception as e:
-            app.logger.error(f"Failed to load USL json list: {e}")
+            app.logger.error(f"Failed to load USL json list: {e}", exc_info=True)
             return render_template("index.html", error="Could not load USL list.")
 
         if usl_code not in valid_usls:
