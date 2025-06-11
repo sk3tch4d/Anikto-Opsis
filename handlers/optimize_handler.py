@@ -82,4 +82,9 @@ def handle(df, filename=None):
 
     except Exception as e:
         app.logger.error(f"[OPTIMIZER] Handler Failed: {e}", exc_info=True)
-        return render_template("index.html", error="Failed to optimize uploaded file.")
+        safe_table = df.where(pd.notnull(df), None).to_dict(orient="records")
+        return render_template(
+            "optimization.html",
+            table=safe_table,
+            download_file=os.path.basename(opt_path)
+        )
