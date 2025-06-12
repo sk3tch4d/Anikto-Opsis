@@ -11,6 +11,8 @@ from inv_optimizer import suggest_rop_roq
 # ==============================
 def handle(df, filename=None):
     try:
+        if df is None or df.empty:
+            raise ValueError("No inventory data provided")
 
         first_usl = df["USL"].dropna().astype(str).str.upper().iloc[0]
         match = re.match(r"([A-Z0-9]{1,4})", first_usl)
