@@ -1,5 +1,6 @@
 // ==============================
 // OPT_STATS.JS
+// Optimization Statistics Renderer
 // ==============================
 
 import { highlightMatch, setupParseStats, clearTextSelect } from "../search-utils.js";
@@ -7,9 +8,13 @@ import { scrollPanel } from "../panels.js";
 import { showToast, hapticFeedback } from "../ui-utils.js";
 
 // ==============================
-// DEBUG MODE
+// DEBUG TOGGLE
 // ==============================
 const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
+
+// ==============================
+// GLOBAL: SAVED ITEMS
+// ==============================
 window.savedItems = new Map();
 
 function debug(...args) {
@@ -17,7 +22,7 @@ function debug(...args) {
 }
 
 // ==============================
-// JOIN LINES INTO HTML BLOCKS
+// HELPER: JOIN CONTENT <div>
 // ==============================
 function joinAsDivs(...lines) {
   return lines
@@ -27,7 +32,7 @@ function joinAsDivs(...lines) {
 }
 
 // ==============================
-// TOGGLEABLE MATCH LIST
+// HELPER: CREATE TOGGLE LIST
 // ==============================
 function createToggleList({ label, items, itemAttributes = {}, sort = true, searchableValue = "" }) {
   const toggle = document.createElement("span");
@@ -35,7 +40,7 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
   toggle.innerHTML = `${label} (${items.length}) <span class="chevron">▼</span>`;
 
   const wrapper = document.createElement("div");
-  wrapper.className = "usl-wrapper";
+  wrapper.className = "cart-wrapper";
 
   const container = document.createElement("div");
   container.className = "clickable-match-container";
@@ -69,29 +74,7 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
 }
 
 // ==============================
-// UPDATE SAVED PANEL
-// ==============================
-function updateSavedPanel() {
-  debug("Updating saved panel");
-  const panel = document.querySelector("#optimization-saved-panel .panel-body");
-  panel.innerHTML = "";
-
-  const cards = Array.from(savedItems.values()).map(entry => entry.card).reverse();
-  debug("Saved cards:", cards.length);
-
-  if (!cards.length) {
-    panel.innerHTML = `<p>No saved items yet.</p><br><p>Double click a tile to save!</p>`;
-    return;
-  }
-
-  cards.forEach(clone => {
-    const freshClone = clone.cloneNode(true);
-    panel.appendChild(freshClone);
-  });
-}
-
-// ==============================
-// TOGGLE SAVE STATE
+// HELPER: TOGGLE SAVE ITEM
 // ==============================
 function toggleSaveItem(card, base, matching) {
   debug("Toggling saved item:", base.Num);
@@ -111,10 +94,29 @@ function toggleSaveItem(card, base, matching) {
 }
 
 // ==============================
-// CREATE OPTIMIZATION ITEM CARD
+// HELPER: UPDATE SAVED PANEL
+// ==============================
+function updateSavedPanel() {
+  const savedPanel = document.querySelector("#optimization-saved-panel .panel-body");
+  savedPanel.innerHTML = "";
+
+  const cards = Array.from(savedItems.values()).map(entry => entry.card).reverse();
+
+  if (cards.length === 0) {
+    savedPanel.innerHTML = "<p>No items saved yet.</p><br><br><p>Double click a tile to save!</p>";
+    return;
+  }
+
+  cards.forEach(clone => {
+    const freshClone = clone.cloneNode(true);
+    savedPanel.appendChild(freshClone);
+  });
+}
+
+// ==============================
+// HELPER: CREATE ITEM CARD
 // ==============================
 function createOptimizationItemCard(matching, base, currentSearch, currentFilter) {
-  debug("Creating card for:", base.Num, "Matches:", matching.length);
   const card = document.createElement("div");
   card.className = "panel-card";
 
@@ -124,17 +126,17 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
     ${highlightMatch(base.Num, currentSearch)}
   </span>`;
 
-  const groupMatch = (base.Group || "").toLowerCase().includes(currentSearch.toLowerCase());
-  const groupLine = groupMatch
-    ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}`
-    : "";
-
   const descHTML = highlightMatch(base.Description || "", currentSearch);
 
   const ropLine = base.ROP ? `<span class="tag-label">Current ROP:</span> ${base.ROP}` : "";
   const roqLine = base.ROQ ? `<span class="tag-label">Current ROQ:</span> ${base.ROQ}` : "";
   const sropLine = base.SROP ? `<span class="tag-label">Suggested ROP:</span> ${base.SROP}` : "";
   const sroqLine = base.SROQ ? `<span class="tag-label">Suggested ROQ:</span> ${base.SROQ}` : "";
+
+  const groupMatch = (base.Group || "").toLowerCase().includes(currentSearch.toLowerCase());
+  const groupLine = groupMatch
+    ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}`
+    : "";
 
   const detailsHTML = joinAsDivs(
     `<span class="tag-label">Stores Number:</span> ${numberHTML}`,
@@ -155,7 +157,6 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
   });
 
   const uniqueBins = [...new Set(matching.map(item => item.Bin))];
-  debug("Unique Bins for", base.Num, uniqueBins);
 
   if (currentFilter === "all") {
     if (uniqueBins.length === 1) {
@@ -170,7 +171,7 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
         label: "Carts",
         items: uniqueBins,
         itemAttributes: {
-          "data-filter": bin => bin
+          "data-filter": usl => usl
         },
         searchableValue: base.Num
       });
@@ -183,67 +184,105 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
 }
 
 // ==============================
-// POPULATE OPTIMIZATION RESULTS
+// MAIN STAT POPULATOR FUNCTION
 // ==============================
 export function populateOptimizationStats(results) {
   debug("Populating stats — total results:", results.length);
 
-  const box = document.getElementById("optimization-stats");
-  if (!box) return console.warn("[OPT_STATS] Missing #optimization-stats container");
+  const statsBox = document.getElementById("optimization-stats");
+  if (!statsBox) return;
 
-  const input = document.getElementById("optimization-search");
-  const currentSearch = input?.value.trim().toLowerCase() || "";
+  statsBox.innerHTML = "";
+
+  const searchInput = document.getElementById("optimization-search");
+  const currentSearch = searchInput?.value.trim() || "";
 
   const filterInput = document.getElementById("opsh-filter");
-  const currentFilter = filterInput?.value.trim().toLowerCase() || "all";
+  const currentFilter = (filterInput?.value.trim().toLowerCase()) || "all";
 
-  debug("Current search:", currentSearch, "Current filter:", currentFilter);
-
-  box.innerHTML = "";
-
-  const uniqueNums = [...new Set(results.map(item => item.Num))].sort();
-  debug("Unique item numbers:", uniqueNums.length, uniqueNums.slice(0, 5));
-
-  const summary = document.createElement("div");
-  summary.className = "panel-card";
-  summary.innerHTML = `<div><span class="tag-label">Results:</span> ${results.length} <span class="tag-label">Unique:</span> ${uniqueNums.length}</div>`;
-  box.appendChild(summary);
-
+  const uniqueNums = [...new Set(results.map(item => item.Num))];
   const fragment = document.createDocumentFragment();
 
-  for (const num of uniqueNums) {
+  const summaryContainer = document.createElement("div");
+  summaryContainer.className = "panel-card";
+
+  const liResults = document.createElement("div");
+  const resultsCount = results.length >= 100 ? "100+" : results.length;
+  liResults.innerHTML = `<span class="tag-label">Results:</span> ${resultsCount} <span class="tag-label">Unique:</span> ${uniqueNums.length}`;
+  summaryContainer.appendChild(liResults);
+
+  const liMatches = document.createElement("div");
+
+  if (uniqueNums.length <= 3) {
+    const matchContainer = document.createElement("div");
+    matchContainer.className = "clickable-match-container";
+
+    uniqueNums.forEach(num => {
+      const span = document.createElement("span");
+      span.className = "clickable-match";
+      span.setAttribute("data-search", num);
+      span.textContent = num;
+      matchContainer.appendChild(span);
+    });
+
+    liMatches.appendChild(matchContainer);
+  } else {
+    const matchesToggle = document.createElement("span");
+    matchesToggle.className = "tag-label tag-toggle clickable-toggle";
+    matchesToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
+
+    const matchesWrapper = document.createElement("div");
+    matchesWrapper.className = "cart-wrapper";
+
+    const matchContainer = document.createElement("div");
+    matchContainer.className = "clickable-match-container";
+
+    uniqueNums.forEach(num => {
+      const span = document.createElement("span");
+      span.className = "clickable-match";
+      span.setAttribute("data-search", num);
+      span.textContent = num;
+      matchContainer.appendChild(span);
+    });
+
+    matchesWrapper.appendChild(matchContainer);
+
+    matchesToggle.addEventListener("click", () => {
+      matchesWrapper.classList.toggle("show");
+      matchesToggle.classList.toggle("toggle-open");
+    });
+
+    liMatches.appendChild(matchesToggle);
+    liMatches.appendChild(matchesWrapper);
+  }
+
+  summaryContainer.appendChild(liMatches);
+  fragment.appendChild(summaryContainer);
+
+  uniqueNums.forEach(num => {
     const matching = results.filter(r => r.Num === num);
-    if (!matching.length) {
-      debug(`No matches found for item: ${num}`);
-      continue;
-    }
+    if (!matching.length) return;
 
     const base = matching[0];
     const card = createOptimizationItemCard(matching, base, currentSearch, currentFilter);
     fragment.appendChild(card);
-  }
+  });
 
   if (!uniqueNums.length) {
-    const empty = document.createElement("div");
-    empty.className = "no-results";
-    empty.textContent = "No results found.";
-    fragment.appendChild(empty);
+    const noResults = document.createElement("div");
+    noResults.className = "no-results";
+    noResults.textContent = "No results found.";
+    fragment.appendChild(noResults);
   }
 
-  box.appendChild(fragment);
+  statsBox.appendChild(fragment);
 
   setTimeout(() => {
     const header = document.querySelector('#optimization-search-panel .panel-header');
     if (header) scrollPanel(header);
   }, 100);
 
-  setupParseStats(
-    ".clickable-match, .clickable-stat",
-    "optimization-search",
-    "data-search",
-    "opsh-filter",
-    "data-filter"
-  );
+  setupParseStats(".clickable-match, .clickable-stat", "optimization-search", "data-search", "opsh-filter", "data-filter");
 }
 
 window.populateOptimizationStats = populateOptimizationStats;
