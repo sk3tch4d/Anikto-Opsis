@@ -38,7 +38,7 @@ export function initializeOptimizationApp() {
   // ==============================
   // FETCH CART FILTER OPTIONS
   // ==============================
-  fetch("/inventory-cart")
+  fetch("/inventory-carts")
     .then(res => res.ok ? res.json() : null)
     .then(carts => {
       if (!Array.isArray(carts)) return;
