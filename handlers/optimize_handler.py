@@ -2,6 +2,7 @@
 # OPTIMIZE_HANDLER.PY — USL OPTIMIZER FLOW (MATCHING INVENTORY STRUCTURE)
 # ==============================
 
+import re
 import config
 from flask import render_template, current_app as app
 from inv_optimizer import suggest_rop_roq
