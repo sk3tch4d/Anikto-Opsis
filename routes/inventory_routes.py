@@ -63,7 +63,7 @@ def inventory_search():
         current_app.logger.debug(f"📊 INVENTORY_DF shape: {df.shape}")
 
     try:
-        response = handle_search_request(df, search_inventory)
+        response = handle_search_request(df, search_inventory, default_sort="QTY", filter_param="usl")
         current_app.logger.debug("✅ Search handled successfully")
         return response
     except Exception as e:
