@@ -20,25 +20,25 @@ export function renderOptimizationResults(data, term, resultsList) {
 
     let html = "";
 
-    html += `<span class="tag-label">Number:</span> ${highlightMatch(item.material || "N/A", term)}<br>`;
-    html += `<span class="tag-label">Description:</span> ${highlightMatch(item.material_description || "", term)}<br>`;
+    html += `<span class="tag-label">Number:</span> ${highlightMatch(item.Num || "N/A", term)}<br>`;
+    html += `<span class="tag-label">Description:</span> ${highlightMatch(item.Description || "", term)}<br>`;
     
-    if (item.bin?.trim()) {
-      html += `<span class="tag-label">Bin:</span> ${highlightMatch(item.bin, term)}<br>`;
+    if (item.Bin?.trim()) {
+      html += `<span class="tag-label">Bin:</span> ${highlightMatch(item.Bin, term)}<br>`;
     }
 
-    if (item.site_suggested_rop) {
-      html += `<span class="tag-label">ROP:</span> ${item.site_suggested_rop}<br>`;
+    if (item.SROP !== undefined) {
+      html += `<span class="tag-label">ROP:</span> ${item.ROP}<br>`;
     }
 
-    if (item.site_suggested_roq) {
-      html += `<span class="tag-label">ROQ:</span> ${item.site_suggested_roq}<br>`;
+    if (item.SROQ !== undefined) {
+      html += `<span class="tag-label">ROQ:</span> ${item.ROQ}<br>`;
     }
 
-    if (item.ma_price !== undefined) {
-      html += `<span class="tag-label">Cost:</span> ${item.ma_price}`;
-      if (item.bun_of_measure?.trim()) {
-        html += ` / ${highlightMatch(item.bun_of_measure, term)}`;
+    if (item.Cost !== undefined) {
+      html += `<span class="tag-label">Cost:</span> ${item.Cost}`;
+      if (item.UOM?.trim()) {
+        html += ` / ${highlightMatch(item.UOM, term)}`;
       }
       html += `<br>`;
     }
@@ -53,7 +53,6 @@ export function renderOptimizationResults(data, term, resultsList) {
     resultsList.appendChild(card);
   });
 
-  // Scroll to panel
   const header = document.querySelector('#optimization-search-panel .panel-header');
   scrollPanel(header);
 }
