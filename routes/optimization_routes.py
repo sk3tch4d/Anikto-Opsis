@@ -42,4 +42,4 @@ def optimization_search():
     else:
         current_app.logger.debug(f"📊 OPTIMIZATION_DF shape: {df.shape}")
 
-    return handle_search_request(df, search_optimization, default_sort="SROP")
+    return handle_search_request(df, search_optimization, default_sort="Num")
