@@ -70,13 +70,13 @@ def search_optimization(df, term, cart_filter="All", sort="Num", direction="desc
 
     # ✅ Sorting
     try:
+        df = df.copy()  # Ensure we're not modifying a view
         df[sort] = pd.to_numeric(df[sort], errors="coerce")
         df = df.sort_values(by=sort, ascending=(direction == "asc"))
         logger.debug(f"[OPT_SEARCH]🔃 Sorted by '{sort}' in direction '{direction}'")
     except Exception as e:
         logger.warning(f"[OPT_SEARCH]❌ Failed to sort by '{sort}': {e}", exc_info=True)
 
-    logger.debug(f"[OPT_SEARCH]📊 Final DF shape: {df.shape}")
 
     # ✅ Standardize return columns
     output_columns = [
