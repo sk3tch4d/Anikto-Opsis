@@ -1,12 +1,15 @@
 // ==============================
-// OPT_INIT.JS — Optimization UI Bootstrap
+// OPT_INIT.JS
+// Optimization Search Panel Logic
 // ==============================
 
 import { doOptimizationSearch } from "./opt_search.js";
 import { populateOptimizationStats } from "./opt_stats.js";
-import { setupOptimizationDownloadSearch, setupOptimizationDownloadHistory } from "./opt_downloads.js";
-import { renderOptimizationResults } from "./opt_results.js";
-import { highlightMatch } from "../search-utils.js";
+import {
+  setupOptimizationDownloadSearch,
+  setupOptimizationDownloadSaved,
+  setupOptimizationDownloadHistory
+} from "./opt_downloads.js";
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
 import { scrollPanel } from "../panels.js";
 
@@ -21,7 +24,7 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 export function initializeOptimizationApp() {
   const searchInput = document.getElementById("optimization-search");
   const cartFilter = document.getElementById("opsh-filter");
-  const sortBy = document.getElementById("sort-by");
+  const sortBy = document.getElementById("sort-by") || { value: "ROP" };
   const sortDirButton = document.getElementById("sort-direction");
   const resultsList = document.getElementById("optimization-results");
   const noResults = document.getElementById("no-results");
@@ -54,30 +57,27 @@ export function initializeOptimizationApp() {
       return doOptimizationSearch({
         searchInput,
         cartFilter,
-        sortBy: sortBy || { value: "Num" },
+        sortBy,
         sortDirButton,
         resultsList,
         noResults,
         sortDirection
       });
     });
-  
-    const header = document.querySelector('#optimization-search-panel .panel-header');
-    scrollPanel(header);
+
+    scrollPanel(document.querySelector('#optimization-search-panel .panel-header'));
   }
 
   // ==============================
   // SEARCH EVENTS
   // ==============================
   searchInput.addEventListener("input", () => {
-    clearTimeout(window._searchDebounce);
-    window._searchDebounce = setTimeout(doSearch, 200);
+    clearTimeout(window._optSearchDebounce);
+    window._optSearchDebounce = setTimeout(doSearch, 200);
   });
 
   cartFilter.addEventListener("change", doSearch);
-  if (sortBy && typeof sortBy.addEventListener === "function") {
-    sortBy.addEventListener("change", doSearch);
-  }
+  if (sortBy) sortBy.addEventListener("change", doSearch);
 
   doSearch();
 
@@ -86,8 +86,7 @@ export function initializeOptimizationApp() {
   // ==============================
   window.addEventListener("beforeunload", () => {
     localStorage.setItem("optimizationScrollTop", window.scrollY);
-    const header = document.querySelector('#optimization-search-panel .panel-header');
-    scrollPanel(header);
+    scrollPanel(document.querySelector('#optimization-search-panel .panel-header'));
   });
 
   // ==============================
@@ -95,6 +94,9 @@ export function initializeOptimizationApp() {
   // ==============================
   if (document.getElementById("optimization-search-download")) {
     setupOptimizationDownloadSearch();
+  }
+  if (document.getElementById("optimization-saved-download")) {
+    setupOptimizationDownloadSaved();
   }
   if (document.getElementById("optimization-history-download")) {
     setupOptimizationDownloadHistory();
