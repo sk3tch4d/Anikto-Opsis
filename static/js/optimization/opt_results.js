@@ -12,42 +12,78 @@ export function renderOptimizationResults(data, term, resultsList) {
   if (!Array.isArray(data) || !resultsList) return;
   if (data.length === 0) return;
 
-  resultsList.innerHTML = ""; // clear previous results
+  resultsList.innerHTML = ""; // clear previous
 
   data.forEach(item => {
     const card = document.createElement("div");
     card.className = "panel-card";
 
+    const numStr = String(item.Num ?? "");
+    const oldStr = String(item.Old ?? "");
+
     let html = "";
 
-    html += `<span class="tag-label">Number:</span> ${highlightMatch(item.Num || "N/A", term)}<br>`;
-    html += `<span class="tag-label">Description:</span> ${highlightMatch(item.Description || "", term)}<br>`;
-    
-    if (item.Bin?.trim()) {
-      html += `<span class="tag-label">Bin:</span> ${highlightMatch(item.Bin, term)}<br>`;
-    }
+    // ==== Number Field
+    if (term) {
+      const numMatch = numStr.toLowerCase().includes(term);
+      const oldMatch = oldStr.toLowerCase().includes(term);
 
-    if (item.ROP !== undefined) {
-      html += `<span class="tag-label">ROP:</span> ${item.ROP}<br>`;
-    }
-
-    if (item.ROQ !== undefined) {
-      html += `<span class="tag-label">ROQ:</span> ${item.ROQ}<br>`;
-    }
-
-    if (item.Cost !== undefined) {
-      html += `<span class="tag-label">Cost:</span> ${item.Cost}`;
-      if (item.UOM?.trim()) {
-        html += ` / ${highlightMatch(item.UOM, term)}`;
+      if (numMatch || (!numMatch && !oldMatch)) {
+        html += `<span class="tag-label">Number:</span> ${highlightMatch(numStr, term)}`;
+        if (oldStr) html += ` &nbsp;&nbsp; <span class="tag-label">Old:</span> (${highlightMatch(oldStr, term)})`;
+      } else if (oldMatch) {
+        html += `<span class="tag-label">Old Number:</span> ${highlightMatch(oldStr, term)}`;
+        if (numStr) html += ` &nbsp;&nbsp; <span class="tag-label">New:</span> (${highlightMatch(numStr, term)})`;
       }
+    } else {
+      html += `<span class="tag-label">Number:</span> ${numStr}`;
+      if (oldStr) html += ` &nbsp;&nbsp; <span class="tag-label">Old:</span> ${oldStr}`;
+    }
+
+    html += `<br>`;
+
+    // ==== Description
+    if (item.Description?.trim()) {
+      html += `${highlightMatch(item.Description, term)}<br>`;
+    }
+
+    // ==== USL + Bin
+    if (item.USL?.trim() || item.Bin?.trim()) {
+      html += `<span class="tag-label">Location:</span>`;
+      if (item.USL?.trim()) html += ` ${highlightMatch(item.USL, term)}`;
+      if (item.Bin?.trim()) html += ` - ${highlightMatch(item.Bin, term)}`;
+      html += `<br>`;
+    }
+
+    // ==== ROP/ROQ
+    if (item.ROP !== undefined || item.ROQ !== undefined) {
+      if (item.ROP !== undefined) html += `<span class="tag-label">ROP:</span> ${item.ROP} `;
+      if (item.ROQ !== undefined) html += `<span class="tag-label">ROQ:</span> ${item.ROQ}`;
+      html += `<br>`;
+    }
+
+    // ==== Group
+    if (item.Group?.trim()) {
+      html += `<span class="tag-label">Group:</span> ${highlightMatch(item.Group, term)}<br>`;
+    }
+
+    // ==== Confidence / Score
+    if (item.Confidence !== undefined || item.Score !== undefined) {
+      if (item.Confidence !== undefined) html += `<span class="tag-label">Confidence:</span> ${item.Confidence} `;
+      if (item.Score !== undefined) html += `<span class="tag-label">Score:</span> ${item.Score}`;
+      html += `<br>`;
+    }
+
+    // ==== Cost/UOM
+    if (item.Cost !== undefined && item.Cost !== null) {
+      html += `<span class="tag-label">Cost:</span> ${item.Cost}`;
+      if (item.UOM?.trim()) html += ` / ${highlightMatch(item.UOM, term)}`;
       html += `<br>`;
     }
 
     card.innerHTML = html;
 
-    console.log("First result object:", data[0]);
-
-    // Optional: double-click to save
+    // Enable save-on-double-click
     card.addEventListener("dblclick", () => {
       window.dispatchEvent(new CustomEvent("optimization:save", { detail: item }));
     });
@@ -55,6 +91,5 @@ export function renderOptimizationResults(data, term, resultsList) {
     resultsList.appendChild(card);
   });
 
-  const header = document.querySelector('#optimization-search-panel .panel-header');
-  scrollPanel(header);
+  scrollPanel(document.querySelector('#optimization-search-panel .panel-header'));
 }
