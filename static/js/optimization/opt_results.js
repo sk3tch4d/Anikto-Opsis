@@ -83,8 +83,6 @@ export function renderOptimizationResults(data, term, resultsList) {
 
     resultsList.appendChild(card);
   });
-  
-  resultsList.style.display = "block";
 
   scrollPanel(document.querySelector('#optimization-search-panel .panel-header'));
 }
