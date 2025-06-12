@@ -2,6 +2,7 @@
 # DATA_SEARCH.PY
 # ==============================
 
+import pandas as pd
 import numpy as np
 from flask import request, jsonify
 
@@ -20,7 +21,7 @@ def handle_search_request(df, search_fn, default_sort="QTY", filter_param="usl")
         # Fix NaNs to None before jsonify
         for r in results:
             for k, v in r.items():
-                if isinstance(v, float) and np.isnan(v):
+                if pd.isna(v):  # handles NaN, None, NaT, etc.
                     r[k] = None
 
         return jsonify(results)
