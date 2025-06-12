@@ -86,7 +86,8 @@ def search_optimization(df, term, cart_filter="All", sort="Num", direction="desc
     for col in output_columns:
         if col not in df.columns:
             df[col] = ""
-    df = df[output_columns].head(100)
+
+    df = df[output_columns].head(100).copy()
 
     # ✅ Final conversion
     try:
@@ -94,5 +95,6 @@ def search_optimization(df, term, cart_filter="All", sort="Num", direction="desc
         logger.debug(f"[OPT_SEARCH]📦 Returning {len(result)} results.")
         return result
     except Exception as e:
-        logger.error(f"[OPT_SEARCH]❌ Failed to convert to dict: {e}", exc_info=True)
-        return []
+        logger.exception("[OPT_SEARCH]🔥 CRITICAL: to_dict() failed")
+        raise
+
