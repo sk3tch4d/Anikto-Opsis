@@ -50,7 +50,7 @@ def handle_excel_file(file, fname):
         logging.debug("[HANDLER] Matched OPTIMIZE — using optimize cleaning pipeline")
         steps = [clean_headers, clean_deleted_rows, clean_flags, clean_columns, clean_format]
         df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
-        return handle_optimize(df)
+        return handle_optimize(df, filename=fname)
 
     elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
         logging.debug("[HANDLER] Matched SENIORITY — using optimize cleaning pipeline")
