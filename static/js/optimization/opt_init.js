@@ -36,6 +36,22 @@ export function initializeOptimizationApp() {
   const bounceEl = createBounceLoader(document.querySelector('#optimization-search-panel .panel-body'));
 
   // ==============================
+  // FETCH CART FILTER OPTIONS
+  // ==============================
+  fetch("/inventory-cart")
+    .then(res => res.ok ? res.json() : null)
+    .then(carts => {
+      if (!Array.isArray(carts)) return;
+      carts.sort().forEach(cart => {
+        const opt = document.createElement("option");
+        opt.value = cart;
+        opt.textContent = cart;
+        cartFilter.appendChild(opt);
+      });
+    })
+    .catch(err => DEBUG_MODE && console.error("Carts fetch error:", err));
+
+  // ==============================
   // TOGGLE SORT DIRECTION
   // ==============================
   if (sortDirButton) {
