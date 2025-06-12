@@ -6,6 +6,9 @@ import { highlightMatch, setupParseStats, clearTextSelect } from "../search-util
 import { scrollPanel } from "../panels.js";
 import { showToast, hapticFeedback } from "../ui-utils.js";
 
+// ==============================
+// DEBUG MODE
+// ==============================
 const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 window.savedItems = new Map();
 
@@ -27,14 +30,12 @@ function joinAsDivs(...lines) {
 // TOGGLEABLE MATCH LIST
 // ==============================
 function createToggleList({ label, items, itemAttributes = {}, sort = true, searchableValue = "" }) {
-  debug("Creating toggle list:", label, items);
-
   const toggle = document.createElement("span");
   toggle.className = "tag-label tag-toggle clickable-toggle";
   toggle.innerHTML = `${label} (${items.length}) <span class="chevron">▼</span>`;
 
   const wrapper = document.createElement("div");
-  wrapper.className = "cart-wrapper";
+  wrapper.className = "usl-wrapper";
 
   const container = document.createElement("div");
   container.className = "clickable-match-container";
@@ -123,6 +124,7 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
     ${highlightMatch(base.Num, currentSearch)}
   </span>`;
 
+  const groupMatch = (base.Group || "").toLowerCase().includes(currentSearch.toLowerCase());
   const groupLine = groupMatch
     ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}`
     : "";
@@ -168,7 +170,7 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
         label: "Carts",
         items: uniqueBins,
         itemAttributes: {
-          "data-filter": usl => usl
+          "data-filter": bin => bin
         },
         searchableValue: base.Num
       });
@@ -235,7 +237,13 @@ export function populateOptimizationStats(results) {
     if (header) scrollPanel(header);
   }, 100);
 
-  setupParseStats(".clickable-match, .clickable-stat", "optimization-search", "data-search", "opsh-filter", "data-filter");
+  setupParseStats(
+    ".clickable-match, .clickable-stat",
+    "optimization-search",
+    "data-search",
+    "opsh-filter",
+    "data-filter"
+  );
 }
 
 window.populateOptimizationStats = populateOptimizationStats;
