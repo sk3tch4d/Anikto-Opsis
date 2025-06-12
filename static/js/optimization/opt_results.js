@@ -27,11 +27,11 @@ export function renderOptimizationResults(data, term, resultsList) {
       html += `<span class="tag-label">Bin:</span> ${highlightMatch(item.Bin, term)}<br>`;
     }
 
-    if (item.SROP !== undefined) {
+    if (item.ROP !== undefined) {
       html += `<span class="tag-label">ROP:</span> ${item.ROP}<br>`;
     }
 
-    if (item.SROQ !== undefined) {
+    if (item.ROQ !== undefined) {
       html += `<span class="tag-label">ROQ:</span> ${item.ROQ}<br>`;
     }
 
@@ -44,6 +44,8 @@ export function renderOptimizationResults(data, term, resultsList) {
     }
 
     card.innerHTML = html;
+
+    console.log("First result object:", data[0]);
 
     // Optional: double-click to save
     card.addEventListener("dblclick", () => {
