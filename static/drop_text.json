@@ -4,6 +4,11 @@
     "Processing inventory data...",
     "Preparing item listings..."
   ],
+  "optimize": [
+    "Organizing cart data...",
+    "Processing optimization...",
+    "Loading optimization report..."
+  ],
   "seniority": [
     "Summarizing seniority ranks...",
     "Calculating employee lists...",
