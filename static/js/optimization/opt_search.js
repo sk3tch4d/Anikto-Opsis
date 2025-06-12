@@ -136,8 +136,8 @@ export const doOptimizationSearch = debounce(function ({
 }) {
   const term = searchInput.value.trim().toLowerCase();
   const cartRaw = cartFilter.value;
-  const cart = cartRaw === "All" ? "All" : cartRaw.replace("Cart ", ""); // ✅ normalize Cart X to X
-  const sort = sortBy?.value || "rop"; // ✅ safe fallback
+  const cart = cartRaw === "All" ? "All" : cartRaw.replace("Cart ", "");
+  const sort = sortBy?.value || "rop";
 
   if (!term) {
     resultsList.innerHTML = "";
@@ -204,3 +204,27 @@ export const doOptimizationSearch = debounce(function ({
 
   scrollPanel(document.querySelector("#optimization-search-panel .panel-header"));
 }, DEBOUNCE_DELAY);
+
+// ==============================
+// SEARCH HANDLER INIT
+// ==============================
+window.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("optimization-search");
+  const resultsList = document.getElementById("optimization-results");
+  const sort = document.getElementById("sort-by");
+  const dirBtn = document.getElementById("sort-direction");
+  const noResults = document.getElementById("no-results");
+  const cartFilter = document.getElementById("opsh-filter");
+
+  input.addEventListener("input", () => {
+    doOptimizationSearch({
+      searchInput: input,
+      cartFilter,
+      sortBy: sort,
+      sortDirButton: dirBtn,
+      resultsList,
+      noResults,
+      sortDirection: dirBtn?.textContent.includes("↑") ? "asc" : "desc"
+    });
+  });
+});
