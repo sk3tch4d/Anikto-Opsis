@@ -4,7 +4,7 @@
 
 import os
 import config
-from flask import Blueprint, send_file, current_app
+from flask import Blueprint, send_file, current_app, jsonify
 from optimization import search_optimization
 from utils.data_search import handle_search_request
 
@@ -13,6 +13,28 @@ from utils.data_search import handle_search_request
 # ==============================
 
 optimization_bp = Blueprint("optimization", __name__)
+
+# ==============================
+# OPTIMIZATION CARTS
+# ==============================
+@optimization_bp.route("/optimization-carts")
+def optimization_carts():
+    df = config.OPTIMIZATION_DF  # dynamic reference like INVENTORY_DF
+    current_app.logger.debug("🛒 /optimization-carts route hit")
+
+    if df is None:
+        current_app.logger.warning("⚠️ OPTIMIZATION_DF is None.")
+        return jsonify({"error": "Optimization data not loaded."}), 400
+
+    try:
+        # Assume there's a column named "Cart" or similar in DF
+        carts = sorted(df["Cart"].dropna().unique().tolist())
+        current_app.logger.debug(f"🧪 Carts extracted: {carts}")
+        return jsonify(carts), 200
+
+    except Exception as e:
+        current_app.logger.exception("🔥 Error getting cart list")
+        return jsonify({"error": "Failed to retrieve cart list"}), 500
 
 # ==============================
 # DOWNLOAD OPTIMIZED FILE
