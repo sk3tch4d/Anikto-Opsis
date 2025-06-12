@@ -5,6 +5,7 @@
 import { doOptimizationSearch } from "./opt_search.js";
 import { populateOptimizationStats } from "./opt_stats.js";
 import { setupOptimizationDownloadSearch, setupOptimizationDownloadHistory } from "./opt_downloads.js";
+import { renderOptimizationResults } from "./opt_results.js";
 import { highlightMatch } from "../search-utils.js";
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
 import { scrollPanel } from "../panels.js";
@@ -53,14 +54,14 @@ export function initializeOptimizationApp() {
       return doOptimizationSearch({
         searchInput,
         cartFilter,
-        sortBy: sortBy || { value: "site_suggested_rop" },
+        sortBy: sortBy || { value: "Num" },
         sortDirButton,
         resultsList,
         noResults,
         sortDirection
       });
     });
-
+  
     const header = document.querySelector('#optimization-search-panel .panel-header');
     scrollPanel(header);
   }
