@@ -1,55 +1,66 @@
 // ==============================
 // OPT_DOWNLOADS.JS
-// Export & Download Logic — Optimization
+// Optimization Data Exporter
 // ==============================
 
-import { exportDataToExcel } from "../xlsx_downloads.js";
-import { getSearchMeta } from "../helpers.js";
+import { downloadTable } from "../xlsx_downloads.js";
 
 // ==============================
-// DOWNLOAD SEARCH RESULTS
+// SETUP: DOWNLOAD FOR SEARCH
 // ==============================
 export function setupOptimizationDownloadSearch() {
-  const btn = document.getElementById("optimization-search-download");
-  if (!btn) return;
+  const button = document.getElementById("optimization-search-download");
+  if (!button) return;
 
-  btn.addEventListener("click", () => {
-    const data = window.optimizationSearchResults;
-    if (!Array.isArray(data) || !data.length) return;
-
-    const { timestamp, filenameBase } = getSearchMeta("Optimization_Search");
-    exportDataToExcel(data, `${filenameBase}_Search_${timestamp}.xlsx`);
+  button.addEventListener("click", () => {
+    downloadTable({
+      data: window.optimizationSearchResults,
+      layout: "optimization_search"
+    });
   });
 }
 
 // ==============================
-// DOWNLOAD SAVED RESULTS
+// SETUP: DOWNLOAD FOR SAVED
 // ==============================
 export function setupOptimizationDownloadSaved() {
-  const btn = document.getElementById("optimization-saved-download");
-  if (!btn) return;
+  const button = document.getElementById("optimization-saved-download");
+  if (!button) return;
 
-  btn.addEventListener("click", () => {
-    const data = JSON.parse(localStorage.getItem("optimizationSaved") || "[]");
-    if (!Array.isArray(data) || !data.length) return;
+  button.addEventListener("click", () => {
+    const saved = Array.from(window.optimizationSavedItems?.values() || []);
+    if (!saved.length) return alert("No saved items to export.");
 
-    const { timestamp, filenameBase } = getSearchMeta("Optimization_Saved");
-    exportDataToExcel(data, `${filenameBase}_Saved_${timestamp}.xlsx`);
+    const data = saved.map(entry => ({
+      sheetName: `${entry.data[0]?.Num || "Unknown"}`,
+      data: entry.data
+    }));
+
+    downloadTable({
+      data,
+      layout: "optimization_saved"
+    });
   });
 }
 
 // ==============================
-// DOWNLOAD HISTORY RESULTS
+// SETUP: DOWNLOAD FOR HISTORY
 // ==============================
 export function setupOptimizationDownloadHistory() {
-  const btn = document.getElementById("optimization-history-download");
-  if (!btn) return;
+  const button = document.getElementById("optimization-history-download");
+  if (!button) return;
 
-  btn.addEventListener("click", () => {
-    const data = JSON.parse(localStorage.getItem("optimizationHistory") || "[]");
-    if (!Array.isArray(data) || !data.length) return;
+  button.addEventListener("click", () => {
+    const formattedHistory = window.optimizationSearchHistory.map(entry => ({
+      "Timestamp": entry.timestamp,
+      "Search Term": entry.search,
+      "Filter Used": entry.filter,
+      "Matches": entry.matches
+    }));
 
-    const { timestamp, filenameBase } = getSearchMeta("Optimization_History");
-    exportDataToExcel(data, `${filenameBase}_History_${timestamp}.xlsx`);
+    downloadTable({
+      data: formattedHistory,
+      layout: "optimization_history"
+    });
   });
 }
