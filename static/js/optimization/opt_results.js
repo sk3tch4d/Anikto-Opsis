@@ -60,7 +60,13 @@ export function renderOptimizationResults(data, term, resultsList) {
       card.addEventListener("dblclick", () => {
         window.dispatchEvent(new CustomEvent("optimization:save", { detail: item }));
       });
-  
+
+      // DEBUGGING
+      if (!html.trim()) {
+        console.warn("⚠️ Skipping empty card:", item);
+        html = "<div>FORCED: No HTML content but data exists</div>";
+      }
+      
       resultsList.appendChild(card);
       successCount++;
   
