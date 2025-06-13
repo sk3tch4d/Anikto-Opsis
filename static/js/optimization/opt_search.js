@@ -134,6 +134,10 @@ export const doOptimizationSearch = debounce(function ({
   noResults,
   sortDirection
 }) {
+  console.log("🧪 Passed resultsList:", resultsList);
+  console.log("🧪 In DOM?", document.body.contains(resultsList));
+  console.log("🧪 ID?", resultsList?.id);
+  
   const term = searchInput.value.trim().toLowerCase();
   const cartRaw = cartFilter.value;
   const cart = cartRaw === "All" ? "All" : cartRaw.replace("Cart ", "");
