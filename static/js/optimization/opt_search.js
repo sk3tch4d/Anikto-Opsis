@@ -1,13 +1,11 @@
 // ==============================
-// OPT_SEARCH.JS
-// Optimization Search Logic
+// OPT_SEARCH.JS — Optimization Search Logic
 // ==============================
 
 import { populateOptimizationStats } from "./opt_stats.js";
 import { renderOptimizationResults } from "./opt_results.js";
 import { addOptimizationSearchToHistory } from "./opt_history.js";
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
-import { scrollPanel } from "../panels.js";
 
 // ==============================
 // DEBUGGING
@@ -123,7 +121,7 @@ function debounce(fn, wait) {
 }
 
 // ==============================
-// MAIN SEARCH FUNCTION
+// SEARCH LOGIC
 // ==============================
 export const doOptimizationSearch = debounce(function ({
   searchInput,
@@ -134,15 +132,12 @@ export const doOptimizationSearch = debounce(function ({
   noResults,
   sortDirection
 }) {
-  console.log("🧪 Passed resultsList:", resultsList);
-  console.log("🧪 In DOM?", document.body.contains(resultsList));
-  console.log("🧪 ID?", resultsList?.id);
-  
   const term = searchInput.value.trim().toLowerCase();
   const cartRaw = cartFilter.value;
   const cart = cartRaw === "All" ? "All" : cartRaw.replace("Cart ", "");
-  const sort = sortBy?.value || "rop";
+  const sort = sortBy?.value || "ROP";
 
+  // Validate search term
   if (!term) {
     resultsList.innerHTML = "";
     elements.stats.innerHTML = "";
@@ -205,6 +200,4 @@ export const doOptimizationSearch = debounce(function ({
         });
     }
   );
-
-  scrollPanel(document.querySelector("#optimization-search-panel .panel-header"));
 }, DEBOUNCE_DELAY);
