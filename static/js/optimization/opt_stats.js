@@ -126,17 +126,12 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
     ${highlightMatch(base.Num, currentSearch)}
   </span>`;
 
-  const descHTML = highlightMatch(base.Description || "", currentSearch);
-
-  const ropLine = base.ROP ? `<span class="tag-label">Current ROP:</span> ${base.ROP}` : "";
-  const roqLine = base.ROQ ? `<span class="tag-label">Current ROQ:</span> ${base.ROQ}` : "";
-  const sropLine = base.SROP ? `<span class="tag-label">Suggested ROP:</span> ${base.SROP}` : "";
-  const sroqLine = base.SROQ ? `<span class="tag-label">Suggested ROQ:</span> ${base.SROQ}` : "";
-
-  const groupMatch = (base.Group || "").toLowerCase().includes(currentSearch.toLowerCase());
-  const groupLine = groupMatch
-    ? `<span class="tag-label">Group:</span> ${highlightMatch(base.Group, currentSearch)}`
-    : "";
+  const descHTML = `<span class="tag-label">Description:</span> ${highlightMatch(base.Description || "", currentSearch)}`;
+  const ropLine = `<span class="tag-label">Current ROP:</span> ${base.ROP ?? "–"}`;
+  const roqLine = `<span class="tag-label">Current ROQ:</span> ${base.ROQ ?? "–"}`;
+  const sropLine = `<span class="tag-label">Suggested ROP:</span> ${base.SROP ?? "–"}`;
+  const sroqLine = `<span class="tag-label">Suggested ROQ:</span> ${base.SROQ ?? "–"}`;
+  const groupLine = `<span class="tag-label">Group:</span> ${highlightMatch(base.Group || "", currentSearch)}`;
 
   const detailsHTML = joinAsDivs(
     `<span class="tag-label">Stores Number:</span> ${numberHTML}`,
@@ -171,7 +166,7 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
         label: "Carts",
         items: uniqueBins,
         itemAttributes: {
-          "data-filter": usl => usl
+          "data-filter": bin => bin,
         },
         searchableValue: base.Num
       });
