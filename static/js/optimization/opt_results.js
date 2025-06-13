@@ -80,3 +80,5 @@ export function renderOptimizationResults(data, term, resultsList) {
 
   scrollPanel(document.querySelector('#optimization-search-panel .panel-header'));
 }
+
+window.renderOptimizationResults = renderOptimizationResults;
