@@ -1,6 +1,5 @@
 // ==============================
-// OPT_INIT.JS
-// Optimization Search Panel Logic
+// OPT_INIT.JS — Optimization Search Panel Logic
 // ==============================
 
 import { doOptimizationSearch } from "./opt_search.js";
@@ -10,6 +9,7 @@ import {
   setupOptimizationDownloadSaved,
   setupOptimizationDownloadHistory
 } from "./opt_downloads.js";
+import { highlightMatch } from '../search-utils.js';
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
 import { scrollPanel } from "../panels.js";
 
@@ -49,7 +49,7 @@ export function initializeOptimizationApp() {
         cartFilter.appendChild(opt);
       });
     })
-    .catch(err => DEBUG_MODE && console.error("Carts fetch error:", err));
+    .catch(err => DEBUG_MODE && console.error("Cart fetch error:", err));
 
   // ==============================
   // TOGGLE SORT DIRECTION
@@ -81,7 +81,9 @@ export function initializeOptimizationApp() {
       });
     });
 
-    scrollPanel(document.querySelector('#optimization-search-panel .panel-header'));
+    // Adjust Search Window
+    const header = document.querySelector('#optimization-search-panel .panel-header');
+    scrollPanel(header);
   }
 
   // ==============================
@@ -102,7 +104,8 @@ export function initializeOptimizationApp() {
   // ==============================
   window.addEventListener("beforeunload", () => {
     localStorage.setItem("optimizationScrollTop", window.scrollY);
-    scrollPanel(document.querySelector('#optimization-search-panel .panel-header'));
+    const header = document.querySelector('#optimization-search-panel .panel-header');
+    scrollPanel(header);
   });
 
   // ==============================
