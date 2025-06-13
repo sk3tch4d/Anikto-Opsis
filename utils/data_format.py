@@ -72,6 +72,12 @@ def format_fillrate(df):
 # FORMAT CART OPS
 # ==============================
 def format_cart_ops(df):
+    # Create 'Carts' column from 'Bin' Column
+    if 'Bin' in df.columns:
+        df['Carts'] = df['Bin'].astype(str).str.extract(r'(\d+)')
+        df['Carts'] = 'Cart ' + df['Carts']
+
+    # Rename Bin to USL
     if 'USL' in df.columns:
         usl_values = df['USL'].dropna().unique()
         if len(usl_values) == 1:
@@ -81,13 +87,7 @@ def format_cart_ops(df):
             df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
             log_format("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
 
-    # Extract cart info from Bin column and create new 'Cart' column
-    bin_col = df.columns[df.columns.str.contains(r'\d+[A-Z]', regex=True)].tolist()
-    if bin_col:
-        bin_col = bin_col[0]
-        df['Cart'] = df[bin_col].astype(str).str.extract(r'(\d+)').astype(float).astype('Int64').astype(str)
-        df['Cart'] = 'Cart ' + df['Cart']
-
     # Insert an empty column (index 0)
     df.insert(0, ' ', np.nan)
     return df
+
