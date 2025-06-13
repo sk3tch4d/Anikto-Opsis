@@ -30,6 +30,9 @@ CONFIG_DIR = os.path.join(os.path.dirname(__file__), "configs")
 COLUMN_RENAMES = load_json(os.path.join(CONFIG_DIR, "column_renames.json"))
 REMOVE_COLUMNS = load_json(os.path.join(CONFIG_DIR, "remove_columns.json"))
 
+logging.debug(f"[CONFIG] Loaded COLUMN_RENAMES: {len(COLUMN_RENAMES)} entries")
+logging.debug(f"[CONFIG] Loaded REMOVE_COLUMNS: {len(REMOVE_COLUMNS)} columns")
+
 # ==============================
 # LOG CLEANING
 # ==============================
