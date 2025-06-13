@@ -17,6 +17,7 @@ def log_format(log="", df=None, extra=""):
 # HELPERS
 # ==============================
 def rename_bin_to_usl(df):
+    # RENAME BIN
     if 'USL' in df.columns:
         usl_values = df['USL'].dropna().unique()
         if len(usl_values) == 1:
@@ -25,6 +26,9 @@ def rename_bin_to_usl(df):
                 df.rename(columns={'Bin': bin_col_name}, inplace=True)
             df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
             log_format("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
+
+    # PRECEDING BLANK ROW FOR PRINT SPACER
+    df.insert(0, ' ', np.nan)
     return df
 
 # ==============================
@@ -99,5 +103,4 @@ def format_cart_ops(df):
     else:
         df['Carts'] = np.nan  # create empty column to avoid downstream KeyError
 
-    df.insert(0, ' ', np.nan)
     return df
