@@ -185,7 +185,7 @@
   --panelno-shadow-background: transparent !important;
   --panel-body-background-color: #666c99;
   --panel-open-panel-header-color: #d8d8f3;
-  --panelopen->-panel-bodybefore-background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), transparent);
+  --panelopen-panel-bodybefore-background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), transparent);
   --panel-body-label-background: #f9f9f9;
   --panel-body-labelhover-background: #efefef;
   --panel-scroll-bar-background-color: #ccccff;
@@ -424,7 +424,7 @@
   --panelno-shadow-background: transparent !important;
   --panel-body-background-color: #33364d;
   --panel-open-panel-header-color: #060614;
-  --panelopen->-panel-bodybefore-background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);
+  --panelopen-panel-bodybefore-background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent);
   --panel-body-label-background: #1f2023;
   --panel-body-labelhover-background: #2a2d33;
   --panel-scroll-bar-background-color: #7676d6;
