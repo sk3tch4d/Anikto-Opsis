@@ -14,24 +14,6 @@ def log_format(log="", df=None, extra=""):
     logging.debug(f"[FORMAT]📐 {log} → {name}{f' — {extra}' if extra else ''}")
 
 # ==============================
-# HELPERS
-# ==============================
-def rename_bin_to_usl(df):
-    # RENAME BIN
-    if 'USL' in df.columns:
-        usl_values = df['USL'].dropna().unique()
-        if len(usl_values) == 1:
-            bin_col_name = str(usl_values[0])
-            if 'Bin' in df.columns:
-                df.rename(columns={'Bin': bin_col_name}, inplace=True)
-            df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
-            log_format("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
-
-    # PRECEDING BLANK ROW FOR PRINT SPACER
-    df.insert(0, ' ', np.nan)
-    return df
-
-# ==============================
 # FORMAT FILLRATE
 # ==============================
 def format_fillrate(df):
@@ -90,17 +72,17 @@ def format_fillrate(df):
 # FORMAT CART OPS
 # ==============================
 def format_cart_ops(df):
-    # Try to auto-detect the column that looks like cart data (1A, 10B, etc.)
-    cart_col_candidates = [
-        col for col in df.columns
-        if df[col].astype(str).str.match(r"^\d+[A-Z]$").any()
-    ]
+    # RENAME BIN
+    if 'USL' in df.columns:
+        usl_values = df['USL'].dropna().unique()
+        if len(usl_values) == 1:
+            bin_col_name = str(usl_values[0])
+            if 'Bin' in df.columns:
+                df.rename(columns={'Bin': bin_col_name}, inplace=True)
+            df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
+            log_format("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
 
-    if cart_col_candidates:
-        bin_col = cart_col_candidates[0]
-        df['Carts'] = df[bin_col].astype(str).str.extract(r'(\d+)')
-        df['Carts'] = 'Cart ' + df['Carts']
-    else:
-        df['Carts'] = np.nan  # create empty column to avoid downstream KeyError
+    # PRECEDING BLANK ROW FOR PRINT SPACER
+    df.insert(0, ' ', np.nan)
 
     return df
