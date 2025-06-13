@@ -14,6 +14,20 @@ def log_format(log="", df=None, extra=""):
     logging.debug(f"[FORMAT]📐 {log} → {name}{f' — {extra}' if extra else ''}")
 
 # ==============================
+# HELPERS
+# ==============================
+def rename_bin_to_usl(df):
+    if 'USL' in df.columns:
+        usl_values = df['USL'].dropna().unique()
+        if len(usl_values) == 1:
+            bin_col_name = str(usl_values[0])
+            if 'Bin' in df.columns:
+                df.rename(columns={'Bin': bin_col_name}, inplace=True)
+            df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
+            log_format("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
+    return df
+
+# ==============================
 # FORMAT FILLRATE
 # ==============================
 def format_fillrate(df):
