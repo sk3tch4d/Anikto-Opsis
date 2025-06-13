@@ -28,7 +28,7 @@ def optimization_carts():
 
     try:
         # Assume there's a column named "Cart" or similar in DF
-        carts = sorted(df["Cart"].dropna().unique().tolist())
+        carts = sorted(df["Carts"].dropna().unique().tolist())
         current_app.logger.debug(f"🧪 Carts extracted: {carts}")
         return jsonify(carts), 200
 
