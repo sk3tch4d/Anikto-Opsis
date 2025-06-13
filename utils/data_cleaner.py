@@ -9,97 +9,26 @@ import logging
 import tempfile
 import threading
 import time
+import json
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side
 
 from .data_format import format_fillrate, format_cart_ops
 
 # ==============================
-# CONFIG — RENAME AND REMOVE MAPS
+# IMPORT RENAMES & REMOVE
 # ==============================
-COLUMN_RENAMES = {
-    "time": "Time",
-    "name": "Name",
-    "Dif": "Changed",
-    "MvT": "MVT",
-    "Total of Movements": "MVT",
-    "New Bin": "New",
-    "Count date": "Date",
-    "DATE": "Date",
-    "Reorder point for storage loca": "ROP",
-    "Replenishment quantity for slo": "ROQ",
-    "Recommended ROP": "RROP",
-    "Recommended ROQ": "RROQ",
-    "Site Suggested ROP": "SROP",
-    "Site Suggested ROQ": "SROQ",
-    "Difference Quantity from Dep.I": "Difference",
-    "Quantity Posted from Dep.Inven": "Consumed",
-    "Counted qty": "Counted",
-    "SLoc": "USL",
-    "Sloc": "USL",
-    "Mat.#": "Num",
-    "Mat. #": "Num",
-    "Material": "Num",
-    "Material Description": "Description",
-    "Material description": "Description",
-    "DESCRIPTION": "Description",
-    "Un": "UOM",
-    "U/M": "UOM",
-    "BUn.4": "UOM",
-    "BUn of measure": "UOM",
-    "Net price": "Cost",
-    "Matl grp": "Group",
-    "Material Group": "Group",
-    "Replenishmt qty": "ROQ",
-    "Reorder point": "ROP",
-    "QTY on Hand": "QTY",
-    "Old Mat": "Old",
-    "Old Material Number": "Old",
-    "Created": "Created",
-    "Date of First Movement": "First",
-    "Cost ctr": "Cost_Center",
-    "Cost Ctr": "Cost_Center",
-    "Cart Usage 1": "CU1",
-    "Cart Usage 2": "CU2",
-    "Cost Centre Usage 1": "CC1",
-    "Cost Centre Usage 2": "CC2",
-    "Vendor's Name": "Vendor_Name",
-    "Vendors name": "Vendor_Name",
-    "years": "Years",
-    "Employee Subgroup": "Status",
-    "Limited Sen. Yrs": "Years",
-    "Limited Seniority Years": "Years",
-    "Vendor material numTer": "Vendor_Material",
-    "Vendor material number": "Vendor_Material",
-    "SKU": "Preferred",
-    "eta preferred": "Preferred ETA",
-    "soh": "Stock",
-    "sub eta": "Sub ETA",
-    "sub stock": "Sub Stock"
-}
+def load_json(path):
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        logging.error(f"[CONFIG] Failed to load {path}: {e}")
+        return {}  # or [] if it's for REMOVE_COLUMNS
 
-REMOVE_COLUMNS = [
-    "StL", "Mat", "Pl", "Plnt", "Un.1", "Un.2",
-    "Latex/Expiry Information", "Person responsible",
-    "Stge loc. descr.", "MRPC", "Type", "Plant", "Del",
-    "Last Order Price", "Curr.", "Per", "Last PO", 
-    "BUn.1", "BUn.2", "BUn.3", "BUn.5", "BUn.6", 
-    "Conv.", "=", "OPUn", "OUn", "Curr..1", "OPUn.1", "D",
-    "Departmental Inventory Record", "Item", "Year", "Plnt",
-    "Counted qty.1", "Valuated Unrestricted-Use Stoc",
-    "Valuated Unrestricted-Use Stoc.1", "BUn", "DSt",
-    "Reorder point for storage loca.1", "Mat. Doc.",
-    "Replenishment quantity for slo.1", "MatYr",
-    "Difference Quantity from Dep.I.1", "Item.1", 
-    "Conversion Numerator", "Conversion Numberator",
-    "Alt. unit of Measure", "Quantity Posted from Dep.Inven.1", 
-    "Total QOH Value", "Alt. Unit of Measure", "Alt. Unit of Measure",
-    "MPQ", "Man. Rev. Req.", "Man. Rev. Req. Site", "MRRS",
-    "Recommended Max Stock Val.", "Cur. Max Stock Val.", "MA Price",
-    "Reason Text for Departmental I", "Status of count", "MRP Controller",
-    "SCI Comment", "MMC Comment", "HOSPITAL COMMENT", "Line Fill Status",
-    "PO number", "Order", "Ship", "Sold", "Code", "Del", "nan"
-]
+CONFIG_DIR = os.path.join(os.path.dirname(__file__), "configs")
+COLUMN_RENAMES = load_json(os.path.join(CONFIG_DIR, "column_renames.json"))
+REMOVE_COLUMNS = load_json(os.path.join(CONFIG_DIR, "remove_columns.json"))
 
 # ==============================
 # LOG CLEANING
