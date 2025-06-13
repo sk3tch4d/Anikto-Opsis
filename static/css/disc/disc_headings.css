@@ -64,7 +64,7 @@ h3 {
   line-height: 1.4;
   text-align: center;
   letter-spacing: 0.7px;
-  color: var(--h3-color);
+  color: var(--h3-color) !important;
   
   transition: 
     font-size 0.8s ease,
