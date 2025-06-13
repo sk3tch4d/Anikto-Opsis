@@ -237,11 +237,6 @@
   --gradient-title_hover-background-image: linear-gradient(225deg, #5a5dcf, #6a40bf);
 
   /* ============================= */
-  /* DISC_TYPING.CSS       (LIGHT) */
-  /* ============================= */
-  --typed-text-color: #4a4ad6;
-
-  /* ============================= */
   /* DISC_UTILS.CSS        (LIGHT) */
   /* ============================= */
   --slider-background-color: #dcdcf5;
@@ -473,11 +468,6 @@
   /* ============================= */
   --gradient-title-background-image: linear-gradient(25deg, #5a5dcf, #7f5ac8);
   --gradient-title_hover-background-image: linear-gradient(225deg, #5a5dcf, #7f5ac8);
-
-  /* ============================= */
-  /* DISC_TYPING.CSS        (DARK) */
-  /* ============================= */
-  --typed-text-color: #5a5dcf;
 
   /* ============================= */
   /* DISC_UTILS.CSS         (DARK) */
