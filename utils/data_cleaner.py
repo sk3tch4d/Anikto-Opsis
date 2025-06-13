@@ -12,7 +12,7 @@ import time
 from openpyxl.utils import get_column_letter
 from openpyxl.styles import Border, Side
 
-from .data_format import format_fillrate, format_cart_ops
+from .data_format import format_fillrate, format_cart_ops, rename_bin_to_usl
 
 # ==============================
 # CONFIG — RENAME AND REMOVE MAPS
@@ -242,6 +242,9 @@ def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, 
         if file_formatting:
             df_combined = format_cart_ops(df_combined)
 
+        if name and "clean" in name.lower():
+            df_combined = rename_bin_to_usl(df_combined)
+
         df_combined.attrs["name"] = name or "Combined Sheets"
         return df_combined
 
@@ -279,6 +282,9 @@ def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, 
         if file_formatting:
             df = format_cart_ops(df)
             df = format_fillrate(df)
+
+        if name and "clean" in name.lower():
+            df = rename_bin_to_usl(df)
 
         return df
 
