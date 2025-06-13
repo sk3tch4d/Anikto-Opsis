@@ -1,0 +1,22 @@
+[
+  "StL", "Mat", "Pl", "Plnt", "Un.1", "Un.2",
+  "Latex/Expiry Information", "Person responsible",
+  "Stge loc. descr.", "MRPC", "Type", "Plant", "Del",
+  "Last Order Price", "Curr.", "Per", "Last PO", 
+  "BUn.1", "BUn.2", "BUn.3", "BUn.5", "BUn.6", 
+  "Conv.", "=", "OPUn", "OUn", "Curr..1", "OPUn.1", "D",
+  "Departmental Inventory Record", "Item", "Year", "Plnt",
+  "Counted qty.1", "Valuated Unrestricted-Use Stoc",
+  "Valuated Unrestricted-Use Stoc.1", "BUn", "DSt",
+  "Reorder point for storage loca.1", "Mat. Doc.",
+  "Replenishment quantity for slo.1", "MatYr",
+  "Difference Quantity from Dep.I.1", "Item.1", 
+  "Conversion Numerator", "Conversion Numberator",
+  "Alt. unit of Measure", "Quantity Posted from Dep.Inven.1", 
+  "Total QOH Value", "Alt. Unit of Measure", "Alt. Unit of Measure",
+  "MPQ", "Man. Rev. Req.", "Man. Rev. Req. Site", "MRRS",
+  "Recommended Max Stock Val.", "Cur. Max Stock Val.", "MA Price",
+  "Reason Text for Departmental I", "Status of count", "MRP Controller",
+  "SCI Comment", "MMC Comment", "HOSPITAL COMMENT", "Line Fill Status",
+  "PO number", "Order", "Ship", "Sold", "Code", "Del", "nan"
+]
