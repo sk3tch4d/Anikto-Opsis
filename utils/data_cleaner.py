@@ -197,7 +197,7 @@ def clean_format(df):
 # ==============================
 # XLSX CLEANING PIPELINE
 # ==============================
-def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, multi_sheet=True, file_formatting=False):
+def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, multi_sheet=True):
     if multi_sheet:
         sheet_dict = pd.read_excel(file_stream, sheet_name=None, header=None)
         cleaned_dfs = []
@@ -239,8 +239,9 @@ def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, 
 
         df_combined = pd.concat(cleaned_dfs, ignore_index=True)
 
-        if file_formatting:
+        if name and "clean" in name.lower():
             df_combined = format_cart_ops(df_combined)
+            df_combined = format_fillrate(df_combined)
 
         df_combined.attrs["name"] = name or "Combined Sheets"
         return df_combined
@@ -276,7 +277,7 @@ def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, 
             df["Union"] = [union] * len(df)
             log_cleaning("Detected Union", df, extra=union)
 
-        if file_formatting:
+        if name and "clean" in name.lower():
             df = format_cart_ops(df)
             df = format_fillrate(df)
 
