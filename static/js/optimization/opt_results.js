@@ -35,13 +35,16 @@ export function renderOptimizationResults(data, term, resultsList) {
         html += `${highlightMatch(item.Description, term)}<br>`;
       }
   
-      if (item.USL?.trim?.() || item.Bin?.trim?.()) {
+      const usl = item.USL?.trim?.() || "";
+      const bin = item.Bin?.trim?.() || "";
+      
+      if (usl || bin) {
         html += `<span class="tag-label">Location:</span>`;
-        if (item.USL?.trim?.()) html += ` ${highlightMatch(item.USL, term)}`;
-        if (item.Bin?.trim?.()) html += ` - ${highlightMatch(item.Bin, term)}`;
+        if (usl) html += ` ${highlightMatch(usl, term)}`;
+        if (bin) html += ` - ${highlightMatch(bin, term)}`;
         html += `<br>`;
       }
-  
+
       if (item.ROP !== undefined || item.ROQ !== undefined) {
         if (item.ROP !== undefined) html += `<span class="tag-label">ROP:</span> ${item.ROP} `;
         if (item.ROQ !== undefined) html += `<span class="tag-label">ROQ:</span> ${item.ROQ}`;
