@@ -193,6 +193,12 @@ def clean_format(df):
         df = df.sort_values(by=sort_cols, ascending=True, na_position='last')
     log_cleaning("Formatting", df)
     return df
+# ==============================
+def clean_lint(df):
+    filler_pattern = r"[-=~*#_.]{3,}"
+    lint_mask = df.apply(lambda row: row.astype(str).str.fullmatch(filler_pattern)).any(axis=1)
+    log_cleaning("Lint Rows", df, extra=f"{lint_mask.sum()} rows removed")
+    return df[~lint_mask]
 
 # ==============================
 # XLSX CLEANING PIPELINE
@@ -217,6 +223,8 @@ def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, 
 
             log_cleaning("Cleaning Sheet", df, extra=f"Sheet: {sheet_name}")
 
+            df = clean_lint(df)
+            
             # Apply all cleaning steps
             for step in steps:
                 df = step(df)
@@ -264,6 +272,8 @@ def clean_xlsx(file_stream, *steps, header=None, name=None, detect_header=True, 
 
         log_cleaning("Cleaning Sheet", df, extra=f"Sheet: {sheet_name}")
 
+        df = clean_lint(df)
+        
         for step in steps:
             df = step(df)
 
