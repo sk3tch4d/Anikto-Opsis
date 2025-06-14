@@ -94,10 +94,13 @@ document.addEventListener("DOMContentLoaded", () => {
     import('./zwdiseg/zw_init.js').then(m => m.initializeZwdisegApp());
   }
   // ----- OPTIMIZATION -----
-  if (document.querySelector("#optimization-search")) {
-    import('./optimization/opt_init.js')
-      .then(m => m.initializeOptimizationApp())
-      .catch(e => console.error("❌ Failed to load optimization:", e));
-  }
+  document.addEventListener("DOMContentLoaded", () => {
+    const el = document.querySelector("#optimization-search");
+    if (el) {
+      import('./optimization/opt_init.js').then(m => {
+        m.initializeOptimizationApp();
+      });
+    }
+  });
 
 });
