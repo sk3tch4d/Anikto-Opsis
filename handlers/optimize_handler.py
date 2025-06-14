@@ -19,10 +19,10 @@ def create_carts(df):
 
     if cart_col_candidates:
         bin_col = cart_col_candidates[0]
-        df['Carts'] = df[bin_col].astype(str).str.extract(r'(\d+)')
-        df['Carts'] = 'Cart ' + df['Carts']
+        df['Cart'] = df[bin_col].astype(str).str.extract(r'(\d+)')
+        df['Cart'] = 'Cart ' + df['Cart']
     else:
-        df['Carts'] = np.nan  # create empty column to avoid downstream KeyError
+        df['Cart'] = np.nan  # create empty column to avoid downstream KeyError
 
     return df
 
