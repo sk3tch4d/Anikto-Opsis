@@ -111,7 +111,7 @@
 .chevron {
   display: inline-block;
   margin-left: 6px;
-  color: #0a0b0f;
+  color: var(--tag-label-color);
   user-select: none;
   transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
