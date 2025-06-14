@@ -20,7 +20,7 @@ function loadInfoSection({ elementId, url, errorMsg }) {
 
       if (!Array.isArray(data) || data.length === 0) {
         const fallback = document.createElement("div");
-        fallback.className = "panel-card";
+        fallback.className = "info-card";
         fallback.textContent = "No data found.";
         wrapper.appendChild(fallback);
       } else {
@@ -29,7 +29,7 @@ function loadInfoSection({ elementId, url, errorMsg }) {
           const description = rest.join(":").trim();
 
           const card = document.createElement("div");
-          card.className = "panel-card";
+          card.className = "info-card";
 
           const titleEl = document.createElement("div");
           titleEl.className = "card-title";
@@ -51,7 +51,7 @@ function loadInfoSection({ elementId, url, errorMsg }) {
     })
     .catch(err => {
       container.innerHTML = `
-        <div class="panel-card">${errorMsg}</div>
+        <div class="info-card">${errorMsg}</div>
       `;
       console.error(`[info.js] Error loading ${url}:`, err);
     });
