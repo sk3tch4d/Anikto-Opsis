@@ -4,7 +4,7 @@
 // ==============================
 
 import { clearTextSelect, setupParseStats, highlightMatch } from "../search-utils.js";
-import { showToast, hapticFeedback } from '../ui-utils.js';
+import { showToast, hapticFeedback, attachChevron } from '../ui-utils.js';
 import { scrollPanel } from '../panels.js';
 
 // ==============================
@@ -28,21 +28,6 @@ function joinAsDivs(...lines) {
 }
 
 // ==============================
-// HELPER: ATTACH LOCAL TOGGLE HANDLERS
-// ==============================
-function attachLocalToggleHandlers(container) {
-  container.querySelectorAll(".clickable-toggle").forEach(toggle => {
-    toggle.addEventListener("click", () => {
-      const wrapper = toggle.nextElementSibling;
-      if (wrapper && wrapper.classList.contains("usl-wrapper")) {
-        wrapper.classList.toggle("show");
-        toggle.classList.toggle("toggle-open");
-      }
-    });
-  });
-}
-
-// ==============================
 // HELPER: UPDATE SAVED PANEL
 // ==============================
 function updateSavedPanel() {
@@ -58,8 +43,8 @@ function updateSavedPanel() {
 
   cards.forEach(clone => {
     const freshClone = clone.cloneNode(true);
-    attachLocalToggleHandlers(freshClone);
     savedPanel.appendChild(freshClone);
+    requestAnimationFrame(() => attachChevron({ root: freshClone }));
   });
 }
 
@@ -91,7 +76,7 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
   toggle.innerHTML = `${label} (${items.length}) <span class="chevron">▼</span>`;
 
   const wrapper = document.createElement("div");
-  wrapper.className = "usl-wrapper";
+  wrapper.className = "toggle-wrapper";
 
   const container = document.createElement("div");
   container.className = "clickable-match-container";
@@ -115,11 +100,6 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
   });
 
   wrapper.appendChild(container);
-
-  toggle.addEventListener("click", () => {
-    wrapper.classList.toggle("show");
-    toggle.classList.toggle("toggle-open");
-  });
 
   return { toggle, wrapper };
 }
@@ -254,7 +234,7 @@ export function populateInventoryStats(results) {
     matchesToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
 
     const matchesWrapper = document.createElement("div");
-    matchesWrapper.className = "usl-wrapper";
+    matchesWrapper.className = "toggle-wrapper";
 
     const matchContainer = document.createElement("div");
     matchContainer.className = "clickable-match-container";
@@ -268,11 +248,6 @@ export function populateInventoryStats(results) {
     });
 
     matchesWrapper.appendChild(matchContainer);
-
-    matchesToggle.addEventListener("click", () => {
-      matchesWrapper.classList.toggle("show");
-      matchesToggle.classList.toggle("toggle-open");
-    });
 
     liMatches.appendChild(matchesToggle);
     liMatches.appendChild(matchesWrapper);
@@ -298,6 +273,9 @@ export function populateInventoryStats(results) {
   }
 
   statsBox.appendChild(fragment);
+
+  // Run AFTER next paint to ensure toggles are in DOM
+  requestAnimationFrame(() => attachChevron({ root: statsBox }));
 
   setTimeout(() => {
     const header = document.querySelector('#inventory-search-panel .panel-header');
