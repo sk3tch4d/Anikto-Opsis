@@ -78,7 +78,8 @@ export function attachChevron({
   wrapperClass = "toggle-wrapper",
   toggleClass = "show",
   openClass = "toggle-open",
-  debounceTime = 250
+  debounceTime = 250,
+  chevronColor = null // <-- NEW OPTION
 } = {}) {
   const toggles = root.querySelectorAll(triggerSelector);
 
@@ -95,6 +96,18 @@ export function attachChevron({
     if (!wrapper || !wrapper.classList.contains(wrapperClass)) {
       console.warn(`[attachChevron] No matching .${wrapperClass} found for:`, toggle);
       return;
+    }
+
+    // Optional: apply chevron color span or svg
+    if (chevronColor) {
+      const chevron = toggle.querySelector(".chevron");
+      if (chevron) {
+        if (chevron.tagName.toLowerCase() === "svg") {
+          chevron.style.fill = chevronColor;
+        } else {
+          chevron.style.color = chevronColor;
+        }
+      }
     }
 
     let lastClick = 0;
