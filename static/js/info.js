@@ -48,7 +48,7 @@ function loadInfoSection({ elementId, url, errorMsg }) {
 
           // Bulleted list (initially hidden)
           const listWrapper = document.createElement("div");
-          listWrapper.className = "data-wrapper"; // consider renaming to data-wrapper
+          listWrapper.className = "toggle-wrapper";
 
           if (bulletPoints.length) {
             const ul = document.createElement("ul");
