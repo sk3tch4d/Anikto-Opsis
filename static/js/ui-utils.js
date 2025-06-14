@@ -68,3 +68,44 @@ export function showToast(message, timer = 2000) {
     toast.classList.remove("show");
   }, Number.isFinite(duration) ? duration : 2000); // Fallback to default
 }
+
+// ==============================
+// CHEVRON TOGGLE
+// ==============================
+export function attachChevron({
+  root = document,
+  triggerSelector = ".clickable-toggle",
+  wrapperClass = "toggle-wrapper",
+  toggleClass = "show",
+  openClass = "toggle-open",
+  debounceTime = 250
+} = {}) {
+  const toggles = root.querySelectorAll(triggerSelector);
+
+  toggles.forEach(toggle => {
+    // Avoid rebinding
+    if (toggle.dataset.toggleBound) return;
+    toggle.dataset.toggleBound = "true";
+
+    const targetSelector = toggle.dataset.toggleTarget;
+    const wrapper = targetSelector
+      ? root.querySelector(targetSelector)
+      : toggle.nextElementSibling;
+
+    if (!wrapper || !wrapper.classList.contains(wrapperClass)) {
+      console.warn(`[attachChevron] No matching .${wrapperClass} found for:`, toggle);
+      return;
+    }
+
+    let lastClick = 0;
+
+    toggle.addEventListener("click", () => {
+      const now = Date.now();
+      if (now - lastClick < debounceTime) return;
+      lastClick = now;
+
+      wrapper.classList.toggle(toggleClass);
+      toggle.classList.toggle(openClass);
+    });
+  });
+}
