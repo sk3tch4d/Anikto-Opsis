@@ -9,6 +9,11 @@ import { scrollPanel } from "../panels.js";
 // MAIN RENDER FUNCTION
 // ==============================
 export function renderOptimizationResults(data, term, resultsList) {
+  console.log("📦 renderOptimizationResults() called");
+  console.log("🧾 Data received:", data);
+  console.log("🔍 Term:", term);
+  console.log("📥 Results container:", resultsList);
+
   if (!Array.isArray(data) || !resultsList) return;
   if (data.length === 0) return;
 
