@@ -79,7 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   // ----- INFO -----
   if (document.body.dataset.page === "info") {
-    import('./info.js').then(m => m.loadInfoUpdates());
+    import('./info.js').then(m => {
+      if (document.querySelector("#info-features-panel")) m.loadInfoFeatures();
+      if (document.querySelector("#info-updates-panel")) m.loadInfoUpdates();
+    });
   }
   // ----- SENIORITY -----
   if (document.querySelector("#seniority-search")) {
