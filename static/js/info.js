@@ -4,39 +4,63 @@
 
 
 // ==============================
-// LOAD INFO UPDATES
+// LOAD INFO SECTION
 // ==============================
-export function loadInfoUpdates() {
-  const updatesContainer = document.getElementById("info-updates");
-  if (!updatesContainer) return;
+function loadInfoSection({ elementId, url, errorMsg }) {
+  const container = document.getElementById(elementId);
+  if (!container) return;
 
-  fetch("/static/updates.json")
+  fetch(url)
     .then(res => {
-      if (!res.ok) throw new Error("Failed to load updates");
+      if (!res.ok) throw new Error(`Failed to load data from ${url}`);
       return res.json();
     })
     .then(data => {
-      if (!Array.isArray(data) || data.length === 0) {
-        updatesContainer.innerHTML = "<div class='panel-delta'><div class='delta-item'>No updates found.</div></div>";
-        return;
-      }
-
       const wrapper = document.createElement("div");
       wrapper.className = "panel-delta";
 
-      data.forEach(entry => {
-        const item = document.createElement("div");
-        item.className = "delta-item";
-        item.textContent = entry;
-        wrapper.appendChild(item);
-      });
+      if (!Array.isArray(data) || data.length === 0) {
+        wrapper.innerHTML = "<div class='delta-item'>No data found.</div>";
+      } else {
+        data.forEach(entry => {
+          const item = document.createElement("div");
+          item.className = "delta-item";
+          item.textContent = entry;
+          wrapper.appendChild(item);
+        });
+      }
 
-      updatesContainer.innerHTML = "";
-      updatesContainer.appendChild(wrapper);
+      container.innerHTML = "";
+      container.appendChild(wrapper);
     })
     .catch(err => {
-      updatesContainer.innerHTML = "<div class='panel-delta'><div class='delta-item'>Unable to fetch updates.</div></div>";
-      console.error("[info.js] Error fetching updates.json:", err);
+      container.innerHTML = `
+        <div class='panel-delta'>
+          <div class='delta-item'>${errorMsg}</div>
+        </div>
+      `;
+      console.error(`[info.js] Error loading ${url}:`, err);
     });
 }
 
+// ==============================
+// LOAD INFO FEATURES
+// ==============================
+export function loadInfoFeatures() {
+  loadInfoSection({
+    elementId: "info-features",
+    url: "/static/features.json",
+    errorMsg: "Unable to fetch features."
+  });
+}
+
+// ==============================
+// LOAD INFO UPDATES
+// ==============================
+export function loadInfoUpdates() {
+  loadInfoSection({
+    elementId: "info-updates",
+    url: "/static/updates.json",
+    errorMsg: "Unable to fetch updates."
+  });
+}
