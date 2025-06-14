@@ -42,3 +42,34 @@
 .compare-card:hover {
   color: var(--panel-cardhover-color);
 }
+
+/* ============================= */
+/* INFO CARD                     */
+/* ============================= */
+.info-card {
+  padding: 0.62rem 1.1rem;
+  border-radius: 12px;
+  margin: 0.5rem 0;
+  color: var(--panel-card-color);
+  background: var(--panel-card-background);
+  box-shadow: var(--panel-card-box-shadow);
+  text-align: center;
+  font-size: 0.9rem;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  transition: transform 0.4s ease, color 0.5s ease;
+}
+/* ============================= */
+.info-card:hover {
+  color: var(--panel-cardhover-color);
+}
+/* ============================= */
+.info-card .card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+/* ============================= */
+.info-card .card-body {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
