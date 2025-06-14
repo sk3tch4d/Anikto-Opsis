@@ -25,36 +25,50 @@ function loadInfoSection({ elementId, url, errorMsg }) {
         wrapper.appendChild(fallback);
       } else {
         data.forEach(entry => {
-          const [mainTitle, restRaw] = entry.split(/:(.+)/); // keep everything after first :
+          const [mainTitle, ...restRaw] = entry.split(/:(.+)/);
           const rest = (restRaw || "").trim();
 
-          // Split into sentences
           const sentences = rest.split(".").map(s => s.trim()).filter(Boolean);
           const subTitle = sentences[0] || "";
           const bulletPoints = sentences.slice(1);
 
+          // === Build elements ===
           const card = document.createElement("div");
           card.className = "info-card";
 
           const titleEl = document.createElement("div");
-          titleEl.className = "card-title";
-          titleEl.textContent = mainTitle.trim();
+          titleEl.className = "card-title clickable-toggle toggle-open";
+          titleEl.innerHTML = `${mainTitle.trim()}<span class="chevron">▼</span>`;
 
-          const subTitleEl = document.createElement("div");
-          subTitleEl.className = "card-subtitle";
-          subTitleEl.textContent = subTitle;
+          const subtitleEl = document.createElement("div");
+          subtitleEl.className = "card-subtitle";
+          subtitleEl.textContent = subTitle;
 
-          const ul = document.createElement("ul");
-          ul.className = "card-list";
-          bulletPoints.forEach(point => {
-            const li = document.createElement("li");
-            li.textContent = point;
-            ul.appendChild(li);
+          const listWrapper = document.createElement("div");
+          listWrapper.className = "usl-wrapper show"; // start expanded
+
+          if (bulletPoints.length) {
+            const ul = document.createElement("ul");
+            ul.className = "card-list";
+
+            bulletPoints.forEach(point => {
+              const li = document.createElement("li");
+              li.textContent = point;
+              ul.appendChild(li);
+            });
+
+            listWrapper.appendChild(ul);
+          }
+
+          // === Attach toggle behavior ===
+          titleEl.addEventListener("click", () => {
+            listWrapper.classList.toggle("show");
+            titleEl.classList.toggle("toggle-open");
           });
 
           card.appendChild(titleEl);
-          if (subTitle) card.appendChild(subTitleEl);
-          if (bulletPoints.length) card.appendChild(ul);
+          if (subTitle) card.appendChild(subtitleEl);
+          if (bulletPoints.length) card.appendChild(listWrapper);
 
           wrapper.appendChild(card);
         });
@@ -64,9 +78,7 @@ function loadInfoSection({ elementId, url, errorMsg }) {
       container.appendChild(wrapper);
     })
     .catch(err => {
-      container.innerHTML = `
-        <div class="info-card">${errorMsg}</div>
-      `;
+      container.innerHTML = `<div class="info-card">${errorMsg}</div>`;
       console.error(`[info.js] Error loading ${url}:`, err);
     });
 }
