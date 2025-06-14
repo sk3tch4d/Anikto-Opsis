@@ -36,15 +36,15 @@ function loadInfoSection({ elementId, url, errorMsg }) {
           const card = document.createElement("div");
           card.className = "info-card";
 
-          // Title with toggle chevron
+          // Subtitle with chevron toggle
           const titleEl = document.createElement("div");
-          titleEl.className = "card-title clickable-toggle";
-          titleEl.innerHTML = `${mainTitle.trim()} <span class="chevron">▼</span>`;
+          titleEl.className = "card-title";
+          titleEl.textContent = mainTitle.trim();
 
           // Subtitle
           const subtitleEl = document.createElement("div");
-          subtitleEl.className = "card-subtitle";
-          subtitleEl.textContent = subTitle;
+          subtitleEl.className = "card-subtitle clickable-toggle toggle-open";
+          subtitleEl.innerHTML = `${subTitle} <span class="chevron">▼</span>`;
 
           // Bulleted list (initially hidden)
           const listWrapper = document.createElement("div");
@@ -64,9 +64,9 @@ function loadInfoSection({ elementId, url, errorMsg }) {
           }
 
           // Toggle behavior
-          titleEl.addEventListener("click", () => {
+          subtitleEl.addEventListener("click", () => {
             listWrapper.classList.toggle("show");
-            titleEl.classList.toggle("toggle-open");
+            subtitleEl.classList.toggle("toggle-open");
           });
 
           card.appendChild(titleEl);
