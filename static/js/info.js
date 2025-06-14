@@ -25,22 +25,36 @@ function loadInfoSection({ elementId, url, errorMsg }) {
         wrapper.appendChild(fallback);
       } else {
         data.forEach(entry => {
-          const [title, ...rest] = entry.split(":");
-          const description = rest.join(":").trim();
+          const [mainTitle, restRaw] = entry.split(/:(.+)/); // keep everything after first :
+          const rest = (restRaw || "").trim();
+
+          // Split into sentences
+          const sentences = rest.split(".").map(s => s.trim()).filter(Boolean);
+          const subTitle = sentences[0] || "";
+          const bulletPoints = sentences.slice(1);
 
           const card = document.createElement("div");
           card.className = "info-card";
 
           const titleEl = document.createElement("div");
           titleEl.className = "card-title";
-          titleEl.textContent = title.trim();
+          titleEl.textContent = mainTitle.trim();
 
-          const bodyEl = document.createElement("div");
-          bodyEl.className = "card-body";
-          bodyEl.textContent = description;
+          const subTitleEl = document.createElement("div");
+          subTitleEl.className = "card-subtitle";
+          subTitleEl.textContent = subTitle;
+
+          const ul = document.createElement("ul");
+          ul.className = "card-list";
+          bulletPoints.forEach(point => {
+            const li = document.createElement("li");
+            li.textContent = point;
+            ul.appendChild(li);
+          });
 
           card.appendChild(titleEl);
-          card.appendChild(bodyEl);
+          if (subTitle) card.appendChild(subTitleEl);
+          if (bulletPoints.length) card.appendChild(ul);
 
           wrapper.appendChild(card);
         });
