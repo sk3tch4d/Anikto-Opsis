@@ -1,11 +1,10 @@
 // ==============================
 // ZW_STATS.JS 
-// Zwdiseg Statistics Renderer
 // ==============================
 
-import { clearTextSelect ,setupParseStats, highlightMatch } from "../search-utils.js";
+import { clearTextSelect, setupParseStats, highlightMatch } from "../search-utils.js";
 import { getStatusDot } from '../statusdot.js';
-import { showToast, hapticFeedback } from '../ui-utils.js';
+import { showToast, hapticFeedback, attachChevron } from '../ui-utils.js';
 
 // ==============================
 // DEBUG TOGGLE
@@ -28,21 +27,6 @@ function joinAsDivs(...lines) {
 }
 
 // ==============================
-// HELPER: ATTACH LOCAL TOGGLE HANDLERS
-// ==============================
-function attachLocalToggleHandlers(container) {
-  container.querySelectorAll(".clickable-toggle").forEach(toggle => {
-    toggle.addEventListener("click", () => {
-      const wrapper = toggle.nextElementSibling;
-      if (wrapper?.classList.contains("usl-wrapper")) {
-        wrapper.classList.toggle("show");
-        toggle.classList.toggle("toggle-open");
-      }
-    });
-  });
-}
-
-// ==============================
 // HELPER: UPDATE SAVED PANEL
 // ==============================
 function updateSavedPanel() {
@@ -55,8 +39,8 @@ function updateSavedPanel() {
   }
   cards.forEach(clone => {
     const freshClone = clone.cloneNode(true);
-    attachLocalToggleHandlers(freshClone);
     savedPanel.appendChild(freshClone);
+    requestAnimationFrame(() => attachChevron({ root: freshClone, chevronColor: "#0a0b0f" }));
   });
 }
 
@@ -87,7 +71,7 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
   toggle.innerHTML = `${label} (${items.length}) <span class="chevron">▼</span>`;
 
   const wrapper = document.createElement("div");
-  wrapper.className = "usl-wrapper";
+  wrapper.className = "toggle-wrapper";
 
   const container = document.createElement("div");
   container.className = "clickable-match-container";
@@ -105,10 +89,6 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
   });
 
   wrapper.appendChild(container);
-  toggle.addEventListener("click", () => {
-    wrapper.classList.toggle("show");
-    toggle.classList.toggle("toggle-open");
-  });
   return { toggle, wrapper };
 }
 
@@ -142,9 +122,7 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
   const card = document.createElement("div");
   card.className = "panel-card";
 
-  //const status = base.Changed === "X" ? "changed" : "unchanged";
   const statusDot = getStatusDot({ valid: base.Valid });
-  const uniqueUSLs = [...new Set(matching.map(item => item.USL))];
   const matchUSL = base.USL;
 
   const detailsHTML = joinAsDivs(
@@ -158,6 +136,7 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
   const infoBlock = document.createElement("div");
   infoBlock.innerHTML = detailsHTML;
   card.appendChild(infoBlock);
+
   card.addEventListener("dblclick", () => toggleSaveItem(card, base));
 
   return card;
@@ -171,23 +150,26 @@ export function populateZwdisegStats(results) {
   if (!statsBox) return;
 
   statsBox.innerHTML = "";
+
   const searchInput = document.getElementById("zwdiseg-search");
   const currentSearch = searchInput?.value.trim() || "";
+
   const filterInput = document.getElementById("usl-filter");
   const currentFilter = filterInput?.value.trim().toLowerCase() || "all";
 
   const totalValid = results.filter(item => item.Valid === "true").length;
   const totalInvalid = results.filter(item => item.Valid === "false").length;
-  const validPercent = getValidPercentage(results);
   const uniqueNums = [...new Set(results.map(item => item.Num))];
+
   const fragment = document.createDocumentFragment();
 
   const summaryContainer = document.createElement("div");
   summaryContainer.className = "panel-card";
 
-  const liResults = document.createElement("div");
   const firstName = results[0]?.Name || "Unknown";
   const firstDate = results[0]?.Date || "Unknown";
+
+  const liResults = document.createElement("div");
   liResults.innerHTML = `
     <span class="tag-label">Date:</span> ${firstDate}&nbsp;&nbsp;
     <span class="tag-label">Scan:</span> ${firstName}<br>
@@ -214,10 +196,10 @@ export function populateZwdisegStats(results) {
   }
 
   statsBox.appendChild(fragment);
+
+  requestAnimationFrame(() => attachChevron({ root: statsBox, chevronColor: "#0a0b0f" }));
+
   setupParseStats();
 }
 
-// ==============================
-// DEBUG HOOK FOR CONSOLE
-// ==============================
 window.populateZwdisegStats = populateZwdisegStats;
