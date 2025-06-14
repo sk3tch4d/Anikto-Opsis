@@ -24,6 +24,7 @@
 .card-list li {
   background: none;
   border: none;
+  text-align: left;
   padding: 0.25rem 0;
   margin: 0;
   box-shadow: none;
