@@ -25,27 +25,30 @@ function loadInfoSection({ elementId, url, errorMsg }) {
         wrapper.appendChild(fallback);
       } else {
         data.forEach(entry => {
-          const [mainTitle, ...restRaw] = entry.split(/:(.+)/);
+          const [mainTitle, restRaw] = entry.split(/:(.+)/);  // Safe: only two parts
           const rest = (restRaw || "").trim();
 
           const sentences = rest.split(".").map(s => s.trim()).filter(Boolean);
           const subTitle = sentences[0] || "";
           const bulletPoints = sentences.slice(1);
 
-          // === Build elements ===
+          // === Build card ===
           const card = document.createElement("div");
           card.className = "info-card";
 
+          // Title with toggle chevron
           const titleEl = document.createElement("div");
-          titleEl.className = "card-title clickable-toggle toggle-open";
-          titleEl.innerHTML = `${mainTitle.trim()}<span class="chevron">▼</span>`;
+          titleEl.className = "card-title clickable-toggle";
+          titleEl.innerHTML = `${mainTitle.trim()} <span class="chevron">▼</span>`;
 
+          // Subtitle
           const subtitleEl = document.createElement("div");
           subtitleEl.className = "card-subtitle";
           subtitleEl.textContent = subTitle;
 
+          // Bulleted list (initially hidden)
           const listWrapper = document.createElement("div");
-          listWrapper.className = "usl-wrapper show"; // start expanded
+          listWrapper.className = "data-wrapper"; // consider renaming to data-wrapper
 
           if (bulletPoints.length) {
             const ul = document.createElement("ul");
@@ -60,7 +63,7 @@ function loadInfoSection({ elementId, url, errorMsg }) {
             listWrapper.appendChild(ul);
           }
 
-          // === Attach toggle behavior ===
+          // Toggle behavior
           titleEl.addEventListener("click", () => {
             listWrapper.classList.toggle("show");
             titleEl.classList.toggle("toggle-open");
