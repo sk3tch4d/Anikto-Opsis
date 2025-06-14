@@ -12,6 +12,8 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 // Panel IDs that should never close automatically
 const nonClosablePanels = [
   "downloads",
+  "info-features-panel",
+  "info-updates-panel",
   "seniority-search-panel",
   "inventory-search-panel",
   "zwdiseg-search-panel",
