@@ -1,6 +1,6 @@
 [
-  "🧭 Anikto Opsis: Advanced file processing. Simply upload any compatible spreadsheet or PDF and hit the button to generate a complete interactive breakdown of the data.",
-  "📅 ARG Scheduling: Upload any compatible PDF scheduling file. Search schedulingby date. Shift Changes and Statistics. Available cleaned up spreadsheet and heatmap downloads. More to come..",
-  "📊 Seniority Summary: Upload any compatible Seniority file. Employee Search. Seniority Comparison. Positions and Departments extraction. Statistics and Downloadable Search and Cleaned Seniority files. More to come..",
-  "🧠 Spreadsheet Cleaner: Simply prefix any spreadsheet name with the word 'clean_' to instantly clean and process spreadsheet files."
+  "🧭 Anikto Opsis: Advanced File Processing. Simply upload any compatible spreadsheet or PDF and hit the button to generate a complete interactive breakdown and analysis of the file data.",
+  "📅 ARG Scheduling: Scheduling Summary. Upload any compatible PDF scheduling file. Search Scheduled by Date. Shift Changes and Coverage. Statistics Breakdown. Downloadable Spreadsheet and Heatmap. More to come.",
+  "📊 Seniority List: Seniority Summary. Upload any compatible Seniority file. Employee Search. Seniority Comparison. Positions and Departments extraction. Full Statistics. Downloadable Search and Cleaned Seniority files. More to come.",
+  "🧹 XLSX Cleaner: Clean Spreadsheet Data. Prefix any spreadsheet name with 'clean_'. Instantly clean and process spreadsheet files. Auto detect and clean files based on data. Remove unused text and lint. Clean and format headers. Printable ready sheets."
 ]
