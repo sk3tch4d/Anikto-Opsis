@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     import('./zwdiseg/zw_init.js').then(m => m.initializeZwdisegApp());
   }
   // ----- OPTIMIZATION -----
-  if (document.querySelector("#optimization-search")) {
+  if (document.body.dataset.page === "optimize") {
     import('./optimization/opt_init.js').then(m => m.initializeOptimizationApp());
   }
 
