@@ -6,7 +6,7 @@
 // ==============================
 // LOAD INFO SECTION
 // ==============================
-function loadInfoSection({ elementId, url, errorMsg }) {
+function loadInfoSection({ elementId, url, errorMsg, formatter }) {
   const container = document.getElementById(elementId);
   if (!container) return;
 
@@ -23,9 +23,14 @@ function loadInfoSection({ elementId, url, errorMsg }) {
         wrapper.innerHTML = "<div class='delta-item'>No data found.</div>";
       } else {
         data.forEach(entry => {
-          const item = document.createElement("div");
-          item.className = "delta-item";
-          item.textContent = entry;
+          const item = formatter
+            ? formatter(entry)
+            : (() => {
+                const el = document.createElement("div");
+                el.className = "delta-item";
+                el.textContent = entry;
+                return el;
+              })();
           wrapper.appendChild(item);
         });
       }
@@ -50,7 +55,24 @@ export function loadInfoFeatures() {
   loadInfoSection({
     elementId: "info-features",
     url: "/static/features.json",
-    errorMsg: "Unable to fetch features."
+    errorMsg: "Unable to fetch features.",
+    formatter: (entry) => {
+      const [title, ...rest] = entry.split(":");
+      const description = rest.join(":").trim();  // handles colons in body
+      const item = document.createElement("div");
+      item.className = "delta-item";
+
+      const titleEl = document.createElement("strong");
+      titleEl.textContent = title.trim();
+
+      const bodyEl = document.createElement("p");
+      bodyEl.textContent = description;
+
+      item.appendChild(titleEl);
+      item.appendChild(bodyEl);
+
+      return item;
+    }
   });
 }
 
