@@ -58,14 +58,17 @@ export function loadInfoFeatures() {
     errorMsg: "Unable to fetch features.",
     formatter: (entry) => {
       const [title, ...rest] = entry.split(":");
-      const description = rest.join(":").trim();  // handles colons in body
+      const description = rest.join(":").trim();
+
       const item = document.createElement("div");
       item.className = "delta-item";
 
-      const titleEl = document.createElement("strong");
+      const titleEl = document.createElement("div");
+      titleEl.className = "delta-title"; // style this class in your CSS
       titleEl.textContent = title.trim();
 
-      const bodyEl = document.createElement("p");
+      const bodyEl = document.createElement("div");
+      bodyEl.className = "delta-body"; // optional class
       bodyEl.textContent = description;
 
       item.appendChild(titleEl);
