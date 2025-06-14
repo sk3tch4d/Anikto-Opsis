@@ -2,6 +2,7 @@
 // INFO.JS
 // ==============================
 
+import { attachChevron } from './ui-utils.js';
 
 // ==============================
 // LOAD INFO SECTION
@@ -63,12 +64,6 @@ function loadInfoSection({ elementId, url, errorMsg }) {
             listWrapper.appendChild(ul);
           }
 
-          // Toggle behavior
-          subtitleEl.addEventListener("click", () => {
-            listWrapper.classList.toggle("show");
-            subtitleEl.classList.toggle("toggle-open");
-          });
-
           card.appendChild(titleEl);
           if (subTitle) card.appendChild(subtitleEl);
           if (bulletPoints.length) card.appendChild(listWrapper);
@@ -77,8 +72,12 @@ function loadInfoSection({ elementId, url, errorMsg }) {
         });
       }
 
+      // Appended Cards to Wrapper
       container.innerHTML = "";
       container.appendChild(wrapper);
+
+      // Attach Toggle
+      attachChevron({ root: wrapper });
     })
     .catch(err => {
       container.innerHTML = `<div class="info-card">${errorMsg}</div>`;
