@@ -1,8 +1,12 @@
 // ==============================
 // INV_HISTORY.JS
-// Search History Renderer
 // ==============================
 
+import { attachChevron } from '../ui-utils.js';
+
+// ==============================
+// TIMESTAMP FORMATTING
+// ==============================
 function formatFriendlyTimestamp(date) {
   const now = new Date();
   const isToday = date.toDateString() === now.toDateString();
@@ -18,6 +22,9 @@ function formatFriendlyTimestamp(date) {
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ` at ${time}`;
 }
 
+// ==============================
+// ADD SEARCH HISTORY
+// ==============================
 export function addSearchToHistory(term, uslFilter, results) {
   const container = document.getElementById("search-history-list");
   if (!container || !results.length) return;
@@ -61,7 +68,7 @@ export function addSearchToHistory(term, uslFilter, results) {
   matchesToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
 
   const matchesWrapper = document.createElement("div");
-  matchesWrapper.className = "usl-wrapper";
+  matchesWrapper.className = "toggle-wrapper";  // Updated to match default
 
   const matchContainer = document.createElement("div");
   matchContainer.className = "clickable-match-container";
@@ -76,13 +83,11 @@ export function addSearchToHistory(term, uslFilter, results) {
 
   matchesWrapper.appendChild(matchContainer);
 
-  matchesToggle.addEventListener("click", () => {
-    matchesWrapper.classList.toggle("show");
-    matchesToggle.classList.toggle("toggle-open");
-  });
-
   card.appendChild(matchesToggle);
   card.appendChild(matchesWrapper);
+
+  // Use attachChevron on this card only
+  requestAnimationFrame(() => attachChevron({ root: card, chevronColor: "#0a0b0f" }));
 
   // Insert at the top
   container.prepend(card);
