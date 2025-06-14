@@ -139,3 +139,20 @@
   border-radius: 8px;
   transition: background-color 0.5s ease;
 }
+
+/* ============================== */
+/* TOGGLE WRAPPER                 */
+/* ============================== */
+.toggle-wrapper {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.25s ease;
+}
+.toggle-wrapper.show {
+  max-height: 2000px;
+  opacity: 1;
+  padding: 0.8rem 0.2rem 0.6rem;
+  border-radius: 8px;
+  transition: background-color 0.5s ease;
+}
