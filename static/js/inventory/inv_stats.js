@@ -44,7 +44,7 @@ function updateSavedPanel() {
   cards.forEach(clone => {
     const freshClone = clone.cloneNode(true);
     savedPanel.appendChild(freshClone);
-    requestAnimationFrame(() => attachChevron({ root: freshClone }));
+    requestAnimationFrame(() => attachChevron({ root: freshClone, chevronColor: "#0a0b0f" }));
   });
 }
 
@@ -275,7 +275,7 @@ export function populateInventoryStats(results) {
   statsBox.appendChild(fragment);
 
   // Run AFTER next paint to ensure toggles are in DOM
-  requestAnimationFrame(() => attachChevron({ root: statsBox }));
+  requestAnimationFrame(() => attachChevron({ root: statsBox, chevronColor: "#0a0b0f" }));
 
   setTimeout(() => {
     const header = document.querySelector('#inventory-search-panel .panel-header');
