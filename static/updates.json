@@ -1,9 +1,9 @@
 [
-  "📦 App Additions: . .Info Page Features List. Bullet information",
-  "⚡ ARG Improvements: . .ARG Search Speed. Dynamic Date processing",
-  "⚡ App Improvements: . .App Page Loading Speed!. Dynamic data loading",
-  "📦 App Additions: . .Info Page Updates. Trailing News.",
-  "📦 App Additions: ..Fill-Rate Cleaning Refinements",
-  "✨ New Feature: ..Mutli Union Files. Files with CUPE + OPSEU can be processed together.",
-  "🔧 Zwdiseg Updates: ..Zwdiseg Analysis Results. Searchable Date. Valid Checks"
+  "📦 App Additions: Info Page Features List. Festure Cards. Bullet pointed sub-information",
+  "⚡ ARG Improvements: Search Speed!. Dynamic Date Processing. Return data after date match",
+  "⚡ App Improvements: Loading Speed!. Dynamic Page Data Loading. Refactored File Processing",
+  "📦 App Additions: Info Page Updates. Trailing News.",
+  "📦 App Additions: Fill-Rate Analysis. Cleaning Refinements. Friendly Readable Data. Remove noise. Fixed Header Row. Printable Friendly.",
+  "✨ New Feature: Mutli Union Files. Files with CUPE + OPSEU can be processed together. Combined Results Summary. Cross-Union Comparison",
+  "🔧 Zwdiseg Updates: Zwdiseg Analysis Results. Searchable Date. Valid Checks"
 ]
