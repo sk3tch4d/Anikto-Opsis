@@ -94,12 +94,10 @@ document.addEventListener("DOMContentLoaded", () => {
     import('./zwdiseg/zw_init.js').then(m => m.initializeZwdisegApp());
   }
   // ----- OPTIMIZATION -----
-  import('./optimization/opt_init.js')
-    .then(m => {
-      console.log("✅ Optimization module loaded");
-      m.initializeOptimizationApp();
-    })
-    .catch(e => console.error("❌ Failed to load optimization:", e));
-  
+  if (document.querySelector("#optimization-search")) {
+    import('./optimization/opt_init.js')
+      .then(m => m.initializeOptimizationApp())
+      .catch(e => console.error("❌ Failed to load optimization:", e));
+  }
 
 });
