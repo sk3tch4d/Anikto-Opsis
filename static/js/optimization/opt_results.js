@@ -53,7 +53,7 @@ export function renderOptimizationResults(data, term, resultsList) {
       if (item.Bin?.trim()) html += ` - ${highlightMatch(item.Bin, term)}`;
       html += `<br>`;
     }
-    // ===== ROP / ROQ
+    // ===== CURRENT ROP/ROQ
     if (item.ROP !== undefined && item.ROP !== null || item.ROQ !== undefined && item.ROQ !== null) {
       if (item.ROP !== undefined && item.ROP !== null) {
         html += `<span class="tag-label">Current ROP:</span> ${item.ROP} `;
@@ -62,6 +62,20 @@ export function renderOptimizationResults(data, term, resultsList) {
         html += `<span class="tag-label">Current ROQ:</span> ${item.ROQ}`;
       }
       html += `<br>`;
+    }
+    // ===== SUGGESTED ROP/ROQ
+    if ((item.RROP !== undefined && item.RROP !== null) || (item.RROQ !== undefined && item.RROQ !== null)) {
+      if (item.RROP !== undefined && item.RROP !== null) {
+        html += `<span class="tag-label">Suggested ROP:</span> ${item.RROP} `;
+      }
+      if (item.RROQ !== undefined && item.RROQ !== null) {
+        html += `<span class="tag-label">Suggested ROQ:</span> ${item.RROQ}`;
+      }
+      html += `<br>`;
+    }
+    // ===== MOVEMENTS
+    if (item.MVT != null) {
+      html += `<span class="tag-label">Movements:</span> ${highlightMatch(String(item.MVT), term)}<br>`;
     }
     // ===== QUANTITY
     if (item.QTY || item.UOM?.trim()) {
