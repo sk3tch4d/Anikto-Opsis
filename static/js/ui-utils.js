@@ -62,11 +62,12 @@ export function showToast(message, timer = 2000) {
   }
   toast.classList.add("show");
 
-  const duration = Number(timer);
+  const duration = Number.isFinite(timer) ? Number(timer) : 2000;
+
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => {
     toast.classList.remove("show");
-  }, Number.isFinite(duration) ? duration : 2000); // Fallback to default
+  }, duration);
 }
 
 // ==============================
@@ -121,4 +122,27 @@ export function attachChevron({
       toggle.classList.toggle(openClass);
     });
   });
+}
+
+// ==============================
+// FORMAT TIMESTAMP
+// ==============================
+export function formatTimestamp(date) {
+  if (!(date instanceof Date) || isNaN(date)) return "Invalid Date";
+
+  const now = new Date();
+  const dateStr = date.toDateString();
+  const nowStr = now.toDateString();
+
+  const yesterday = new Date(now);
+  yesterday.setDate(now.getDate() - 1);
+  const yestStr = yesterday.toDateString();
+
+  const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  if (dateStr === nowStr) return `Today at ${time}`;
+  if (dateStr === yestStr) return `Yesterday at ${time}`;
+
+  const datePart = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  return `${datePart} at ${time}`;
 }
