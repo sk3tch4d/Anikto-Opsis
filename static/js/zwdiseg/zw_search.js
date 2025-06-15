@@ -5,9 +5,9 @@
 
 import { populateZwdisegStats } from "./zw_stats.js";
 import { renderZwdisegResults } from "./zw_results.js";
-import { addSearchToHistory } from "./zw_history.js";
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
 import { scrollPanel } from '../panels.js';
+import { addSearchHistoryCard } from "../cards/history_card.js";
 
 // ==============================
 // DEBUGGING
@@ -158,7 +158,12 @@ export const doZwdisegSearch = debounce(function({ searchInput, uslFilter, sortB
         const cached = searchCache.get(key);
         renderZwdisegResults(cached, term, resultsList);
         populateZwdisegStats(cached);
-        addSearchToHistory(searchInput.value.trim(), uslFilter.value, cached);
+        addSearchHistoryCard({
+          term: searchInput.value.trim(),
+          filter: uslFilter.value,
+          results: cached,
+          historyKey: "zwdisegSearchHistory"
+        });
         return;
       }
 
@@ -177,7 +182,12 @@ export const doZwdisegSearch = debounce(function({ searchInput, uslFilter, sortB
           renderZwdisegResults(data, term, resultsList);
           window.zwdisegSearchResults = data;
           window.zwdisegCleanedData = data;
-          addSearchToHistory(searchInput.value.trim(), uslFilter.value, data);
+          addSearchHistoryCard({
+            term: searchInput.value.trim(),
+            filter: uslFilter.value,
+            results: data,
+            historyKey: "zwdisegSearchHistory"
+          });
           updateSearchCache(key, data);
         })
         .catch(err => {
