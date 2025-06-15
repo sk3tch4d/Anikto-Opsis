@@ -14,6 +14,7 @@ const nonClosablePanels = [
   "downloads",
   "info-features-panel",
   "info-updates-panel",
+  "info-tips-panel",
   "seniority-search-panel",
   "inventory-search-panel",
   "inventory-saved-panel",
