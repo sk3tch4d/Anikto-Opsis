@@ -77,10 +77,6 @@ export function renderOptimizationResults(data, term, resultsList) {
     if (item.Cost_Center?.trim()) {
       html += `<span class="tag-label">Cost Center:</span> ${highlightMatch(item.Cost_Center, term)}<br>`;
     }
-    // ===== MOVEMENTS 
-    if (item.MVT?.trim()) {
-      html += `<span class="tag-label">Movements:</span> ${highlightMatch(item.MVT, term)}<br>`;
-    }
     // ===== GROUP
     if (item.Group?.trim()) {
       html += `<span class="tag-label">Group:</span> ${highlightMatch(item.Group, term)}`;
