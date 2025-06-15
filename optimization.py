@@ -80,8 +80,8 @@ def search_optimization(df, term, cart_filter="All", sort="Num", direction="desc
 
     # ✅ Standardize return columns
     output_columns = [
-        "Num", "Bin", "Description", "Group", "ROP", "ROQ", 
-        "SROP", "SROQ", "QTY", "CU1", "CU2", "CC1", "CC2", "First", "MVT"
+        "USL", "Num", "Bin", "Description", "Group", "ROP", "ROQ", "RROP", "RROQ",
+        "SROP", "SROQ", "QTY", "CU1", "CU2", "CC1", "CC2", "First", "MVT", "Cart"
     ]
     for col in output_columns:
         if col not in df.columns:
