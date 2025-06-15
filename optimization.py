@@ -87,7 +87,7 @@ def search_optimization(df, term, cart_filter="All", sort="Num", direction="desc
         if col not in df.columns:
             df[col] = ""
 
-    df = df[output_columns].head(100).copy()
+    df = df[output_columns].head(500).copy()
 
     # ✅ Final conversion
     try:
