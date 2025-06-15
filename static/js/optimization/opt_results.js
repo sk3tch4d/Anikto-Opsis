@@ -59,7 +59,7 @@ export function renderOptimizationResults(data, term, resultsList) {
         html += `<span class="tag-label">Current ROP:</span> ${item.ROP} `;
       }
       if (item.ROQ !== undefined && item.ROQ !== null) {
-        html += `<span class="tag-label">Current ROQ:</span> ${item.ROQ}`;
+        html += `<span class="tag-label">ROQ:</span> ${item.ROQ}`;
       }
       html += `<br>`;
     }
@@ -69,7 +69,7 @@ export function renderOptimizationResults(data, term, resultsList) {
         html += `<span class="tag-label">Suggested ROP:</span> ${item.RROP} `;
       }
       if (item.RROQ !== undefined && item.RROQ !== null) {
-        html += `<span class="tag-label">Suggested ROQ:</span> ${item.RROQ}`;
+        html += `<span class="tag-label">ROQ:</span> ${item.RROQ}`;
       }
       html += `<br>`;
     }
