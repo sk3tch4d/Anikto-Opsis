@@ -22,11 +22,10 @@ def search_optimization(df, term, cart_filter="All", sort="Num", direction="desc
     logger.debug(f"[OPT_SEARCH]🧠 Columns: {df.columns.tolist()}")
 
     # ✅ Normalize cart filter input
-    cart_filter = str(cart_filter).strip()
     if cart_filter.lower() not in {"all", "any", ""}:
-        prefix = cart_filter.split()[-1]
-        df = df[df["bin"].astype(str).str.startswith(prefix)]
-        logger.debug(f"[OPT_SEARCH]🧺 Filtered by Cart '{prefix}': {len(df)} rows remaining")
+        cart_str = str(cart_filter).strip().lower()
+        df = df[df["Cart"].astype(str).str.lower().str.strip() == cart_str]
+        logger.debug(f"[OPT_SEARCH]🧺 Filtered by Cart '{cart_str}': {len(df)} rows remaining")
     else:
         logger.debug(f"[OPT_SEARCH]🛡️ Cart filter skipped (value: '{cart_filter}')")
 
