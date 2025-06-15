@@ -122,18 +122,10 @@ export const doOptimizationSearch = debounce(function ({
   noResults,
   sortDirection
 }) {
-  const term = searchInput.value.trim().toLowerCase();
+  const rawTerm = searchInput.value.trim();
+  const term = rawTerm.toLowerCase();
   const cart = cartFilter.value;
   const sort = sortBy?.value || "ROP";
-
-  // Validate search term
-  if (!term) {
-    resultsList.innerHTML = "";
-    elements.stats.innerHTML = "";
-    noResults.style.display = "block";
-    noResults.innerText = "Please enter a search term.";
-    return;
-  }
 
   const key = generateSearchKey({ term, cart, sort, dir: sortDirection });
 
@@ -153,8 +145,8 @@ export const doOptimizationSearch = debounce(function ({
         renderOptimizationResults(cached, term, resultsList);
         populateOptimizationStats(cached);
         addSearchHistoryCard({
-          term: searchInput.value.trim(),
-          filter: cartFilter.value,
+          term: rawTerm,
+          filter: cart,
           results: cached,
           historyKey: "optimizationSearchHistory"
         });
@@ -176,8 +168,8 @@ export const doOptimizationSearch = debounce(function ({
           renderOptimizationResults(data, term, resultsList);
           window.optimizationSearchResults = data;
           addSearchHistoryCard({
-            term: searchInput.value.trim(),
-            filter: cartFilter.value,
+            term: rawTerm,
+            filter: cart,
             results: data,
             historyKey: "optimizationSearchHistory"
           });
