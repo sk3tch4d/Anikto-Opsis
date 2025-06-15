@@ -64,7 +64,7 @@ export function renderOptimizationResults(data, term, resultsList) {
       html += `<br>`;
     }
     // ===== RROP / RROQ
-    if (item.RROP !== undefined && item.RROP !== null || item.RROQ !== undefined && item.RROQ !== null) {
+    if ((item.RROP !== undefined && item.RROP !== null) || (item.RROQ !== undefined && item.RROQ !== null)) {
       if (item.RROP !== undefined && item.RROP !== null) {
         html += `<span class="tag-label">Suggested ROP:</span> ${item.RROP} `;
       }
