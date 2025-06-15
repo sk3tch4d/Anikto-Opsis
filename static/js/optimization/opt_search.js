@@ -6,7 +6,6 @@ import { populateOptimizationStats } from "./opt_stats.js";
 import { renderOptimizationResults } from "./opt_results.js";
 import { debounce } from "../search-utils.js";
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
-import { scrollPanel } from '../panels.js';
 import { addSearchHistoryCard } from "../cards/history_card.js";
 
 // ==============================
@@ -124,8 +123,7 @@ export const doOptimizationSearch = debounce(function ({
   sortDirection
 }) {
   const term = searchInput.value.trim().toLowerCase();
-  const cartRaw = cartFilter.value;
-  const cart = cartRaw === "All" ? "All" : cartRaw.replace("Cart ", "");
+  const cart = cartFilter.value;
   const sort = sortBy?.value || "ROP";
 
   // Validate search term
@@ -156,7 +154,7 @@ export const doOptimizationSearch = debounce(function ({
         populateOptimizationStats(cached);
         addSearchHistoryCard({
           term: searchInput.value.trim(),
-          filter: uslFilter.value,
+          filter: cartFilter.value,
           results: cached,
           historyKey: "optimizationSearchHistory"
         });
@@ -179,7 +177,7 @@ export const doOptimizationSearch = debounce(function ({
           window.optimizationSearchResults = data;
           addSearchHistoryCard({
             term: searchInput.value.trim(),
-            filter: uslFilter.value,
+            filter: cartFilter.value,
             results: data,
             historyKey: "optimizationSearchHistory"
           });
