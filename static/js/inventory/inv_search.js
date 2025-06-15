@@ -4,6 +4,7 @@
 
 import { populateInventoryStats } from "./inv_stats.js";
 import { renderInventoryResults } from "./inv_results.js";
+import { debounce } from "../search-utils.js";
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
 import { addSearchHistoryCard } from "../cards/history_card.js";
 
@@ -108,17 +109,6 @@ function updateSearchCache(key, data) {
     searchCache.delete(oldestKey);
   }
   searchCache.set(key, data);
-}
-
-// ==============================
-// DEBOUNCE
-// ==============================
-function debounce(fn, wait) {
-  let timeout;
-  return function (...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn.apply(this, args), wait);
-  };
 }
 
 // ==============================
