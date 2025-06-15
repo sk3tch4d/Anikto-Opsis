@@ -56,10 +56,20 @@ export function renderOptimizationResults(data, term, resultsList) {
     // ===== ROP / ROQ
     if (item.ROP !== undefined && item.ROP !== null || item.ROQ !== undefined && item.ROQ !== null) {
       if (item.ROP !== undefined && item.ROP !== null) {
-        html += `<span class="tag-label">ROP:</span> ${item.ROP} `;
+        html += `<span class="tag-label">Current ROP:</span> ${item.ROP} `;
       }
       if (item.ROQ !== undefined && item.ROQ !== null) {
-        html += `<span class="tag-label">ROQ:</span> ${item.ROQ}`;
+        html += `<span class="tag-label">Current ROQ:</span> ${item.ROQ}`;
+      }
+      html += `<br>`;
+    }
+    // ===== RROP / RROQ
+    if (item.RROP !== undefined && item.RROP !== null || item.RROQ !== undefined && item.RROQ !== null) {
+      if (item.RROP !== undefined && item.RROP !== null) {
+        html += `<span class="tag-label">Suggested ROP:</span> ${item.RROP} `;
+      }
+      if (item.RROQ !== undefined && item.RROQ !== null) {
+        html += `<span class="tag-label">Suggested ROQ:</span> ${item.RROQ}`;
       }
       html += `<br>`;
     }
@@ -76,6 +86,10 @@ export function renderOptimizationResults(data, term, resultsList) {
     // ===== COST CENTER
     if (item.Cost_Center?.trim()) {
       html += `<span class="tag-label">Cost Center:</span> ${highlightMatch(item.Cost_Center, term)}<br>`;
+    }
+    // ===== MOVEMENTS 
+    if (item.MVT?.trim()) {
+      html += `<span class="tag-label">Movements:</span> ${highlightMatch(item.MVT, term)}<br>`;
     }
     // ===== GROUP
     if (item.Group?.trim()) {
