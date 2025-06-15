@@ -1,11 +1,21 @@
 // ==============================
 // SEARCH-UTILS.JS
-// Shared Search Utilities
 // ==============================
 
 import { openPanelById, scrollPanel } from "./panels.js";
 import { removeFocus } from "./helpers.js";
 import { showToast, hapticFeedback } from "./ui-utils.js";
+
+// ==============================
+// DEBOUNCE
+// ==============================
+export function debounce(fn, wait) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn.apply(this, args), wait);
+  };
+}
 
 // ==============================
 // CLEAR TEXT SELECTION
