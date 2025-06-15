@@ -130,8 +130,7 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
     `<span class="tag-label">Stores Number:</span> ${numberHTML}`,
     descHTML,
     ropqLine,
-    sropLine,
-    sroqLine,
+    sropqLine,
     groupLine
   );
 
