@@ -1,12 +1,11 @@
 // ==============================
 // INV_SEARCH.JS
-// Inventory Search Logic
 // ==============================
 
 import { populateInventoryStats } from "./inv_stats.js";
 import { renderInventoryResults } from "./inv_results.js";
-import { addSearchToHistory } from "./inv_history.js";
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
+import { addSearchHistoryCard } from "../cards/history_card.js";
 
 // ==============================
 // DEBUGGING
@@ -162,7 +161,12 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
         const cached = searchCache.get(key);
         renderInventoryResults(cached, term, resultsList);
         populateInventoryStats(cached);
-        addSearchToHistory(searchInput.value.trim(), uslFilter.value, cached);
+        addSearchHistoryCard({
+          term: searchInput.value.trim(),
+          filter: uslFilter.value,
+          results: cached,
+          historyKey: "inventorySearchHistory"
+        });
         return;
       }
 
@@ -180,7 +184,12 @@ export const doInventorySearch = debounce(function({ searchInput, uslFilter, sor
           populateInventoryStats(data);
           renderInventoryResults(data, term, resultsList);
           window.inventorySearchResults = data;
-          addSearchToHistory(searchInput.value.trim(), uslFilter.value, data);
+          addSearchHistoryCard({
+            term: searchInput.value.trim(),
+            filter: uslFilter.value,
+            results: data,
+            historyKey: "inventorySearchHistory"
+          });
           updateSearchCache(key, data);
         })
         .catch(err => {
