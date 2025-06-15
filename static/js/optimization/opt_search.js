@@ -1,11 +1,12 @@
 // ==============================
-// OPT_SEARCH.JS — Optimization Search Logic
+// OPT_SEARCH.JS
 // ==============================
 
 import { populateOptimizationStats } from "./opt_stats.js";
 import { renderOptimizationResults } from "./opt_results.js";
-import { addOptimizationSearchToHistory } from "./opt_history.js";
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
+import { scrollPanel } from '../panels.js';
+import { addSearchHistoryCard } from "../cards/history_card.js";
 
 // ==============================
 // DEBUGGING
@@ -163,7 +164,12 @@ export const doOptimizationSearch = debounce(function ({
         const cached = searchCache.get(key);
         renderOptimizationResults(cached, term, resultsList);
         populateOptimizationStats(cached);
-        addOptimizationSearchToHistory(searchInput.value.trim(), cart, cached);
+        addSearchHistoryCard({
+          term: searchInput.value.trim(),
+          filter: uslFilter.value,
+          results: cached,
+          historyKey: "optimizationSearchHistory"
+        });
         return;
       }
 
@@ -181,7 +187,12 @@ export const doOptimizationSearch = debounce(function ({
           populateOptimizationStats(data);
           renderOptimizationResults(data, term, resultsList);
           window.optimizationSearchResults = data;
-          addOptimizationSearchToHistory(searchInput.value.trim(), cart, data);
+          addSearchHistoryCard({
+            term: searchInput.value.trim(),
+            filter: uslFilter.value,
+            results: data,
+            historyKey: "optimizationSearchHistory"
+          });
           updateSearchCache(key, data);
         })
         .catch(err => {
