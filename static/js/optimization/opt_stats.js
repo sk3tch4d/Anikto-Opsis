@@ -123,8 +123,7 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
 
   const descHTML = `<span class="tag-label">Description:</span> ${highlightMatch(base.Description || "", currentSearch)}`;
   const ropqLine = `<span class="tag-label">Current ROP:</span> ${base.ROP ?? "–"} <span class="tag-label">ROQ:</span> ${base.ROQ ?? "–"}`;
-  const sropLine = `<span class="tag-label">Suggested ROP:</span> ${base.RROP ?? "–"}`;
-  const sroqLine = `<span class="tag-label">Suggested ROQ:</span> ${base.RROQ ?? "–"}`;
+  const sropqLine = `<span class="tag-label">Suggested ROP:</span> ${base.RROP ?? "–"} <span class="tag-label">ROQ:</span> ${base.RROQ ?? "–"}`;
   const groupLine = `<span class="tag-label">Group:</span> ${highlightMatch(base.Group || "", currentSearch)}`;
 
   const detailsHTML = joinAsDivs(
