@@ -1,11 +1,10 @@
 // ==============================
 // OPT_STATS.JS
-// Optimization Statistics Renderer
 // ==============================
 
-import { highlightMatch, setupParseStats, clearTextSelect } from "../search-utils.js";
-import { scrollPanel } from "../panels.js";
-import { showToast, hapticFeedback } from "../ui-utils.js";
+import { clearTextSelect, setupParseStats, highlightMatch } from "../search-utils.js";
+import { showToast, hapticFeedback, attachChevron } from '../ui-utils.js';
+import { scrollPanel } from '../panels.js';
 
 // ==============================
 // DEBUG TOGGLE
@@ -40,7 +39,7 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
   toggle.innerHTML = `${label} (${items.length}) <span class="chevron">▼</span>`;
 
   const wrapper = document.createElement("div");
-  wrapper.className = "cart-wrapper";
+  wrapper.className = "toggle-wrapper";
 
   const container = document.createElement("div");
   container.className = "clickable-match-container";
@@ -64,11 +63,6 @@ function createToggleList({ label, items, itemAttributes = {}, sort = true, sear
   });
 
   wrapper.appendChild(container);
-
-  toggle.addEventListener("click", () => {
-    wrapper.classList.toggle("show");
-    toggle.classList.toggle("toggle-open");
-  });
 
   return { toggle, wrapper };
 }
@@ -110,6 +104,7 @@ function updateSavedPanel() {
   cards.forEach(clone => {
     const freshClone = clone.cloneNode(true);
     savedPanel.appendChild(freshClone);
+    requestAnimationFrame(() => attachChevron({ root: freshClone, chevronColor: "#0a0b0f" }));
   });
 }
 
@@ -227,7 +222,7 @@ export function populateOptimizationStats(results) {
     matchesToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
 
     const matchesWrapper = document.createElement("div");
-    matchesWrapper.className = "cart-wrapper";
+    matchesWrapper.className = "toggle-wrapper";
 
     const matchContainer = document.createElement("div");
     matchContainer.className = "clickable-match-container";
@@ -241,11 +236,6 @@ export function populateOptimizationStats(results) {
     });
 
     matchesWrapper.appendChild(matchContainer);
-
-    matchesToggle.addEventListener("click", () => {
-      matchesWrapper.classList.toggle("show");
-      matchesToggle.classList.toggle("toggle-open");
-    });
 
     liMatches.appendChild(matchesToggle);
     liMatches.appendChild(matchesWrapper);
@@ -271,6 +261,9 @@ export function populateOptimizationStats(results) {
   }
 
   statsBox.appendChild(fragment);
+
+  // Run AFTER next paint to ensure toggles are in DOM
+  requestAnimationFrame(() => attachChevron({ root: statsBox, chevronColor: "#0a0b0f" }));
 
   setTimeout(() => {
     const header = document.querySelector('#optimization-search-panel .panel-header');
