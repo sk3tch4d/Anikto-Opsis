@@ -63,16 +63,6 @@ export function renderOptimizationResults(data, term, resultsList) {
       }
       html += `<br>`;
     }
-    // ===== RROP / RROQ
-    if ((item.RROP !== undefined && item.RROP !== null) || (item.RROQ !== undefined && item.RROQ !== null)) {
-      if (item.RROP !== undefined && item.RROP !== null) {
-        html += `<span class="tag-label">Suggested ROP:</span> ${item.RROP} `;
-      }
-      if (item.RROQ !== undefined && item.RROQ !== null) {
-        html += `<span class="tag-label">Suggested ROQ:</span> ${item.RROQ}`;
-      }
-      html += `<br>`;
-    }
     // ===== QUANTITY
     if (item.QTY || item.UOM?.trim()) {
       html += `<span class="tag-label">Quantity:</span> ~${item.QTY}<br>`;
