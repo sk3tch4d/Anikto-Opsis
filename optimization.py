@@ -34,7 +34,7 @@ def search_optimization(df, term, cart_filter="All", sort="Num", direction="desc
     if term:
         logger.debug(f"[OPT_SEARCH]🐣 Search term provided: '{term}'")
         try:
-            excluded = {"RROP", "RROQ", "SROP", "SROQ", "CU1", "CU2", "CC1", "CC2", "QTY"}
+            excluded = {"RROP", "RROQ", "SROP", "SROQ", "CU1", "CU2", "CC1", "CC2", "QTY", "MVT", "First"}
 
             try:
                 col_list = df.columns.tolist()
