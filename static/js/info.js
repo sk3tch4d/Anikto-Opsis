@@ -106,3 +106,14 @@ export function loadInfoUpdates() {
     errorMsg: "Unable to fetch updates."
   });
 }
+
+// ==============================
+// LOAD INFO TIPS
+// ==============================
+export function loadInfoTips() {
+  loadInfoSection({
+    elementId: "info-tips",
+    url: "/static/tips.json",
+    errorMsg: "Unable to fetch tips."
+  });
+}
