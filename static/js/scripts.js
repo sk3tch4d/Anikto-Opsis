@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     import('./info.js').then(m => {
       if (document.querySelector("#info-features-panel")) m.loadInfoFeatures();
       if (document.querySelector("#info-updates-panel")) m.loadInfoUpdates();
+      if (document.querySelector("#info-tips-panel")) m.loadInfoTips();
     });
   }
   // ----- SENIORITY -----
