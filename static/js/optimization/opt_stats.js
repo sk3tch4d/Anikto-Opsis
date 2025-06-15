@@ -121,16 +121,18 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
     ${highlightMatch(base.Num, currentSearch)}
   </span>`;
 
-  const descHTML = `<span class="tag-label">Description:</span> ${highlightMatch(base.Description || "", currentSearch)}`;
+  const descHTML = `${highlightMatch(base.Description || "", currentSearch)}`;
   const ropqLine = `<span class="tag-label">Current ROP:</span> ${base.ROP ?? "–"} <span class="tag-label">ROQ:</span> ${base.ROQ ?? "–"}`;
   const sropqLine = `<span class="tag-label">Suggested ROP:</span> ${base.RROP ?? "–"} <span class="tag-label">ROQ:</span> ${base.RROQ ?? "–"}`;
+  const mvtLine = `<span class="tag-label">Movements:</span> ${base.MVT ?? "–"}`;
   const groupLine = `<span class="tag-label">Group:</span> ${highlightMatch(base.Group || "", currentSearch)}`;
 
   const detailsHTML = joinAsDivs(
-    `<span class="tag-label">Stores Number:</span> ${numberHTML}`,
+    `<span class="tag-label">Number:</span> ${numberHTML}`,
     descHTML,
     ropqLine,
     sropqLine,
+    mvtLine,
     groupLine
   );
 
