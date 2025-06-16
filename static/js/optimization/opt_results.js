@@ -44,12 +44,9 @@ export function renderOptimizationResults(data, term, resultsList) {
     if (item.Description?.trim()) {
       html += `${highlightMatch(item.Description, term)}<br>`;
     }
-    // ===== CART / BIN
-    if (item.Cart?.trim() || item.Bin?.trim()) {
-      html += `<span class="tag-label">Location:</span>`;
-      if (item.Cart?.trim()) html += ` ${item.Cart}`;
-      if (item.Bin?.trim()) html += ` - ${highlightMatch(item.Bin, term)}`;
-      html += `<br>`;
+    // ===== BIN LOCATION
+    if (item.Bin?.trim()) {
+      html += `<span class="tag-label">Location:</span> ${highlightMatch(item.Bin, term)}`;
     }
     // ===== CURRENT ROP/ROQ
     if (item.ROP !== undefined && item.ROP !== null || item.ROQ !== undefined && item.ROQ !== null) {
