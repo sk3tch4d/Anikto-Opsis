@@ -152,16 +152,16 @@ function createOptimizationItemCard(matching, base, currentSearch, currentFilter
       pill.className = "clickable-match";
       pill.textContent = uniqueBins[0];
       pill.setAttribute("data-filter", uniqueBins[0]);
-      pill.setAttribute("data-search", base.Num);
+      pill.setAttribute("data-search", base.Bin);
       card.appendChild(pill);
     } else if (uniqueBins.length > 1) {
       const { toggle, wrapper } = createToggleList({
-        label: "Carts",
+        label: "Bins",
         items: uniqueBins,
         itemAttributes: {
           "data-filter": bin => bin,
         },
-        searchableValue: base.Num
+        searchableValue: base.Bin
       });
       card.appendChild(toggle);
       card.appendChild(wrapper);
