@@ -60,7 +60,8 @@ def handle_excel_file(file, fname):
 
     elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
         logging.debug("[HANDLER] Matched CATALOG")
-        df = pd.read_excel(file)
+        #df = pd.read_excel(file)
+        steps = [clean_headers]
         df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
         return handle_inventory(df)
 
