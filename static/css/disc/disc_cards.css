@@ -39,6 +39,7 @@
   padding: 0.62rem 1.1rem;
   border-radius: 12px;
   margin: 0.5rem 0;
+  justify-content: space-between; /* Testing Delta layout as justify space (June 16) */
   color: var(--panel-card-color);
   background: var(--panel-card-background); /* #292b3d;*/
   box-shadow: var(--panel-card-box-shadow);
