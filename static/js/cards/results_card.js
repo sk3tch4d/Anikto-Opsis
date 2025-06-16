@@ -7,9 +7,6 @@ import { highlightMatch } from "../search-utils.js";
 
 /** ==============================
 
- * Renders a labeled line or group of inline fields for stats panels.
- * Supports highlighting and inline grouping of label-value pairs.
- * 
  * @param {string|Array} labelOrArray - Single label string or array of [label, value] pairs
  * @param {*} value - Value (only used for single label mode)
  * @param {Object} options - Configuration options
@@ -20,8 +17,9 @@ import { highlightMatch } from "../search-utils.js";
  * @param {*} options.fallback - Value to return if input is invalid
  * @param {Function|null} options.formatter - Function to format value
  * @returns {string} Rendered HTML line
- * Renders a labeled line or group of inline label-value pairs.
  
+ * Renders a labeled line or group of inline fields for stats panels.
+ * Supports highlighting and inline grouping of label-value pairs.
  * Supports three modes:
  *  - Single: "Label: value"
  *  - Grouped: [["Label1", val1], ["Label2", val2]]
