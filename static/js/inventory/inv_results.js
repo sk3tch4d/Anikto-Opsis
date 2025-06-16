@@ -1,10 +1,10 @@
 // ==============================
-// INV_RESULTS.JS
-// Inventory Result Renderer
+// INV_RESULTS.JS — Inventory Result Renderer
 // ==============================
 
 import { highlightMatch } from "../search-utils.js";
 import { scrollPanel } from '../panels.js';
+import { renderLine } from '../cards/results_card.js';
 
 // ==============================
 // MAIN RENDER FUNCTION
@@ -13,7 +13,7 @@ export function renderInventoryResults(data, term, resultsList) {
   if (!Array.isArray(data) || !resultsList) return;
   if (data.length === 0) return;
 
-  resultsList.innerHTML = ""; // clear previous results
+  resultsList.innerHTML = "";
 
   data.forEach(item => {
     const card = document.createElement("div");
@@ -22,15 +22,15 @@ export function renderInventoryResults(data, term, resultsList) {
     const numStr = String(item.Num ?? "");
     const oldStr = String(item.Old ?? "");
 
-    // ==============================
-    // BUILD NUMBER FIELD
-    // ==============================
     let html = "";
 
+    // ==============================
+    // NUMBER / OLD NUMBER LOGIC
+    // ==============================
     if (term) {
       const numMatch = numStr.toLowerCase().includes(term);
       const oldMatch = oldStr.toLowerCase().includes(term);
-    
+
       if (numMatch || (!numMatch && !oldMatch)) {
         html += `<span class="tag-label">Number:</span> ${highlightMatch(numStr, term)}`;
         if (oldStr) html += ` &nbsp;&nbsp; <span class="tag-label">Old:</span> (${highlightMatch(oldStr, term)})`;
@@ -46,52 +46,32 @@ export function renderInventoryResults(data, term, resultsList) {
     html += `<br>`;
 
     // ==============================
-    // OTHER FIELDS
+    // RENDER LINES
     // ==============================
-    if (item.Description?.trim()) {
-      html += `${highlightMatch(item.Description, term)}<br>`;
-    }
-    // ===== USL
-    if (item.USL?.trim() || item.Bin?.trim()) {
-      html += `<span class="tag-label">Location:</span>`;
-      if (item.USL?.trim()) html += ` ${highlightMatch(item.USL, term)}`;
-      if (item.Bin?.trim()) html += ` - ${highlightMatch(item.Bin, term)}`;
-      html += `<br>`;
-    }
-    // ===== ROP / ROQ
-    if (item.ROP !== undefined && item.ROP !== null || item.ROQ !== undefined && item.ROQ !== null) {
-      if (item.ROP !== undefined && item.ROP !== null) {
-        html += `<span class="tag-label">ROP:</span> ${item.ROP} `;
-      }
-      if (item.ROQ !== undefined && item.ROQ !== null) {
-        html += `<span class="tag-label">ROQ:</span> ${item.ROQ}`;
-      }
-      html += `<br>`;
-    }
-    // ===== QUANTITY
-    if (item.QTY || item.UOM?.trim()) {
-      html += `<span class="tag-label">Quantity:</span> ~${item.QTY}<br>`;
-    }
-    // ===== COST / UOM
-    if (item.Cost !== undefined && item.Cost !== null && item.Cost !== "") {
-      html += `<span class="tag-label">Cost:</span> ${item.Cost}`;
-      if (item.UOM?.trim()) html += ` / ${highlightMatch(item.UOM, term)}`;
-      html += `<br>`;
-    }
-    // ===== COST CENTER
-    if (item.Cost_Center?.trim()) {
-      html += `<span class="tag-label">Cost Center:</span> ${highlightMatch(item.Cost_Center, term)}<br>`;
-    }
-    // ===== GROUP
-    if (item.Group?.trim()) {
-      html += `<span class="tag-label">Group:</span> ${highlightMatch(item.Group, term)}`;
-    }
+    html += renderLine("", item.Description, { term, highlight: true });
+
+    html += renderLine([
+      ["Location", item.USL, item.Bin]
+    ], null, { joiner: " - " });
+
+    html += renderLine([
+      ["ROP", item.ROP],
+      ["ROQ", item.ROQ]
+    ]);
+
+    html += renderLine("Quantity", item.QTY, { prefix: "~" });
+
+    html += renderLine([
+      ["Cost", item.Cost, item.UOM]
+    ]);
+
+    html += renderLine("Cost Center", item.Cost_Center, { term, highlight: true });
+    html += renderLine("Group", item.Group, { term, highlight: true });
 
     card.innerHTML = html;
     resultsList.appendChild(card);
   });
 
-  // Adjust Search Window
   const header = document.querySelector('#inventory-search-panel .panel-header');
   scrollPanel(header);
 }
