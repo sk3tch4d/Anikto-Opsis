@@ -5,6 +5,7 @@
 import { clearTextSelect, setupParseStats, highlightMatch } from "../search-utils.js";
 import { getStatusDot } from '../statusdot.js';
 import { showToast, hapticFeedback, attachChevron } from '../ui-utils.js';
+import { createSavedCardToggle, createSavedCardUpdater } from '../cards/saved_card.js';
 
 // ==============================
 // DEBUG TOGGLE
@@ -12,9 +13,16 @@ import { showToast, hapticFeedback, attachChevron } from '../ui-utils.js';
 const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 
 // ==============================
-// GLOBAL: SAVED ITEMS
+// SAVED CARDS SETUP
 // ==============================
 const savedItems = new Map();
+
+const updateSavedPanel = createSavedCardUpdater({
+  selector: "#zwdiseg-saved-panel .panel-body",
+  savedItems
+});
+
+const toggleSavedCard = createSavedCardToggle(savedItems, updateSavedPanel);
 
 // ==============================
 // HELPER: JOIN CONTENT <div>
@@ -24,42 +32,6 @@ function joinAsDivs(...lines) {
     .filter(line => line && line.trim() !== "")
     .map(line => `<div class="zwdiseg-line">${line}</div>`)
     .join("");
-}
-
-// ==============================
-// HELPER: UPDATE SAVED PANEL
-// ==============================
-function updateSavedPanel() {
-  const savedPanel = document.querySelector("#zwdiseg-saved-panel .panel-body");
-  savedPanel.innerHTML = "";
-  const cards = Array.from(savedItems.values()).reverse();
-  if (!cards.length) {
-    savedPanel.innerHTML = "<p>No items saved yet.</p><br><br><p>Double click a tile to save!</p>";
-    return;
-  }
-  cards.forEach(clone => {
-    const freshClone = clone.cloneNode(true);
-    savedPanel.appendChild(freshClone);
-    requestAnimationFrame(() => attachChevron({ root: freshClone, chevronColor: "#0a0b0f" }));
-  });
-}
-
-// ==============================
-// HELPER: TOGGLE SAVE ITEM
-// ==============================
-function toggleSaveItem(card, base) {
-  if (savedItems.has(base.Num)) {
-    savedItems.delete(base.Num);
-    card.classList.remove("saved-card");
-    showToast("Removed!");
-  } else {
-    savedItems.set(base.Num, card.cloneNode(true));
-    card.classList.add("saved-card");
-    showToast("Saved!");
-  }
-  hapticFeedback();
-  clearTextSelect();
-  updateSavedPanel();
 }
 
 // ==============================
@@ -137,7 +109,7 @@ function createZwdisegItemCard(matching, base, currentSearch, currentFilter) {
   infoBlock.innerHTML = detailsHTML;
   card.appendChild(infoBlock);
 
-  card.addEventListener("dblclick", () => toggleSaveItem(card, base));
+  card.addEventListener("dblclick", () => toggleSavedCard(card, base));
 
   return card;
 }
