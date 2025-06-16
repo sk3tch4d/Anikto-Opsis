@@ -20,7 +20,7 @@ const nonClosablePanels = [
   "inventory-saved-panel",
   "inventory-history-panel",
   "optimization-search-panel",
-  "optimization-results-panel",
+  "optimization-stats-panel",
   "optimization-saved-panel",
   "optimization-history-panel",
   "zwdiseg-search-panel",
