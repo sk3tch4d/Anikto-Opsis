@@ -78,10 +78,10 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
         "QTY", "UOM", "Cost", "Group", "Cost_Center"
     ]
     available_cols = [col for col in columns_to_return if col in df.columns]
-    final_df = df[available_cols].head(100)
+    #final_df = df[available_cols].head(100)
 
     # Return All Columns
-    #final_df = df.head(100)
+    final_df = df.head(100)
 
     if DEBUG:
         print(f"[DEBUG] Returning {len(final_df)} records from original {len(df)}")
