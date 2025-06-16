@@ -65,17 +65,23 @@ def search_inventory(df, term, usl, sort="QTY", direction="desc"):
 
     # ✅ Validate sort field
     valid_sort_fields = {"QTY", "USL", "Num", "Cost"}
-    if sort not in valid_sort_fields:
-        sort = "QTY"
+    if sort not in valid_sort_fields or sort not in df.columns:
+        sort = "QTY" if "QTY" in df.columns else df.columns[0]
 
     ascending = (direction == "asc")
     if sort in df.columns:
         df = df.sort_values(by=sort, ascending=ascending)
 
-    final_df = df[[
+    # Ensure we only use available columns
+    columns_to_return = [
         "Num", "Old", "Bin", "Description", "USL",
         "QTY", "UOM", "Cost", "Group", "Cost_Center"
-    ]].head(100)
+    ]
+    available_cols = [col for col in columns_to_return if col in df.columns]
+    final_df = df[available_cols].head(100)
+
+    # Return All Columns
+    #final_df = df.head(100)
 
     if DEBUG:
         print(f"[DEBUG] Returning {len(final_df)} records from original {len(df)}")
