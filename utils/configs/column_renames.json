@@ -33,7 +33,8 @@
   "Material Group": "Group",
   "Replenishmt qty": "ROQ",
   "Reorder point": "ROP",
-  "QTY on Hand": "QTY",
+  "Qty On Hand": "QTY",
+  "QTY on Hand": "QTY"
   "Old Mat": "Old",
   "Old Material Number": "Old",
   "Created": "Created",
