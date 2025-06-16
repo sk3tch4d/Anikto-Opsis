@@ -27,7 +27,7 @@ def search_optimization(df, term, cart_filter="All", sort="Num", direction="desc
         df = df[df["Cart"].astype(str).str.lower().str.strip() == cart_str]
         logger.debug(f"[OPT_SEARCH]🧺 Filtered by Cart '{cart_str}': {len(df)} rows remaining")
     else:
-        logger.debug(f"[OPT_SEARCH]🛡️ Cart filter skipped (value: '{cart_filter}')")
+        logger.debug(f"[OPT_SEARCH]🛡️ Filter skipped (value: '{cart_filter}')")
 
     # ✅ Filter by search term
     term = str(term).strip().lower()
@@ -59,8 +59,8 @@ def search_optimization(df, term, cart_filter="All", sort="Num", direction="desc
     columns_map = {col.lower(): col for col in df.columns}
     sort_key = sort.lower()
     if sort_key not in columns_map:
-        logger.warning(f"[OPT_SEARCH]⚠️ Sort column '{sort}' not found. Falling back to 'SROP'")
-        sort = "SROP"
+        logger.warning(f"[OPT_SEARCH]⚠️ Sort column '{sort}' not found. Falling back to 'QTY'")
+        sort = "QTY"
     else:
         sort = columns_map[sort_key]
 
