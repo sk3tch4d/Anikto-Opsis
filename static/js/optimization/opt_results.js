@@ -73,6 +73,26 @@ export function renderOptimizationResults(data, term, resultsList) {
       }
       html += `<br>`;
     }
+    // ===== CART USAGE
+    if ((item.CU1 !== undefined && item.CU1 !== null) || (item.CU2 !== undefined && item.CU2 !== null)) {
+      if (item.CU1 !== undefined && item.CU1 !== null) {
+        html += `<span class="tag-label">Quarterly Usage:</span> ${item.CU1} `;
+      }
+      if (item.CU2 !== undefined && item.CU2 !== null) {
+        html += `<span class="tag-label">Anual Usage:</span> ${item.CU2}`;
+      }
+      html += `<br>`;
+    }
+    // ===== COST CENTER USAGE
+    if ((item.CC1 !== undefined && item.CC1 !== null) || (item.CC2 !== undefined && item.CC2 !== null)) {
+      if (item.CC1 !== undefined && item.CC1 !== null) {
+        html += `<span class="tag-label">CC Quarterly Usage:</span> ${item.CC1} `;
+      }
+      if (item.CC2 !== undefined && item.CC2 !== null) {
+        html += `<span class="tag-label">CC Anual Usage:</span> ${item.CU2}`;
+      }
+      html += `<br>`;
+    }
     // ===== MOVEMENTS
     if (item.MVT != null) {
       html += `<span class="tag-label">Movements:</span> ${highlightMatch(String(item.MVT), term)}<br>`;
