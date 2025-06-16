@@ -76,7 +76,7 @@ export function renderOptimizationResults(data, term, resultsList) {
     // ===== CART USAGE
     if ((item.CU1 !== undefined && item.CU1 !== null) || (item.CU2 !== undefined && item.CU2 !== null)) {
       if (item.CU1 !== undefined && item.CU1 !== null) {
-        html += `<span class="tag-label"> Usage Quart:</span> ${item.CU1} `;
+        html += `<span class="tag-label">Usage Quart:</span> ${item.CU1} `;
       }
       if (item.CU2 !== undefined && item.CU2 !== null) {
         html += `<span class="tag-label">Anual:</span> ${item.CU2}`;
@@ -100,6 +100,10 @@ export function renderOptimizationResults(data, term, resultsList) {
     // ===== QUANTITY
     if (item.QTY || item.UOM?.trim()) {
       html += `<span class="tag-label">Quantity:</span> ~${item.QTY}<br>`;
+    }
+    // ===== CART
+    if (item.Cart?.trim()) {
+      html += `${highlightMatch(item.Cart, term)}<br>`;
     }
     // ===== COST / UOM
     if (item.Cost !== undefined && item.Cost !== null && item.Cost !== "") {
