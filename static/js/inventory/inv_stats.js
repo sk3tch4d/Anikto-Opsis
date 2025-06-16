@@ -1,11 +1,11 @@
 // ==============================
 // INV_STATS.JS 
-// Inventory Statistics Renderer
 // ==============================
 
 import { clearTextSelect, setupParseStats, highlightMatch } from "../search-utils.js";
 import { showToast, hapticFeedback, attachChevron } from '../ui-utils.js';
 import { scrollPanel } from '../panels.js';
+import { createSavedCardToggle, createSavedCardUpdater } from '../cards/saved_card.js';
 
 // ==============================
 // DEBUG TOGGLE
@@ -13,9 +13,16 @@ import { scrollPanel } from '../panels.js';
 const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 
 // ==============================
-// GLOBAL: SAVED ITEMS
+// SAVED CARDS SETUP
 // ==============================
-window.savedItems = new Map();
+const savedItems = new Map();
+
+const updateSavedPanel = createSavedCardUpdater({
+  selector: "#inventory-saved-panel .panel-body",
+  savedItems
+});
+
+const toggleSavedCard = createSavedCardToggle(savedItems, updateSavedPanel);
 
 // ==============================
 // HELPER: JOIN CONTENT <div>
@@ -25,46 +32,6 @@ function joinAsDivs(...lines) {
     .filter(line => line && line.trim() !== "")
     .map(line => `<div class="inventory-line">${line}</div>`)
     .join("");
-}
-
-// ==============================
-// HELPER: UPDATE SAVED PANEL
-// ==============================
-function updateSavedPanel() {
-  const savedPanel = document.querySelector("#inventory-saved-panel .panel-body");
-  savedPanel.innerHTML = "";
-
-  const cards = Array.from(savedItems.values()).map(entry => entry.card).reverse();
-
-  if (cards.length === 0) {
-    savedPanel.innerHTML = "<p>No items saved yet.</p><br><br><p>Double click a tile to save!</p>";
-    return;
-  }
-
-  cards.forEach(clone => {
-    const freshClone = clone.cloneNode(true);
-    savedPanel.appendChild(freshClone);
-    requestAnimationFrame(() => attachChevron({ root: freshClone, chevronColor: "#0a0b0f" }));
-  });
-}
-
-// ==============================
-// HELPER: TOGGLE SAVE ITEM
-// ==============================
-function toggleSaveItem(card, base, matching) {
-  if (savedItems.has(base.Num)) {
-    savedItems.delete(base.Num);
-    card.classList.remove("saved-card");
-    showToast("Removed!");
-  } else {
-    const clone = card.cloneNode(true);
-    savedItems.set(base.Num, { card: clone, data: matching });
-    card.classList.add("saved-card");
-    showToast("Saved!");
-  }
-  hapticFeedback();
-  clearTextSelect();
-  updateSavedPanel();
 }
 
 // ==============================
@@ -156,9 +123,8 @@ function createInventoryItemCard(matching, base, currentSearch, currentFilter) {
   card.appendChild(infoBlock);
 
   card.addEventListener("dblclick", () => {
-    toggleSaveItem(card, base, matching);
+    toggleSavedCard(card, base, matching);
   });
-
 
   if (currentFilter === "all") {
     if (uniqueUSLs.length === 1) {
@@ -195,7 +161,6 @@ export function populateInventoryStats(results) {
   statsBox.innerHTML = "";
   
   const searchInput = document.getElementById("inventory-search");
-  //const currentSearch = searchInput?.value.trim() || "(None)";
   const currentSearch = searchInput?.value.trim() || "";
 
   const filterInput = document.getElementById("usl-filter");
@@ -274,7 +239,6 @@ export function populateInventoryStats(results) {
 
   statsBox.appendChild(fragment);
 
-  // Run AFTER next paint to ensure toggles are in DOM
   requestAnimationFrame(() => attachChevron({ root: statsBox, chevronColor: "#0a0b0f" }));
 
   setTimeout(() => {
