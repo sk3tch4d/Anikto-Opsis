@@ -75,5 +75,8 @@ export function renderLine(labelOrArray, value = null, {
     content = highlightMatch(content, term);
   }
 
+  if (typeof labelOrArray === "string" && labelOrArray.trim() === "") {
+    return `${prefix}${content}${suffix}<br>`;
+  }
   return `<span class="tag-label">${labelOrArray}:</span> ${prefix}${content}${suffix}<br>`;
 }
