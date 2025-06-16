@@ -29,7 +29,6 @@ export function renderOptimizationResults(data, term, resultsList) {
     // BUILD NUMBER FIELD
     // ==============================
     let html = "";
-
     if (term) {
       const numMatch = numStr.toLowerCase().includes(term);
     
@@ -37,7 +36,6 @@ export function renderOptimizationResults(data, term, resultsList) {
     } else {
       html += `<span class="tag-label">Number:</span> ${numStr}`;
     }
-
     html += `<br>`;
 
     // ==============================
@@ -46,10 +44,10 @@ export function renderOptimizationResults(data, term, resultsList) {
     if (item.Description?.trim()) {
       html += `${highlightMatch(item.Description, term)}<br>`;
     }
-    // ===== USL / BIN
-    if (item.USL?.trim() || item.Bin?.trim()) {
+    // ===== CART / BIN
+    if (item.Cart?.trim() || item.Bin?.trim()) {
       html += `<span class="tag-label">Location:</span>`;
-      if (item.USL?.trim()) html += ` ${highlightMatch(item.USL, term)}`;
+      if (item.Cart?.trim()) html += ` ${item.Cart}`;
       if (item.Bin?.trim()) html += ` - ${highlightMatch(item.Bin, term)}`;
       html += `<br>`;
     }
@@ -100,10 +98,6 @@ export function renderOptimizationResults(data, term, resultsList) {
     // ===== QUANTITY
     if (item.QTY || item.UOM?.trim()) {
       html += `<span class="tag-label">Quantity:</span> ~${item.QTY}<br>`;
-    }
-    // ===== CART
-    if (item.Cart?.trim()) {
-      html += `${highlightMatch(item.Cart, term)}<br>`;
     }
     // ===== COST / UOM
     if (item.Cost !== undefined && item.Cost !== null && item.Cost !== "") {
