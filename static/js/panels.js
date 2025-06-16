@@ -18,12 +18,15 @@ const nonClosablePanels = [
   "seniority-search-panel",
   "inventory-search-panel",
   "inventory-saved-panel",
+  "inventory-history-panel",
   "optimization-search-panel",
+  "optimization-results-panel",
   "optimization-saved-panel",
+  "optimization-history-panel",
   "zwdiseg-search-panel",
   "zwdiseg-history-panel",
-  "scheduled-search-panel",
-  "search-history-panel"
+  "zwdiseg-saved-panel",
+  "scheduled-search-panel"
 ];
 
 // Tag names that shouldn't trigger panel close
