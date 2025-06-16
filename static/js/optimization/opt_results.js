@@ -46,7 +46,7 @@ export function renderOptimizationResults(data, term, resultsList) {
     }
     // ===== BIN LOCATION
     if (item.Bin?.trim()) {
-      html += `<span class="tag-label">Location:</span> ${highlightMatch(item.Bin, term)}`;
+      html += `<span class="tag-label">Location:</span> <span>${highlightMatch(item.Bin, term)}</span><br>`;
     }
     // ===== CURRENT ROP/ROQ
     if (item.ROP !== undefined && item.ROP !== null || item.ROQ !== undefined && item.ROQ !== null) {
