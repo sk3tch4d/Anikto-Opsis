@@ -189,6 +189,7 @@
   --panel-body-label-background: #f9f9f9;
   --panel-body-labelhover-background: #efefef;
   --panel-scroll-bar-background-color: #ccccff;
+  --toast-close-background-color: rgba(100, 100, 200, 0.4);
 
   /* ============================= */
   /* DISC_RESPONSIVE.CSS   (LIGHT) */
@@ -423,6 +424,7 @@
   --panel-body-label-background: #1f2023;
   --panel-body-labelhover-background: #2a2d33;
   --panel-scroll-bar-background-color: #7676d6;
+  --toast-close-background-color: rgba(155, 155, 255, 0.4);
 
   /* ============================= */
   /* DISC_RESPONSIVE.CSS    (DARK) */
