@@ -24,10 +24,11 @@ export function showNotePopup({ onSave }) {
   label.textContent = "Optional Note:";
   label.style.fontSize = "1.1rem";
 
-  const input = document.createElement("textarea");
+  const input = document.createElement("input");
   input.classList.add("input", "full-width");
-  input.placeholder = "Notes..";
-  input.rows = 3;
+  input.type = "text";
+  input.placeholder = "Optional note...";
+  input.required = false;
 
   const saveBtn = document.createElement("button");
   saveBtn.type = "submit";
