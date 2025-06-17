@@ -87,16 +87,18 @@ function isDateInput(target, panelId) {
 // FLOATING CLOSE BUTTON
 // ==============================
 function appendFloatingCloseButton(panel, panelId) {
-  // Remove existing first
+  // Clean up any existing buttons globally
   document.querySelectorAll('.toast-close').forEach(btn => btn.remove());
 
   if (nonClosablePanels.includes(panelId)) return;
-  if (document.body.contains(document.querySelector('.toast-close'))) return;
 
   const button = document.createElement('div');
   button.className = 'toast-close';
   button.innerHTML = '✕';
   button.title = 'Close panel';
+  button.setAttribute('aria-label', 'Close panel');
+  button.setAttribute('role', 'button');
+  button.tabIndex = 0;
 
   button.addEventListener('click', () => {
     closePanel(panel);
@@ -104,7 +106,8 @@ function appendFloatingCloseButton(panel, panelId) {
     button.remove();
   });
 
-  document.body.appendChild(button);
+  // Append directly to the panel so it's context-bound
+  panel.appendChild(button);
 }
 
 // ==============================
