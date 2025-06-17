@@ -323,6 +323,12 @@ body.lock-scroll {
   opacity: 0;
   animation: fadeInToastClose 300ms ease forwards;
 }
+.panel .toast-close {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+}
 @keyframes fadeInToastClose {
   from { opacity: 0; transform: scale(0.8); }
   to { opacity: 1; transform: scale(1); }
