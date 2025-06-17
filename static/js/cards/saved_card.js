@@ -47,8 +47,14 @@ export function createSavedCardToggle(savedItems, updateSavedPanel) {
  * @param {string} options.selector - Query selector for the panel body.
  * @param {Map} options.savedItems - The same Map used by toggle.
  */
-export function createSavedCardUpdater({ selector, savedItems, emptyHTML = "<p>No items saved yet.</p><br><br><p>Double click a tile to save!</p>" }) {
-  return function() {
+export function createSavedCardUpdater({
+  selector,
+  savedItems,
+  emptyHTML = "<p>No items saved yet.</p><br><br><p>Double click a tile to save!</p>",
+  chevronColor = "#0a0b0f",
+  searchSetup = null // ← new
+}) {
+  return function () {
     const savedPanel = document.querySelector(selector);
     if (!savedPanel) return;
 
@@ -64,8 +70,14 @@ export function createSavedCardUpdater({ selector, savedItems, emptyHTML = "<p>N
     entries.forEach(clone => {
       const freshClone = clone.cloneNode(true);
       savedPanel.appendChild(freshClone);
+
       requestAnimationFrame(() => {
-        attachChevron({ root: freshClone, chevronColor: "#0a0b0f" });
+        attachChevron({ root: freshClone, chevronColor });
+
+        // Apply search behavior if provided
+        if (typeof searchSetup === "function") {
+          searchSetup(freshClone);
+        }
       });
     });
   };
