@@ -72,11 +72,19 @@ export function createSavedCardToggle(savedItems, updateSavedPanel) {
       return;
     }
 
-    // NEW: prompt for optional note before saving
+    // Prompt for optional note before saving
     showNotePopup({
       onSave: (note) => {
         const clone = card.cloneNode(true);
-        const data = { card: clone, data: matching, note: note || "" };
+
+        // Ensure data is always an array for compatibility with downloadTable
+        const formattedData = Array.isArray(matching) ? matching : [matching];
+
+        const data = {
+          card: clone,
+          data: formattedData,
+          note: note || ""
+        };
 
         savedItems.set(key, data);
         card.classList.add("saved-card");
