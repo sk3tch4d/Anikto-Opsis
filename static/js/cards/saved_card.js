@@ -33,9 +33,7 @@ export function showNotePopup({ onSave }) {
   saveBtn.classList.add("button", "full-width-on", "panel-animate");
 
   form.appendChild(document.createElement("br"));
-  form.appendChild(document.createElement("br"));
   form.appendChild(input);
-  form.appendChild(document.createElement("br"));
   form.appendChild(saveBtn);
   form.appendChild(closeBtn);
 
