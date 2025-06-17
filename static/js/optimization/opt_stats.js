@@ -3,7 +3,7 @@
 // ==============================
 
 import { clearTextSelect, setupParseStats, highlightMatch } from "../search-utils.js";
-import { showToast, hapticFeedback, attachChevron } from '../ui-utils.js';
+import { showToast, hapticFeedback, attachChevron, joinAsDivs } from '../ui-utils.js';
 import { scrollPanel } from '../panels.js';
 import { createSavedCardToggle, createSavedCardUpdater } from '../cards/saved_card.js';
 
@@ -32,16 +32,6 @@ searchSetup: () => {
 }
 
 const toggleSavedCard = createSavedCardToggle(savedItems, updateSavedPanel);
-
-// ==============================
-// HELPER: JOIN CONTENT <div>
-// ==============================
-function joinAsDivs(...lines) {
-  return lines
-    .filter(line => line && line.trim() !== "")
-    .map(line => `<div class="inventory-line">${line}</div>`)
-    .join("");
-}
 
 // ==============================
 // HELPER: CREATE TOGGLE LIST
