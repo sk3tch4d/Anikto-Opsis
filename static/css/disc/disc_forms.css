@@ -13,3 +13,16 @@ form.button-form {
   display: flex;
   justify-content: center;
 }
+
+/* ============================== */
+/* SAVED NOTE                     */
+/* ============================== */
+.saved-note {
+  margin-top: 0.75rem;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  background: #f8f8f8;
+  border-left: 4px solid #bbb;
+  border-radius: 4px;
+  color: #333;
+}
