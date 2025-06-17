@@ -146,3 +146,13 @@ export function formatTimestamp(date) {
   const datePart = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   return `${datePart} at ${time}`;
 }
+
+// ==============================
+// JOIN AS DIVS
+// ==============================
+export function joinAsDivs(...lines) {
+  return lines
+    .filter(line => line && line.trim() !== "")
+    .map(line => `<div>${line}</div>`)
+    .join("");
+}
