@@ -89,8 +89,6 @@ function isDateInput(target, panelId) {
 function appendFloatingCloseButton(panel, panelId) {
   document.querySelectorAll('.toast-close').forEach(btn => btn.remove());
 
-  if (nonClosablePanels.includes(panelId)) return;
-
   const button = document.createElement('div');
   button.className = 'toast-close';
   button.innerHTML = '✕';
