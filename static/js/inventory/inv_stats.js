@@ -19,7 +19,16 @@ const savedItems = new Map();
 
 const updateSavedPanel = createSavedCardUpdater({
   selector: "#inventory-saved-panel .panel-body",
-  savedItems
+  savedItems,
+  searchSetup: () => {
+    setupParseStats(
+      ".clickable-match, .clickable-stat",
+      "inventory-search",
+      "data-search",
+      "usl-filter",
+      "data-filter"
+    );
+  }
 });
 
 const toggleSavedCard = createSavedCardToggle(savedItems, updateSavedPanel);
