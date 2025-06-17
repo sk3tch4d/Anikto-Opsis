@@ -84,6 +84,30 @@ function isDateInput(target, panelId) {
 }
 
 // ==============================
+// FLOATING CLOSE BUTTON
+// ==============================
+function appendFloatingCloseButton(panel, panelId) {
+  // Remove existing first
+  document.querySelectorAll('.toast-close').forEach(btn => btn.remove());
+
+  if (nonClosablePanels.includes(panelId)) return;
+  if (document.body.contains(document.querySelector('.toast-close'))) return;
+
+  const button = document.createElement('div');
+  button.className = 'toast-close';
+  button.innerHTML = '✕';
+  button.title = 'Close panel';
+
+  button.addEventListener('click', () => {
+    closePanel(panel);
+    disableBodyLock();
+    button.remove();
+  });
+
+  document.body.appendChild(button);
+}
+
+// ==============================
 // PANEL SCROLL BAR
 // ==============================
 export function initPanelScrollBars() {
@@ -181,14 +205,15 @@ export function openPanel(panelId) {
         requestAnimationFrame(() => {
           scrollPanel(header);
           setTimeout(enableBodyLock, 500);
+          //
+          setupTouchListeners(body, panelId, panel, header);
+          appendFloatingCloseButton(panel, panelId);
         });
       };
       body.addEventListener('transitionend', onTransitionEnd);
     } else {
       enableBodyLock();
     }
-
-    setupTouchListeners(body, panelId, panel, header);
   });
 }
 
@@ -216,6 +241,8 @@ function closePanel(panel) {
   panel.classList.remove('open');
   header?.classList.remove('open');
   body?.classList.remove('open');
+
+  document.querySelector('.toast-close')?.remove();
 
   setTimeout(() => {
     document.getElementById('typed-header')?.focus();
