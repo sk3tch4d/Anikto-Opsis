@@ -13,21 +13,18 @@ export function showNotePopup({ onSave }) {
 
   const form = document.createElement("form");
   form.id = "note-form";
-  form.classList.add("dev-popup-form");
+  form.classList.add("popup-form");
 
   const closeBtn = document.createElement("div");
   closeBtn.textContent = "×";
   closeBtn.classList.add("close-btn");
   closeBtn.onclick = () => form.remove();
 
-  const label = document.createElement("label");
-  label.textContent = "Optional Note:";
-  label.style.fontSize = "1.1rem";
-
   const input = document.createElement("input");
   input.classList.add("input", "full-width");
   input.type = "text";
   input.placeholder = "Optional note...";
+  input.maxLength = 100;
   input.required = false;
 
   const saveBtn = document.createElement("button");
