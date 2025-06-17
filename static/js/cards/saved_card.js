@@ -70,6 +70,12 @@ export function createSavedCardUpdater({
 
     entries.forEach(clone => {
       const freshClone = clone.cloneNode(true);
+
+      // Clear toggle-bound flags so attachChevron will bind them
+      freshClone.querySelectorAll(".clickable-toggle").forEach(toggle => {
+        toggle.removeAttribute("data-toggle-bound");
+      });
+
       savedPanel.appendChild(freshClone);
     });
 
