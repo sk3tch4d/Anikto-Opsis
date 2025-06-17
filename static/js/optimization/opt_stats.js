@@ -19,7 +19,7 @@ function debug(...args) {
 // ==============================
 // SAVED CARDS SETUP
 // ==============================
-const savedItems = new Map();
+const savedItems = window.savedItems = window.savedItems || new Map();
 
 const updateSavedPanel = createSavedCardUpdater({
   selector: "#optimization-saved-panel .panel-body",
