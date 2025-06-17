@@ -36,6 +36,35 @@ export function setupZwdisegDownloadSearch() {
 }
 
 // ==============================
+// SETUP: DOWNLOAD FOR SAVED
+// ==============================
+export function setupZwdisegDownloadSaved() {
+  const button = document.getElementById("zwdiseg-saved-download");
+  if (!button) return;
+
+    button.addEventListener("click", () => {
+    const saved = Array.from(window.savedItems?.values() || []);
+    if (!saved.length) return alert("No saved items to export.");
+
+    const sheets = saved
+      .filter(entry => Array.isArray(entry.data) && entry.data.length > 0)
+      .map(entry => ({
+        sheetName: `${entry.data[0]?.Num || "Unknown"}`,
+        data: entry.data
+      }));
+
+    if (!sheets.length) {
+      return alert("Saved items found, but no valid data arrays for export.");
+    }
+
+    downloadTable({
+      data: sheets,
+      layout: "zwdiseg_saved"
+    });
+  });
+}
+
+// ==============================
 // SETUP: DOWNLOAD FOR HISTORY
 // ==============================
 export function setupZwdisegDownloadHistory() {
