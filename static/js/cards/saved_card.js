@@ -52,7 +52,7 @@ export function createSavedCardUpdater({
   savedItems,
   emptyHTML = "<p>No items saved yet.</p><br><br><p>Double click a tile to save!</p>",
   chevronColor = "#0a0b0f",
-  searchSetup = null // ← new
+  searchSetup = null
 }) {
   return function () {
     const savedPanel = document.querySelector(selector);
@@ -70,15 +70,14 @@ export function createSavedCardUpdater({
     entries.forEach(clone => {
       const freshClone = clone.cloneNode(true);
       savedPanel.appendChild(freshClone);
+    });
 
-      requestAnimationFrame(() => {
-        attachChevron({ root: freshClone, chevronColor });
+    requestAnimationFrame(() => {
+      attachChevron({ root: savedPanel, chevronColor });
 
-        // Apply search behavior if provided
-        if (typeof searchSetup === "function") {
-          searchSetup(freshClone);
-        }
-      });
+      if (typeof searchSetup === "function") {
+        searchSetup(); // No argument needed
+      }
     });
   };
 }
