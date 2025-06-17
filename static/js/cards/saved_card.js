@@ -32,7 +32,7 @@ export function showNotePopup({ onSave }) {
   saveBtn.textContent = "Save Card";
   saveBtn.classList.add("button", "full-width-on", "panel-animate");
 
-  form.appendChild(label);
+  form.appendChild(document.createElement("br"));
   form.appendChild(document.createElement("br"));
   form.appendChild(input);
   form.appendChild(document.createElement("br"));
