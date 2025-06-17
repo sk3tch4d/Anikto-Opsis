@@ -20,12 +20,13 @@
 /* ============================== */
 .popup-form {
   position: fixed;
-  top: 18rem;
+  top: 12.5rem;
   left: 50%;
   width: clamp(265px, 85vw, 440px);
   height: clamp(240px, 30vw, 320px);
   transform: translate(-50%, -50%);
   background: var(--panel-card-background);
+  box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.6);
   padding: 2rem;
   border-radius: 22px;
   border: var(--input-border);
