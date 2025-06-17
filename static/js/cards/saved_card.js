@@ -6,6 +6,54 @@ import { showToast, hapticFeedback, attachChevron } from '../ui-utils.js';
 import { clearTextSelect } from '../search-utils.js';
 
 // ==============================
+// SHOW NOTE POPUP
+// ==============================
+export function showNotePopup({ onSave }) {
+  if (document.getElementById("note-form")) return;
+
+  const form = document.createElement("form");
+  form.id = "note-form";
+  form.classList.add("dev-popup-form");
+
+  const closeBtn = document.createElement("div");
+  closeBtn.textContent = "×";
+  closeBtn.classList.add("close-btn");
+  closeBtn.onclick = () => form.remove();
+
+  const label = document.createElement("label");
+  label.textContent = "Optional Note:";
+  label.style.fontSize = "1.1rem";
+
+  const input = document.createElement("textarea");
+  input.classList.add("input", "full-width");
+  input.placeholder = "Notes..";
+  input.rows = 3;
+
+  const saveBtn = document.createElement("button");
+  saveBtn.type = "submit";
+  saveBtn.textContent = "Save Card";
+  saveBtn.classList.add("button", "full-width-on", "panel-animate");
+
+  form.appendChild(label);
+  form.appendChild(document.createElement("br"));
+  form.appendChild(input);
+  form.appendChild(document.createElement("br"));
+  form.appendChild(saveBtn);
+  form.appendChild(closeBtn);
+
+  document.body.appendChild(form);
+
+  requestAnimationFrame(() => input.focus());
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const note = input.value.trim();
+    onSave(note);
+    form.remove();
+  });
+}
+
+// ==============================
 // CREATE SAVED CARD TOGGLE
 // ==============================
 /**
@@ -22,17 +70,26 @@ export function createSavedCardToggle(savedItems, updateSavedPanel) {
       savedItems.delete(key);
       card.classList.remove("saved-card");
       showToast("Removed!");
-    } else {
-      const clone = card.cloneNode(true);
-      const data = matching ? { card: clone, data: matching } : clone;
-      savedItems.set(key, data);
-      card.classList.add("saved-card");
-      showToast("Saved!");
+      hapticFeedback();
+      clearTextSelect();
+      updateSavedPanel();
+      return;
     }
 
-    hapticFeedback();
-    clearTextSelect();
-    updateSavedPanel();
+    // NEW: prompt for optional note before saving
+    showNotePopup({
+      onSave: (note) => {
+        const clone = card.cloneNode(true);
+        const data = { card: clone, data: matching, note: note || "" };
+
+        savedItems.set(key, data);
+        card.classList.add("saved-card");
+        showToast("Saved!");
+        hapticFeedback();
+        clearTextSelect();
+        updateSavedPanel();
+      }
+    });
   };
 }
 
@@ -60,7 +117,7 @@ export function createSavedCardUpdater({
     savedPanel.innerHTML = "";
 
     const entries = Array.from(savedItems.values())
-      .map(entry => entry.card || entry)
+      .map(entry => entry.card ? entry : { card: entry, note: "" })
       .reverse();
 
     if (entries.length === 0) {
@@ -68,10 +125,17 @@ export function createSavedCardUpdater({
       return;
     }
 
-    entries.forEach(clone => {
-      const freshClone = clone.cloneNode(true);
+    entries.forEach(({ card, note }) => {
+      const freshClone = card.cloneNode(true);
 
-      // Clear toggle-bound flags so attachChevron will bind them
+      // Inject note element
+      if (note) {
+        const noteEl = document.createElement("div");
+        noteEl.className = "saved-note";
+        noteEl.innerHTML = `<span class="tag-label">Note:</span> ${note}`;
+        freshClone.appendChild(noteEl);
+      }
+
       freshClone.querySelectorAll(".clickable-toggle").forEach(toggle => {
         toggle.removeAttribute("data-toggle-bound");
       });
