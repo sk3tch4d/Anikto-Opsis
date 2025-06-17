@@ -105,8 +105,7 @@ function appendFloatingCloseButton(panel, panelId) {
     button.remove();
   });
 
-  const body = panel.querySelector('.panel-body.open') || panel.querySelector('.panel-body');
-  if (body) body.appendChild(button);
+  panel.appendChild(button);
 }
 
 // ==============================
