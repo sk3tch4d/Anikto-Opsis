@@ -27,17 +27,23 @@ export function setupOptimizationDownloadSaved() {
   const button = document.getElementById("optimization-saved-download");
   if (!button) return;
 
-  button.addEventListener("click", () => {
-    const saved = Array.from(window.optimizationSavedItems?.values() || []);
+    button.addEventListener("click", () => {
+    const saved = Array.from(window.savedItems?.values() || []);
     if (!saved.length) return alert("No saved items to export.");
 
-    const data = saved.map(entry => ({
-      sheetName: `${entry.data[0]?.Num || "Unknown"}`,
-      data: entry.data
-    }));
+    const sheets = saved
+      .filter(entry => Array.isArray(entry.data) && entry.data.length > 0)
+      .map(entry => ({
+        sheetName: `${entry.data[0]?.Num || "Unknown"}`,
+        data: entry.data
+      }));
+
+    if (!sheets.length) {
+      return alert("Saved items found, but no valid data arrays for export.");
+    }
 
     downloadTable({
-      data,
+      data: sheets,
       layout: "optimization_saved"
     });
   });
