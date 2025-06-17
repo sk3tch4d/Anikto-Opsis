@@ -60,6 +60,18 @@ const conditionalIgnoreRules = [
   { base: ".panel-delta", unlessWithin: ".clickable-stat" }
 ];
 
+// Panel IDs that should not append close button
+const nonButtonPanels = [
+  "downloads",
+  "info-features-panel",
+  "info-updates-panel",
+  "info-tips-panel",
+  "inventory-downloads-panel",
+  "optimization-downloads-panel",
+  "zwdiseg-downloads-panel",
+  "arg-downloads-panel"
+];
+
 // ==============================
 // HELPERS
 // ==============================
@@ -87,6 +99,8 @@ function isDateInput(target, panelId) {
 // FLOATING CLOSE BUTTON
 // ==============================
 function appendFloatingCloseButton(panel, panelId) {
+  if (nonButtonPanels.includes(panelId)) return;
+
   document.querySelectorAll('.toast-close').forEach(btn => btn.remove());
 
   const button = document.createElement('div');
@@ -105,8 +119,7 @@ function appendFloatingCloseButton(panel, panelId) {
 
   panel.appendChild(button);
 
-  // Real-time Position Adjustment
-  const MIN_PANEL_HEIGHT = 180;
+  const MIN_PANEL_HEIGHT = 280;
   const observer = new ResizeObserver(() => {
     button.style.display = (panel.offsetHeight < MIN_PANEL_HEIGHT) ? 'none' : 'flex';
   });
