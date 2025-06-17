@@ -299,8 +299,8 @@ body.lock-scroll {
 .toast-close {
   pointer-events: auto; /* override .toast default */
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  bottom: 18px;
+  right: 12px;
   z-index: 1100;
   width: 48px;
   height: 48px;
@@ -316,18 +316,12 @@ body.lock-scroll {
   transition: background 0.3s ease, transform 0.2s ease;
 }
 .toast-close:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--toast-close-background-color);
   transform: scale(1.05);
-}
+;}
 .toast-close {
   opacity: 0;
   animation: fadeInToastClose 300ms ease forwards;
-}
-.panel-body .toast-close {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  z-index: 10;
 }
 
 @keyframes fadeInToastClose {
