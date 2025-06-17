@@ -73,10 +73,20 @@ export function createSavedCardUpdater({
     });
 
     requestAnimationFrame(() => {
-      attachChevron({ root: savedPanel, chevronColor });
+      const toggles = savedPanel.querySelectorAll(".clickable-toggle");
+      toggles.forEach(toggle => {
+        toggle.addEventListener("click", () => {
+          const wrapper = toggle.nextElementSibling;
+          if (wrapper?.classList.contains("toggle-wrapper")) {
+            wrapper.classList.toggle("open");
+            const chevron = toggle.querySelector(".chevron");
+            if (chevron) chevron.classList.toggle("rotated");
+          }
+        });
+      });
 
       if (typeof searchSetup === "function") {
-        searchSetup(); // No argument needed
+        searchSetup(); // optional
       }
     });
   };
