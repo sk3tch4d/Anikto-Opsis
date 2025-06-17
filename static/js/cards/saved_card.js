@@ -5,7 +5,6 @@
 import { showToast, hapticFeedback, attachChevron } from '../ui-utils.js';
 import { clearTextSelect } from '../search-utils.js';
 
-
 // ==============================
 // CREATE SAVED CARD TOGGLE
 // ==============================
@@ -72,24 +71,14 @@ export function createSavedCardUpdater({
     entries.forEach(clone => {
       const freshClone = clone.cloneNode(true);
       savedPanel.appendChild(freshClone);
+    });
 
-      requestAnimationFrame(() => {
-        const toggles = freshClone.querySelectorAll(".clickable-toggle");
-        toggles.forEach(toggle => {
-          const wrapper = toggle.nextElementSibling;
-          if (wrapper?.classList.contains("toggle-wrapper")) {
-            toggle.addEventListener("click", () => {
-              wrapper.classList.toggle("open");
-              const chevron = toggle.querySelector(".chevron");
-              if (chevron) chevron.classList.toggle("rotated");
-            });
-          }
-        });
+    requestAnimationFrame(() => {
+      attachChevron({ root: savedPanel, chevronColor });
 
-        if (typeof searchSetup === "function") {
-          searchSetup(savedPanel);
-        }
-      });
+      if (typeof searchSetup === "function") {
+        searchSetup(savedPanel);
+      }
     });
   };
 }
