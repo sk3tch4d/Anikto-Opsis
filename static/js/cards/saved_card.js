@@ -60,7 +60,9 @@ export function createSavedCardUpdater({
 
     savedPanel.innerHTML = "";
 
-    const entries = Array.from(savedItems.values()).map(entry => entry.card || entry).reverse();
+    const entries = Array.from(savedItems.values())
+      .map(entry => entry.card || entry)
+      .reverse();
 
     if (entries.length === 0) {
       savedPanel.innerHTML = emptyHTML;
@@ -70,16 +72,24 @@ export function createSavedCardUpdater({
     entries.forEach(clone => {
       const freshClone = clone.cloneNode(true);
       savedPanel.appendChild(freshClone);
-    
-      // Attach chevrons scoped to each clone
+
       requestAnimationFrame(() => {
-        attachChevron({ root: freshClone, chevronColor });
+        const toggles = freshClone.querySelectorAll(".clickable-toggle");
+        toggles.forEach(toggle => {
+          const wrapper = toggle.nextElementSibling;
+          if (wrapper?.classList.contains("toggle-wrapper")) {
+            toggle.addEventListener("click", () => {
+              wrapper.classList.toggle("open");
+              const chevron = toggle.querySelector(".chevron");
+              if (chevron) chevron.classList.toggle("rotated");
+            });
+          }
+        });
+
+        if (typeof searchSetup === "function") {
+          searchSetup(savedPanel);
+        }
       });
     });
-
-    // Re-Search behavior
-    if (typeof searchSetup === "function") {
-      requestAnimationFrame(() => searchSetup(savedPanel));
-    }
   };
 }
