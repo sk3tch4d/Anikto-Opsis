@@ -84,7 +84,7 @@ button:disabled {
   text-align: center;
   transition: all 0.2s ease-in-out;
   box-shadow: var(--button-box-shadow);
-  margin-top: 2rem;
+  margin-top: 1.6rem;
   user-select: none;
 }
 .button.full-width-on:hover {
