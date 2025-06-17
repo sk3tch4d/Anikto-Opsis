@@ -15,7 +15,7 @@ const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 // ==============================
 // SAVED CARDS SETUP
 // ==============================
-const savedItems = new Map();
+const savedItems = window.savedItems = window.savedItems || new Map();
 
 const updateSavedPanel = createSavedCardUpdater({
   selector: "#inventory-saved-panel .panel-body",
