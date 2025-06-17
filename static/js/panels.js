@@ -63,12 +63,10 @@ const conditionalIgnoreRules = [
 // Panel IDs that should not append close button
 const nonButtonPanels = [
   "downloads",
-  "info-features-panel",
-  "info-updates-panel",
-  "info-tips-panel",
   "inventory-downloads-panel",
   "optimization-downloads-panel",
   "zwdiseg-downloads-panel",
+  "seniority-downloads-panel",
   "arg-downloads-panel"
 ];
 
