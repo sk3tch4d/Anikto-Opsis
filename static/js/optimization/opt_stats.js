@@ -21,15 +21,19 @@ function debug(...args) {
 // ==============================
 const savedItems = new Map();
 
-searchSetup: () => {
-  setupParseStats(
-    ".clickable-match, .clickable-stat",
-    "optimization-search",
-    "data-search",
-    "opsh-filter",
-    "data-filter"
-  );
-}
+const updateSavedPanel = createSavedCardUpdater({
+  selector: "#optimization-saved-panel .panel-body",
+  savedItems,
+  searchSetup: () => {
+    setupParseStats(
+      ".clickable-match, .clickable-stat",
+      "optimization-search",
+      "data-search",
+      "opsh-filter",
+      "data-filter"
+    );
+  }
+});
 
 const toggleSavedCard = createSavedCardToggle(savedItems, updateSavedPanel);
 
