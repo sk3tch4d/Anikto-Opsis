@@ -299,7 +299,7 @@ body.lock-scroll {
 .toast-close {
   pointer-events: auto; /* override .toast default */
   position: fixed;
-  bottom: 18px;
+  bottom: 20px;
   right: 12px;
   z-index: 1100;
   width: 48px;
