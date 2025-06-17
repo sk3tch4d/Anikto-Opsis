@@ -64,3 +64,33 @@ export function setupOptimizationDownloadHistory() {
     });
   });
 }
+
+// ==============================
+// SETUP: DOWNLOAD FOR PRINTABLE
+// ==============================
+export function setupOptimizationDownloadPrint() {
+  const button = document.getElementById("optimization-printable-download");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    downloadTable({
+      data: window.optimizationPrintableFull,
+      layout: "optimization_printable"
+    });
+  });
+}
+
+// ==============================
+// SETUP: DOWNLOAD FOR COMPLETE
+// ==============================
+export function setupOptimizationDownloadComplete() {
+  const button = document.getElementById("optimization-complete-download");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    downloadTable({
+      data: window.optimizationCompleteFull,
+      layout: "optimization_complete"
+    });
+  });
+}
