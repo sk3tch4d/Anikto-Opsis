@@ -104,6 +104,13 @@ function appendFloatingCloseButton(panel, panelId) {
   });
 
   panel.appendChild(button);
+
+  // Real-time Position Adjustment
+  const MIN_PANEL_HEIGHT = 180;
+  const observer = new ResizeObserver(() => {
+    button.style.display = (panel.offsetHeight < MIN_PANEL_HEIGHT) ? 'none' : 'flex';
+  });
+  observer.observe(panel);
 }
 
 // ==============================
