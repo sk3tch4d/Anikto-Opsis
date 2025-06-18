@@ -1,3 +1,6 @@
+# ==============================
+# HEATMAP.PY
+# ==============================
 
 import os
 import pandas as pd
@@ -5,6 +8,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import timedelta
 
+# ==============================
+# GENERATE HEATMAP PNG
+# ==============================
 def generate_heatmap_png(df, date_label):
     df["WeekStart"] = df["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))
     
@@ -19,5 +25,5 @@ def generate_heatmap_png(df, date_label):
     plt.savefig(path)
     plt.close()
 
-    print(f"Saved heatmap: {path}")
+    print(f"Saved Heatmap: {path}")
     return path
