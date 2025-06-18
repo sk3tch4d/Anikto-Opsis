@@ -100,10 +100,10 @@ function isDateInput(target, panelId) {
 function appendFloatingCloseButton(panel, panelId) {
   if (nonButtonPanels.includes(panelId)) return;
 
-  document.querySelectorAll('.toast-close').forEach(btn => btn.remove());
+  document.querySelectorAll('.close-button').forEach(btn => btn.remove());
 
   const button = document.createElement('div');
-  button.className = 'toast-close';
+  button.className = 'close-button';
   button.innerHTML = '✕';
   button.title = 'Close panel';
   button.setAttribute('aria-label', 'Close panel');
