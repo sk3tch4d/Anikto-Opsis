@@ -6,7 +6,7 @@ import sqlite3
 import pandas as pd
 import os
 import re
-from data_cleaner import clean_xlsx, clean_db, clean_headers, clean_columns
+from utils.data_cleaner import clean_xlsx, clean_db, clean_headers, clean_columns
 
 # ==============================
 # CONFIGS
