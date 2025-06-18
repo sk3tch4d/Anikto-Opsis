@@ -11,7 +11,7 @@ import { scrollPanel } from "../panels.js";
 export async function fetchWorkingOnDate() {
   const dateInput = document.getElementById('working-date');
   const resultsDiv = document.getElementById('working-date-results');
-  const panelBody = document.querySelector('#scheduled-search-panel .panel-body');
+  const panelBody = document.querySelector('#arg-date-search-panel .panel-body');
 
   if (!dateInput || !dateInput.value || !resultsDiv || !panelBody) return;
 
