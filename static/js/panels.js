@@ -260,7 +260,7 @@ function closePanel(panel) {
   header?.classList.remove('open');
   body?.classList.remove('open');
 
-  document.querySelector('.toast-close')?.remove();
+  document.querySelector('.close-button')?.remove();
 
   setTimeout(() => {
     document.getElementById('typed-header')?.focus();
