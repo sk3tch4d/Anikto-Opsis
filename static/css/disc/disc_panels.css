@@ -229,7 +229,6 @@ body.lock-scroll {
   flex: 0 0 auto;
 }
 
-
 /* ============================= */
 /* PANEL: SCROLLABLE (LEGACY)    */
 /* ============================= */
@@ -294,10 +293,10 @@ body.lock-scroll {
 }
 
 /* ============================= */
-/* TOAST CLOSE (BUTTON)          */
+/* CLOSE BUTTON                  */
 /* ============================= */
-.toast-close {
-  pointer-events: auto; /* override .toast default */
+.close-button {
+  pointer-events: auto;
   position: fixed;
   bottom: 20px;
   right: 12px;
@@ -314,16 +313,21 @@ body.lock-scroll {
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
   transition: background 0.3s ease, transform 0.2s ease;
-}
-.toast-close:hover {
-  background-color: var(--toast-close-background-color);
-  transform: scale(1.05);
-;}
-.toast-close {
   opacity: 0;
   animation: fadeInToastClose 300ms ease forwards;
 }
 
+/* ============================= */
+/* CLOSE BUTTON: HOVER           */
+/* ============================= */
+.close-button:hover {
+  background-color: var(--toast-close-background-color);
+  transform: scale(1.05);
+;}
+
+/* ============================= */
+/* FADE-IN CLOSE BUTTON          */
+/* ============================= */
 @keyframes fadeInToastClose {
   from { opacity: 0; transform: scale(0.8); }
   to { opacity: 1; transform: scale(1); }
