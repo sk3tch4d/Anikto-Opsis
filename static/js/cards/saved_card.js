@@ -78,7 +78,14 @@ export function createSavedCardToggle(savedItems, updateSavedPanel) {
         const clone = card.cloneNode(true);
 
         // Ensure data is always an array for compatibility with downloadTable
-        const formattedData = Array.isArray(matching) ? matching : [matching];
+        // const formattedData = Array.isArray(matching) ? matching : [matching];
+        const formattedData = Array.isArray(matching)
+          ? matching
+          : matching
+            ? [matching]
+            : base
+              ? [base]
+              : [];
 
         const data = {
           card: clone,
