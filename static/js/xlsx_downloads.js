@@ -9,15 +9,15 @@ import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.2/package/xlsx.mjs";
 // COLUMN LAYOUT DEFINITIONS
 // ==============================
 const COLUMN_LAYOUTS = {
-  zwdiseg_clean: [ "Cost_Center", "USL", "Num", "Description", "ROP", "ROQ", "Counted", "Consumed", "Difference", "Changed", "MVT", "Name", "Date", "Time", "Valid" ],
-  zwdiseg_search: [ "Num", "Description", "Group", "ROP", "ROQ", "USL", "Date" ],
+  zwdiseg_clean: ["Cost_Center", "USL", "Num", "Description", "ROP", "ROQ", "Counted", "Consumed", "Difference", "Changed", "MVT", "Name", "Date", "Time", "Valid"],
+  zwdiseg_search: ["Num", "Description", "Group", "ROP", "ROQ", "USL", "Date"],
   zwdiseg_saved: ["USL", "Num", "Bin", "QTY", "ROP", "ROQ", "Description", "Cost_Center", "Group", "Cost", "UOM", "Note"],
-  zwdiseg_history: [ "Timestamp", "Search Term", "Filter Used", "Matches" ],
-  inventory_search: [ "Num", "Description", "USL", "ROP", "ROQ", "Group", "Date" ],
+  zwdiseg_history: ["Timestamp", "Search Term", "Filter Used", "Matches"],
+  inventory_search: ["Num", "Description", "USL", "ROP", "ROQ", "Group", "Date"],
   inventory_saved: ["Num", "USL", "Bin", "QTY", "ROP", "ROQ", "Description", "Cost_Center", "Group", "Old", "Cost", "UOM", "Note"],  
-  inventory_history: [ "Timestamp", "Search Term", "Filter Used", "Matches" ],
-  seniority_clean: [ "Years", "First Name", "Last Name", "Status", "Position", "Department", "Note", "Union" ],
-  seniority_search: [ "Years", "First Name", "Last Name", "Status", "Position", "Department", "Note", "Union" ],
+  inventory_history: ["Timestamp", "Search Term", "Filter Used", "Matches" ],
+  seniority_clean: ["Union", "Years", "First Name", "Last Name", "Status", "Position", "Department"],
+  seniority_search: ["Union", "Years", "First Name", "Last Name", "Status", "Position", "Department"],
   optimization_search: ["Num", "Description", "Bin", "ROP", "ROQ", "RROP", "RROQ", "QTY", "MVT", "Group", "Cost", "UOM", "Cart"],
   optimization_saved: ["Num", "Description", "Bin", "ROP", "ROQ", "RROP", "RROQ", "QTY", "MVT", "Group", "Cost", "UOM", "Cart", "Note"], 
   optimization_history: ["Timestamp", "Search Term", "Filter Used", "Matches"]
