@@ -8,33 +8,36 @@ import { displayRandomQuote } from '../quotes.js';
 // ==============================
 // FILE TYPE MATCHERS
 // ==============================
-const OPTIMIZE_REGEX = /^KG01-[A-Z0-9]{1,4}-.*\.xlsx$/i;
-const CLEAN_REGEX = /.*clean.*\.xlsx$/i;
-const CATALOG_REGEX = /(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$/i;
-const ZWDISEG_REGEX = /.*zwdiseg.*\.xlsx$/i;
 const ARG_REGEX = /(arg|flowsheet).*?\.(pdf)$/i;
+const CATALOG_REGEX = /(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$/i;
+const CLEAN_REGEX = /.*clean.*\.xlsx$/i;
+const MERGE_REGEX = /'^merge_.*\\.xlsx$/i;
+const OPTIMIZE_REGEX = /^KG01-[A-Z0-9]{1,4}-.*\.xlsx$/i;
 const SENIORITY_REGEX = /(cupe|opseu)?[^/\\]*?(seniority|sen)[\s_-]*(list|lists|lst)?[^/\\]*\.xlsx$/i;
 const UNCLEANED_REGEX = /(list|ven|vendor|cost|usl|cc).*\.xlsx$/i;
+const ZWDISEG_REGEX = /.*zwdiseg.*\.xlsx$/i;
 
-const isOptimizationFile = name => OPTIMIZE_REGEX.test(name);
-const isCleaningFile = name => CLEAN_REGEX.test(name);
-const isCatalogFile = name => CATALOG_REGEX.test(name);
-const isZwdisegFile = name => ZWDISEG_REGEX.test(name);
 const isArgFile = name => ARG_REGEX.test(name);
+const isCatalogFile = name => CATALOG_REGEX.test(name);
+const isCleaningFile = name => CLEAN_REGEX.test(name);
+const isMergeFile = name => MERGE_REGEX.test(name);
+const isOptimizationFile = name => OPTIMIZE_REGEX.test(name);
 const isSeniorityFile = name => SENIORITY_REGEX.test(name);
 const isUncleanedFile = name => UNCLEANED_REGEX.test(name);
+const isZwdisegFile = name => ZWDISEG_REGEX.test(name);
 
 const isValidFile = name => /\.(pdf|xlsx|db)$/i.test(name);
 
 // SHARED MATCHERS ARRAY
 const typeMatchers = [
-  { key: "clean", label: "Clean Uploaded File", match: isCleaningFile },
-  { key: "optimize", label: "Generate Optimization Report", match: isOptimizationFile },
-  { key: "catalog", label: "Generate Catalog", match: isCatalogFile },
-  { key: "zwdiseg", label: "Analyze Zwdiseg", match: isZwdisegFile },
-  { key: "seniority", label: "Generate Seniority Summary", match: isSeniorityFile },
   { key: "arg", label: "Generate ARG Summary", match: isArgFile },
-  { key: "uncleaned", label: "Generate Cleaned File", match: isUncleanedFile }
+  { key: "catalog", label: "Generate Catalog", match: isCatalogFile },
+  { key: "clean", label: "Clean Uploaded File", match: isCleaningFile },
+  { key: "merge", label: "Merge Uploaded File", match: isMergeFile },
+  { key: "optimize", label: "Generate Optimization Report", match: isOptimizationFile },
+  { key: "seniority", label: "Generate Seniority Summary", match: isSeniorityFile },
+  { key: "uncleaned", label: "Generate Cleaned File", match: isUncleanedFile },
+  { key: "zwdiseg", label: "Analyze Zwdiseg", match: isZwdisegFile }
 ];
 
 // ==============================
