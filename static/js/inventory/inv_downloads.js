@@ -35,7 +35,7 @@ export function setupInventoryDownloadSaved() {
       .filter(entry => Array.isArray(entry.data) && entry.data.length > 0)
       .map(entry => ({
         sheetName: `${entry.data[0]?.Num || "Unknown"}`,
-        data: entry.data
+        data: entry.data.map(row => ({ ...row, Note: entry.note || "" }))
       }));
 
     if (!sheets.length) {
