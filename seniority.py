@@ -1,6 +1,5 @@
 # ==============================
 # SENIORITY.PY
-# XLSX Loader & Search Utilities
 # ==============================
 
 import pandas as pd
@@ -29,18 +28,15 @@ def load_seniority_file(path):
 
     return df
 
-
-
 # ==============================
-# BASIC NAME LOOKUP (fuzzy search)
+# BASIC NAME LOOKUP
 # ==============================
 def lookup_seniority(df, query):
     query = query.lower()
     return df[df.apply(lambda row: query in str(row).lower(), axis=1)]
 
-
 # ==============================
-# FILTER BY FIELD MATCHES (case-insensitive)
+# FILTER BY FIELD MATCHES
 # ==============================
 def filter_seniority(df, filters):
     result = df.copy()
@@ -48,7 +44,6 @@ def filter_seniority(df, filters):
         if key in df.columns and val:
             result = result[result[key].astype(str).str.contains(val, case=False)]
     return result
-
 
 # ==============================
 # API ROUTE REGISTRATION (Deprecated)
