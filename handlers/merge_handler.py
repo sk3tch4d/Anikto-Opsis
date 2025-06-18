@@ -69,7 +69,7 @@ def merge_and_update(db_df, new_df):
 # ==============================
 # MAIN
 # ==============================
-def main():
+def handle_merge():
     # Load and clean Excel
     with open(XLSX_PATH, "rb") as xlsx_stream:
         new_df = clean_xlsx(
@@ -94,4 +94,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    handle_merge()
