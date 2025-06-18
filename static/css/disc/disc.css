@@ -2,6 +2,16 @@
 /* DISC.CSS - IMPORTS             */
 /* ============================== */
 
+
+/* ============================== */
+/* MULTI IMPORTS                  */
+/* ============================== */
+
+@import url('/panels/disc_panels_init.css');
+
+/* ============================== */
+/* SINGLE IMPORTS                 */
+/* ============================== */
 @import url('disc_animations.css');
 @import url('disc_autocomplete.css');
 @import url('disc_badges.css');
