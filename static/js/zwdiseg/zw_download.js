@@ -8,7 +8,7 @@ import { downloadTable } from "../xlsx_downloads.js";
 // ==============================
 // SETUP: DOWNLOAD CLEANED DATA
 // ==============================
-export function setupZwdisegDownloadCleaned() {
+export function setupZwDownloadCleaned() {
   const button = document.getElementById("zwdiseg-cleaned-download");
   if (!button) return;
 
@@ -23,7 +23,7 @@ export function setupZwdisegDownloadCleaned() {
 // ==============================
 // SETUP: DOWNLOAD FOR SEARCH
 // ==============================
-export function setupZwdisegDownloadSearch() {
+export function setupZwDownloadSearch() {
   const button = document.getElementById("zwdiseg-search-download");
   if (!button) return;
 
@@ -38,7 +38,7 @@ export function setupZwdisegDownloadSearch() {
 // ==============================
 // SETUP: DOWNLOAD FOR SAVED
 // ==============================
-export function setupZwdisegDownloadSaved() {
+export function setupZwDownloadSaved() {
   const button = document.getElementById("zwdiseg-saved-download");
   if (!button) return;
 
@@ -67,7 +67,7 @@ export function setupZwdisegDownloadSaved() {
 // ==============================
 // SETUP: DOWNLOAD FOR HISTORY
 // ==============================
-export function setupZwdisegDownloadHistory() {
+export function setupZwDownloadHistory() {
   const button = document.getElementById("zwdiseg-history-download");
   if (!button) return;
 
