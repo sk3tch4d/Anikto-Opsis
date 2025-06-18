@@ -114,9 +114,21 @@ function appendFloatingCloseButton(panel, panelId) {
     closePanel(panel);
     disableBodyLock();
     button.remove();
+
+    // Remove spacer on close
+    const spacer = panel.querySelector('.panel-bottom-spacer');
+    spacer?.remove();
   });
 
   panel.appendChild(button);
+
+  // Add bottom spacer
+  const scrollable = panel.querySelector('.scrollable-panel');
+  if (scrollable && !scrollable.querySelector('.panel-bottom-spacer')) {
+    const spacer = document.createElement('div');
+    spacer.className = 'panel-bottom-spacer';
+    scrollable.appendChild(spacer);
+  }
 
   const MIN_PANEL_HEIGHT = 320;
   const observer = new ResizeObserver(() => {
