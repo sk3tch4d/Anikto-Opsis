@@ -117,7 +117,7 @@ function appendFloatingCloseButton(panel, panelId) {
 
   panel.appendChild(button);
 
-  const MIN_PANEL_HEIGHT = 280;
+  const MIN_PANEL_HEIGHT = 320;
   const observer = new ResizeObserver(() => {
     button.style.display = (panel.offsetHeight < MIN_PANEL_HEIGHT) ? 'none' : 'flex';
   });
