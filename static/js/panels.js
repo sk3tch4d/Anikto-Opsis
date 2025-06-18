@@ -26,7 +26,7 @@ const nonClosablePanels = [
   "zwdiseg-search-panel",
   "zwdiseg-history-panel",
   "zwdiseg-saved-panel",
-  "scheduled-search-panel"
+  "arg-date-search-panel"
 ];
 
 // Tag names that shouldn't trigger panel close
@@ -67,6 +67,7 @@ const nonButtonPanels = [
   "optimization-downloads-panel",
   "zwdiseg-downloads-panel",
   "seniority-downloads-panel",
+  "arg-date-search-panel",
   "arg-downloads-panel"
 ];
 
