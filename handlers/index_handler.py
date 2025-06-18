@@ -38,26 +38,30 @@ from utils.data_cleaner import (
 # ==============================
 def handle_excel_file(file, fname):
     fname_lower = fname.lower()
-
     # DETERMINE CLEANING PIPELINE
+
+    # REGEX CLEAN
     if re.match(CLEAN_REGEX, fname, re.IGNORECASE):
         logging.debug("[HANDLER] Matched CLEAN — using optimize cleaning pipeline")
         steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
         df = clean_xlsx(file, *steps, name=fname, multi_sheet=False, format=True)
         return handle_cleaner(df, fname)
 
+    # REGEX OPTIMIZATION
     elif re.match(OPTIMIZE_REGEX, fname, re.IGNORECASE):
         logging.debug("[HANDLER] Matched OPTIMIZE — using optimize cleaning pipeline")
         steps = [clean_headers, clean_deleted_rows, clean_flags, clean_columns, clean_format]
         df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
         return handle_optimize(df, filename=fname)
 
+    # REGEX SENIORITY
     elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
         logging.debug("[HANDLER] Matched SENIORITY — using optimize cleaning pipeline")
         steps = [clean_headers]
         df = clean_xlsx(file, *steps, name=fname)
         return handle_seniority(df)
 
+    # REGEX CATALOG
     elif re.search(CATALOG_REGEX, fname_lower, re.IGNORECASE):
         logging.debug("[HANDLER] Matched CATALOG")
         #df = pd.read_excel(file)
@@ -65,18 +69,21 @@ def handle_excel_file(file, fname):
         df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
         return handle_inventory(df)
 
+    # REGEX ZWDISEG
     elif re.search(ZWDISEG_REGEX, fname_lower, re.IGNORECASE):
         logging.debug("[HANDLER] Matched ZWDISEG — using zwdiseg cleaning pipeline")
         steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
         df = clean_xlsx(file, *steps, name=fname)
         return handle_zwdiseg(df)
 
+    # REGEX MERGE
     elif re.search(MERGE_REGEX, fname_lower, re.IGNORECASE):
         logging.debug("[HANDLER] Matched MERGE — routing to merge handler")
         steps = [clean_headers, clean_columns]
         df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
         return handle_merge(df)
 
+    # ELSE CLEAN (FALLBACK)
     else:
         logging.debug("[HANDLER] No match — using fallback cleaning pipeline")
         steps = [clean_headers, clean_columns, clean_flags, clean_deleted_rows, clean_format]
