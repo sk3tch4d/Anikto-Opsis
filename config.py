@@ -21,6 +21,7 @@ OPTIMIZE_REGEX = r"^KG01-[A-Z0-9]{1,4}-.*\.xlsx$"
 SENIORITY_REGEX = r"(?i)(cupe|opseu)?[^/\\]*?(seniority|sen)[\s_-]*(list|lists|lst)?[^/\\]*\.xlsx$"
 ZWDISEG_REGEX = r".*zwdiseg.*\.xlsx$"
 CLEAN_REGEX = r".*clean.*\.xlsx$"
+MERGE_REGEX = r'^merge_.*\\.xlsx$'
 VALID_EXTENSIONS = r"\.(pdf|xlsx|db)$"
 
 # ==============================
