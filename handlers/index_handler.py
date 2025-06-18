@@ -1,4 +1,3 @@
-
 # ==============================
 # INDEX_HANDLER.PY
 # FILE ROUTING & DELEGATION
@@ -12,7 +11,7 @@ import sqlite3
 
 from flask import request, render_template
 from werkzeug.utils import secure_filename
-from config import CATALOG_REGEX, SENIORITY_REGEX, OPTIMIZE_REGEX, ZWDISEG_REGEX, CLEAN_REGEX
+from config import CATALOG_REGEX, SENIORITY_REGEX, OPTIMIZE_REGEX, ZWDISEG_REGEX, CLEAN_REGEX, MERGE_REGEX
 
 # Modular handlers
 from handlers.optimize_handler import handle as handle_optimize
@@ -20,6 +19,7 @@ from handlers.seniority_handler import handle as handle_seniority
 from handlers.inventory_handler import handle as handle_inventory
 from handlers.zwdiseg_handler import handle as handle_zwdiseg
 from handlers.cleaner_handler import handle as handle_cleaner
+from handlers.merge_handler import handle_merge
 
 # Cleaner utility
 from utils.data_cleaner import (
@@ -70,6 +70,12 @@ def handle_excel_file(file, fname):
         steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
         df = clean_xlsx(file, *steps, name=fname)
         return handle_zwdiseg(df)
+
+    elif re.search(MERGE_REGEX, fname_lower, re.IGNORECASE):
+        logging.debug("[HANDLER] Matched MERGE — routing to merge handler")
+        steps = [clean_headers, clean_columns]
+        df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
+        return handle_merge(df)
 
     else:
         logging.debug("[HANDLER] No match — using fallback cleaning pipeline")
