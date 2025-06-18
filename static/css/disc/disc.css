@@ -7,7 +7,7 @@
 /* MULTI IMPORTS                  */
 /* ============================== */
 
-@import url('/panels/disc_panels_init.css');
+@import url('./panels/disc_panels_init.css');
 
 /* ============================== */
 /* SINGLE IMPORTS                 */
