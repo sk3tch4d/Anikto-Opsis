@@ -1,18 +1,28 @@
-####################
-## SWAPS PY
-####################
+# ==============================
+# SWAPS.PY
+# ==============================
+
 import re
 import json
 
+# ==============================
+# LOAD JSON LIST
+# ==============================
 with open("static/emp_all.json", "r") as f:
     EMP_ALL = json.load(f)
 
+# ==============================
+# NORMALIZE NAME
+# ==============================
 def normalize_name(name):
     parts = [p.strip() for p in name.split(",")]
     if len(parts) == 2:
         return f"{parts[1]} {parts[0]}"
     return name.strip()
-    
+
+# ==============================
+# CLEAN SWAP REASON
+# ==============================
 def clean_reason_text(reason_raw):
     r = reason_raw.lower()
     if "swap" in r:
@@ -37,6 +47,9 @@ def clean_reason_text(reason_raw):
         return "Banked Stat"
     return "Other"
 
+# ==============================
+# EXTRACT RELIEF NAME
+# ==============================
 def extract_relief_name(line):
     match = re.search(r"Relief:\s*([A-Za-z\-\s']+),\s([A-Za-z\-\s']+)", line)
     if match:
@@ -44,12 +57,18 @@ def extract_relief_name(line):
         return f"{last.strip()}, {first.strip()}"
     return None
 
+# ==============================
+# EXTRACT NAME FROM LINE
+# ==============================
 def extract_name_from_line(line):
     for name in EMP_ALL:
         if name in line:
             return name
     return None
 
+# ==============================
+# PARSE EXCEPTIONS SECTION
+# ==============================
 def parse_exceptions_section(text, schedule_df, file_name, file_date):
     lines = text.splitlines()
     sections = {"Day": [], "Evening": [], "Night": []}
