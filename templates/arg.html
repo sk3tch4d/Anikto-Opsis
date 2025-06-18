@@ -32,7 +32,7 @@
     <div id="panel-container">
 
       <!-- ======== SCHEDULED ======== -->
-      <div class="panel panel-animate" id="scheduled-search-panel">
+      <div class="panel panel-animate" id="arg-date-search-panel">
         <div class="panel-header open" onclick="togglePanel(this)">
           <span>Scheduled</span>
         </div>
@@ -51,7 +51,7 @@
       </div>
 
       <!-- ======== SWAPS & COVERAGE ======== -->
-      <div class="panel panel-animate" id="coverage">
+      <div class="panel panel-animate" id="arg-coverage-panel">
         <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage (WIP)</div>
         <div class="panel-scroll-container">
           <div class="panel-scroll-bar"></div>
@@ -75,7 +75,7 @@
       </div>
 
       <!-- ======== WEEKLY RANKINGS ======== -->
-      <div class="panel panel-animate" id="rank-week">
+      <div class="panel panel-animate" id="arg-rank-week-panel">
         <div class="panel-header" onclick="togglePanel(this)">Weekly Rankings</div>
         <div class="panel-body scrollable-panel open">
           <div class="panel-delta">
@@ -87,7 +87,7 @@
       </div>
 
       <!-- ======== PERIOD RANKINGS ======== -->
-      <div class="panel panel-animate" id="rank-period">
+      <div class="panel panel-animate" id="arg-rank-period-panel">
         <div class="panel-header" onclick="togglePanel(this)">Period Rankings</div>
         <div class="panel-body scrollable-panel open">
           <div class="panel-delta">
@@ -98,8 +98,18 @@
         </div>
       </div>
 
+      <!-- ======== SINGLE LOOKUP ======== -->
+      <div class="panel panel-animate" id="arg-single-lookup-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Single Lookup</div>
+        <div class="panel-body scrollable-panel open">
+          <div class="panel-delta">
+            <!-- DATE LOOKUP -->
+          </div>
+        </div>
+      </div>
+
       <!-- ======== STATS ======== -->
-      <div class="panel panel-animate" id="stats">
+      <div class="panel panel-animate" id="arg-stats-panel">
         <div class="panel-header" onclick="togglePanel(this)">Stats</div>
         <div class="panel-body scrollable-panel open">
           <div class="panel-delta">
@@ -110,7 +120,7 @@
       </div>
 
       <!-- ======== DOWNLOADS ======== -->
-      <div class="panel panel-animate" id="downloads">
+      <div class="panel panel-animate" id="arg-downloads-panel">
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
         <div class="panel-body">
           {% if outputs %}
