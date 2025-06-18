@@ -11,7 +11,7 @@ import { displayRandomQuote } from '../quotes.js';
 const ARG_REGEX = /(arg|flowsheet).*?\.(pdf)$/i;
 const CATALOG_REGEX = /(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$/i;
 const CLEAN_REGEX = /.*clean.*\.xlsx$/i;
-const MERGE_REGEX = /'^merge_.*\\.xlsx$/i;
+const MERGE_REGEX = /'^merge_.*\.xlsx$/i;
 const OPTIMIZE_REGEX = /^KG01-[A-Z0-9]{1,4}-.*\.xlsx$/i;
 const SENIORITY_REGEX = /(cupe|opseu)?[^/\\]*?(seniority|sen)[\s_-]*(list|lists|lst)?[^/\\]*\.xlsx$/i;
 const UNCLEANED_REGEX = /(list|ven|vendor|cost|usl|cc).*\.xlsx$/i;
