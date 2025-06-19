@@ -11,7 +11,7 @@ import {
   nonClosablePanels,
   nonClosableSelectors
 } from './panels/panels_config.js';
-import { setBodyLock } from '/panels/panels_utils.js'
+import { setBodyLock } from './panels/panels_utils.js'
 
 // ==============================
 // HELPERS
