@@ -1,9 +1,9 @@
 // ==============================
-// PANELS.JS
+// PANELS_CORE.JS
 // ==============================
 
 import { DEBUG_MODE, nonButtonPanels } from './panels/panels_config.js';
-import { setBodyLock, scrollPanelBody } from './panels/panels_utils.js';
+import { setBodyLock } from './panels/panels_utils.js';
 import { appendCloseButton } from './panels/panels_close-button.js'
 import { setupTouchListeners } from './panels/panels_touch.js'
 
