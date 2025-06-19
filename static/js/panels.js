@@ -98,13 +98,15 @@ function isDateInput(target, panelId) {
 // FLOATING CLOSE BUTTON
 // ==============================
 function appendFloatingCloseButton(panel, panelId) {
-  // Remove any pre-existing close buttons
-  document.querySelectorAll('.close-button').forEach(btn => btn.remove());
-
   if (!panel) return;
 
+  // Ensure scrollable exists
   const scrollable = panel.querySelector('.scrollable-panel');
   if (!scrollable) return;
+
+  // Clean up existing close buttons *only in this panel*, not globally
+  const existingBtn = panel.querySelector('.close-button');
+  if (existingBtn) existingBtn.remove();
 
   // Create close button
   const button = document.createElement('div');
@@ -123,17 +125,17 @@ function appendFloatingCloseButton(panel, panelId) {
     scrollable.querySelector('.panel-bottom-spacer')?.remove();
   });
 
-  // Add button to panel
+  // Actually append the button
   panel.appendChild(button);
 
-  // Only add spacer if it's not already present
-  if (!scrollable.querySelector('.panel-bottom-spacer')) {
+  // Confirm this panel has a close button (not removed), then add spacer
+  if (panel.querySelector('.close-button') && !scrollable.querySelector('.panel-bottom-spacer')) {
     const spacer = document.createElement('div');
     spacer.className = 'panel-bottom-spacer';
     scrollable.appendChild(spacer);
   }
 
-  // Visibility based on panel height
+  // Resize handling
   const MIN_PANEL_HEIGHT = 320;
   const observer = new ResizeObserver(() => {
     button.style.display = (panel.offsetHeight < MIN_PANEL_HEIGHT) ? 'none' : 'flex';
