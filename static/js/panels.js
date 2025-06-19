@@ -16,23 +16,6 @@ import { appendCloseButton } from './panels/panels_close-button.js'
 import { setupTouchListeners } from './panels/panels_touch.js'
 
 // ==============================
-// HELPERS
-// ==============================
-export function shouldIgnorePanelClose(target) {
-  if (nonClosableElements.includes(target.tagName)) return true;
-
-  if (nonClosableSelectors.some(sel => target.closest(sel))) return true;
-
-  if (nonClosableClasses.some(cls => target.closest(`.${cls}`) && !target.closest(".clickable-stat"))) return true;
-
-  for (const { base, unlessWithin } of conditionalIgnoreRules) {
-    if (target.closest(base) && !target.closest(unlessWithin)) return true;
-  }
-
-  return false;
-}
-
-// ==============================
 // PANEL SCROLL BAR
 // ==============================
 export function initPanelScrollBars() {
