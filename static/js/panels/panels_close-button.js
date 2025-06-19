@@ -2,7 +2,7 @@
 // PANELS_CLOSE-BUTTON.JS
 // ==============================
 
-import { closePanel } from '../panels.js'
+import { closePanel } from './panels_core.js'
 import { setBodyLock } from './panels_utils.js'
 import { DEBUG_MODE, nonButtonPanels } from './panels_config.js';
 
