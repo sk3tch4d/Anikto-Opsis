@@ -9,7 +9,7 @@ import { DEBUG_MODE, nonButtonPanels } from './panels_config.js';
 // ==============================
 // FLOATING CLOSE BUTTON
 // ==============================
-export function appendFloatingCloseButton(panel, panelId) {
+export function appendCloseButton(panel, panelId) {
   if (!panel) return;
 
   const scrollable = panel.querySelector('.scrollable-panel');
