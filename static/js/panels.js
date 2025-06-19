@@ -98,18 +98,15 @@ function isDateInput(target, panelId) {
 // FLOATING CLOSE BUTTON
 // ==============================
 function appendFloatingCloseButton(panel, panelId) {
-  if (nonButtonPanels.includes(panelId)) return;
-
   // Remove any pre-existing close buttons
   document.querySelectorAll('.close-button').forEach(btn => btn.remove());
 
-  // Ensure panel is valid
   if (!panel) return;
 
   const scrollable = panel.querySelector('.scrollable-panel');
   if (!scrollable) return;
 
-  // Create and append close button
+  // Create close button
   const button = document.createElement('div');
   button.className = 'close-button';
   button.innerHTML = '✕';
@@ -118,7 +115,7 @@ function appendFloatingCloseButton(panel, panelId) {
   button.setAttribute('role', 'button');
   button.tabIndex = 0;
 
-  // Button Clicked: Close panel and remove spacer
+  // Close logic
   button.addEventListener('click', () => {
     closePanel(panel);
     disableBodyLock();
@@ -126,17 +123,17 @@ function appendFloatingCloseButton(panel, panelId) {
     scrollable.querySelector('.panel-bottom-spacer')?.remove();
   });
 
-  // Append Close Button
+  // Add button to panel
   panel.appendChild(button);
 
-  // Add the spacer IF button is now in the DOM
-  if (panel.contains(button) && !scrollable.querySelector('.panel-bottom-spacer')) {
+  // Only add spacer if it's not already present
+  if (!scrollable.querySelector('.panel-bottom-spacer')) {
     const spacer = document.createElement('div');
     spacer.className = 'panel-bottom-spacer';
     scrollable.appendChild(spacer);
   }
 
-  // Responsive behavior for small panels
+  // Visibility based on panel height
   const MIN_PANEL_HEIGHT = 320;
   const observer = new ResizeObserver(() => {
     button.style.display = (panel.offsetHeight < MIN_PANEL_HEIGHT) ? 'none' : 'flex';
@@ -242,9 +239,12 @@ export function openPanel(panelId) {
         requestAnimationFrame(() => {
           scrollPanel(header);
           setTimeout(enableBodyLock, 500);
-          //
           setupTouchListeners(body, panelId, panel, header);
-          appendFloatingCloseButton(panel, panelId);
+
+          // Only append the close button + spacer if panel supports it
+          if (!nonButtonPanels.includes(panelId)) {
+            appendFloatingCloseButton(panel, panelId);
+          }
         });
       };
       body.addEventListener('transitionend', onTransitionEnd);
