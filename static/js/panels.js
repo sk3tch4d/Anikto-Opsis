@@ -1,5 +1,5 @@
 // ==============================
-// PANELS.JS — UI Panel Handling
+// PANELS.JS
 // ==============================
 
 
@@ -103,11 +103,11 @@ function appendFloatingCloseButton(panel, panelId) {
   const scrollable = panel.querySelector('.scrollable-panel');
   if (!scrollable) return;
 
-  // Remove any previous
+  // Remove existing close button and spacer in this panel
   panel.querySelector('.close-button')?.remove();
   scrollable.querySelector('.panel-bottom-spacer')?.remove();
 
-  // Create the button
+  // Create close button
   const button = document.createElement('div');
   button.className = 'close-button';
   button.innerHTML = '✕';
@@ -125,26 +125,18 @@ function appendFloatingCloseButton(panel, panelId) {
 
   panel.appendChild(button);
 
-  // Try several times to check if overflow appears
-  let attempts = 0;
-  const MAX_ATTEMPTS = 6;
-
-  const checkOverflow = () => {
+  // Wait for DOM paint to complete, then check overflow
+  requestAnimationFrame(() => {
     const contentOverflows = scrollable.scrollHeight > scrollable.clientHeight;
-    if (contentOverflows && !scrollable.querySelector('.panel-bottom-spacer')) {
+    if (contentOverflows) {
       const spacer = document.createElement('div');
       spacer.className = 'panel-bottom-spacer';
       scrollable.appendChild(spacer);
-    } else if (attempts < MAX_ATTEMPTS) {
-      attempts++;
-      setTimeout(checkOverflow, 50);
     }
-  };
+  });
 
-  checkOverflow(); // kick off initial check
-
-  // Responsive button visibility
-  const MIN_PANEL_HEIGHT = 320;
+  // Responsive close button visibility
+  const MIN_PANEL_HEIGHT = 260;
   const resizeObs = new ResizeObserver(() => {
     button.style.display = (panel.offsetHeight < MIN_PANEL_HEIGHT) ? 'none' : 'flex';
   });
@@ -264,10 +256,16 @@ export function openPanel(panelId) {
   });
 }
 
+// ==============================
+// OPEN PANEL BY ID
+// ==============================
 export function openPanelById(panelId) {
   openPanel(panelId);
 }
 
+// ==============================
+// TOGGLE PANEL
+// ==============================
 export function togglePanel(header) {
   const panel = header.closest('.panel');
   if (!panel?.id) return;
@@ -281,6 +279,9 @@ export function togglePanel(header) {
   }
 }
 
+// ==============================
+// CLOSE PANEL
+// ==============================
 function closePanel(panel) {
   const header = panel.querySelector('.panel-header');
   const body = panel.querySelector('.panel-body');
@@ -296,6 +297,9 @@ function closePanel(panel) {
   }, 100);
 }
 
+// ==============================
+// COLLAPSE ALL PANELS
+// ==============================
 export function collapseAllPanels({ excludeSelector = null } = {}) {
   const exclusions = Array.isArray(excludeSelector) ? excludeSelector : excludeSelector ? [excludeSelector] : [];
 
