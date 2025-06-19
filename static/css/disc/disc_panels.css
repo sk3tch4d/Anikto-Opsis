@@ -296,7 +296,7 @@ body.lock-scroll {
 /* PANEL BOTTOM SPACER           */
 /* ============================= */
 .panel-bottom-spacer {
-  height: 46px; /* Match or exceed button size */
+  height: 52px;
   flex-shrink: 0;
 }
 /* ============================= */
