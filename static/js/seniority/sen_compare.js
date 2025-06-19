@@ -30,7 +30,7 @@ export function handleCompareSlot(data) {
   } else if (compareSlot1 && !compareSlot2) {
     compareSlot2 = data;
     if (input2) input2.value = `${data["First Name"]} ${data["Last Name"]}`;
-    openPanelById("compare-panel");
+    openPanelById("seniority-compare-panel");
   } else {
     compareSlot1 = data;
     compareSlot2 = null;
@@ -86,7 +86,7 @@ export function initComparisonPanel() {
 
     if (valid1 && valid2) {
       html += renderDelta(match1, match2);
-      const header = document.querySelector('#compare-panel .panel-header');
+      const header = document.querySelector('#seniority-compare-panel .panel-header');
       scrollPanel(header);
     }
 
