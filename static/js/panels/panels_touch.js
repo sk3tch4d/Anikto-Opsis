@@ -3,7 +3,8 @@
 // ==============================
 
 import { nonClosablePanels } from './panels_config.js';
-import { shouldIgnorePanelClose, closePanel } from '../panels.js';
+import { closePanel } from '../panels.js';
+import { isClosablePanel } from './panels_helpers.js'
 
 // ==============================
 // SETUP TOUCH LISTENERS
@@ -13,7 +14,7 @@ export function setupTouchListeners(body, panelId, panel, header) {
 
   const closePanelOnTouch = (event) => {
     const target = event.target;
-    if (!shouldIgnorePanelClose(target) && !header.contains(target)) {
+    if (isClosablePanel(target) && !header.contains(target)) {
       closePanel(panel);
       body.removeEventListener('click', closePanelOnTouch);
     }
