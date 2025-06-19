@@ -13,6 +13,7 @@ import {
 } from './panels/panels_config.js';
 import { setBodyLock } from './panels/panels_utils.js'
 import { appendCloseButton } from './panels/panels_close-button.js'
+import { setupTouchListeners } from './panels/panels_touch.js'
 
 // ==============================
 // HELPERS
@@ -185,44 +186,6 @@ export function collapseAllPanels({ excludeSelector = null } = {}) {
 
     body.classList.remove('open');
     panel?.classList.remove('open');
-  });
-}
-
-// ==============================
-// TOUCH HANDLING
-// ==============================
-function setupTouchListeners(body, panelId, panel, header) {
-  if (nonClosablePanels.includes(panelId)) return;
-
-  const closePanelOnTouch = (event) => {
-    const target = event.target;
-    if (!shouldIgnorePanelClose(target) && !header.contains(target)) {
-      closePanel(panel);
-      body.removeEventListener('click', closePanelOnTouch);
-    }
-  };
-
-  body.addEventListener('click', closePanelOnTouch);
-
-  let startY = null;
-  const scrollable = body.querySelector('.scrollable-fill') || body;
-
-  body.addEventListener('touchstart', (e) => {
-    if (scrollable.scrollTop === 0) startY = e.touches[0].clientY;
-  }, { passive: true });
-
-  body.addEventListener('touchmove', (e) => {
-    if (startY !== null) {
-      const deltaY = e.touches[0].clientY - startY;
-      if (deltaY > 40 && scrollable.scrollTop === 0) {
-        closePanel(panel);
-        startY = null;
-      }
-    }
-  }, { passive: true });
-
-  body.addEventListener('touchend', () => {
-    startY = null;
   });
 }
 
