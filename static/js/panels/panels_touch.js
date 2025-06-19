@@ -3,7 +3,7 @@
 // ==============================
 
 import { nonClosablePanels } from './panels_config.js';
-import { closePanel } from '../panels.js';
+import { closePanel } from './panels_core.js';
 import { isClosablePanel } from './panels_helpers.js'
 
 // ==============================
