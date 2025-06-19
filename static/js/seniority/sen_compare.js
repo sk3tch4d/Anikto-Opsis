@@ -5,7 +5,7 @@
 
 import { normalize } from './sen_search.js';
 import { getStatusDot } from '../statusdot.js';
-import { scrollPanel, openPanel } from '../panels.js';
+import { scrollPanel, openPanel } from '../panels/panels_core.js';
 import { showToast, hapticFeedback } from '../ui-utils.js';
 
 // ==============================
