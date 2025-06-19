@@ -4,7 +4,7 @@
 
 import { clearTextSelect, setupParseStats, highlightMatch } from "../search-utils.js";
 import { showToast, hapticFeedback, attachChevron, joinAsDivs } from '../ui-utils.js';
-import { scrollPanel } from '../panels.js';
+import { scrollPanel } from '../panels/panels_core.js';
 import { createSavedCardToggle, createSavedCardUpdater } from '../cards/saved_card.js';
 
 // ==============================
