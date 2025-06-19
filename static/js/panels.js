@@ -103,7 +103,7 @@ function appendFloatingCloseButton(panel, panelId) {
   const scrollable = panel.querySelector('.scrollable-panel');
   if (!scrollable) return;
 
-  // Remove existing close button and spacer in this panel
+  // Remove existing close button and spacer
   panel.querySelector('.close-button')?.remove();
   scrollable.querySelector('.panel-bottom-spacer')?.remove();
 
@@ -125,17 +125,12 @@ function appendFloatingCloseButton(panel, panelId) {
 
   panel.appendChild(button);
 
-  // Wait for DOM paint to complete, then check overflow
-  requestAnimationFrame(() => {
-    const contentOverflows = scrollable.scrollHeight > scrollable.clientHeight;
-    if (contentOverflows) {
-      const spacer = document.createElement('div');
-      spacer.className = 'panel-bottom-spacer';
-      scrollable.appendChild(spacer);
-    }
-  });
+  // Always add spacer when button is added
+  const spacer = document.createElement('div');
+  spacer.className = 'panel-bottom-spacer';
+  scrollable.appendChild(spacer);
 
-  // Responsive close button visibility
+  // Handle small panels — hide button if panel too short
   const MIN_PANEL_HEIGHT = 260;
   const resizeObs = new ResizeObserver(() => {
     button.style.display = (panel.offsetHeight < MIN_PANEL_HEIGHT) ? 'none' : 'flex';
