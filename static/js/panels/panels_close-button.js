@@ -3,7 +3,7 @@
 // ==============================
 
 import { closePanel } from '../panels.js'
-import { disableBodyLock } from './panels_utils.js'
+import { setBodyLock } from './panels_utils.js'
 import { DEBUG_MODE, nonButtonPanels } from './panels_config.js';
 
 // ==============================
