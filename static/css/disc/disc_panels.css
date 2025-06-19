@@ -296,7 +296,7 @@ body.lock-scroll {
 /* PANEL BOTTOM SPACER           */
 /* ============================= */
 .panel-bottom-spacer {
-  height: 72px; /* Match or exceed button size */
+  height: 48px; /* Match or exceed button size */
   flex-shrink: 0;
 }
 /* ============================= */
@@ -305,14 +305,14 @@ body.lock-scroll {
 .close-button {
   pointer-events: auto;
   position: fixed;
-  bottom: 20px;
-  right: 12px;
+  bottom: 18px;
+  right: 16px;
   z-index: 1100;
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background-color: var(--toast-background, rgba(0,0,0,0.6));
-  color: var(--toast-color, #fff);
+  background-color: rgba(0,0,0,0.6));
+  color: #112;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -349,6 +349,9 @@ body.lock-scroll {
   animation: slideInTop 0.6s ease-out forwards;
 }
 
+/* ============================= */
+/* SLIDE IN ANIMATION ORDER      */
+/* ============================= */
 #panel-container .panel:nth-child(1) { animation-delay: 0.1s; }
 #panel-container .panel:nth-child(2) { animation-delay: 0.2s; }
 #panel-container .panel:nth-child(3) { animation-delay: 0.3s; }
@@ -357,6 +360,9 @@ body.lock-scroll {
 #panel-container .panel:nth-child(6) { animation-delay: 0.6s; }
 #panel-container .panel:nth-child(7) { animation-delay: 0.7s; }
 
+/* ============================= */
+/* SLIDE IN TOP                  */
+/* ============================= */
 @keyframes slideInTop {
   to {
     opacity: 1;
@@ -373,6 +379,9 @@ body.lock-scroll {
   100% { transform: scale(1); }
 }
 
+/* ============================= */
+/* PANEL HEADER BOUNCE           */
+/* ============================= */
 .panel-header.bounce {
   animation: hover-bounce 0.4s cubic-bezier(0.25, 1.5, 0.5, 1);
 }
