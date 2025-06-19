@@ -2,16 +2,8 @@
 // PANELS.JS
 // ==============================
 
-import {
-  DEBUG_MODE,
-  conditionalIgnoreRules,
-  nonButtonPanels,
-  nonClosableClasses,
-  nonClosableElements,
-  nonClosablePanels,
-  nonClosableSelectors
-} from './panels/panels_config.js';
-import { setBodyLock } from './panels/panels_utils.js'
+import { DEBUG_MODE, nonButtonPanels } from './panels/panels_config.js';
+import { setBodyLock, scrollPanelBody } from './panels/panels_utils.js';
 import { appendCloseButton } from './panels/panels_close-button.js'
 import { setupTouchListeners } from './panels/panels_touch.js'
 
@@ -30,25 +22,6 @@ export function initPanelScrollBars() {
       });
     }
   });
-}
-
-// ==============================
-// SCROLL PANEL BODY
-// ==============================
-export function scrollPanelBody(panelId = null, behavior = 'smooth') {
-  let panel;
-
-  if (panelId) {
-    panel = document.getElementById(panelId);
-  } else {
-    panel = document.querySelector('.panel.open');
-  }
-
-  const body = panel?.querySelector('.panel-body.scrollable-panel');
-  if (body) {
-    body.scrollTo({ top: 0, behavior });
-    DEBUG_MODE && console.log(`[DEBUG] Smooth scrolled ${panel?.id || '(unknown panel)'} body to top`);
-  }
 }
 
 // ==============================
