@@ -11,6 +11,7 @@ import {
   nonClosablePanels,
   nonClosableSelectors
 } from './panels/panels_config.js';
+import { setBodyLock } from '/panels/panels_utils.js'
 
 // ==============================
 // HELPERS
@@ -58,7 +59,7 @@ function appendFloatingCloseButton(panel, panelId) {
 
   button.addEventListener('click', () => {
     closePanel(panel);
-    disableBodyLock();
+    setBodyLock(false);
     button.remove();
     scrollable.querySelector('.panel-bottom-spacer')?.remove();
   });
@@ -120,18 +121,6 @@ export function scrollPanelBody(panelId = null, behavior = 'smooth') {
 }
 
 // ==============================
-// SCROLL LOCK
-// ==============================
-function enableBodyLock() {
-  document.documentElement.style.overflow = 'hidden';
-  document.body.style.overflow = 'hidden';
-}
-function disableBodyLock() {
-  document.documentElement.style.overflow = '';
-  document.body.style.overflow = '';
-}
-
-// ==============================
 // SCROLL TO HEADER
 // ==============================
 export function scrollPanel(header = null, yOffset = -14, delay = 10) {
@@ -180,7 +169,7 @@ export function openPanel(panelId) {
 
         requestAnimationFrame(() => {
           scrollPanel(header);
-          setTimeout(enableBodyLock, 500);
+          setTimeout(() => setBodyLock(true), 500);
           setupTouchListeners(body, panelId, panel, header);
 
           // Only append the close button + spacer if panel supports it
@@ -191,7 +180,7 @@ export function openPanel(panelId) {
       };
       body.addEventListener('transitionend', onTransitionEnd);
     } else {
-      enableBodyLock();
+      setBodyLock(true);
     }
   });
 }
@@ -213,7 +202,7 @@ export function togglePanel(header) {
   const isOpen = panel.classList.contains('open');
   if (isOpen) {
     closePanel(panel);
-    if (!document.querySelector('.panel.open')) disableBodyLock();
+    if (!document.querySelector('.panel.open')) setBodyLock(false);
   } else {
     openPanel(panel.id);
   }
