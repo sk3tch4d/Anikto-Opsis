@@ -10,7 +10,7 @@ import {
   nonClosableElements,
   nonClosablePanels,
   nonClosableSelectors
-} from '.panels/panels_config.js';
+} from './panels/panels_config.js';
 
 // ==============================
 // HELPERS
