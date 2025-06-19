@@ -3,12 +3,12 @@
 // ==============================
 
 import {
+  DEBUG_MODE,
   conditionalIgnoreRules,
   nonClosableClasses,
   nonClosableElements,
   nonClosableSelectors
 } from './panels_config.js';
-import { DEBUG_MODE } from './panels_config.js';
 
 // ==============================
 // PANEL CLOSABLE CHECK
