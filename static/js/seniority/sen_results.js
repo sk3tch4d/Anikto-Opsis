@@ -4,7 +4,7 @@
 // ==============================
 
 import { getStatusDot } from '../statusdot.js';
-import { scrollPanelBody } from '../panels.js';
+import { scrollPanelBody } from '../panels//panels_utils.js';
 import { handleCompareSlot } from './sen_compare.js';
 
 // ==============================
