@@ -2,74 +2,15 @@
 // PANELS.JS
 // ==============================
 
-
-// ==============================
-// GLOBAL CONFIG
-// ==============================
-
-const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
-
-// Panel IDs that should never close automatically
-const nonClosablePanels = [
-  "downloads",
-  "info-features-panel",
-  "info-updates-panel",
-  "info-tips-panel",
-  "seniority-search-panel",
-  "inventory-search-panel",
-  "inventory-saved-panel",
-  "inventory-history-panel",
-  "optimization-search-panel",
-  "optimization-stats-panel",
-  "optimization-saved-panel",
-  "optimization-history-panel",
-  "zwdiseg-search-panel",
-  "zwdiseg-history-panel",
-  "zwdiseg-saved-panel",
-  "arg-date-search-panel"
-];
-
-// Tag names that shouldn't trigger panel close
-const nonClosableElements = [
-  "BUTTON",
-  "INPUT",
-  "SELECT",
-  "OPTION",
-  "TEXTAREA",
-  "LABEL",
-  "PRE",
-  "A"
-];
-
-// Selectors for attributes or classes to ignore
-const nonClosableSelectors = [
-  "[panel-ignore-close]",
-  ".downloads",
-  ".file-action"
-];
-
-// Class-based ignores (not inside clickable container)
-const nonClosableClasses = [
-  "panel-delta",
-  "compare-delta",
-  "compare-card"
-];
-
-// Conditional rules like: ignore `.panel-delta` unless inside `.clickable-stat`
-const conditionalIgnoreRules = [
-  { base: ".panel-delta", unlessWithin: ".clickable-stat" }
-];
-
-// Panel IDs that should not append close button
-const nonButtonPanels = [
-  "downloads",
-  "inventory-downloads-panel",
-  "optimization-downloads-panel",
-  "zwdiseg-downloads-panel",
-  "seniority-downloads-panel",
-  "arg-date-search-panel",
-  "arg-downloads-panel"
-];
+import {
+  DEBUG_MODE,
+  conditionalIgnoreRules,
+  nonButtonPanels,
+  nonClosableClasses,
+  nonClosableElements,
+  nonClosablePanels,
+  nonClosableSelectors
+} from '.panels/panels_config.js';
 
 // ==============================
 // HELPERS
