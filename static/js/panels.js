@@ -30,12 +30,6 @@ function shouldIgnorePanelClose(target) {
   return false;
 }
 
-function isDateInput(target, panelId) {
-  return panelId === "scheduled" && (
-    target.closest("#working-date") || target.closest(".custom-date-display")
-  );
-}
-
 // ==============================
 // FLOATING CLOSE BUTTON
 // ==============================
@@ -249,7 +243,7 @@ function setupTouchListeners(body, panelId, panel, header) {
 
   const closePanelOnTouch = (event) => {
     const target = event.target;
-    if (!shouldIgnorePanelClose(target) && !header.contains(target) && !isDateInput(target, panelId)) {
+    if (!shouldIgnorePanelClose(target) && !header.contains(target)) {
       closePanel(panel);
       body.removeEventListener('click', closePanelOnTouch);
     }
