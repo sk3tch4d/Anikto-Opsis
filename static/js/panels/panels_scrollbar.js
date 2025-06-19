@@ -2,7 +2,7 @@
 // PANELS_SCROLLBAR.JS
 // ==============================
 
-import { DEBUG_MODE } from './panels/panels_config.js';
+import { DEBUG_MODE } from './panels_config.js';
 
 // ==============================
 // PANEL SCROLL BAR
