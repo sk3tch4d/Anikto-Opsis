@@ -8,23 +8,6 @@ import { appendCloseButton } from './panels/panels_close-button.js'
 import { setupTouchListeners } from './panels/panels_touch.js'
 
 // ==============================
-// PANEL SCROLL BAR
-// ==============================
-export function initPanelScrollBars() {
-  document.querySelectorAll('.panel').forEach(panel => {
-    const scrollable = panel.querySelector('.scrollable-panel');
-    const bar = panel.querySelector('.panel-scroll-bar');
-
-    if (scrollable && bar) {
-      scrollable.addEventListener('scroll', () => {
-        const percent = scrollable.scrollTop / (scrollable.scrollHeight - scrollable.clientHeight);
-        bar.style.width = `${percent * 100}%`;
-      });
-    }
-  });
-}
-
-// ==============================
 // SCROLL TO HEADER
 // ==============================
 export function scrollPanel(header = null, yOffset = -14, delay = 10) {
