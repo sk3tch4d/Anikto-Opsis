@@ -12,6 +12,7 @@ import {
   nonClosableSelectors
 } from './panels/panels_config.js';
 import { setBodyLock } from './panels/panels_utils.js'
+import { appendCloseButton } from './panels/panels_close-button.js'
 
 // ==============================
 // HELPERS
@@ -120,7 +121,7 @@ export function openPanel(panelId) {
 
           // Only append the close button + spacer if panel supports it
           if (!nonButtonPanels.includes(panelId)) {
-            appendFloatingCloseButton(panel, panelId);
+            appendCloseButton(panel, panelId);
           }
         });
       };
