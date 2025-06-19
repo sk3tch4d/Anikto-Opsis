@@ -5,7 +5,7 @@
 
 import { renderResults } from './sen_results.js';
 import { setupParseStats, searchFromStat } from "../search-utils.js";
-import { openPanel } from "../panels.js";
+import { openPanel } from '../panels/panels_core.js';
 
 // ==============================
 // GLOBAL STATS (ALL ENTRIES)
