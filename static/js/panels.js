@@ -18,7 +18,7 @@ import { setupTouchListeners } from './panels/panels_touch.js'
 // ==============================
 // HELPERS
 // ==============================
-function shouldIgnorePanelClose(target) {
+export function shouldIgnorePanelClose(target) {
   if (nonClosableElements.includes(target.tagName)) return true;
 
   if (nonClosableSelectors.some(sel => target.closest(sel))) return true;
