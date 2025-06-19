@@ -146,7 +146,8 @@
   --toast-background: linear-gradient(335deg, #9c9fe2, #b59fdf);
   --toast-border: 2px solid #0d0033;
   /* ============================= */ 
-  --saved-card-border: 2px solid #6633ff !important;
+  --popup-card-border: 2px solid #6633ff !important;
+  --popup-card-background: #7979d2;
   /* ============================= */  
   --tag-label-color: #0c0c40;
   /* ============================= */  
@@ -380,7 +381,8 @@
   --toast-background: linear-gradient(335deg, #7578d7, #9779d2);
   --toast-border: 2px solid #1f222e;
   /* ============================= */ 
-  --saved-card-border: 2px solid #8080ff !important;
+  --popup-card-border: 2px solid #8080ff !important;
+  --popup-card-background: #29293d;
   /* ============================= */  
   --tag-label-color: #9393ec;
   /* ============================= */  
