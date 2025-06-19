@@ -50,7 +50,9 @@ export const nonClosableElements = [
 export const nonClosableSelectors = [
   "[panel-ignore-close]",
   ".downloads",
-  ".file-action"
+  ".file-action",
+  "#working-date",
+  ".custom-date-display"
 ];
 
 // ==============================
