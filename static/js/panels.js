@@ -103,10 +103,13 @@ function appendFloatingCloseButton(panel, panelId) {
   const scrollable = panel.querySelector('.scrollable-panel');
   if (!scrollable) return;
 
-  // Remove any existing in-this-panel close button
+  // Remove existing close button (just in this panel)
   panel.querySelector('.close-button')?.remove();
 
-  // Create button
+  // Remove existing spacer
+  scrollable.querySelector('.panel-bottom-spacer')?.remove();
+
+  // Create close button
   const button = document.createElement('div');
   button.className = 'close-button';
   button.innerHTML = '✕';
@@ -115,36 +118,22 @@ function appendFloatingCloseButton(panel, panelId) {
   button.setAttribute('role', 'button');
   button.tabIndex = 0;
 
+  // Close button behavior
   button.addEventListener('click', () => {
     closePanel(panel);
     disableBodyLock();
+    button.remove();
     scrollable.querySelector('.panel-bottom-spacer')?.remove();
-    observer.disconnect(); // cleanup
   });
 
   panel.appendChild(button);
 
-  // Observe panel to detect when button is visible
-  const observer = new MutationObserver((mutations, obs) => {
-    if (!panel.contains(button)) return; // safety check
-    if (!scrollable.querySelector('.panel-bottom-spacer')) {
-      const spacer = document.createElement('div');
-      spacer.className = 'panel-bottom-spacer';
-      scrollable.appendChild(spacer);
-      obs.disconnect(); // only once
-    }
-  });
+  // Add spacer directly after button added
+  const spacer = document.createElement('div');
+  spacer.className = 'panel-bottom-spacer';
+  scrollable.appendChild(spacer);
 
-  observer.observe(panel, { childList: true, subtree: true });
-
-  // Handle button removal/cleanup when navigating away
-  const cleanup = () => {
-    scrollable.querySelector('.panel-bottom-spacer')?.remove();
-    observer.disconnect();
-  };
-
-  panel.addEventListener('panelClose', cleanup, { once: true });
-
+  // Auto hide button on small panels
   const MIN_PANEL_HEIGHT = 320;
   const resizeObs = new ResizeObserver(() => {
     button.style.display = (panel.offsetHeight < MIN_PANEL_HEIGHT) ? 'none' : 'flex';
