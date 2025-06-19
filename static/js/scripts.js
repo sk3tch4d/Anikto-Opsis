@@ -6,7 +6,8 @@
 import { initDebugToggle } from './debugging.js';
 import { initThemeToggle } from './theme.js';
 import { initTypewriter } from './typing.js';
-import { togglePanel, collapseAllPanels, initPanelScrollBars } from './panels.js';
+import { togglePanel, collapseAllPanels } from './panels.js';
+import { initPanelScrollBars } from './panels/panels_scrollbar.js';
 import { initStickyBars } from './sticky.js';
 
 // ==============================
