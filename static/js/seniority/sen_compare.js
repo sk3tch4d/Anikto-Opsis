@@ -5,7 +5,7 @@
 
 import { normalize } from './sen_search.js';
 import { getStatusDot } from '../statusdot.js';
-import { scrollPanel, openPanelById } from '../panels.js';
+import { scrollPanel, openPanel } from '../panels.js';
 import { showToast, hapticFeedback } from '../ui-utils.js';
 
 // ==============================
@@ -30,7 +30,7 @@ export function handleCompareSlot(data) {
   } else if (compareSlot1 && !compareSlot2) {
     compareSlot2 = data;
     if (input2) input2.value = `${data["First Name"]} ${data["Last Name"]}`;
-    openPanelById("seniority-compare-panel");
+    openPanel("seniority-compare-panel");
   } else {
     compareSlot1 = data;
     compareSlot2 = null;
