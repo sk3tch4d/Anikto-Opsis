@@ -2,9 +2,9 @@
 // OPT_RESULTS.JS
 // ==============================
 
-import { highlightMatch } from "../search-utils.js";
-import { scrollPanel } from "../panels.js";
-import { renderLine } from "../cards/results_card.js";
+import { highlightMatch } from '../search-utils.js';
+import { scrollPanel } from '../panels/panels_core.js';
+import { renderLine } from '../cards/results_card.js';
 
 // ==============================
 // RENDER RESULTS
