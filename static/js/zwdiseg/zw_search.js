@@ -6,7 +6,7 @@ import { populateZwdisegStats } from "./zw_stats.js";
 import { renderZwdisegResults } from "./zw_results.js";
 import { debounce } from "../search-utils.js";
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
-import { scrollPanel } from '../panels.js';
+import { scrollPanel } from '../panels/panels_core.js';
 import { addSearchHistoryCard } from "../cards/history_card.js";
 
 // ==============================
