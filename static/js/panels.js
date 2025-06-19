@@ -100,8 +100,10 @@ function isDateInput(target, panelId) {
 function appendFloatingCloseButton(panel, panelId) {
   if (nonButtonPanels.includes(panelId)) return;
 
+  // Remove existing close buttons
   document.querySelectorAll('.close-button').forEach(btn => btn.remove());
 
+  // Create close button
   const button = document.createElement('div');
   button.className = 'close-button';
   button.innerHTML = '✕';
@@ -115,14 +117,14 @@ function appendFloatingCloseButton(panel, panelId) {
     disableBodyLock();
     button.remove();
 
-    // Remove spacer on close
+    // Clean up spacer on close
     const spacer = panel.querySelector('.panel-bottom-spacer');
     spacer?.remove();
   });
 
   panel.appendChild(button);
 
-  // Add bottom spacer
+  // Add spacer only if close button is actually appended
   const scrollable = panel.querySelector('.scrollable-panel');
   if (scrollable && !scrollable.querySelector('.panel-bottom-spacer')) {
     const spacer = document.createElement('div');
@@ -130,6 +132,7 @@ function appendFloatingCloseButton(panel, panelId) {
     scrollable.appendChild(spacer);
   }
 
+  // Responsive visibility
   const MIN_PANEL_HEIGHT = 320;
   const observer = new ResizeObserver(() => {
     button.style.display = (panel.offsetHeight < MIN_PANEL_HEIGHT) ? 'none' : 'flex';
