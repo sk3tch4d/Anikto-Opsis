@@ -44,7 +44,7 @@
   width: clamp(265px, 85vw, 440px);
   height: clamp(280px, 30vw, 280px);
   transform: translate(-50%, -50%);
-  background: var(--panel-card-background);
+  background: var(--popup-card-background);
   box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.6);
   padding: 2rem;
   border-radius: 22px;
