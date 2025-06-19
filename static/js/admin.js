@@ -2,7 +2,7 @@
 // ADMIN.JS
 // ==============================
 
-import { collapseAllPanels, scrollPanel } from './panels.js';
+import { collapseAllPanels, scrollPanel } from './panels/panels_core.js';
 
 // ==============================
 // DEBUG MODE
