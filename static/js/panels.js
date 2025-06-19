@@ -134,13 +134,6 @@ export function openPanel(panelId) {
 }
 
 // ==============================
-// OPEN PANEL BY ID
-// ==============================
-export function openPanelById(panelId) {
-  openPanel(panelId);
-}
-
-// ==============================
 // TOGGLE PANEL
 // ==============================
 export function togglePanel(header) {
