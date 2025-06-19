@@ -29,7 +29,7 @@ export function appendCloseButton(panel, panelId) {
 
   button.addEventListener('click', () => {
     closePanel(panel);
-    disableBodyLock();
+    setBodyLock(false);
     button.remove();
     scrollable.querySelector('.panel-bottom-spacer')?.remove();
   });
