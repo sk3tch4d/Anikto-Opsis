@@ -136,7 +136,7 @@ function appendFloatingCloseButton(panel, panelId) {
   });
 
   // Responsive close button visibility
-  const MIN_PANEL_HEIGHT = 320;
+  const MIN_PANEL_HEIGHT = 260;
   const resizeObs = new ResizeObserver(() => {
     button.style.display = (panel.offsetHeight < MIN_PANEL_HEIGHT) ? 'none' : 'flex';
   });
