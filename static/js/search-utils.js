@@ -2,7 +2,7 @@
 // SEARCH-UTILS.JS
 // ==============================
 
-import { openPanelById, scrollPanel } from "./panels.js";
+import { openPanel, scrollPanel } from "./panels.js";
 import { removeFocus } from "./helpers.js";
 import { showToast, hapticFeedback } from "./ui-utils.js";
 
@@ -40,7 +40,7 @@ export function searchFromStat(inputId, value) {
     input.value = value;
     input.dispatchEvent(new Event("input"));
     const panelId = `${inputId}-panel`;
-    openPanelById(panelId);
+    openPanel(panelId);
   }
 }
 
@@ -78,7 +78,7 @@ export function setupParseStats(selector, inputId, attr, filterId = null, filter
 
     const panelEl = document.getElementById(panelId);
     if (panelEl && !panelEl.classList.contains("open")) {
-      openPanelById(panelId);
+      openPanel(panelId);
     }
 
     scrollPanel();
