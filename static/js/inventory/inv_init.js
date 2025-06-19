@@ -8,7 +8,7 @@ import { populateInventoryStats } from "./inv_stats.js";
 import { setupInventoryDownloadSearch, setupInventoryDownloadSaved, setupInventoryDownloadHistory } from "./inv_downloads.js";
 import { highlightMatch } from '../search-utils.js';
 import { withLoadingToggle, createBounceLoader } from '../loading.js';
-import { scrollPanel } from '../panels.js';
+import { scrollPanel } from '../panels/panels_core.js';
 
 // ==============================
 // GLOBAL CONST
