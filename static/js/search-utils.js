@@ -2,7 +2,7 @@
 // SEARCH-UTILS.JS
 // ==============================
 
-import { openPanel, scrollPanel } from "./panels.js";
+import { openPanel, scrollPanel } from './panels/panels_core.js';
 import { removeFocus } from "./helpers.js";
 import { showToast, hapticFeedback } from "./ui-utils.js";
 
