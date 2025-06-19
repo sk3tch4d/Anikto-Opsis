@@ -100,15 +100,13 @@ function isDateInput(target, panelId) {
 function appendFloatingCloseButton(panel, panelId) {
   if (!panel) return;
 
-  // Ensure scrollable exists
   const scrollable = panel.querySelector('.scrollable-panel');
   if (!scrollable) return;
 
-  // Clean up existing close buttons *only in this panel*, not globally
-  const existingBtn = panel.querySelector('.close-button');
-  if (existingBtn) existingBtn.remove();
+  // Remove any existing in-this-panel close button
+  panel.querySelector('.close-button')?.remove();
 
-  // Create close button
+  // Create button
   const button = document.createElement('div');
   button.className = 'close-button';
   button.innerHTML = '✕';
@@ -117,30 +115,41 @@ function appendFloatingCloseButton(panel, panelId) {
   button.setAttribute('role', 'button');
   button.tabIndex = 0;
 
-  // Close logic
   button.addEventListener('click', () => {
     closePanel(panel);
     disableBodyLock();
-    button.remove();
     scrollable.querySelector('.panel-bottom-spacer')?.remove();
+    observer.disconnect(); // cleanup
   });
 
-  // Actually append the button
   panel.appendChild(button);
 
-  // Confirm this panel has a close button (not removed), then add spacer
-  if (panel.querySelector('.close-button') && !scrollable.querySelector('.panel-bottom-spacer')) {
-    const spacer = document.createElement('div');
-    spacer.className = 'panel-bottom-spacer';
-    scrollable.appendChild(spacer);
-  }
+  // Observe panel to detect when button is visible
+  const observer = new MutationObserver((mutations, obs) => {
+    if (!panel.contains(button)) return; // safety check
+    if (!scrollable.querySelector('.panel-bottom-spacer')) {
+      const spacer = document.createElement('div');
+      spacer.className = 'panel-bottom-spacer';
+      scrollable.appendChild(spacer);
+      obs.disconnect(); // only once
+    }
+  });
 
-  // Resize handling
+  observer.observe(panel, { childList: true, subtree: true });
+
+  // Handle button removal/cleanup when navigating away
+  const cleanup = () => {
+    scrollable.querySelector('.panel-bottom-spacer')?.remove();
+    observer.disconnect();
+  };
+
+  panel.addEventListener('panelClose', cleanup, { once: true });
+
   const MIN_PANEL_HEIGHT = 320;
-  const observer = new ResizeObserver(() => {
+  const resizeObs = new ResizeObserver(() => {
     button.style.display = (panel.offsetHeight < MIN_PANEL_HEIGHT) ? 'none' : 'flex';
   });
-  observer.observe(panel);
+  resizeObs.observe(panel);
 }
 
 // ==============================
