@@ -141,7 +141,7 @@ function appendFloatingCloseButton(panel, panelId) {
     button.style.display = (panel.offsetHeight < MIN_PANEL_HEIGHT) ? 'none' : 'flex';
   });
   resizeObs.observe(panel);
-}}
+}
 
 // ==============================
 // PANEL SCROLL BAR
