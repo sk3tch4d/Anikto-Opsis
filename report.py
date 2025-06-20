@@ -144,7 +144,13 @@ def process_report(pdf_paths, return_df=False, stop_on_date=None):
         print(f"[DEBUG] Parsing {len(pdf_paths)} PDF(s)...")
 
     # === RAW CODES
+    if not records:
+        df = pd.DataFrame(columns=["Shift"])  # or full schema if needed
+    else:
+        df = pd.DataFrame([r.__dict__ for r in records])
+    
     raw_codes = set(df["Shift"].str.upper().unique())
+
 
     # === Parse PDFs with optional stop date
     frames_with_swaps = [parse_pdf(p, stop_on_date=stop_on_date) for p in pdf_paths]
