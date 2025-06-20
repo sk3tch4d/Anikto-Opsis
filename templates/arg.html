@@ -39,21 +39,26 @@
         <div class="panel-body scrollable-panel open">
           <div class="date-wrapper">
             <div class="sticky-bar">
+
               <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
+                <!-- Filter select -->
                 <select id="emp-filter" class="input full-width" style="flex: 0 0 92px;">
                   <option value="all">All</option>
                   <option value="ft">Full-Time</option>
                   <option value="pt">Part-Time</option>
                 </select>
             
-                <div class="input full-width" id="custom-date-display"
-                     style="flex: 1; cursor: pointer;"
-                     onclick="document.getElementById('working-date').showPicker()">
-                  <span id="custom-date-text">Today</span>
+                <!-- Custom date display -->
+                <div class="input full-width" style="flex: 1;">
+                  <div id="custom-date-display"
+                       style="width: 100%; height: 100%; cursor: pointer;"
+                       onclick="document.getElementById('working-date').showPicker()">
+                    <span id="custom-date-text">Today</span>
+                  </div>
                 </div>
               </div>
             
-              <!-- Hidden native input -->
+              <!-- Hidden native date input (still linked to picker) -->
               <input type="date" id="working-date" style="position: absolute; left: -9999px;" />
             </div>
 
