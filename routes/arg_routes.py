@@ -21,17 +21,29 @@ arg_bp = Blueprint("arg", __name__)
 # WORKING ON DATE ROUTE
 # ==============================
 @arg_bp.route("/api/working_on_date")
-def working_on_date():
-    current_app.logger.debug("📅 /api/working_on_date route hit")
-
+def api_working_on_date():
     date_str = request.args.get("date")
-    if not date_str:
-        current_app.logger.warning("⚠️ Missing 'date' parameter in request")
-        return jsonify({"error": "Missing date parameter"}), 400
+    filter_type = request.args.get("filter", "all").lower()
+    
+    pdf_paths = [
+        os.path.join(UPLOAD_FOLDER, f)
+        for f in os.listdir(UPLOAD_FOLDER)
+        if f.endswith(".pdf")
+    ]
+    if not pdf_paths:
+        return jsonify({"error": "No PDF data available"}), 404
 
-    current_app.logger.debug(f"📆 Fetching shifts for date: {date_str}")
-    result, status = get_shifts_for_date(date_str)
-    return jsonify(result), status
+    outputs, stats, df, raw_codes = process_report(
+        pdf_paths, return_df=True
+    )
+
+    try:
+        target_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+    except ValueError:
+        return jsonify({"error": "Invalid date format. Use YYYY-MM-DD"}), 400
+
+    return jsonify(group_by_shift(df, target_date, raw_codes, filter_type))
+
 
 # ==============================
 # DB CHECK ROUTE
