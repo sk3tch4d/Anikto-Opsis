@@ -2,14 +2,21 @@
 # SWAPS.PY
 # ==============================
 
+import os
 import re
 import json
 
 # ==============================
 # LOAD JSON LIST
 # ==============================
-with open("static/emp_all.json", "r") as f:
-    EMP_ALL = json.load(f)
+def load_all_employees():
+    base = os.path.join(os.path.dirname(__file__), "static")
+    with open(os.path.join(base, "emp_ft.json"), "r") as f1, open(os.path.join(base, "emp_pt.json"), "r") as f2:
+        ft = json.load(f1)
+        pt = json.load(f2)
+    return list(set(ft + pt))
+
+EMP_ALL = load_all_employees()
 
 # ==============================
 # NORMALIZE NAME
