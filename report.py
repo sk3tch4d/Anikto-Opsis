@@ -143,15 +143,6 @@ def process_report(pdf_paths, return_df=False, stop_on_date=None):
     if DEBUG_MODE:
         print(f"[DEBUG] Parsing {len(pdf_paths)} PDF(s)...")
 
-    # === RAW CODES
-    if not records:
-        df = pd.DataFrame(columns=["Shift"])  # or full schema if needed
-    else:
-        df = pd.DataFrame([r.__dict__ for r in records])
-    
-    raw_codes = set(df["Shift"].str.upper().unique())
-
-
     # === Parse PDFs with optional stop date
     frames_with_swaps = [parse_pdf(p, stop_on_date=stop_on_date) for p in pdf_paths]
     frames = [f[0] for f in frames_with_swaps]
@@ -179,6 +170,9 @@ def process_report(pdf_paths, return_df=False, stop_on_date=None):
         if DEBUG_MODE:
             print("[DEBUG] No data found in PDF parsing.")
         return [], {}, pd.DataFrame()
+
+    # === Extract Shift Codes AFTER df is built
+    raw_codes = set(df["Shift"].str.upper().unique())
 
     # === Enrich
     df["WeekStart"] = df["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))
