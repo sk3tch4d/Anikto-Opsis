@@ -39,7 +39,6 @@
         <div class="panel-body scrollable-panel open">
           <div class="date-wrapper">
             <div class="sticky-bar">
-              <!-- Flex container for filter + date display -->
               <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
                 <select id="emp-filter" class="input full-width" style="flex: 0 0 92px;">
                   <option value="all">All</option>
@@ -47,25 +46,28 @@
                   <option value="pt">Part-Time</option>
                 </select>
       
-                <!-- Custom date display -->
-                <div id="custom-date-display" class="input full-width" style="flex: 1; cursor: pointer;" onclick="document.getElementById('working-date').showPicker()">
+                <!-- Custom visible date display -->
+                <div id="custom-date-display"
+                     class="input full-width"
+                     style="flex: 1; cursor: pointer;"
+                     onclick="document.getElementById('working-date').showPicker()">
                   <span id="custom-date-text">Today</span>
                 </div>
       
-                <!-- Hidden actual date input -->
-                <input type="date" id="working-date" style="display: none;" />
+                <!-- Hidden native date input -->
+                <input type="date" id="working-date" style="position: absolute; left: -9999px;" />
               </div>
             </div>
           </div>
       
           <!-- Loading Spinner -->
-          <div id="working-date-loading" style="display: none; text-align: center;">
-          </div>
+          <div id="working-date-loading" style="display: none; text-align: center;"></div>
       
           <!-- Results Target -->
           <div id="working-date-results" style="margin-top: 1em;"></div>
         </div>
       </div>
+
 
 
       <!-- ======== SWAPS & COVERAGE ======== -->
