@@ -12,7 +12,7 @@ from dataman import (
     import_shifts_from_json,
     import_shifts_from_csv,
 )
-from report import get_shifts_for_date, process_report
+from report import get_shifts_for_date, process_report, group_by_shift
 from config import UPLOAD_FOLDER
 
 # ==============================
