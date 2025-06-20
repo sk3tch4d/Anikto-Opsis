@@ -10,12 +10,14 @@ import { scrollPanel } from '../panels/panels_core.js';
 // ==============================
 export async function fetchWorkingOnDate() {
   const dateInput = document.getElementById('working-date');
+  const filterInput = document.getElementById('emp-filter');
   const resultsDiv = document.getElementById('working-date-results');
   const panelBody = document.querySelector('#arg-date-search-panel .panel-body');
 
   if (!dateInput || !dateInput.value || !resultsDiv || !panelBody) return;
 
   const dateStr = dateInput.value;
+  const filterValue = filterInput?.value || 'all';  // Fallback to 'all'
   const loader = createBounceLoader(panelBody);
 
   withLoadingToggle(
@@ -27,7 +29,7 @@ export async function fetchWorkingOnDate() {
       resultsDiv.innerHTML = "";
 
       try {
-        const response = await fetch(`/api/working_on_date?date=${dateStr}`);
+        const response = await fetch(`/api/working_on_date?date=${dateStr}&filter=${filterValue}`);
         const data = await response.json();
         const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
         let html = '';
@@ -102,6 +104,13 @@ export function initScheduleUI() {
   const customText = document.getElementById("custom-date-text");
 
   if (!dateInput || !customText) return;
+
+  const filterInput = document.getElementById("emp-filter");
+  if (filterInput) {
+    filterInput.addEventListener("change", () => {
+      fetchWorkingOnDate();
+    });
+  }
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
