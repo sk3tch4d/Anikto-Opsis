@@ -42,7 +42,7 @@ def load_assignment_codes(target_date, df=None):
     # If any special assignment appears in the df for this date, use special list
     if df is not None:
         day_assignments = set(
-            df[df["DateObj"] == target_date]["Shift"].unique()
+            df[df["DateObj"] == target_date]["Shift"].str.strip().str.upper().unique()
         )
         if special_assignments & day_assignments:
             return list(special_assignments)
@@ -57,21 +57,20 @@ def group_by_shift(df, target_date):
     shifts = defaultdict(list)
     all_codes = load_assignment_codes(target_date, df)
 
-    # Keep track of seen assignments
+    # Only use rows for the selected date
+    daily_df = df[df["DateObj"] == target_date]
+
+    # === Track actual assignments used that day
     seen_assignments = set()
+    for _, row in daily_df.iterrows():
+        assignment = row["Shift"].strip().upper()
+        seen_assignments.add(assignment)
+        shifts[row["Type"]].append((row["Name"], assignment))
 
-    for _, row in df.iterrows():
-        dt = datetime.combine(row["DateObj"], datetime.strptime(row["Start"], "%H:%M").time())
-        if dt.date() == target_date:
-            assignment = row["Shift"]
-            seen_assignments.add(assignment)
-            shifts[row["Type"]].append((row["Name"], assignment))
-
-    # Inject Vacants
+    # === Inject Vacants for missing codes
     unassigned = set(all_codes) - seen_assignments
-    for vacant_code in sorted(unassigned):
-        # Assign to shift type "Day" by default or customize logic
-        shifts["Day"].append(("Vacant", vacant_code))
+    for code in sorted(unassigned):
+        shifts["Day"].append(("Vacant", code))  # Or infer shift type from code prefix if needed
 
     return dict(shifts)
 
