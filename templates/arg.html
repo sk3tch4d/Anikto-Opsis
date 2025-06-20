@@ -37,8 +37,15 @@
           <span>Scheduled</span>
         </div>
         <div class="panel-body scrollable-panel open">
-          <div class="date-wrapper">
-            <input type="date" id="working-date" />
+          <div class="sticky-bar">
+            <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
+              <input type="date" id="working-date" class="input full-width" style="flex: 1;" />
+              <select id="emp-filter" class="input full-width" style="flex: 0 0 92px;">
+                <option value="all">All</option>
+                <option value="ft">Full-Time</option>
+                <option value="pt">Part-Time</option>
+              </select>
+            </div>
             <div class="custom-date-display" onclick="document.getElementById('working-date').showPicker()">
               <span id="custom-date-text">Today</span>
             </div>
