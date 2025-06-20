@@ -95,9 +95,8 @@ def extract_shift_info(line, processing_date):
         if not explicitly_matched and shift_type == "Day":
             logging.warning(f"Unrecognized shift code '{m}' in line: {line}")
 
-        cleaned = re.sub(r'^[dDeEnwW]', '', m)
         results.append({
-            "id": cleaned,
+            "code": m.strip().upper(),
             "type": shift_type,
             "DayType": day_type
         })
@@ -120,8 +119,7 @@ def build_record(line, processing_date):
     infos = extract_shift_info(line, processing_date)
     if not infos:
         return None
-
-    full_shift_id = " ".join(i["id"] for i in infos)
+    full_shift_id = " ".join(i["code"] for i in infos)
     shift_type = infos[0]["type"]
     day_type = infos[0]["DayType"]
 
@@ -131,7 +129,7 @@ def build_record(line, processing_date):
         dt_end += timedelta(days=1)
 
     hours = round((dt_end - dt_start).seconds / 3600, 1)
-
+    
     return {
         "Name":     full_name,
         "Date":     processing_date.strftime("%a, %b %d"),
@@ -143,6 +141,8 @@ def build_record(line, processing_date):
         "Start":    start_time,
         "End":      end_time
     }
+    
+    logging.debug(f"Parsed: {full_name} — {full_shift_id} — {shift_type}")
 
 # ==============================
 # PARSE PDF
