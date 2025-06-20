@@ -4,6 +4,7 @@
 
 import os
 import re
+import json
 import pandas as pd
 from datetime import datetime, timedelta
 from collections import defaultdict
@@ -18,16 +19,60 @@ from parser import parse_pdf
 # ==============================
 get_pay_period = make_pay_period_fn(datetime(2025, 1, 13))
 
+# ==============================
+# LOAD ASSIGNMENT CODES
+# ==============================
+def load_assignment_codes(target_date, df=None):
+    base_path = os.path.join(os.path.dirname(__file__), "static")
 
+    # Load all 3 lists
+    with open(os.path.join(base_path, "arg_asmnts.json"), "r") as f:
+        weekday_assignments = set(json.load(f))
+    with open(os.path.join(base_path, "arg_asmnts_wkd.json"), "r") as f:
+        weekend_assignments = set(json.load(f))
+    with open(os.path.join(base_path, "arg_asmnts_sp.json"), "r") as f:
+        special_assignments = set(json.load(f))
+
+    weekday = target_date.weekday()
+
+    # Weekends use weekend list
+    if weekday in [5, 6]:
+        return list(weekend_assignments)
+
+    # If any special assignment appears in the df for this date, use special list
+    if df is not None:
+        day_assignments = set(
+            df[df["DateObj"] == target_date]["Shift"].unique()
+        )
+        if special_assignments & day_assignments:
+            return list(special_assignments)
+
+    # Default to weekday
+    return list(weekday_assignments)
+        
 # ==============================
 # GROUP SHIFT BY DATE + TYPE
 # ==============================
 def group_by_shift(df, target_date):
     shifts = defaultdict(list)
+    all_codes = load_assignment_codes(target_date, df)
+
+    # Keep track of seen assignments
+    seen_assignments = set()
+
     for _, row in df.iterrows():
         dt = datetime.combine(row["DateObj"], datetime.strptime(row["Start"], "%H:%M").time())
         if dt.date() == target_date:
-            shifts[row["Type"]].append((row["Name"], row["Shift"]))
+            assignment = row["Shift"]
+            seen_assignments.add(assignment)
+            shifts[row["Type"]].append((row["Name"], assignment))
+
+    # Inject Vacants
+    unassigned = set(all_codes) - seen_assignments
+    for vacant_code in sorted(unassigned):
+        # Assign to shift type "Day" by default or customize logic
+        shifts["Day"].append(("Vacant", vacant_code))
+
     return dict(shifts)
 
 # ==============================
