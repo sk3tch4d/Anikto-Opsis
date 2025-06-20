@@ -25,21 +25,17 @@ get_pay_period = make_pay_period_fn(datetime(2025, 1, 13))
 def load_assignment_codes(target_date, df=None):
     base_path = os.path.join(os.path.dirname(__file__), "static")
 
-    # Load all 3 lists
-    with open(os.path.join(base_path, "arg_asmnts.json"), "r") as f:
-        weekday_assignments = set(json.load(f))
-    with open(os.path.join(base_path, "arg_asmnts_wkd.json"), "r") as f:
-        weekend_assignments = set(json.load(f))
-    with open(os.path.join(base_path, "arg_asmnts_sp.json"), "r") as f:
-        special_assignments = set(json.load(f))
+    def load_normalized_json(path):
+        with open(path, "r") as f:
+            return set(code.strip().upper() for code in json.load(f))
+
+    weekday_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts.json"))
+    weekend_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts_wkd.json"))
+    special_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts_sp.json"))
 
     weekday = target_date.weekday()
 
-    # Weekends use weekend list
-    if weekday in [5, 6]:
-        return list(weekend_assignments)
-
-    # If any special assignment appears in the df for this date, use special list
+    # If any special assignment is actually used, override
     if df is not None:
         day_assignments = set(
             df[df["DateObj"] == target_date]["Shift"].str.strip().str.upper().unique()
@@ -47,7 +43,11 @@ def load_assignment_codes(target_date, df=None):
         if special_assignments & day_assignments:
             return list(special_assignments)
 
-    # Default to weekday
+    # Weekend fallback
+    if weekday in [5, 6]:
+        return list(weekend_assignments)
+
+    # Default: weekday
     return list(weekday_assignments)
         
 # ==============================
