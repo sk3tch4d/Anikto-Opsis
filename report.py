@@ -22,7 +22,7 @@ get_pay_period = make_pay_period_fn(datetime(2025, 1, 13))
 # ==============================
 # LOAD ASSIGNMENT CODES
 # ==============================
-def load_assignment_codes(target_date, df=None):
+def load_assignment_codes(target_date, df=None, raw_codes=None):
     base_path = os.path.join(os.path.dirname(__file__), "static")
 
     def load_normalized_json(path):
@@ -60,28 +60,43 @@ def load_assignment_codes(target_date, df=None):
         return list(weekday_assignments)
 
 # ==============================
+# GET FILTER NAME
+# ==============================
+def get_name_filter(filter_type):
+    base = os.path.join(os.path.dirname(__file__), "static")
+    if filter_type == "ft":
+        return set(json.load(open(os.path.join(base, "emp_ft.json"))))
+    elif filter_type == "pt":
+        return set(json.load(open(os.path.join(base, "emp_pt.json"))))
+    else:
+        ft = set(json.load(open(os.path.join(base, "emp_ft.json"))))
+        pt = set(json.load(open(os.path.join(base, "emp_pt.json"))))
+        return ft | pt
+
+# ==============================
 # GROUP SHIFT BY DATE + TYPE
 # ==============================
-def group_by_shift(df, target_date):
+def group_by_shift(df, target_date, raw_codes, filter_type="all"):
     shifts = defaultdict(list)
-    all_codes = load_assignment_codes(target_date, df)
+    all_codes = load_assignment_codes(target_date, df, raw_codes)
+    name_filter = get_name_filter(filter_type)
 
-    # Only use rows for the selected date
-    daily_df = df[df["DateObj"] == target_date]
+    daily = df[df["DateObj"] == target_date]
+    seen = set()
 
-    # === Track actual assignments used that day
-    seen_assignments = set()
-    for _, row in daily_df.iterrows():
-        assignment = row["Shift"].strip().upper()
-        seen_assignments.add(assignment)
-        shifts[row["Type"]].append((row["Name"], assignment))
+    for _, row in daily.iterrows():
+        name = row["Name"].strip()
+        code = row["Shift"].strip().upper()
+        if name in name_filter:
+            seen.add(code)
+            shifts[row["Type"]].append((name, code))
 
-    # === Inject Vacants for missing codes
-    unassigned = set(all_codes) - seen_assignments
+    unassigned = set(all_codes) - seen
     for code in sorted(unassigned):
-        shifts["Day"].append(("Vacant", code))  # Or infer shift type from code prefix if needed
+        shifts["Day"].append(("Vacant", code))
 
     return dict(shifts)
+
 
 # ==============================
 # API: WHO IS WORKING ON DATE
@@ -127,6 +142,9 @@ def get_shifts_for_date(date_str):
 def process_report(pdf_paths, return_df=False, stop_on_date=None):
     if DEBUG_MODE:
         print(f"[DEBUG] Parsing {len(pdf_paths)} PDF(s)...")
+
+    # === RAW CODES
+    raw_codes = set(df["Shift"].str.upper().unique())
 
     # === Parse PDFs with optional stop date
     frames_with_swaps = [parse_pdf(p, stop_on_date=stop_on_date) for p in pdf_paths]
@@ -199,5 +217,5 @@ def process_report(pdf_paths, return_df=False, stop_on_date=None):
         print(f"[DEBUG] Finished processing. Total shifts: {len(df)}")
 
     if return_df:
-        return output_files, stats, df
+        return output_files, stats, df, raw_codes
     return output_files, stats
