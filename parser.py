@@ -12,15 +12,22 @@ from datetime import datetime, timedelta
 from swaps import parse_exceptions_section
 
 # Setup logging
-logging.basicConfig(level=logging.DEBUG, format='[%(levelname)s] %(message)s')
+# logging.basicConfig(level=logging.DEBUG, format='[%(levelname)s] %(message)s')
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format='[%(levelname)s] %(message)s')
+
+# Static DIR
+STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
 
 # ==============================
 # LOAD NAMES FROM JSON
 # ==============================
-STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
-EMP_LIST_PATH = os.path.join(STATIC_DIR, 'emp_ext.json')
-with open(EMP_LIST_PATH, 'r') as f:
-    VALID_NAMES = set(" ".join(name.split()) for name in json.load(f))
+def load_valid_names():
+    with open(os.path.join(STATIC_DIR, "emp_ft.json")) as f1, open(os.path.join(STATIC_DIR, "emp_pt.json")) as f2:
+        ft = json.load(f1)
+        pt = json.load(f2)
+        return set(" ".join(name.split()) for name in (ft + pt))
+
+VALID_NAMES = load_valid_names()
 
 # ==============================
 # EXTRACT PROCESSING DATE
@@ -129,6 +136,8 @@ def build_record(line, processing_date):
         dt_end += timedelta(days=1)
 
     hours = round((dt_end - dt_start).seconds / 3600, 1)
+
+    logging.debug(f"Parsed: {full_name} — {full_shift_id} — {shift_type}")
     
     return {
         "Name":     full_name,
@@ -141,8 +150,6 @@ def build_record(line, processing_date):
         "Start":    start_time,
         "End":      end_time
     }
-    
-    logging.debug(f"Parsed: {full_name} — {full_shift_id} — {shift_type}")
 
 # ==============================
 # PARSE PDF
