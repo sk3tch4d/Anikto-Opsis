@@ -37,40 +37,37 @@
           <span>Scheduled</span>
         </div>
         <div class="panel-body scrollable-panel open">
-          <div class="date-wrapper">
-            <div class="sticky-bar">
-              <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
-                <!-- Date input styled like inventory -->
-                <input type="date"
-                       id="working-date"
-                       class="input full-width"
-                       style="flex: 1;" />
-      
-                <!-- Filter dropdown -->
-                <select id="emp-filter"
-                        class="input full-width"
-                        style="flex: 0 0 92px;">
-                  <option value="all">All</option>
-                  <option value="ft">Full-Time</option>
-                  <option value="pt">Part-Time</option>
-                </select>
-              </div>
-      
-              <!-- "Fake" clickable display (optional, if needed for animation/text override) -->
-              <div class="custom-date-display"
+          <div class="sticky-bar">
+            <!-- INLINE: Only these two visible -->
+            <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
+              <!-- Clickable date label -->
+              <div class="input full-width"
+                   id="custom-date-display"
+                   style="flex: 1; cursor: pointer;"
                    onclick="document.getElementById('working-date').showPicker()">
                 <span id="custom-date-text">Today</span>
               </div>
+      
+              <!-- Right-side filter -->
+              <select id="emp-filter" class="input full-width" style="flex: 0 0 92px;">
+                <option value="all">All</option>
+                <option value="ft">Full-Time</option>
+                <option value="pt">Part-Time</option>
+              </select>
             </div>
+      
+            <!-- Hidden date select -->
+            <input type="date"
+                   id="working-date"
+                   style="position: absolute; left: -9999px;" />
           </div>
       
-          <!-- Loading Spinner -->
+          <!-- Spinner and results -->
           <div id="working-date-loading" style="display: none; text-align: center;"></div>
-      
-          <!-- Results Target -->
           <div id="working-date-results" style="margin-top: 1em;"></div>
         </div>
       </div>
+
 
       <!-- ======== SWAPS & COVERAGE ======== -->
       <div class="panel panel-animate" id="arg-coverage-panel">
