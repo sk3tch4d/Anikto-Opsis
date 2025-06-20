@@ -37,36 +37,37 @@
           <span>Scheduled</span>
         </div>
         <div class="panel-body scrollable-panel open">
-          <!-- Scheduled panel -->
+      
+          <!-- Sticky Controls Row -->
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
-              
-              <!-- Styled custom date picker trigger -->
+      
+              <!-- Custom-styled "Today" trigger -->
               <div id="custom-date-display"
-                   class="input full-width"
-                   style="flex: 1; cursor: pointer;"
+                   class="custom-date-display"
+                   style="flex: 1;"
                    onclick="document.getElementById('working-date').showPicker()">
                 <span id="custom-date-text">Today</span>
               </div>
-          
-              <!-- Employee filter dropdown -->
+      
+              <!-- Hidden date input field -->
+              <input type="date" id="working-date" style="position: absolute; left: -9999px;" />
+      
+              <!-- Filter dropdown -->
               <select id="emp-filter" class="input full-width" style="flex: 0 0 92px;">
                 <option value="all">All</option>
                 <option value="ft">Full-Time</option>
                 <option value="pt">Part-Time</option>
               </select>
+      
             </div>
-          
-            <!-- Hidden date input -->
-            <input type="date" id="working-date" style="position: absolute; left: -9999px;" />
           </div>
       
-          <!-- Spinner and results -->
+          <!-- Spinner and Results -->
           <div id="working-date-loading" style="display: none; text-align: center;"></div>
           <div id="working-date-results" style="margin-top: 1em;"></div>
         </div>
       </div>
-
 
       <!-- ======== SWAPS & COVERAGE ======== -->
       <div class="panel panel-animate" id="arg-coverage-panel">
