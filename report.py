@@ -29,13 +29,9 @@ def load_assignment_codes(target_date, df=None):
         with open(path, "r") as f:
             return set(code.strip().upper() for code in json.load(f))
 
-    weekday_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts.json"))
-    weekend_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts_wkd.json"))
+    # Load special first (needed for override logic)
     special_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts_sp.json"))
 
-    weekday = target_date.weekday()
-
-    # If any special assignment is actually used, override
     if df is not None:
         day_assignments = set(
             df[df["DateObj"] == target_date]["Shift"].str.strip().str.upper().unique()
@@ -43,12 +39,14 @@ def load_assignment_codes(target_date, df=None):
         if special_assignments & day_assignments:
             return list(special_assignments)
 
-    # Weekend fallback
-    if weekday in [5, 6]:
-        return list(weekend_assignments)
+    weekday = target_date.weekday()
 
-    # Default: weekday
-    return list(weekday_assignments)
+    if weekday == 5:
+        return list(load_normalized_json(os.path.join(base_path, "arg_asmnts_sat.json")))
+    elif weekday == 6:
+        return list(load_normalized_json(os.path.join(base_path, "arg_asmnts_sun.json")))
+    else:
+        return list(load_normalized_json(os.path.join(base_path, "arg_asmnts.json")))
         
 # ==============================
 # GROUP SHIFT BY DATE + TYPE
