@@ -3,7 +3,7 @@
 // ==============================
 
 import { highlightMatch } from "../search-utils.js";
-import { scrollPanel } from './panels/panels_core.js';
+import { scrollPanel } from '../panels/panels_core.js';
 import { getStatusDot } from '../statusdot.js';
 import { renderLine } from '../cards/results_card.js';
 
