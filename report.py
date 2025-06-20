@@ -29,23 +29,27 @@ def load_assignment_codes(target_date, df=None):
         with open(path, "r") as f:
             return set(code.strip().upper() for code in json.load(f))
 
-    # Load all JSON files
+    # Load all code sets
     special_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts_sp.json"))
     weekday_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts.json"))
     sat_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts_sat.json"))
     sun_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts_sun.json"))
 
-    # STEP 1: Check for any special assignment usage
+    # Normalize daily shifts (if any data exists for that date)
     if df is not None:
-        day_assignments = set(
-            df[df["DateObj"] == target_date]["Shift"].str.strip().str.upper().unique()
+        daily_shifts = set(
+            code.strip().upper()
+            for code in df[df["DateObj"] == target_date]["Shift"].unique()
+            if isinstance(code, str)
         )
-        if special_assignments & day_assignments:
+
+        # Step 1: Presence of SA1 triggers special
+        if "SA1" in daily_shifts:
             if DEBUG_MODE:
-                print(f"[DEBUG] Special assignments triggered on {target_date}")
+                print(f"[DEBUG] Detected SA1 — using SPECIAL assignment set for {target_date}")
             return list(special_assignments)
 
-    # STEP 2: Fallback to weekday/sat/sun
+    # Step 2: Split by weekday number
     weekday = target_date.weekday()
 
     if weekday == 5:
@@ -54,7 +58,7 @@ def load_assignment_codes(target_date, df=None):
         return list(sun_assignments)
     else:
         return list(weekday_assignments)
-        
+
 # ==============================
 # GROUP SHIFT BY DATE + TYPE
 # ==============================
