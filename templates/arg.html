@@ -31,7 +31,9 @@
     <!-- ======== PANEL CONTAINER ======== -->
     <div id="panel-container">
 
-      <!-- ======== SCHEDULED ======== -->
+      <!-- ============================= -->
+      <!-- ===== SCHEDULED
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-date-search-panel">
         <div class="panel-header open" onclick="togglePanel(this)">
           <span>Scheduled</span>
@@ -42,7 +44,14 @@
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
       
-              <!-- Custom-styled "Today" trigger -->
+              <!-- Filter dropdown (left side) -->
+              <select id="emp-filter" class="input full-width" style="flex: 0 0 120px;">
+                <option value="all">All</option>
+                <option value="ft">Full-Time</option>
+                <option value="pt">Part-Time</option>
+              </select>
+      
+              <!-- Custom-styled date trigger -->
               <div id="custom-date-display"
                    class="custom-date-display"
                    style="flex: 1;"
@@ -50,16 +59,8 @@
                 <span id="custom-date-text">Today</span>
               </div>
       
-              <!-- Hidden date input field -->
+              <!-- Hidden native date input -->
               <input type="date" id="working-date" style="position: absolute; left: -9999px;" />
-      
-              <!-- Filter dropdown -->
-              <select id="emp-filter" class="input full-width" style="flex: 0 0 92px;">
-                <option value="all">All</option>
-                <option value="ft">Full-Time</option>
-                <option value="pt">Part-Time</option>
-              </select>
-      
             </div>
           </div>
       
@@ -69,7 +70,9 @@
         </div>
       </div>
 
-      <!-- ======== SWAPS & COVERAGE ======== -->
+      <!-- ============================= -->
+      <!-- ===== SWAPS & COVERAGE
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-coverage-panel">
         <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage (WIP)</div>
         <div class="panel-scroll-container">
@@ -93,7 +96,9 @@
         </div>
       </div>
 
-      <!-- ======== WEEKLY RANKINGS ======== -->
+      <!-- ============================= -->
+      <!-- ===== WEEKLY RANKINGS
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-rank-week-panel">
         <div class="panel-header" onclick="togglePanel(this)">Weekly Rankings</div>
         <div class="panel-body scrollable-panel open">
@@ -105,7 +110,9 @@
         </div>
       </div>
 
-      <!-- ======== PERIOD RANKINGS ======== -->
+      <!-- ============================= -->
+      <!-- ===== PERIOD RANKINGS
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-rank-period-panel">
         <div class="panel-header" onclick="togglePanel(this)">Period Rankings</div>
         <div class="panel-body scrollable-panel open">
@@ -117,7 +124,9 @@
         </div>
       </div>
 
-      <!-- ======== SINGLE LOOKUP ======== -->
+      <!-- ============================= -->
+      <!-- ===== SINGLE LOOKUP
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-single-lookup-panel">
         <div class="panel-header" onclick="togglePanel(this)">Single Lookup</div>
         <div class="panel-body scrollable-panel open">
@@ -127,7 +136,9 @@
         </div>
       </div>
 
-      <!-- ======== STATS ======== -->
+      <!-- ============================= -->
+      <!-- ===== STATS
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-stats-panel">
         <div class="panel-header" onclick="togglePanel(this)">Stats</div>
         <div class="panel-body scrollable-panel open">
@@ -138,7 +149,9 @@
         </div>
       </div>
 
-      <!-- ======== DOWNLOADS ======== -->
+      <!-- ============================= -->
+      <!-- ===== DOWNLOADS
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-downloads-panel">
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
         <div class="panel-body">
@@ -160,7 +173,9 @@
         </div>
       </div>
 
-      <!-- ======== SUBMIT ======== -->
+      <!-- ============================= -->
+      <!-- ===== SUBMIT
+      <!-- ============================= -->
       <div class="panel panel-animate no-shadow">
         <form action="{{ url_for('index') }}" method="get" class="button-form">
           <button type="submit" class="button full-width">Main Menu</button>
