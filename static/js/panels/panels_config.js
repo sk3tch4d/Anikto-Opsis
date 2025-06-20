@@ -81,6 +81,5 @@ export const nonButtonPanels = [
   "optimization-downloads-panel",
   "zwdiseg-downloads-panel",
   "seniority-downloads-panel",
-  "arg-date-search-panel",
   "arg-downloads-panel"
 ];
