@@ -37,29 +37,28 @@
           <span>Scheduled</span>
         </div>
         <div class="panel-body scrollable-panel open">
+          <!-- Scheduled panel -->
           <div class="sticky-bar">
-            <!-- INLINE: Only these two visible -->
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
-              <!-- Clickable date label -->
-              <div class="input full-width"
-                   id="custom-date-display"
+              
+              <!-- Styled custom date picker trigger -->
+              <div id="custom-date-display"
+                   class="input full-width"
                    style="flex: 1; cursor: pointer;"
                    onclick="document.getElementById('working-date').showPicker()">
                 <span id="custom-date-text">Today</span>
               </div>
-      
-              <!-- Right-side filter -->
+          
+              <!-- Employee filter dropdown -->
               <select id="emp-filter" class="input full-width" style="flex: 0 0 92px;">
                 <option value="all">All</option>
                 <option value="ft">Full-Time</option>
                 <option value="pt">Part-Time</option>
               </select>
             </div>
-      
-            <!-- Hidden date select -->
-            <input type="date"
-                   id="working-date"
-                   style="position: absolute; left: -9999px;" />
+          
+            <!-- Hidden date input -->
+            <input type="date" id="working-date" style="position: absolute; left: -9999px;" />
           </div>
       
           <!-- Spinner and results -->
