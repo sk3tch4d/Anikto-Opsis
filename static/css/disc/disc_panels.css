@@ -331,6 +331,9 @@ body.lock-scroll {
 .close-button:focus {
   background-color: var(--toast-close-background-color);
   transform: scale(1.05);
+  outline: none;
+  /* box-shadow: none;*/
+  cursor: pointer;
 }
 
 /* ============================= */
