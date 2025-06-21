@@ -79,24 +79,27 @@ def get_name_filter(filter_type):
 def group_by_shift(df, target_date, raw_codes, filter_type="all"):
     shifts = defaultdict(list)
     all_codes = load_assignment_codes(target_date, df, raw_codes)
-    name_filter = get_name_filter(filter_type)
 
     daily = df[df["DateObj"] == target_date]
-    seen = set()
 
-    for _, row in daily.iterrows():
+    # 1. Track all filled shifts (independent of filter)
+    all_filled_codes = set(daily["Shift"].str.upper().dropna().unique())
+
+    # 2. Apply filter to get only relevant employees (for display)
+    name_filter = get_name_filter(filter_type)
+    filtered = daily[daily["Name"].isin(name_filter)]
+
+    for _, row in filtered.iterrows():
         name = row["Name"].strip()
         code = row["Shift"].strip().upper()
-        if name in name_filter:
-            seen.add(code)
-            shifts[row["Type"]].append((name, code))
+        shifts[row["Type"]].append((name, code))
 
-    unassigned = set(all_codes) - seen
-    for code in sorted(unassigned):
-        shifts["Day"].append(("Vacant", code))
+    # 3. Detect true vacancies: shift codes not filled by ANYONE
+    truly_unassigned = set(all_codes) - all_filled_codes
+    for code in sorted(truly_unassigned):
+        shifts["Day"].append(("Vacant", code))  # Default to Day
 
     return dict(shifts)
-
 
 # ==============================
 # API: WHO IS WORKING ON DATE
