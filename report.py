@@ -179,7 +179,7 @@ def group_by_shift(df, target_date, raw_codes=None, filter_type="all"):
 # ==============================
 # API: WHO IS WORKING ON DATE
 # ==============================
-def get_working_on_date(df, date_str):
+def get_working_on_date(df, date_str, raw_codes=None):
     try:
         date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
     except ValueError:
@@ -206,12 +206,18 @@ def get_shifts_for_date(date_str):
     if not pdf_paths:
         return {"error": "No PDF data available"}, 404
 
-    _, _, df = process_report(pdf_paths, return_df=True, stop_on_date=stop_date)
+    # ⬇️ Only fetch what we need — no stats, heatmap, or xlsx
+    _, _, df, raw_codes = process_report(
+        pdf_paths,
+        return_df=True,
+        stop_on_date=stop_date,
+        steps=set() 
+    )
 
     if df.empty:
         return {"error": "No shift data available for this date"}, 404
 
-    result = get_working_on_date(df, date_str)
+    result = get_working_on_date(df, date_str, raw_codes)
     if DEBUG_MODE:
         print(f"[DEBUG] Shift data returned for {date_str}: {result}")
     return result, 200
@@ -219,7 +225,15 @@ def get_shifts_for_date(date_str):
 # ==============================
 # MAIN REPORT PROCESSOR
 # ==============================
-def process_report(pdf_paths, return_df=False, stop_on_date=None):
+def process_report(pdf_paths, return_df=False, stop_on_date=None, steps=None):
+    if steps is None:
+        steps = {"outputs", "heatmap", "stats", "swaps"}
+
+    valid_steps = {"outputs", "heatmap", "stats", "swaps"}
+    invalid = set(steps) - valid_steps
+    if invalid:
+        raise ValueError(f"Invalid steps: {invalid}")
+
     if DEBUG_MODE:
         print(f"[DEBUG] Parsing {len(pdf_paths)} PDF(s)...")
 
@@ -229,11 +243,11 @@ def process_report(pdf_paths, return_df=False, stop_on_date=None):
     swaps_all = sum((f[1] for f in frames_with_swaps), [])
 
     # === Track file -> date mapping
-    file_date_map = {}
-    for path in pdf_paths:
-        match = re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(path))
-        if match:
-            file_date_map[os.path.basename(path)] = pd.to_datetime(match.group(1))
+    file_date_map = {
+        os.path.basename(path): pd.to_datetime(re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(path)).group(1))
+        for path in pdf_paths
+        if re.search(r'(\d{4}-\d{2}-\d{2})', os.path.basename(path))
+    }
 
     # === Tag metadata
     for frame, path in zip(frames, pdf_paths):
@@ -241,7 +255,7 @@ def process_report(pdf_paths, return_df=False, stop_on_date=None):
         frame["SourceFile"] = fname
         frame["FileDate"] = file_date_map.get(fname)
 
-    # === Consolidate
+    # === Consolidate DataFrame
     df = pd.concat(frames, ignore_index=True)
     df = df.sort_values(by=["DateObj", "Shift", "FileDate"], ascending=[True, True, False])
     df = df.drop_duplicates(subset=["DateObj", "Shift"], keep="first")
@@ -251,47 +265,56 @@ def process_report(pdf_paths, return_df=False, stop_on_date=None):
             print("[DEBUG] No data found in PDF parsing.")
         return [], {}, pd.DataFrame()
 
-    # === Extract Shift Codes AFTER df is built
-    raw_codes = set(df["Shift"].str.upper().unique())
+    # === Extract Shift Codes
+    raw_codes = set(df["Shift"].str.upper().dropna().unique())
 
     # === Enrich
     df["WeekStart"] = df["DateObj"].apply(lambda d: d - timedelta(days=d.weekday()))
     first_date = df["DateObj"].min().strftime("%Y-%m-%d")
 
+    output_files = []
+
     # === Save Excel
-    output_filename = f"ARGX_{first_date}.xlsx"
-    output_path = os.path.join("/tmp", output_filename)
-    write_argx(df, output_path, get_pay_period)
-    if DEBUG_MODE:
-        print(f"[DEBUG] ARGX saved to: {output_path}")
+    if "outputs" in steps:
+        output_filename = f"ARGX_{first_date}.xlsx"
+        output_path = os.path.join("/tmp", output_filename)
+        write_argx(df, output_path, get_pay_period)
+        output_files.append(output_path)
+        if DEBUG_MODE:
+            print(f"[DEBUG] ARGX saved to: {output_path}")
 
     # === Generate Heatmap
-    heatmap_path = generate_heatmap_png(df, first_date)
+    if "heatmap" in steps:
+        heatmap_path = generate_heatmap_png(df, first_date)
+        output_files.append(heatmap_path)
 
     # === Rankings + Stats
-    today = datetime.now().date()
-    week_start = today - timedelta(days=today.weekday())
-    current_pp = get_pay_period(today)
+    stats = {}
+    if "stats" in steps:
+        today = datetime.now().date()
+        week_start = today - timedelta(days=today.weekday())
+        current_pp = get_pay_period(today)
 
-    stats = {
-        "total_hours_week": round(df[df["WeekStart"] == week_start]["Hours"].sum()),
-        "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
-        "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
-        "rankings": {
-            "weekly": list(df[df["WeekStart"] == week_start]
-                .groupby("Name")["Hours"].sum()
-                .sort_values(ascending=False).astype(int).items()),
-            "period": list(df[df["DateObj"].apply(get_pay_period) == current_pp]
-                .groupby("Name")["Hours"].sum()
-                .sort_values(ascending=False).astype(int).items()),
-            "total": list(df
-                .groupby("Name")["Hours"]
-                .sum().sort_values(ascending=False).astype(int).items())
-        },
-        "swaps": swaps_all
-    }
+        stats = {
+            "total_hours_week": round(df[df["WeekStart"] == week_start]["Hours"].sum()),
+            "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
+            "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
+            "rankings": {
+                "weekly": list(df[df["WeekStart"] == week_start]
+                    .groupby("Name")["Hours"].sum()
+                    .sort_values(ascending=False).astype(int).items()),
+                "period": list(df[df["DateObj"].apply(get_pay_period) == current_pp]
+                    .groupby("Name")["Hours"].sum()
+                    .sort_values(ascending=False).astype(int).items()),
+                "total": list(df
+                    .groupby("Name")["Hours"]
+                    .sum().sort_values(ascending=False).astype(int).items())
+            }
+        }
 
-    output_files = [output_path, heatmap_path]
+    # === Shift Swaps
+    if "swaps" in steps:
+        stats["swaps"] = swaps_all
 
     if DEBUG_MODE:
         print(f"[DEBUG] Finished processing. Total shifts: {len(df)}")
