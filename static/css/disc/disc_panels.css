@@ -325,12 +325,13 @@ body.lock-scroll {
 }
 
 /* ============================= */
-/* CLOSE BUTTON: HOVER           */
+/* CLOSE BUTTON: HOVER/FOCUS     */
 /* ============================= */
-.close-button:hover {
+.close-button:hover,
+.close-button:focus {
   background-color: var(--toast-close-background-color);
   transform: scale(1.05);
-;}
+}
 
 /* ============================= */
 /* FADE-IN CLOSE BUTTON          */
