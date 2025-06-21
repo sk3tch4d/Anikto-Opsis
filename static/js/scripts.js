@@ -77,6 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- ARG -----
   if (document.body.dataset.page === "arg") {
     import('./schedule/arg_search_date.js').then(m => m.initScheduleUI());
+    import('./rankings/arg_stats.js').then(m => {
+      m.initStatDropdown();
+      m.fetchStatsData();
+    });
   }
   // ----- INFO -----
   if (document.body.dataset.page === "info") {
