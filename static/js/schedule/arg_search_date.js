@@ -7,6 +7,20 @@ import { scrollPanel } from '../panels/panels_core.js';
 import { formatDate } from '../utils/format_date.js';
 
 // ==============================
+// DEBOUNCE LET
+// ==============================
+let fetchController = null;
+let debounceTimer = null;
+
+// ==============================
+// DEBOUNCE FETCH WORKING DATE
+// ==============================
+export function fetchWorkingOnDateDebounced() {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => fetchWorkingOnDate(), 300);
+}
+
+// ==============================
 // FETCH SCHEDULE DATA
 // ==============================
 export async function fetchWorkingOnDate() {
@@ -16,6 +30,10 @@ export async function fetchWorkingOnDate() {
   const panelBody = document.querySelector('#arg-date-search-panel .panel-body');
 
   if (!dateInput || !dateInput.value || !resultsDiv || !panelBody) return;
+
+  // Abort previous request
+  if (fetchController) fetchController.abort();
+  fetchController = new AbortController();
 
   const dateStr = dateInput.value;
   const filterValue = filterInput?.value || 'all';
@@ -30,7 +48,10 @@ export async function fetchWorkingOnDate() {
       resultsDiv.innerHTML = "";
 
       try {
-        const response = await fetch(`/api/working_on_date?date=${dateStr}&filter=${filterValue}`);
+        const response = await fetch(
+          `/api/working_on_date?date=${dateStr}&filter=${filterValue}`,
+          { signal: fetchController.signal }
+        );
         const data = await response.json();
         const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
         let html = '';
@@ -54,7 +75,9 @@ export async function fetchWorkingOnDate() {
         resultsDiv.innerHTML = html;
 
       } catch (err) {
-        resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
+        if (err.name !== "AbortError") {
+          resultsDiv.innerHTML = `<p class="error">Error fetching data</p>`;
+        }
       }
     }
   );
@@ -71,9 +94,7 @@ export function initScheduleUI() {
 
   const filterInput = document.getElementById("emp-filter");
   if (filterInput) {
-    filterInput.addEventListener("change", () => {
-      fetchWorkingOnDate();
-    });
+    filterInput.addEventListener("change", fetchWorkingOnDateDebounced);
   }
 
   const today = new Date();
@@ -95,7 +116,7 @@ export function initScheduleUI() {
 
   dateInput.addEventListener("change", () => {
     updateTextFromInput();
-    fetchWorkingOnDate();
+    fetchWorkingOnDateDebounced();
   });
 
   dateInput.addEventListener("input", updateTextFromInput);
