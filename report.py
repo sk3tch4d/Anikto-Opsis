@@ -63,10 +63,10 @@ def load_assignment_codes(target_date, df=None, raw_codes=None):
                     print(f"[DEBUG] Holiday trigger: {target_date} → D3XX not present, using holiday set")
                 return list(holiday)
 
-        # STAT override — any SA1–SA4, etc.
-        if any(code in daily_shifts for code in stat):
+        # STAT override — only if any SA1–SA4 explicitly present
+        if any(code in daily_shifts for code in ["SA1", "SA2", "SA3", "SA4"]):
             if DEBUG_MODE:
-                print(f"[DEBUG] Stat trigger: {target_date} → using stat set")
+                print(f"[DEBUG] Stat day triggered — found SA code in shifts for {target_date}")
             return list(stat)
 
     # Regular day logic
