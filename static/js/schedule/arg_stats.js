@@ -2,6 +2,8 @@
 // ARG_STATS.JS
 // ==============================
 
+import { toggleLoadingState } from "../loading.js";
+
 let rankingsData = {
   weekly: [],
   period: [],
@@ -84,10 +86,13 @@ function updateStatsDisplay() {
 // FETCH API STATS DATA
 // ==============================
 export async function fetchStatsData() {
-  const filter = document.getElementById("emp-stats-filter")?.value || "all";
+  const container = document.getElementById("stats-container");
+  const loader = document.getElementById("stats-loading");
+
+  toggleLoadingState(true, { show: [loader], hide: [container] });
 
   try {
-    const res = await fetch(`/api/arg_stats?filter=${filter}`);
+    const res = await fetch("/api/arg_stats?filter=" + getCurrentStatsFilter());
     const data = await res.json();
 
     if (data.stats) {
@@ -95,5 +100,7 @@ export async function fetchStatsData() {
     }
   } catch (err) {
     console.error("Failed to fetch stats:", err);
+  } finally {
+    toggleLoadingState(false, { show: [loader], hide: [container] });
   }
 }
