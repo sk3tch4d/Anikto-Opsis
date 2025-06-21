@@ -88,11 +88,12 @@ function updateStatsDisplay() {
 export async function fetchStatsData() {
   const container = document.getElementById("stats-container");
   const loader = document.getElementById("stats-loading");
+  const filter = document.getElementById("emp-stats-filter")?.value || "all";
 
   toggleLoadingState(true, { show: [loader], hide: [container] });
 
   try {
-    const res = await fetch("/api/arg_stats?filter=" + getCurrentStatsFilter());
+    const res = await fetch(`/api/arg_stats?filter=${filter}`);
     const data = await res.json();
 
     if (data.stats) {
