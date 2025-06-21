@@ -74,6 +74,29 @@ def get_name_filter(filter_type):
         return ft | pt
 
 # ==============================
+# GET SHIFT TYPE
+# ==============================
+def get_shift_type(code):
+    code = code.strip().lower()
+    w_day = {"w406", "w408", "w409", "w503", "w504", "w507", "w401", "w502"}
+    w_evening = {"w505", "w508"}
+    w_night = {"w501", "w506"}
+
+    if re.match(r'^sa\d$', code) or re.match(r'^od\d+', code) or code == 'oe' or code in w_day:
+        return "Day"
+    elif code in w_evening:
+        return "Evening"
+    elif code in w_night:
+        return "Night"
+    elif re.match(r'^[dD]', code):
+        return "Day"
+    elif re.match(r'^[eE]', code):
+        return "Evening"
+    elif re.match(r'^[nN]', code):
+        return "Night"
+    return "Day"  # default fallback
+
+# ==============================
 # GROUP SHIFT BY DATE + TYPE
 # ==============================
 def group_by_shift(df, target_date, raw_codes, filter_type="all"):
@@ -97,7 +120,9 @@ def group_by_shift(df, target_date, raw_codes, filter_type="all"):
     # 3. Detect true vacancies: shift codes not filled by ANYONE
     truly_unassigned = set(all_codes) - all_filled_codes
     for code in sorted(truly_unassigned):
-        shifts["Day"].append(("Vacant", code))  # Default to Day
+        shift_type = get_shift_type(code)
+        shifts[shift_type].append(("🎯 Vacant", code))
+
 
     return dict(shifts)
 
