@@ -80,6 +80,12 @@ def load_assignment_codes(target_date, df=None, raw_codes=None):
         return list(base | weekday_add)
 
 # ==============================
+# NORMALIZE NAME
+# ==============================
+def normalize_name(name):
+    return re.sub(r'\s+', ' ', name.strip()).casefold()
+
+# ==============================
 # GET FILTER NAME
 # ==============================
 def get_name_filter(filter_type):
@@ -87,7 +93,7 @@ def get_name_filter(filter_type):
 
     def load_names(file):
         with open(os.path.join(base, file), "r") as f:
-            return set(name.strip().casefold() for name in json.load(f))
+            return set(normalize_name(name) for name in json.load(f))
 
     if filter_type == "ft":
         return load_names("emp_ft.json")
@@ -133,7 +139,7 @@ def group_by_shift(df, target_date, raw_codes, filter_type="all"):
 
     # 2. Apply filter to get only relevant employees (case-insensitive)
     name_filter = get_name_filter(filter_type)
-    filtered = daily[daily["Name"].str.strip().str.casefold().isin(name_filter)]
+    filtered = daily[daily["Name"].apply(normalize_name).isin(name_filter)]
 
     for _, row in filtered.iterrows():
         name = row["Name"].strip()  # Preserve original formatting
