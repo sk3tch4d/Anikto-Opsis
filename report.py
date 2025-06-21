@@ -75,7 +75,7 @@ def load_assignment_codes(target_date, df=None, raw_codes=None):
     elif weekday == 6:
         return list(sunday)
     elif weekday == 4:
-        return list(base | weekday_add | friday_add)  # Friday special
+        return list(base | friday_add)
     else:
         return list(base | weekday_add)
 
