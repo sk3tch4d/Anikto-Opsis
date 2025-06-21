@@ -4,6 +4,7 @@
 
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
 import { scrollPanel } from '../panels/panels_core.js';
+import { formatDate } from '../utils/format_date.js';
 
 // ==============================
 // FETCH SCHEDULE DATA
@@ -17,7 +18,7 @@ export async function fetchWorkingOnDate() {
   if (!dateInput || !dateInput.value || !resultsDiv || !panelBody) return;
 
   const dateStr = dateInput.value;
-  const filterValue = filterInput?.value || 'all';  // Fallback to 'all'
+  const filterValue = filterInput?.value || 'all';
   const loader = createBounceLoader(panelBody);
 
   withLoadingToggle(
@@ -60,43 +61,6 @@ export async function fetchWorkingOnDate() {
 }
 
 // ==============================
-// DATE LABEL FORMATTER
-// ==============================
-export function updateCustomDateText(date, element) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
-  date.setHours(0, 0, 0, 0);
-
-  if (date.getTime() === today.getTime()) {
-    element.textContent = "Today";
-    return;
-  } else if (date.getTime() === tomorrow.getTime()) {
-    element.textContent = "Tomorrow";
-    return;
-  }
-
-  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
-  const getOrdinal = (n) => {
-    if (n > 3 && n < 21) return "th";
-    switch (n % 10) {
-      case 1: return "st";
-      case 2: return "nd";
-      case 3: return "rd";
-      default: return "th";
-    }
-  };
-
-  const weekday = dayNames[date.getDay()];
-  const month = monthNames[date.getMonth()];
-  const day = date.getDate();
-  element.textContent = `${weekday} ${month} ${day}${getOrdinal(day)}`;
-}
-
-// ==============================
 // INIT INPUT EVENT LISTENERS
 // ==============================
 export function initScheduleUI() {
@@ -119,19 +83,20 @@ export function initScheduleUI() {
 
   const [y, m, d] = isoDate.split('-').map(Number);
   const localToday = new Date(y, m - 1, d);
-  updateCustomDateText(localToday, customText);
+  customText.textContent = formatDate(localToday, 'short-long', { relative: true });
+
   fetchWorkingOnDate();
 
-  dateInput.addEventListener("change", () => {
+  const updateTextFromInput = () => {
     const [y, m, d] = dateInput.value.split('-').map(Number);
     const selected = new Date(y, m - 1, d);
-    updateCustomDateText(selected, customText);
+    customText.textContent = formatDate(selected, 'short-long', { relative: true });
+  };
+
+  dateInput.addEventListener("change", () => {
+    updateTextFromInput();
     fetchWorkingOnDate();
   });
 
-  dateInput.addEventListener("input", () => {
-    const [y, m, d] = dateInput.value.split('-').map(Number);
-    const selected = new Date(y, m - 1, d);
-    updateCustomDateText(selected, customText);
-  });
+  dateInput.addEventListener("input", updateTextFromInput);
 }
