@@ -29,9 +29,9 @@ export function setStatsData(data) {
 // INIT STAT DROPDOWN
 // ==============================
 export function initStatDropdown() {
-  const select = document.getElementById("ranking-mode-select");
+  const select = document.getElementById("stats-mode-select");
   if (select) {
-    select.addEventListener("change", updateStatDisplay);
+    select.addEventListener("change", updateStatsDisplay);
   }
 }
 
@@ -39,8 +39,8 @@ export function initStatDropdown() {
 // UPDATE STATS DISPLAY
 // ==============================
 function updateStatsDisplay() {
-  const mode = document.getElementById("ranking-mode-select")?.value;
-  const container = document.getElementById("rankings-container");
+  const mode = document.getElementById("stats-mode-select")?.value;
+  const container = document.getElementById("stats-container");
   if (!mode || !container) return;
   
   container.innerHTML = "";
