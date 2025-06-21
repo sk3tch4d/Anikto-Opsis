@@ -152,6 +152,10 @@ def group_by_shift(df, target_date, raw_codes, filter_type="all"):
         shift_type = get_shift_type(code)
         shifts[shift_type].append(("🎯 Vacant", code))
 
+    # 4. Sort Vacant entries to the top
+    for shift_type in shifts:
+        shifts[shift_type].sort(key=lambda x: (0 if 'vacant' in x[0].lower() else 1, x[0]))
+
     return dict(shifts)
 
 # ==============================
