@@ -86,6 +86,17 @@ def normalize_name(name):
     return re.sub(r'\s+', ' ', name.strip()).casefold()
 
 # ==============================
+# EXTRAT SHIFT SORTING KEY
+# ==============================
+def extract_shift_sort_key(shift_code):
+    import re
+    match = re.match(r"([A-Za-z]+)(\d+)", shift_code)
+    if match:
+        prefix, num = match.groups()
+        return (prefix.upper(), int(num))
+    return (shift_code.upper(), 0)
+
+# ==============================
 # GET FILTER NAME
 # ==============================
 def get_name_filter(filter_type):
@@ -154,8 +165,10 @@ def group_by_shift(df, target_date, raw_codes, filter_type="all"):
 
     # 4. Sort Vacant entries to the top
     for shift_type in shifts:
-        shifts[shift_type].sort(key=lambda x: (0 if 'vacant' in x[0].lower() else 1, x[0]))
-
+        shifts[shift_type].sort(
+            key=lambda x: (0 if 'vacant' in x[0].lower() else 1, extract_shift_sort_key(x[1]))
+        )
+    
     return dict(shifts)
 
 # ==============================
