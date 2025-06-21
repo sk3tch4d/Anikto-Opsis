@@ -52,6 +52,8 @@ def api_working_on_date():
 # ==============================
 @arg_bp.route("/api/arg_stats")
 def api_arg_stats():
+    filter_type = request.args.get("filter", "all").lower()
+
     pdf_paths = [
         os.path.join(UPLOAD_FOLDER, f)
         for f in os.listdir(UPLOAD_FOLDER)
@@ -61,7 +63,10 @@ def api_arg_stats():
     if not pdf_paths:
         return jsonify({"error": "No PDF data available"}), 404
 
-    _, stats, _, _ = process_report(pdf_paths, return_df=True)
+    # Pass the filter into process_report
+    _, stats, _, _ = process_report(
+        pdf_paths, return_df=True, steps={"stats"}, stop_on_date=None, filter_type=filter_type
+    )
 
     return jsonify({"stats": stats})
 
