@@ -139,8 +139,13 @@ def get_shift_type(code):
 # ==============================
 # GROUP SHIFT BY DATE + TYPE
 # ==============================
-def group_by_shift(df, target_date, raw_codes, filter_type="all"):
+def group_by_shift(df, target_date, raw_codes=None, filter_type="all"):
     shifts = defaultdict(list)
+
+    # Auto-infer raw_codes if not provided (for backward compatibility)
+    if raw_codes is None:
+        raw_codes = set(df["Shift"].str.upper().dropna().unique())
+
     all_codes = load_assignment_codes(target_date, df, raw_codes)
 
     daily = df[df["DateObj"] == target_date]
@@ -153,7 +158,7 @@ def group_by_shift(df, target_date, raw_codes, filter_type="all"):
     filtered = daily[daily["Name"].apply(normalize_name).isin(name_filter)]
 
     for _, row in filtered.iterrows():
-        name = row["Name"].strip()  # Preserve original formatting
+        name = row["Name"].strip()
         code = row["Shift"].strip().upper()
         shifts[row["Type"]].append((name, code))
 
@@ -163,12 +168,12 @@ def group_by_shift(df, target_date, raw_codes, filter_type="all"):
         shift_type = get_shift_type(code)
         shifts[shift_type].append(("🎯 Vacant", code))
 
-    # 4. Sort Vacant entries to the top
+    # 4. Sort Vacant first, then shift code
     for shift_type in shifts:
         shifts[shift_type].sort(
             key=lambda x: (0 if 'vacant' in x[0].lower() else 1, extract_shift_sort_key(x[1]))
         )
-    
+
     return dict(shifts)
 
 # ==============================
@@ -179,7 +184,9 @@ def get_working_on_date(df, date_str):
         date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
     except ValueError:
         return {"error": "Invalid date format. Use YYYY-MM-DD"}
-    return group_by_shift(df, date_obj)
+
+    raw_codes = set(df["Shift"].str.upper().dropna().unique())
+    return group_by_shift(df, date_obj, raw_codes)
     
 # ==============================
 # API: Get Shift Breakdown by Date
