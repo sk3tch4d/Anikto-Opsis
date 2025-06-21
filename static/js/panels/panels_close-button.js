@@ -54,4 +54,13 @@ export function appendCloseButton(panel, panelId) {
     }
   });
   resizeObs.observe(panel);
+
+  // === FOCUS IF NON-SCROLLABLE & VISIBLE ===
+  const maxScroll = scrollable.scrollHeight - scrollable.clientHeight;
+  const isButtonVisible = getComputedStyle(button).display !== 'none';
+  
+  if (maxScroll <= 0 && isButtonVisible) {
+    button.focus();
+    DEBUG_MODE && console.log('[DEBUG] Non-scrollable panel — close button focused');
+  }
 }
