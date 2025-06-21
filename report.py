@@ -84,14 +84,17 @@ def load_assignment_codes(target_date, df=None, raw_codes=None):
 # ==============================
 def get_name_filter(filter_type):
     base = os.path.join(os.path.dirname(__file__), "static")
+
+    def load_names(file):
+        with open(os.path.join(base, file), "r") as f:
+            return set(name.strip().casefold() for name in json.load(f))
+
     if filter_type == "ft":
-        return set(json.load(open(os.path.join(base, "emp_ft.json"))))
+        return load_names("emp_ft.json")
     elif filter_type == "pt":
-        return set(json.load(open(os.path.join(base, "emp_pt.json"))))
+        return load_names("emp_pt.json")
     else:
-        ft = set(json.load(open(os.path.join(base, "emp_ft.json"))))
-        pt = set(json.load(open(os.path.join(base, "emp_pt.json"))))
-        return ft | pt
+        return load_names("emp_ft.json") | load_names("emp_pt.json")
 
 # ==============================
 # GET SHIFT TYPE
@@ -128,12 +131,12 @@ def group_by_shift(df, target_date, raw_codes, filter_type="all"):
     # 1. Track all filled shifts (independent of filter)
     all_filled_codes = set(daily["Shift"].str.upper().dropna().unique())
 
-    # 2. Apply filter to get only relevant employees (for display)
+    # 2. Apply filter to get only relevant employees (case-insensitive)
     name_filter = get_name_filter(filter_type)
-    filtered = daily[daily["Name"].isin(name_filter)]
+    filtered = daily[daily["Name"].str.strip().str.casefold().isin(name_filter)]
 
     for _, row in filtered.iterrows():
-        name = row["Name"].strip()
+        name = row["Name"].strip()  # Preserve original formatting
         code = row["Shift"].strip().upper()
         shifts[row["Type"]].append((name, code))
 
@@ -142,7 +145,6 @@ def group_by_shift(df, target_date, raw_codes, filter_type="all"):
     for code in sorted(truly_unassigned):
         shift_type = get_shift_type(code)
         shifts[shift_type].append(("🎯 Vacant", code))
-
 
     return dict(shifts)
 
