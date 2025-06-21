@@ -97,30 +97,22 @@
       </div>
 
       <!-- ============================= -->
-      <!-- ===== WEEKLY RANKINGS
+      <!-- ===== STATS AND RANKINGS
       <!-- ============================= -->
-      <div class="panel panel-animate" id="arg-rank-week-panel">
-        <div class="panel-header" onclick="togglePanel(this)">Weekly Rankings</div>
+      <div class="panel panel-animate" id="arg-stat-panel">
+        <div class="panel-header open" onclick="togglePanel(this)">Stats & Rankings</div>
         <div class="panel-body scrollable-panel open">
-          <div class="panel-delta">
-            {% for name, hrs in stats.rankings.weekly %}
-              <div class="delta-item">{{ name|reorder_name }} <span>{{ hrs }} hours</span></div>
-            {% endfor %}
+          <div class="sticky-bar">
+            <div style="margin-bottom: 1rem;">
+              <select id="ranking-mode-select" class="input full-width">
+                <option value="weekly">Weekly Rankings</option>
+                <option value="period">Period Rankings</option>
+                <option value="total">Total Rankings</option>
+                <option value="stats">Statistics</option>
+              </select>
+            </div>
           </div>
-        </div>
-      </div>
-
-      <!-- ============================= -->
-      <!-- ===== PERIOD RANKINGS
-      <!-- ============================= -->
-      <div class="panel panel-animate" id="arg-rank-period-panel">
-        <div class="panel-header" onclick="togglePanel(this)">Period Rankings</div>
-        <div class="panel-body scrollable-panel open">
-          <div class="panel-delta">
-            {% for name, hrs in stats.rankings.period %}
-              <div class="delta-item">{{ name|reorder_name }} <span>{{ hrs }} hours</span></div>
-            {% endfor %}
-          </div>
+          <div class="panel-delta" id="rankings-container"></div>
         </div>
       </div>
 
@@ -132,19 +124,6 @@
         <div class="panel-body scrollable-panel open">
           <div class="panel-delta">
             <!-- DATE LOOKUP -->
-          </div>
-        </div>
-      </div>
-
-      <!-- ============================= -->
-      <!-- ===== STATS
-      <!-- ============================= -->
-      <div class="panel panel-animate" id="arg-stats-panel">
-        <div class="panel-header" onclick="togglePanel(this)">Stats</div>
-        <div class="panel-body scrollable-panel open">
-          <div class="panel-delta">
-            <div class="delta-item">Total Hours This Week: <span>{{ stats.total_hours_week }}</span></div>
-            <div class="delta-item">Top Day: <span>{{ stats.top_day.strftime('%a, %b %d') }} ({{ stats.top_day_hours }} hours)</span></div>
           </div>
         </div>
       </div>
