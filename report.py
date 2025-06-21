@@ -34,7 +34,7 @@ def load_assignment_codes(target_date, df=None, raw_codes=None):
     def normalize(codes):
         return set(c.strip().upper() for c in codes)
 
-    # Pull lists
+    # Pull all lists
     holiday = normalize(asmnts.get("holiday", []))
     stat = normalize(asmnts.get("stat", []))
     base = normalize(asmnts.get("weekday_base", []))
@@ -46,33 +46,36 @@ def load_assignment_codes(target_date, df=None, raw_codes=None):
     weekday = target_date.weekday()  # 0 = Monday ... 6 = Sunday
     is_weekday = weekday < 5
 
-    # Step 1: Holiday override — ONLY on weekdays
-    if is_weekday and raw_codes:
-        upper_raw = set(code.strip().upper() for code in raw_codes)
-        if any(code in upper_raw for code in holiday):
-            if DEBUG_MODE:
-                print(f"[DEBUG] Holiday trigger via raw_codes for {target_date}")
-            return list(holiday)
-
-    # Step 2: Stat day override — any day, use df
     if df is not None:
         daily_shifts = set(
             code.strip().upper()
             for code in df[df["DateObj"] == target_date]["Shift"].unique()
             if isinstance(code, str)
         )
+
+        # HOLIDAY override — only if D3XX are NOT present
+        if is_weekday:
+            has_d3xx = any(re.match(r"D3\d{2}$", code) for code in daily_shifts)
+            has_holiday_code = any(code in daily_shifts for code in holiday)
+
+            if has_holiday_code and not has_d3xx:
+                if DEBUG_MODE:
+                    print(f"[DEBUG] Holiday trigger: {target_date} → D3XX not present, using holiday set")
+                return list(holiday)
+
+        # STAT override — any SA1–SA4, etc.
         if any(code in daily_shifts for code in stat):
             if DEBUG_MODE:
-                print(f"[DEBUG] Stat trigger detected for {target_date}")
+                print(f"[DEBUG] Stat trigger: {target_date} → using stat set")
             return list(stat)
 
-    # Step 3: Standard daily routing
+    # Regular day logic
     if weekday == 5:
         return list(saturday)
     elif weekday == 6:
         return list(sunday)
     elif weekday == 4:
-        return list(base | weekday_add | friday_add)
+        return list(base | weekday_add | friday_add)  # Friday special
     else:
         return list(base | weekday_add)
 
