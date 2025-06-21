@@ -1,5 +1,5 @@
 # ==============================
-# PARSER.PY (Refactored)
+# PARSER.PY
 # ==============================
 
 import re
@@ -54,8 +54,7 @@ def is_valid_shift_line(line):
 # EXTRACT NAME
 # ==============================
 def extract_name(line):
-    # Match everything starting from a comma back to the last uppercase token
-    name_match = re.search(r'([A-Z][a-zA-Z]*(?:\s+[A-Z][a-zA-Z]*)*,\s+[A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+)*)', line)
+    name_match = re.search(r'([A-Z][\w\'-]*(?:\s+[A-Z][\w\'-]*)*,\s+[A-Z][\w\'-]+(?:\s+[A-Z][\w\'-]+)*)', line)
     if name_match:
         return " ".join(name_match.group().split())
     return None
