@@ -225,7 +225,7 @@ def get_shifts_for_date(date_str):
 # ==============================
 # MAIN REPORT PROCESSOR
 # ==============================
-def process_report(pdf_paths, return_df=False, stop_on_date=None, steps=None):
+def process_report(pdf_paths, return_df=False, stop_on_date=None, steps=None, filter_type="all"):
     if steps is None:
         steps = {"outputs", "heatmap", "stats", "swaps"}
 
@@ -295,22 +295,41 @@ def process_report(pdf_paths, return_df=False, stop_on_date=None, steps=None):
         week_start = today - timedelta(days=today.weekday())
         current_pp = get_pay_period(today)
 
+        # Apply name filter
+        name_filter = get_name_filter(filter_type)
+        filtered_df = df[df["Name"].apply(normalize_name).isin(name_filter)]
+
+        # === Compute Top Day & Hours
+        if not filtered_df.empty:
+            top_day_group = filtered_df.groupby("DateObj")["Hours"].sum()
+            top_day = top_day_group.idxmax()
+            top_day_hours = int(top_day_group.max())
+        else:
+            top_day = ""
+            top_day_hours = 0
+
         stats = {
-            "total_hours_week": round(df[df["WeekStart"] == week_start]["Hours"].sum()),
-            "top_day": df.groupby("DateObj")["Hours"].sum().idxmax(),
-            "top_day_hours": int(df.groupby("DateObj")["Hours"].sum().max()),
+            "total_hours_week": round(filtered_df[filtered_df["WeekStart"] == week_start]["Hours"].sum()),
+            "top_day": top_day,
+            "top_day_hours": top_day_hours,
             "rankings": {
-                "weekly": list(df[df["WeekStart"] == week_start]
+                "weekly": list(
+                    filtered_df[filtered_df["WeekStart"] == week_start]
                     .groupby("Name")["Hours"].sum()
-                    .sort_values(ascending=False).astype(int).items()),
-                "period": list(df[df["DateObj"].apply(get_pay_period) == current_pp]
+                    .sort_values(ascending=False).astype(int).items()
+                ),
+                "period": list(
+                    filtered_df[filtered_df["DateObj"].apply(get_pay_period) == current_pp]
                     .groupby("Name")["Hours"].sum()
-                    .sort_values(ascending=False).astype(int).items()),
-                "total": list(df
-                    .groupby("Name")["Hours"]
-                    .sum().sort_values(ascending=False).astype(int).items())
+                    .sort_values(ascending=False).astype(int).items()
+                ),
+                "total": list(
+                    filtered_df.groupby("Name")["Hours"]
+                    .sum().sort_values(ascending=False).astype(int).items()
+                )
             }
         }
+
 
     # === Shift Swaps
     if "swaps" in steps:
