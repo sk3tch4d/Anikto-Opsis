@@ -29,10 +29,19 @@ export function setStatsData(data) {
 // INIT STAT DROPDOWN
 // ==============================
 export function initStatDropdown() {
-  const select = document.getElementById("stats-mode-select");
-  if (select) {
-    select.addEventListener("change", updateStatsDisplay);
+  const modeSelect = document.getElementById("stats-mode-select");
+  const filterSelect = document.getElementById("emp-stats-filter");
+
+  if (modeSelect) {
+    modeSelect.addEventListener("change", updateStatsDisplay);
   }
+
+  if (filterSelect) {
+    filterSelect.addEventListener("change", fetchStatsData);
+  }
+
+  // Initial fetch on page load
+  fetchStatsData();
 }
 
 // ==============================
@@ -75,8 +84,10 @@ function updateStatsDisplay() {
 // FETCH API STATS DATA
 // ==============================
 export async function fetchStatsData() {
+  const filter = document.getElementById("emp-stats-filter")?.value || "all";
+
   try {
-    const res = await fetch("/api/arg_stats");
+    const res = await fetch(`/api/arg_stats?filter=${filter}`);
     const data = await res.json();
 
     if (data.stats) {
