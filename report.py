@@ -24,18 +24,26 @@ get_pay_period = make_pay_period_fn(datetime(2025, 1, 13))
 # ==============================
 def load_assignment_codes(target_date, df=None, raw_codes=None):
     base_path = os.path.join(os.path.dirname(__file__), "static")
+    json_path = os.path.join(base_path, "arg_assignments.json")
 
-    def load_normalized_json(path):
-        with open(path, "r") as f:
-            return set(code.strip().upper() for code in json.load(f))
+    # Load structured assignment JSON
+    with open(json_path, "r") as f:
+        asmnts = json.load(f)
 
-    # Load all code sets
-    special_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts_sp.json"))
-    weekday_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts.json"))
-    sat_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts_sat.json"))
-    sun_assignments = load_normalized_json(os.path.join(base_path, "arg_asmnts_sun.json"))
+    # Normalize helper
+    def normalize(codes):
+        return set(c.strip().upper() for c in codes)
 
-    # Normalize daily shifts (if any data exists for that date)
+    # Pull all lists
+    holiday = normalize(asmnts.get("holiday", []))
+    stat = normalize(asmnts.get("stat", []))
+    base = normalize(asmnts.get("weekday_base", []))
+    weekday_add = normalize(asmnts.get("weekday_add", []))
+    friday_add = normalize(asmnts.get("friday_add", []))
+    saturday = normalize(asmnts.get("saturday", []))
+    sunday = normalize(asmnts.get("sunday", []))
+
+    # If we have a DataFrame, scan that date's shifts
     if df is not None:
         daily_shifts = set(
             code.strip().upper()
@@ -43,21 +51,30 @@ def load_assignment_codes(target_date, df=None, raw_codes=None):
             if isinstance(code, str)
         )
 
-        # Step 1: Presence of SA1 triggers special
-        if "SA1" in daily_shifts:
+        # HOLIDAY override
+        if any(code in daily_shifts for code in holiday):
             if DEBUG_MODE:
-                print(f"[DEBUG] Detected SA1 — using SPECIAL assignment set for {target_date}")
-            return list(special_assignments)
+                print(f"[DEBUG] Holiday trigger detected for {target_date}")
+            return list(holiday)
 
-    # Step 2: Split by weekday number
+        # SPECIAL override
+        if any(code in daily_shifts for code in stat):
+            if DEBUG_MODE:
+                print(f"[DEBUG] Stat trigger detected for {target_date}")
+            return list(stat)
+
+    # Normal weekday routing
     weekday = target_date.weekday()
 
     if weekday == 5:
-        return list(sat_assignments)
+        return list(saturday)
     elif weekday == 6:
-        return list(sun_assignments)
+        return list(sunday)
+    elif weekday == 4:
+        # Friday — add W501
+        return list(base | weekday_add | friday_add)
     else:
-        return list(weekday_assignments)
+        return list(base | weekday_add)
 
 # ==============================
 # GET FILTER NAME
