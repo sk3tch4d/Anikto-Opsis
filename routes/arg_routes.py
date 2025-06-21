@@ -47,6 +47,23 @@ def api_working_on_date():
 
     return jsonify(group_by_shift(df, target_date, raw_codes, filter_type))
 
+# ==============================
+# API ARG STATS ROUTE
+# ==============================
+@arg_bp.route("/api/arg_stats")
+def api_arg_stats():
+    pdf_paths = [
+        os.path.join(UPLOAD_FOLDER, f)
+        for f in os.listdir(UPLOAD_FOLDER)
+        if f.endswith(".pdf")
+    ]
+
+    if not pdf_paths:
+        return jsonify({"error": "No PDF data available"}), 404
+
+    _, stats, _, _ = process_report(pdf_paths, return_df=True)
+
+    return jsonify({"stats": stats})
 
 # ==============================
 # DB CHECK ROUTE
