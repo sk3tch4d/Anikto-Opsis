@@ -97,22 +97,21 @@
       </div>
 
       <!-- ============================= -->
-      <!-- ===== STATS AND RANKINGS
+      <!-- ===== STATS AND RANKINGS -->
       <!-- ============================= -->
       <div class="panel panel-animate" id="arg-stat-panel">
         <div class="panel-header open" onclick="togglePanel(this)">Stats & Rankings</div>
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
-      
               <!-- Filter dropdown -->
               <select id="emp-stats-filter" class="input full-width" style="flex: 0 0 90px;">
                 <option value="all">All</option>
                 <option value="ft">FT</option>
                 <option value="pt">PT</option>
               </select>
-              
-              <select id="stats-mode-select" class="input full-width" style="flex: 0 0 90px;">
+      
+              <select id="stats-mode-select" class="input full-width">
                 <option value="weekly">Weekly Rankings</option>
                 <option value="period">Period Rankings</option>
                 <option value="total">Total Rankings</option>
@@ -120,6 +119,11 @@
               </select>
             </div>
           </div>
+      
+          <!-- Loading -->
+          <div id="stats-loading" style="display: none; text-align: center;"></div>
+      
+          <!-- Stats -->
           <div class="panel-delta" id="stats-container"></div>
         </div>
       </div>
