@@ -11,18 +11,27 @@ let bounceLoader;
 // ==============================
 // FORMAT NAME
 // ==============================
-function formatName(raw, maxLength = 28) {
+function formatName(raw) {
   if (!raw.includes(",")) return raw;
+  const [last, first] = raw.split(",").map(s => s.trim().toLowerCase());
+  if (!first || !last) return raw;
+  return `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase() + last.slice(1)}`;
+}
 
+// ==============================
+// FORMAT SELECT NAME
+// ==============================
+function formatSelectedName(raw) {
+  if (!raw.includes(",")) return raw;
   const [last, first] = raw.split(",").map(s => s.trim().toLowerCase());
   if (!first || !last) return raw;
 
-  const fullName = `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase() + last.slice(1)}`;
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+  if (isMobile) {
+    return `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase()}.`;
+  }
 
-  const isMobile = window.innerWidth < 768;
-  return isMobile && fullName.length > maxLength
-    ? fullName.slice(0, maxLength - 1).trim() + "…"
-    : fullName;
+  return `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase() + last.slice(1)}`;
 }
 
 // ==============================
@@ -47,8 +56,8 @@ export async function populateLookupDropdown() {
       data.names.forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
-        opt.textContent = formatName(name, 28);
-        opt.title = name;                     // Full name on hover/tap
+        opt.textContent = formatSelectedName(name);
+        opt.title = formatName(name); // Hover
         select.appendChild(opt);
       });
 
