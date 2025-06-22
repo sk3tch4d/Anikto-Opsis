@@ -94,7 +94,6 @@ export function initLookupUI() {
       // Spacer
       const spacer = document.createElement("div");
       spacer.style.margin = "8px 0";
-      spacer.style.borderBottom = "1px solid #ddd";
       container.appendChild(spacer);
 
       // List
