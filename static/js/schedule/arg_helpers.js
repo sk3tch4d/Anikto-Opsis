@@ -2,7 +2,7 @@
 // ARG_HELPERS.JS
 // ==============================
 
-import { openPanel } from './panels_core.js';
+import { openPanel } from '../panels/panels_core.js';
 
 // ==============================
 // FORMAT NAME
