@@ -7,6 +7,16 @@ import { scrollPanel } from '../panels/panels_core.js';
 import { formatDate } from '../utils/format_date.js';
 
 // ==============================
+// FORMAT NAME
+// ==============================
+function formatName(raw) {
+  if (!raw.includes(",")) return raw;
+  const [last, first] = raw.split(",").map(s => s.trim().toLowerCase());
+  if (!first || !last) return raw;
+  return `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase() + last.slice(1)}`;
+}
+
+// ==============================
 // POPULATE LOOKUP DROPDOWN
 // ==============================
 export async function populateLookupDropdown() {
@@ -30,7 +40,7 @@ export async function populateLookupDropdown() {
       data.names.forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
-        opt.textContent = name;
+        opt.textContent = formatName(name);
         select.appendChild(opt);
       });
       scrollPanel();
