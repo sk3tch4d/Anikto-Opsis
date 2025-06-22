@@ -2,9 +2,11 @@
 // ARG_LOOKUP.JS
 // ==============================
 
-import { withLoadingToggle, createBounceLoader } from "../loading.js";
+import { withLoadingToggle, createBounceLoader, toggleLoadingState } from "../loading.js";
 import { scrollPanel } from '../panels/panels_core.js';
 import { formatDate } from '../utils/format_date.js';
+
+let bounceLoader;
 
 // ==============================
 // FORMAT NAME
@@ -28,7 +30,6 @@ export async function populateLookupDropdown() {
     const data = await res.json();
 
     if (data.names && Array.isArray(data.names)) {
-      // Add placeholder at the top
       const placeholder = document.createElement("option");
       placeholder.value = "";
       placeholder.textContent = "-- Select a name --";
@@ -36,7 +37,6 @@ export async function populateLookupDropdown() {
       placeholder.selected = true;
       select.appendChild(placeholder);
 
-      // Add actual names
       data.names.forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
@@ -56,37 +56,37 @@ export async function populateLookupDropdown() {
 export function initLookupUI() {
   const select = document.getElementById("lookup-select");
   const container = document.getElementById("lookup-container");
+  const panelBody = document.querySelector("#arg-lookup-panel .panel-body");
 
-  if (!select || !container) return;
+  if (!select || !container || !panelBody) return;
 
-  // 1. Load names into dropdown
+  bounceLoader = createBounceLoader(panelBody);
+
   populateLookupDropdown();
 
-  // 2. Listener
   select.addEventListener("change", async () => {
     const name = select.value;
     if (!name) return;
+
+    toggleLoadingState(true, { show: [bounceLoader], hide: [container] });
 
     try {
       const res = await fetch(`/api/lookup_schedule?name=${encodeURIComponent(name)}`);
       const data = await res.json();
 
-      // 3. Render results
-      container.scrollTop = 0; // Scroll up
       container.innerHTML = "";
+
       if (!data.shifts || !data.shifts.length) {
         container.innerHTML = "<div class='delta-item'>No shifts found.</div>";
         return;
       }
 
-      // Show total before rendering list
-      const total = data.shifts.length;
+      data.shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
+
       const header = document.createElement("div");
       header.className = "delta-item";
-      header.innerHTML = `📅 Total shifts: <span>${total}</span>`;
+      header.innerHTML = `📅 Total shifts: <span>${data.shifts.length}</span>`;
       container.appendChild(header);
-
-      data.shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
 
       data.shifts.forEach(({ date, shift }) => {
         const div = document.createElement("div");
@@ -94,8 +94,13 @@ export function initLookupUI() {
         div.innerHTML = `${date} <span>${shift}</span>`;
         container.appendChild(div);
       });
+
+      scrollPanel();
     } catch (err) {
       console.error("Lookup fetch failed", err);
+      container.innerHTML = "<div class='delta-item'>Error loading shifts.</div>";
+    } finally {
+      toggleLoadingState(false, { show: [bounceLoader], hide: [container] });
     }
   });
 }
