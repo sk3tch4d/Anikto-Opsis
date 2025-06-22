@@ -168,3 +168,21 @@ input[type="date"]:focus {
   background: var(--input_hoverfocus-background);
   font-size: 1.04rem;
 }
+.date-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+}
+.inside-left {
+  left: 0.75rem;
+}
+.inside-right {
+  right: 0.75rem;
+}
