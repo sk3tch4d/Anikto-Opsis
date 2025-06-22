@@ -2,8 +2,9 @@
 // ARG_STATS.JS
 // ==============================
 
-import { toggleLoadingState } from "../loading.js";
+import { createBounceLoader, toggleLoadingState } from "../loading.js";
 
+let bounceLoader;
 let rankingsData = {
   weekly: [],
   period: [],
@@ -31,19 +32,16 @@ export function setStatsData(data) {
 // INIT STAT DROPDOWN
 // ==============================
 export function initStatDropdown() {
+  const panelBody = document.querySelector("#arg-stat-panel .panel-body");
+  bounceLoader = createBounceLoader(panelBody);
+
   const modeSelect = document.getElementById("stats-mode-select");
   const filterSelect = document.getElementById("emp-stats-filter");
 
-  if (modeSelect) {
-    modeSelect.addEventListener("change", updateStatsDisplay);
-  }
+  if (modeSelect) modeSelect.addEventListener("change", updateStatsDisplay);
+  if (filterSelect) filterSelect.addEventListener("change", fetchStatsData);
 
-  if (filterSelect) {
-    filterSelect.addEventListener("change", fetchStatsData);
-  }
-
-  // Initial fetch on page load
-  fetchStatsData();
+  fetchStatsData(); // initial load
 }
 
 // ==============================
@@ -53,14 +51,14 @@ function updateStatsDisplay() {
   const mode = document.getElementById("stats-mode-select")?.value;
   const container = document.getElementById("stats-container");
   if (!mode || !container) return;
-  
+
   container.innerHTML = "";
 
   if (mode === "stats") {
     const stat1 = document.createElement("div");
     stat1.className = "delta-item";
     stat1.innerHTML = `Total Hours This Week: <span>${statsData.total_hours_week}</span>`;
-    
+
     const stat2 = document.createElement("div");
     stat2.className = "delta-item";
     stat2.innerHTML = `Top Day: <span>${statsData.top_day} (${statsData.top_day_hours} hours)</span>`;
@@ -87,21 +85,17 @@ function updateStatsDisplay() {
 // ==============================
 export async function fetchStatsData() {
   const container = document.getElementById("stats-container");
-  const loader = document.getElementById("stats-loading");
-  const filter = document.getElementById("emp-stats-filter")?.value || "all";
 
-  toggleLoadingState(true, { show: [loader], hide: [container] });
+  toggleLoadingState(true, { show: [bounceLoader], hide: [container] });
 
   try {
+    const filter = document.getElementById("emp-stats-filter")?.value || "all";
     const res = await fetch(`/api/arg_stats?filter=${filter}`);
     const data = await res.json();
-
-    if (data.stats) {
-      setStatsData(data.stats);
-    }
+    if (data.stats) setStatsData(data.stats);
   } catch (err) {
     console.error("Failed to fetch stats:", err);
   } finally {
-    toggleLoadingState(false, { show: [loader], hide: [container] });
+    toggleLoadingState(false, { show: [bounceLoader], hide: [container] });
   }
 }
