@@ -91,7 +91,7 @@ export function initLookupUI() {
       data.shifts.forEach(({ date, shift }) => {
         const div = document.createElement("div");
         div.className = "delta-item";
-        div.innerHTML = `${date} <span>${shift}</span>`;
+        div.innerHTML = `${shift} <span>${date}</span>`;
         container.appendChild(div);
       });
 
