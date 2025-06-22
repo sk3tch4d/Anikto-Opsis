@@ -89,7 +89,6 @@ export async function fetchWorkingOnDate() {
 export function initScheduleUI() {
   const dateInput = document.getElementById("working-date");
   const customText = document.getElementById("custom-date-text");
-
   if (!dateInput || !customText) return;
 
   const filterInput = document.getElementById("emp-filter");
@@ -120,4 +119,28 @@ export function initScheduleUI() {
   });
 
   dateInput.addEventListener("input", updateTextFromInput);
+
+  // Arrow navigation logic
+  const adjustDateBy = (days) => {
+    const current = new Date(dateInput.value);
+    current.setDate(current.getDate() + days);
+    const newISO = current.toISOString().split('T')[0];
+    dateInput.value = newISO;
+
+    const [y, m, d] = newISO.split('-').map(Number);
+    const newDate = new Date(y, m - 1, d);
+    customText.textContent = formatDate(newDate, 'short-long', { relative: true });
+
+    fetchWorkingOnDateDebounced();
+  };
+
+  document.getElementById("prev-day")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    adjustDateBy(-1);
+  });
+
+  document.getElementById("next-day")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    adjustDateBy(1);
+  });
 }
