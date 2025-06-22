@@ -5,7 +5,9 @@
 import os
 import re
 import json
+import pickle
 import pandas as pd
+from pathlib import Path
 from datetime import datetime, timedelta
 from collections import defaultdict
 from config import DEBUG_MODE, UPLOAD_FOLDER
@@ -18,6 +20,41 @@ from parser import parse_pdf
 # PAY PERIOD LOGIC
 # ==============================
 get_pay_period = make_pay_period_fn(datetime(2025, 1, 13))
+
+# ==============================
+# CACHE LOGIC
+# ==============================
+CACHE_DIR = Path(UPLOAD_FOLDER) / ".cache"
+CACHE_DIR.mkdir(exist_ok=True)
+
+# ==============================
+# CACHE KEY
+# ==============================
+def cache_key(pdf_path, stop_on_date):
+    stat = os.stat(pdf_path)
+    mod_time = int(stat.st_mtime)
+    stop_str = stop_on_date.isoformat() if stop_on_date else "none"
+    return f"{os.path.basename(pdf_path)}__{mod_time}__{stop_str}.pkl"
+
+# ==============================
+# LOAD CACHE
+# ==============================
+def load_cache(pdf_path, stop_on_date):
+    key = cache_key(pdf_path, stop_on_date)
+    file = CACHE_DIR / key
+    if file.exists():
+        with open(file, "rb") as f:
+            return pickle.load(f)
+    return None
+
+# ==============================
+# SAVE CACHE
+# ==============================
+def save_cache(pdf_path, stop_on_date, data):
+    key = cache_key(pdf_path, stop_on_date)
+    file = CACHE_DIR / key
+    with open(file, "wb") as f:
+        pickle.dump(data, f)
 
 # ==============================
 # LOAD ASSIGNMENT CODES
@@ -238,7 +275,16 @@ def process_report(pdf_paths, return_df=False, stop_on_date=None, steps=None, fi
         print(f"[DEBUG] Parsing {len(pdf_paths)} PDF(s)...")
 
     # === Parse PDFs with optional stop date
-    frames_with_swaps = [parse_pdf(p, stop_on_date=stop_on_date) for p in pdf_paths]
+    frames_with_swaps = []
+    for path in pdf_paths:
+        cached = load_cache(path, stop_on_date)
+        if cached:
+            frame, swaps = cached
+        else:
+            frame, swaps = parse_pdf(path, stop_on_date=stop_on_date)
+            save_cache(path, stop_on_date, (frame, swaps))
+        frames_with_swaps.append((frame, swaps))
+    
     frames = [f[0] for f in frames_with_swaps]
     swaps_all = sum((f[1] for f in frames_with_swaps), [])
 
