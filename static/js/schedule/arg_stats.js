@@ -92,7 +92,7 @@ function updateStatsDisplay() {
         const display = formatName(rawName);
         return { raw: rawName, display, hours };
       })
-      .sort((a, b) => a.display.localeCompare(b.display))
+      .sort((a, b) => b.hours - a.hours)
       .forEach(({ raw, display, hours }) => {
         const div = document.createElement("div");
         div.className = "delta-item";
