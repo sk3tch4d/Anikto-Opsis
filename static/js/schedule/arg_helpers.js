@@ -9,9 +9,14 @@ import { openPanel } from '../panels/panels_core.js';
 // ==============================
 export function formatName(raw) {
   if (!raw.includes(",")) return raw;
-  const [last, first] = raw.split(",").map(s => s.trim().toLowerCase());
-  if (!first || !last) return raw;
-  return `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase() + last.slice(1)}`;
+  const [last, firstPart] = raw.split(",").map(s => s.trim().toLowerCase());
+  if (!firstPart || !last) return raw;
+
+  const titleCase = str => str.split(" ").map(
+    word => word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(" ");
+
+  return `${titleCase(firstPart)} ${titleCase(last)}`;
 }
 
 // ==============================
