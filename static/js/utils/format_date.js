@@ -82,22 +82,28 @@ export function formatDate(date, style = 'long', options = {}) {
 export function parseDate(str) {
   if (typeof str !== 'string') return null;
 
-  // Handle full ISO string with time
+  // Full ISO with time
   const isoFullMatch = str.match(/^(\d{4})-(\d{2})-(\d{2})T/);
   if (isoFullMatch) {
-    const [, y, m, d] = isoFullMatch.map(Number);
+    const y = Number(isoFullMatch[1]);
+    const m = Number(isoFullMatch[2]);
+    const d = Number(isoFullMatch[3]);
     return new Date(y, m - 1, d);
   }
 
   const isoMatch = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (isoMatch) {
-    const [, y, m, d] = isoMatch.map(Number);
+    const y = Number(isoMatch[1]);
+    const m = Number(isoMatch[2]);
+    const d = Number(isoMatch[3]);
     return new Date(y, m - 1, d);
   }
 
   const numericMatch = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
   if (numericMatch) {
-    const [, m, d, y] = numericMatch.map(Number);
+    const m = Number(numericMatch[1]);
+    const d = Number(numericMatch[2]);
+    const y = Number(numericMatch[3]);
     return new Date(y, m - 1, d);
   }
 
