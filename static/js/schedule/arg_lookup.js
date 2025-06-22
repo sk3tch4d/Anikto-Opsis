@@ -19,7 +19,8 @@ function formatName(raw, maxLength = 28) {
 
   const fullName = `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase() + last.slice(1)}`;
 
-  return fullName.length > maxLength
+  const isMobile = window.innerWidth < 768;
+  return isMobile && fullName.length > maxLength
     ? fullName.slice(0, maxLength - 1).trim() + "…"
     : fullName;
 }
