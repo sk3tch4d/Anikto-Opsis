@@ -11,11 +11,17 @@ let bounceLoader;
 // ==============================
 // FORMAT NAME
 // ==============================
-function formatName(raw) {
+function formatName(raw, maxLength = 28) {
   if (!raw.includes(",")) return raw;
+
   const [last, first] = raw.split(",").map(s => s.trim().toLowerCase());
   if (!first || !last) return raw;
-  return `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase() + last.slice(1)}`;
+
+  const fullName = `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase() + last.slice(1)}`;
+
+  return fullName.length > maxLength
+    ? fullName.slice(0, maxLength - 1).trim() + "…"
+    : fullName;
 }
 
 // ==============================
@@ -24,12 +30,6 @@ function formatName(raw) {
 export async function populateLookupDropdown() {
   const select = document.getElementById("lookup-select");
   if (!select) return;
-
-  // Apply ellipsis styling to dropdown: Might move to CSS
-  select.style.maxWidth = "100%";
-  select.style.textOverflow = "ellipsis";
-  select.style.whiteSpace = "nowrap";
-  select.style.overflow = "hidden";
 
   try {
     const res = await fetch("/api/lookup_names");
@@ -46,7 +46,7 @@ export async function populateLookupDropdown() {
       data.names.forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
-        opt.textContent = formatName(name);   // Truncated view
+        opt.textContent = formatName(name, 28);
         opt.title = name;                     // Full name on hover/tap
         select.appendChild(opt);
       });
