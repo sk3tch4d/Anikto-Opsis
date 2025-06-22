@@ -76,62 +76,59 @@ def api_lookup_schedule():
     if not name:
         return jsonify({"error": "Name parameter is required"}), 400
 
-    # Find PDF report files
-    pdf_paths = [
-        os.path.join(UPLOAD_FOLDER, f)
-        for f in os.listdir(UPLOAD_FOLDER)
-        if f.lower().endswith(".pdf")
-    ]
-    if not pdf_paths:
-        return jsonify({"error": "No PDF data available"}), 404
+    try:
+        pdf_paths = [
+            os.path.join(UPLOAD_FOLDER, f)
+            for f in os.listdir(UPLOAD_FOLDER)
+            if f.lower().endswith(".pdf")
+        ]
+        if not pdf_paths:
+            return jsonify({"error": "No PDF data available"}), 404
 
-    # Parse reports (fast flags)
-    _, _, df, raw_codes = process_report(
-        pdf_paths,
-        return_df=True,
-        steps=set(),  # skip heavy processing
-        filter_type="all"
-    )
+        _, _, df, raw_codes = process_report(
+            pdf_paths,
+            return_df=True,
+            steps=set(),  # skip heavy processing
+            filter_type="all"
+        )
 
-    if df.empty:
-        return jsonify({"error": "No schedule data parsed"}), 404
+        if df.empty:
+            return jsonify({"error": "No schedule data parsed"}), 404
 
-    from report import normalize_name, get_pay_period
+        from report import normalize_name, get_pay_period
 
-    # Normalize and filter for this employee
-    target_norm = normalize_name(name)
-    person_df = df[df["Name"].apply(lambda n: normalize_name(n) == target_norm)]
+        target_norm = normalize_name(name)
+        person_df = df[df["Name"].apply(lambda n: normalize_name(n) == target_norm)]
 
-    if person_df.empty:
-        return jsonify({"shifts": []})
+        if person_df.empty:
+            return jsonify({"shifts": []})
 
-    # Apply date range filter if needed
-    today = datetime.now().date()
+        today = datetime.now().date()
+        if filter_type == "week":
+            start = today - timedelta(days=today.weekday())
+            end = start + timedelta(days=6)
+            person_df = person_df[person_df["DateObj"].between(start, end)]
+        elif filter_type == "period":
+            pp = get_pay_period(today)
+            person_df = person_df[person_df["DateObj"].apply(lambda d: get_pay_period(d) == pp)]
 
-    if filter_type == "week":
-        start = today - timedelta(days=today.weekday())
-        end = start + timedelta(days=6)
-        person_df = person_df[person_df["DateObj"].between(start, end)]
+        shifts = (
+            person_df[["DateObj", "Shift", "ShiftType"]]
+            .drop_duplicates()
+            .sort_values(by="DateObj")
+            .apply(lambda r: {
+                "date": r["DateObj"].strftime("%Y-%m-%d"),
+                "shift": r["Shift"],
+                "type": r.get("ShiftType", "")  # fallback empty string if missing
+            }, axis=1)
+            .tolist()
+        )
 
-    elif filter_type == "period":
-        # Use pay period based on your get_pay_period logic
-        pp = get_pay_period(today)
-        person_df = person_df[person_df["DateObj"].apply(lambda d: get_pay_period(d) == pp)]
+        return jsonify({"shifts": shifts})
 
-    # Prepare output
-    shifts = (
-        person_df[["DateObj", "Shift", "ShiftType"]]
-        .drop_duplicates()
-        .sort_values(by="DateObj")
-        .apply(lambda r: {
-            "date": r["DateObj"].strftime("%Y-%m-%d"),
-            "shift": r["Shift"],
-            "type": r["ShiftType"]
-        }, axis=1)
-        .tolist()
-    )
-
-    return jsonify({"shifts": shifts})
+    except Exception as e:
+        current_app.logger.exception("❌ lookup_schedule failed")
+        return jsonify({"error": "Internal server error"}), 500
 
 # ==============================
 # API ARG STATS ROUTE
