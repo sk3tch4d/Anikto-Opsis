@@ -25,6 +25,12 @@ export async function populateLookupDropdown() {
   const select = document.getElementById("lookup-select");
   if (!select) return;
 
+  // Apply ellipsis styling to dropdown: Might move to CSS
+  select.style.maxWidth = "100%";
+  select.style.textOverflow = "ellipsis";
+  select.style.whiteSpace = "nowrap";
+  select.style.overflow = "hidden";
+
   try {
     const res = await fetch("/api/lookup_names");
     const data = await res.json();
@@ -40,9 +46,11 @@ export async function populateLookupDropdown() {
       data.names.forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
-        opt.textContent = formatName(name);
+        opt.textContent = formatName(name);   // Truncated view
+        opt.title = name;                     // Full name on hover/tap
         select.appendChild(opt);
       });
+
       scrollPanel();
     }
   } catch (err) {
