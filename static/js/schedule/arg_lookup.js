@@ -19,19 +19,13 @@ function formatName(raw) {
 }
 
 // ==============================
-// FORMAT SELECT NAME
+// FORMAT SHORT NAME FOR SELECT
 // ==============================
-function formatSelectedName(raw) {
+function formatShortName(raw) {
   if (!raw.includes(",")) return raw;
   const [last, first] = raw.split(",").map(s => s.trim().toLowerCase());
   if (!first || !last) return raw;
-
-  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-  if (isMobile) {
-    return `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase()}.`;
-  }
-
-  return `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase() + last.slice(1)}`;
+  return `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase()}.`;
 }
 
 // ==============================
@@ -56,8 +50,10 @@ export async function populateLookupDropdown() {
       data.names.forEach(name => {
         const opt = document.createElement("option");
         opt.value = name;
-        opt.textContent = formatSelectedName(name);
-        opt.title = formatName(name); // Hover
+        opt.textContent = formatName(name);       // Full names in list
+        opt.title = formatName(name);             // Tooltip
+        opt.dataset.full = formatName(name);      // Store full
+        opt.dataset.short = formatShortName(name); // Store short
         select.appendChild(opt);
       });
 
@@ -87,6 +83,16 @@ export function initLookupUI() {
     const filter = filterSelect.value;
   
     if (!name) return;
+
+    // Only update display if on mobile AND name is long
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const selectedIndex = select.selectedIndex;
+    const opt = select.options[selectedIndex];
+    
+    if (isMobile && opt && opt.dataset.full && opt.dataset.full.length > 20) {
+      opt.textContent = opt.dataset.short;
+    }
+
   
     toggleLoadingState(true, { show: [bounceLoader], hide: [container] });
   
@@ -103,18 +109,15 @@ export function initLookupUI() {
   
       data.shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-      // Header
       const header = document.createElement("div");
       header.className = "delta-item";
       header.innerHTML = `📅 Total shifts: <span>${data.shifts.length}</span>`;
       container.appendChild(header);
       
-      // Spacer
       const spacer = document.createElement("div");
       spacer.style.margin = "8px 0";
       container.appendChild(spacer);
 
-      // List
       data.shifts.forEach(({ date, shift }) => {
         const div = document.createElement("div");
         div.className = "delta-item";
@@ -131,7 +134,6 @@ export function initLookupUI() {
     }
   }
 
-  // Trigger render on both name or filter change
   select.addEventListener("change", renderSchedule);
   filterSelect.addEventListener("change", renderSchedule);
 }
