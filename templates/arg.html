@@ -51,14 +51,16 @@
                 <option value="pt">PT</option>
               </select>
       
-              <!-- Custom-styled date trigger -->
-              <div id="custom-date-display"
-                   class="custom-date-display"
+              <!-- CUSTOM NAVI DATE DISPLAY -->
+              <div id="custom-date-display" 
+                   class="custom-date-display" 
                    style="flex: 1;"
                    onclick="document.getElementById('working-date').showPicker()">
+                <button id="prev-day" class="date-nav-button inside-left">←</button>
                 <span id="custom-date-text">Today</span>
+                <button id="next-day" class="date-nav-button inside-right">→</button>
               </div>
-      
+
               <!-- Hidden native date input -->
               <input type="date" id="working-date" style="position: absolute; left: -9999px;" />
             </div>
