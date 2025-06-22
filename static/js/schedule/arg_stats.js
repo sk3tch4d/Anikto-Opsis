@@ -3,6 +3,7 @@
 // ==============================
 
 import { createBounceLoader, toggleLoadingState } from "../loading.js";
+import { scrollPanel } from '../panels/panels_core.js'
 
 let bounceLoader;
 let rankingsData = {
@@ -78,6 +79,8 @@ function updateStatsDisplay() {
       container.appendChild(div);
     });
   }
+
+  scrollPanel();
 }
 
 // ==============================
