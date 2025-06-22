@@ -51,6 +51,22 @@ def api_working_on_date():
     return jsonify(group_by_shift(df, target_date, raw_codes, filter_type))
 
 # ==============================
+# API ARG NAME LOOKUP
+# ==============================
+@arg_bp.route("/api/lookup_names")
+def api_lookup_names():
+    try:
+        from report import get_name_filter, normalize_name
+
+        ft_names = get_name_filter("ft")
+        pt_names = get_name_filter("pt")
+        all_names = sorted(ft_names | pt_names)
+
+        return jsonify({"names": list(all_names)})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# ==============================
 # API ARG STATS ROUTE
 # ==============================
 @arg_bp.route("/api/arg_stats")
