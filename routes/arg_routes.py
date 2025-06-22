@@ -67,6 +67,54 @@ def api_lookup_names():
         return jsonify({"error": str(e)}), 500
 
 # ==============================
+# API ARG SCHEDULE BY NAME
+# ==============================
+@arg_bp.route("/api/lookup_schedule")
+def api_lookup_schedule():
+    name = request.args.get("name", "").strip()
+    if not name:
+        return jsonify({"error": "Name parameter is required"}), 400
+
+    pdf_paths = [
+        os.path.join(UPLOAD_FOLDER, f)
+        for f in os.listdir(UPLOAD_FOLDER)
+        if f.endswith(".pdf")
+    ]
+    if not pdf_paths:
+        return jsonify({"error": "No PDF data available"}), 404
+
+    outputs, stats, df, raw_codes = process_report(
+        pdf_paths,
+        return_df=True,
+        steps=set(),  # fast parse only
+        filter_type="all"
+    )
+
+    if df.empty:
+        return jsonify({"error": "No schedule data found"}), 404
+
+    from report import normalize_name
+    target_norm = normalize_name(name)
+    mask = df["Name"].apply(lambda n: normalize_name(n) == target_norm)
+    person_df = df[mask]
+
+    if person_df.empty:
+        return jsonify({"shifts": []})
+
+    shifts = (
+        person_df[["DateObj", "Shift"]]
+        .drop_duplicates()
+        .sort_values(by="DateObj", ascending=False)
+        .apply(lambda r: {
+            "date": r["DateObj"].strftime("%Y-%m-%d"),
+            "shift": r["Shift"]
+        }, axis=1)
+        .tolist()
+    )
+
+    return jsonify({"shifts": shifts})
+
+# ==============================
 # API ARG STATS ROUTE
 # ==============================
 @arg_bp.route("/api/arg_stats")
