@@ -28,13 +28,20 @@ export async function populateLookupDropdown() {
       placeholder.selected = true;
       select.appendChild(placeholder);
 
-      data.names.forEach(name => {
+      const sorted = data.names.sort((a, b) => {
+        const [la, fa] = a.split(',').map(s => s.trim().toLowerCase());
+        const [lb, fb] = b.split(',').map(s => s.trim().toLowerCase());
+        return fa.localeCompare(fb);
+      });
+      
+      sorted.forEach(name => {
         const opt = document.createElement("option");
+        const full = formatName(name);
         opt.value = name;
-        opt.textContent = formatName(name);       // Full names in list
-        opt.title = formatName(name);             // Tooltip
-        opt.dataset.full = formatName(name);      // Store full
-        opt.dataset.short = formatShortName(name); // Store short
+        opt.textContent = full;
+        opt.title = full;
+        opt.dataset.full = full;
+        opt.dataset.short = formatShortName(name);
         select.appendChild(opt);
       });
 
@@ -101,13 +108,16 @@ export function initLookupUI() {
       spacer.style.margin = "10px 0";
       container.appendChild(spacer);
 
+      const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
+
       data.shifts.forEach(({ date, shift }) => {
+        const icon = shiftIcons[shift] || '';
         const div = document.createElement("div");
         div.className = "delta-item";
-        div.innerHTML = `${shift} <span>${date}</span>`;
+        div.innerHTML = `${icon} ${shift} <span>${date}</span>`;
         container.appendChild(div);
       });
-  
+
       scrollPanel();
     } catch (err) {
       console.error("Lookup fetch failed", err);
