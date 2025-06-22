@@ -192,3 +192,15 @@ input[type="date"]:focus {
 .inside-right {
   right: 0.75rem;
 }
+.arrow-mobile {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .arrow-desktop {
+    display: none;
+  }
+  .arrow-mobile {
+    display: inline;
+  }
+}
