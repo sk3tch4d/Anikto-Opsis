@@ -42,7 +42,7 @@ export async function populateLookupDropdown() {
     if (data.names && Array.isArray(data.names)) {
       const placeholder = document.createElement("option");
       placeholder.value = "";
-      placeholder.textContent = "-- Select a name --";
+      placeholder.textContent = "Select Name ▼";
       placeholder.disabled = true;
       placeholder.selected = true;
       select.appendChild(placeholder);
@@ -115,7 +115,7 @@ export function initLookupUI() {
       container.appendChild(header);
       
       const spacer = document.createElement("div");
-      spacer.style.margin = "8px 0";
+      spacer.style.margin = "10px 0";
       container.appendChild(spacer);
 
       data.shifts.forEach(({ date, shift }) => {
