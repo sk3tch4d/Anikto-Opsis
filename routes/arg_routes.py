@@ -120,12 +120,13 @@ def api_lookup_schedule():
 
     # Prepare output
     shifts = (
-        person_df[["DateObj", "Shift"]]
+        person_df[["DateObj", "Shift", "ShiftType"]]
         .drop_duplicates()
         .sort_values(by="DateObj")
         .apply(lambda r: {
             "date": r["DateObj"].strftime("%Y-%m-%d"),
-            "shift": r["Shift"]
+            "shift": r["Shift"],
+            "type": r["ShiftType"]
         }, axis=1)
         .tolist()
     )
