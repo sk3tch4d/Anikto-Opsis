@@ -4,29 +4,10 @@
 
 import { withLoadingToggle, createBounceLoader, toggleLoadingState } from "../loading.js";
 import { scrollPanel } from '../panels/panels_core.js';
+import { formatName, formatShortName } from "./arg_helpers.js";
 import { formatDate } from '../utils/format_date.js';
 
 let bounceLoader;
-
-// ==============================
-// FORMAT NAME
-// ==============================
-function formatName(raw) {
-  if (!raw.includes(",")) return raw;
-  const [last, first] = raw.split(",").map(s => s.trim().toLowerCase());
-  if (!first || !last) return raw;
-  return `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase() + last.slice(1)}`;
-}
-
-// ==============================
-// FORMAT SHORT NAME FOR SELECT
-// ==============================
-function formatShortName(raw) {
-  if (!raw.includes(",")) return raw;
-  const [last, first] = raw.split(",").map(s => s.trim().toLowerCase());
-  if (!first || !last) return raw;
-  return `${first[0].toUpperCase() + first.slice(1)} ${last[0].toUpperCase()}.`;
-}
 
 // ==============================
 // POPULATE LOOKUP DROPDOWN
@@ -91,6 +72,8 @@ export function initLookupUI() {
     
     if (isMobile && opt && opt.dataset.full && opt.dataset.full.length > 18) {
       opt.textContent = opt.dataset.short;
+    } else if (opt && opt.dataset.full) {
+      opt.textContent = opt.dataset.full;
     }
 
   
