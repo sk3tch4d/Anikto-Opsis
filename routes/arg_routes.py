@@ -4,7 +4,7 @@
 
 import os
 from flask import Blueprint, request, jsonify, current_app
-from datetime import datetime
+from datetime import datetime, timedelta
 from models import ShiftRecord, CoverageShift
 from dataman import (
     export_shifts_csv,
@@ -12,7 +12,7 @@ from dataman import (
     import_shifts_from_json,
     import_shifts_from_csv,
 )
-from report import get_shifts_for_date, process_report, group_by_shift
+from report import get_shifts_for_date, process_report, group_by_shift, normalize_name, get_pay_period
 from config import UPLOAD_FOLDER
 
 # ==============================
@@ -67,44 +67,62 @@ def api_lookup_names():
         return jsonify({"error": str(e)}), 500
 
 # ==============================
-# API ARG SCHEDULE BY NAME
+# API SCHEDULE BY NAME / FILTER
 # ==============================
 @arg_bp.route("/api/lookup_schedule")
 def api_lookup_schedule():
     name = request.args.get("name", "").strip()
+    filter_type = request.args.get("filter", "all").lower()
     if not name:
         return jsonify({"error": "Name parameter is required"}), 400
 
+    # Find PDF report files
     pdf_paths = [
         os.path.join(UPLOAD_FOLDER, f)
         for f in os.listdir(UPLOAD_FOLDER)
-        if f.endswith(".pdf")
+        if f.lower().endswith(".pdf")
     ]
     if not pdf_paths:
         return jsonify({"error": "No PDF data available"}), 404
 
-    outputs, stats, df, raw_codes = process_report(
+    # Parse reports (fast flags)
+    _, _, df, raw_codes = process_report(
         pdf_paths,
         return_df=True,
-        steps=set(),  # fast parse only
+        steps=set(),  # skip heavy processing
         filter_type="all"
     )
 
     if df.empty:
-        return jsonify({"error": "No schedule data found"}), 404
+        return jsonify({"error": "No schedule data parsed"}), 404
 
-    from report import normalize_name
+    from report import normalize_name, get_pay_period
+
+    # Normalize and filter for this employee
     target_norm = normalize_name(name)
-    mask = df["Name"].apply(lambda n: normalize_name(n) == target_norm)
-    person_df = df[mask]
+    person_df = df[df["Name"].apply(lambda n: normalize_name(n) == target_norm)]
 
     if person_df.empty:
         return jsonify({"shifts": []})
 
+    # Apply date range filter if needed
+    today = datetime.now().date()
+
+    if filter_type == "week":
+        start = today - timedelta(days=today.weekday())
+        end = start + timedelta(days=6)
+        person_df = person_df[person_df["DateObj"].between(start, end)]
+
+    elif filter_type == "period":
+        # Use pay period based on your get_pay_period logic
+        pp = get_pay_period(today)
+        person_df = person_df[person_df["DateObj"].apply(lambda d: get_pay_period(d) == pp)]
+
+    # Prepare output
     shifts = (
         person_df[["DateObj", "Shift"]]
         .drop_duplicates()
-        .sort_values(by="DateObj", ascending=False)
+        .sort_values(by="DateObj")
         .apply(lambda r: {
             "date": r["DateObj"].strftime("%Y-%m-%d"),
             "shift": r["Shift"]
