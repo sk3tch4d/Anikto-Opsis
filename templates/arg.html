@@ -79,6 +79,25 @@
       </div>
 
       <!-- ============================= -->
+      <!-- ===== SINGLE LOOKUP
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="arg-lookup-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Lookup (In Development)</div>
+        <div class="panel-body scrollable-panel open">
+          <div class="sticky-bar">
+              <!-- Lookup dropdown -->
+              <select id="lookup-select" class="input full-width">
+                <option value="all">All</option>
+              </select>
+            </div>
+          </div>
+      
+          <!-- Stats -->
+          <div class="panel-delta" id="lookup-container"></div>
+        </div>
+      </div>
+      
+      <!-- ============================= -->
       <!-- ===== SWAPS & COVERAGE
       <!-- ============================= -->
       <div class="panel panel-animate" id="arg-coverage-panel">
@@ -130,18 +149,6 @@
       
           <!-- Stats -->
           <div class="panel-delta" id="stats-container"></div>
-        </div>
-      </div>
-
-      <!-- ============================= -->
-      <!-- ===== SINGLE LOOKUP
-      <!-- ============================= -->
-      <div class="panel panel-animate" id="arg-single-lookup-panel">
-        <div class="panel-header" onclick="togglePanel(this)">Single Lookup (In Development)</div>
-        <div class="panel-body scrollable-panel open">
-          <div class="panel-delta">
-            <!-- DATE LOOKUP -->
-          </div>
         </div>
       </div>
 
