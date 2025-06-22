@@ -66,36 +66,40 @@ export function initLookupUI() {
   select.addEventListener("change", async () => {
     const name = select.value;
     if (!name) return;
-
+  
+    const loader = createBounceLoader();
+    container.innerHTML = "";
+    container.appendChild(loader);
+  
     try {
       const res = await fetch(`/api/lookup_schedule?name=${encodeURIComponent(name)}`);
       const data = await res.json();
-
-      // 3. Render results
-      container.scrollTop = 0; // Scroll up
-      container.innerHTML = "";
+  
+      container.innerHTML = ""; // Clear loader
+  
       if (!data.shifts || !data.shifts.length) {
         container.innerHTML = "<div class='delta-item'>No shifts found.</div>";
         return;
       }
-
-      // Show total before rendering list
-      const total = data.shifts.length;
+  
+      // Sort oldest → newest
+      data.shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
+  
+      // Add count header
       const header = document.createElement("div");
       header.className = "delta-item";
-      header.innerHTML = `📅 Total shifts: <span>${total}</span>`;
+      header.innerHTML = `📅 Total shifts: <span>${data.shifts.length}</span>`;
       container.appendChild(header);
-
-      data.shifts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
+  
       data.shifts.forEach(({ date, shift }) => {
         const div = document.createElement("div");
         div.className = "delta-item";
         div.innerHTML = `${date} <span>${shift}</span>`;
         container.appendChild(div);
       });
+  
     } catch (err) {
       console.error("Lookup fetch failed", err);
+      container.innerHTML = "<div class='delta-item'>Error loading shifts.</div>";
     }
   });
-}
