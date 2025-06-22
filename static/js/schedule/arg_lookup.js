@@ -110,11 +110,12 @@ export function initLookupUI() {
 
       const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
 
-      data.shifts.forEach(({ date, shift }) => {
-        const icon = shiftIcons[shift] || '';
+      data.shifts.forEach(({ date, shift, type }) => {
+        const icon = shiftIcons[type] || '';
         const div = document.createElement("div");
         div.className = "delta-item";
-        div.innerHTML = `${icon} ${shift} <span>${date}</span>`;
+        const friendly = formatDate(new Date(date), 'short-long', { relative: true });
+        div.innerHTML = `${icon} ${shift} <span>${friendly}</span>`;
         container.appendChild(div);
       });
 
