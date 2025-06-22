@@ -88,12 +88,16 @@ function updateStatsDisplay() {
     }
 
     rankingsData[mode]
-      .map(([name, hours]) => [formatName(name), hours])
-      .sort((a, b) => a[0].localeCompare(b[0]))
-      .forEach(([name, hours]) => {
+      .map(([rawName, hours]) => {
+        const display = formatName(rawName);
+        return { raw: rawName, display, hours };
+      })
+      .sort((a, b) => a.display.localeCompare(b.display))
+      .forEach(({ raw, display, hours }) => {
         const div = document.createElement("div");
-        div.setAttribute("data-name", name);
-        div.innerHTML = `${name} <span>${hours} hours</span>`;
+        div.className = "delta-item";
+        div.setAttribute("data-name", raw);  // Use raw "Last, First"
+        div.innerHTML = `${display} <span>${hours} hours</span>`;
         container.appendChild(div);
       });
   }
