@@ -82,6 +82,13 @@ export function formatDate(date, style = 'long', options = {}) {
 export function parseDate(str) {
   if (typeof str !== 'string') return null;
 
+  // Handle full ISO string with time
+  const isoFullMatch = str.match(/^(\d{4})-(\d{2})-(\d{2})T/);
+  if (isoFullMatch) {
+    const [, y, m, d] = isoFullMatch.map(Number);
+    return new Date(y, m - 1, d);
+  }
+
   const isoMatch = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (isoMatch) {
     const [, y, m, d] = isoMatch.map(Number);
