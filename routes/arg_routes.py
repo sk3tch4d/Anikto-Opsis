@@ -27,7 +27,7 @@ arg_bp = Blueprint("arg", __name__)
 def api_working_on_date():
     date_str = request.args.get("date")
     filter_type = request.args.get("filter", "all").lower()
-    
+
     pdf_paths = [
         os.path.join(UPLOAD_FOLDER, f)
         for f in os.listdir(UPLOAD_FOLDER)
@@ -37,7 +37,10 @@ def api_working_on_date():
         return jsonify({"error": "No PDF data available"}), 404
 
     outputs, stats, df, raw_codes = process_report(
-        pdf_paths, return_df=True
+        pdf_paths,
+        return_df=True,
+        steps=set(),  # ⬅️ Skip heavy processing
+        filter_type=filter_type
     )
 
     try:
