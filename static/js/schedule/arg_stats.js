@@ -4,6 +4,7 @@
 
 import { createBounceLoader, toggleLoadingState } from "../loading.js";
 import { scrollPanel } from '../panels/panels_core.js'
+import { parseAndFormat } from "../utils/format_date.js";
 
 let bounceLoader;
 let rankingsData = {
@@ -62,7 +63,7 @@ function updateStatsDisplay() {
   if (mode === "stats") {
     const stats = [
       [`Total Hours This Week`, statsData.total_hours_week],
-      [`Top Day`, `${statsData.top_day} (${statsData.top_day_hours} hours)`],
+      ["Top Day", `${parseAndFormat(statsData.top_day, 'short-long', { relative: true })} (${statsData.top_day_hours} hours)`],
       [`Unique Employees`, statsData.unique_employees],
       [`Total Shifts`, statsData.total_shifts],
       [`Avg Daily Hours`, statsData.avg_daily_hours]
