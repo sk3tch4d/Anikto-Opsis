@@ -5,6 +5,7 @@
 import { createBounceLoader, toggleLoadingState } from "../loading.js";
 import { scrollPanel } from '../panels/panels_core.js'
 import { parseDate, parseAndFormat } from "../utils/format_date.js";
+import { formatName } from "./arg_helpers.js"
 
 let bounceLoader;
 let rankingsData = {
@@ -86,12 +87,15 @@ function updateStatsDisplay() {
       return;
     }
 
-    rankingsData[mode].forEach(([name, hours]) => {
-      const div = document.createElement("div");
-      div.className = "delta-item";
-      div.innerHTML = `${name} <span>${hours} hours</span>`;
-      container.appendChild(div);
-    });
+    rankingsData[mode]
+      .map(([name, hours]) => [formatName(name), hours])
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .forEach(([name, hours]) => {
+        const div = document.createElement("div");
+        div.setAttribute("data-name", name);
+        div.innerHTML = `${name} <span>${hours} hours</span>`;
+        container.appendChild(div);
+      });
   }
 
   scrollPanel();
