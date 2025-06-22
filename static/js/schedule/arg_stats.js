@@ -22,9 +22,13 @@ let statsData = {
 // ==============================
 export function setStatsData(data) {
   if (data.rankings) rankingsData = data.rankings;
-  if (data.total_hours_week !== undefined) statsData.total_hours_week = data.total_hours_week;
-  if (data.top_day) statsData.top_day = data.top_day;
-  if (data.top_day_hours !== undefined) statsData.top_day_hours = data.top_day_hours;
+
+  statsData.total_hours_week = data.total_hours_week ?? 0;
+  statsData.top_day = data.top_day || '';
+  statsData.top_day_hours = data.top_day_hours ?? 0;
+  statsData.unique_employees = data.unique_employees ?? 0;
+  statsData.total_shifts = data.total_shifts ?? 0;
+  statsData.avg_daily_hours = data.avg_daily_hours ?? 0;
 
   updateStatsDisplay(); // default view
 }
@@ -56,16 +60,20 @@ function updateStatsDisplay() {
   container.innerHTML = "";
 
   if (mode === "stats") {
-    const stat1 = document.createElement("div");
-    stat1.className = "delta-item";
-    stat1.innerHTML = `Total Hours This Week: <span>${statsData.total_hours_week}</span>`;
+    const stats = [
+      [`Total Hours This Week`, statsData.total_hours_week],
+      [`Top Day`, `${statsData.top_day} (${statsData.top_day_hours} hours)`],
+      [`Unique Employees`, statsData.unique_employees],
+      [`Total Shifts`, statsData.total_shifts],
+      [`Avg Daily Hours`, statsData.avg_daily_hours]
+    ];
 
-    const stat2 = document.createElement("div");
-    stat2.className = "delta-item";
-    stat2.innerHTML = `Top Day: <span>${statsData.top_day} (${statsData.top_day_hours} hours)</span>`;
-
-    container.appendChild(stat1);
-    container.appendChild(stat2);
+    for (const [label, value] of stats) {
+      const div = document.createElement("div");
+      div.className = "delta-item";
+      div.innerHTML = `${label}: <span>${value}</span>`;
+      container.appendChild(div);
+    }
   } else {
     if (!rankingsData[mode] || !rankingsData[mode].length) {
       container.innerHTML = `<div class="delta-item">No data available</div>`;
