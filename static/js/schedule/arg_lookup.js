@@ -89,7 +89,7 @@ export function initLookupUI() {
     const selectedIndex = select.selectedIndex;
     const opt = select.options[selectedIndex];
     
-    if (isMobile && opt && opt.dataset.full && opt.dataset.full.length > 20) {
+    if (isMobile && opt && opt.dataset.full && opt.dataset.full.length > 18) {
       opt.textContent = opt.dataset.short;
     }
 
