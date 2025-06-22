@@ -5,6 +5,7 @@
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
 import { scrollPanel } from '../panels/panels_core.js';
 import { formatDate } from '../utils/format_date.js';
+import { formatName } from "./arg_helpers.js";
 
 // ==============================
 // DEBOUNCE LET
@@ -63,7 +64,8 @@ export async function fetchWorkingOnDate() {
             if (data[type]?.length) {
               html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><div class="panel-delta">`;
               data[type].forEach(([name, shift]) => {
-                html += `<div class="delta-item">${name} <span>(${shift})</span></div>`;
+                const formatted = formatName(name);
+                html += `<div class="delta-item" data-name="${name}">${formatted} <span class="delta-meta">(${shift})</span></div>`;
               });
               html += `</div>`;
             }
