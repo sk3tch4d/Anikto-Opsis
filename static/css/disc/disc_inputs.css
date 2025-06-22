@@ -159,7 +159,6 @@ input[type="date"]:focus {
   border-radius: 23px;
   box-shadow: var(--input-box-shadow);
   outline: none;
-  cursor: pointer;
   text-align: center;
   box-sizing: border-box;
   transition: border 0.2s ease-in-out, font-size 0.4s ease;
@@ -180,15 +179,16 @@ input[type="date"]:focus {
   cursor: pointer;
   padding: 0;
   z-index: 2;
-  /**/
-  outline: none;
-  box-shadow: none;
-  appearance: none;
 }
-.date-nav-button:focus {
-  outline: none;
-  box-shadow: none;
-}
+.date-nav-button:focus,
 .date-nav-button:active {
-  background-color: transparent;
+  outline: none;
+  box-shadow: none;
+  background: none;
+}
+.inside-left {
+  left: 0.75rem;
+}
+.inside-right {
+  right: 0.75rem;
 }
