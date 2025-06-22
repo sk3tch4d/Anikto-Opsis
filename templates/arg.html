@@ -85,10 +85,21 @@
         <div class="panel-header" onclick="togglePanel(this)">Lookup (In Development)</div>
         <div class="panel-body scrollable-panel open">
           
+          <!-- Sticky Controls Row -->
           <div class="sticky-bar">
-            <select id="lookup-select" class="input full-width">
-              <option value="all">Loading..</option>
-            </select>
+            <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
+      
+              <!-- Filter dropdown (left side) -->
+              <select id="lookup-filter" class="input full-width" style="flex: 0 0 92px;">
+                <option value="all">All</option>
+                <option value="ft">Week</option>
+                <option value="pt">Period</option>
+              </select>
+              
+              <select id="lookup-select" class="input full-width" style="flex: 1;">
+                <option value="all">Loading..</option>
+              </select>
+            </div>
           </div>
       
           <div class="panel-delta" id="lookup-container"></div>   
