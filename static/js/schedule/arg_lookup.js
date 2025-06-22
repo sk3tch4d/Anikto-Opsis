@@ -84,12 +84,20 @@ export function initLookupUI() {
       }
   
       data.shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
-  
+
+      // Header
       const header = document.createElement("div");
       header.className = "delta-item";
       header.innerHTML = `📅 Total shifts: <span>${data.shifts.length}</span>`;
       container.appendChild(header);
-  
+      
+      // Spacer
+      const spacer = document.createElement("div");
+      spacer.style.margin = "8px 0";
+      spacer.style.borderBottom = "1px solid #ddd";
+      container.appendChild(spacer);
+
+      // List
       data.shifts.forEach(({ date, shift }) => {
         const div = document.createElement("div");
         div.className = "delta-item";
