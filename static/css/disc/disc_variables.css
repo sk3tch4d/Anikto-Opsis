@@ -29,7 +29,7 @@
   /* ============================= */
   /* DISC_BASE.CSS         (LIGHT) */
   /* ============================= */
-  --body-background-color: #ccccff !important;
+  --body-background-color: #babaf7 !important;
   --body-color: #09092a;
 
   /* ============================= */
@@ -180,11 +180,11 @@
   --panel-box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   --panelopen-box-shadow: 0 0 18px 3px rgba(0, 0, 0, 0.15);
   --panel-header-color: #c4c4ed;
-  --panel-header-background-color: #666c99;
+  --panel-header-background-color: #666699;
   --panel-headerhover: #d8d8f3;
   --panelno-shadow-box-shadow: none !important;
   --panelno-shadow-background: transparent !important;
-  --panel-body-background-color: #666c99;
+  --panel-body-background-color: #666699;
   --panel-open-panel-header-color: #d8d8f3;
   --panelopen-panel-bodybefore-background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), transparent);
   --panel-body-label-background: #f9f9f9;
