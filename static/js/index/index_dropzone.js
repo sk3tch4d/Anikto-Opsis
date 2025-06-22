@@ -19,6 +19,15 @@ export function initDropzone() {
 }
 
 // ==============================
+// TRANSFORM FILENAME
+// ==============================
+function transformFileName(originalName) {
+  // ARG FILES
+  const match = originalName.match(/^(ARG)_.*?(_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}\.pdf)$/);
+  return match ? match[1] + match[2] : originalName;
+}
+
+// ==============================
 // FORM SUBMISSION BEHAVIOR
 // ==============================
 function setupFormBehavior() {
@@ -50,7 +59,7 @@ function setupFileInput(fileInput, fileList) {
 
     link.className = "upload-zone";
     link.href = "#";
-    link.textContent = file.name;
+    link.textContent = transformFileName(file.name);
 
     li.appendChild(link);
     fileList.appendChild(li);
