@@ -81,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
       m.initStatDropdown();
       m.fetchStatsData();
     });
+    import('./schedule/arg_lookup.js').then(m => m.initLookupUI());
   }
   // ----- INFO -----
   if (document.body.dataset.page === "info") {
