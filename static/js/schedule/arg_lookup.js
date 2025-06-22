@@ -94,7 +94,7 @@ export function initLookupUI() {
 
       const header = document.createElement("div");
       header.className = "delta-item";
-      header.innerHTML = `📅 Total shifts: <span>${data.shifts.length}</span>`;
+      header.innerHTML = `📅 Total Shifts: <span>${data.shifts.length}</span>`;
       container.appendChild(header);
       
       const spacer = document.createElement("div");
