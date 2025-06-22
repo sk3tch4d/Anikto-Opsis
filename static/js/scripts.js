@@ -82,6 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
       m.fetchStatsData();
     });
     import('./schedule/arg_lookup.js').then(m => m.initLookupUI());
+    import('./schedule/arg_helpers.js').then(m => {
+      m.setupDeltaToLookup();
+    });
   }
   // ----- INFO -----
   if (document.body.dataset.page === "info") {
