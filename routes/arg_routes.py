@@ -12,7 +12,7 @@ from dataman import (
     import_shifts_from_json,
     import_shifts_from_csv,
 )
-from report import get_shifts_for_date, process_report, group_by_shift, normalize_name, get_pay_period
+from report import get_shifts_for_date, process_report, group_by_shift, normalize_name, get_pay_period, get_shift_type
 from config import UPLOAD_FOLDER
 
 # ==============================
@@ -119,7 +119,7 @@ def api_lookup_schedule():
             .apply(lambda r: {
                 "date": r["DateObj"].strftime("%Y-%m-%d"),
                 "shift": r["Shift"],
-                "type": r.get("ShiftType", "")  # fallback empty string if missing
+                "type": get_shift_type(str(r["Shift"]))
             }, axis=1)
             .tolist()
         )
