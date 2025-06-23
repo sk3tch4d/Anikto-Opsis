@@ -147,7 +147,7 @@
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
-              <!-- Filter dropdown -->
+              <!-- Filter Dropdown -->
               <select id="emp-stats-filter" class="input full-width" style="flex: 0 0 90px;">
                 <option value="all">All</option>
                 <option value="ft">FT</option>
@@ -168,6 +168,27 @@
         </div>
       </div>
 
+      <!-- ============================= -->
+      <!-- ===== SHIFT INFO
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="arg-info-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Shift Info (In Development)</div>
+        <div class="panel-scroll-container">
+          <div class="panel-scroll-bar"></div>
+        </div>
+        <div class="panel-body scrollable-panel open">
+          <div class="sticky-bar">
+              <!-- Info Dropdown -->
+              <select id="info-select" class="input full-width">
+                <option></option>
+              </select>
+          </div>
+      
+          <!-- Stats -->
+          <div class="panel-delta" id="info-container"></div>
+        </div>
+      </div>
+    
       <!-- ============================= -->
       <!-- ===== DOWNLOADS
       <!-- ============================= -->
