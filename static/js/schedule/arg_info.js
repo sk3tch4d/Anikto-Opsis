@@ -57,14 +57,23 @@ function renderAssignmentInfo(data, key) {
 
   const assignment = data[key];
 
-  const spacer = document.createElement("div");
-  spacer.style.margin = "10px 0";
-  container.appendChild(spacer);
+  const spacerTop = document.createElement("div");
+  spacerTop.style.margin = "10px 0";
+  container.appendChild(spacerTop);
+
+  let isFirst = true;
 
   Object.entries(assignment).forEach(([subkey, value]) => {
     const div = document.createElement("div");
     div.className = "delta-item";
     div.innerHTML = `${subkey}: <span>${value}</span>`;
     container.appendChild(div);
+
+    if (isFirst) {
+      const spacer = document.createElement("div");
+      spacer.style.margin = "10px 0";
+      container.appendChild(spacer);
+      isFirst = false;
+    }
   });
 }
