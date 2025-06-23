@@ -67,21 +67,43 @@ function renderAssignmentInfo(data, key) {
   Object.entries(assignment).forEach(([subkey, value]) => {
     const div = document.createElement("div");
     div.className = "delta-item";
-    // split by "-"
+
     const label = document.createElement("strong");
     label.textContent = `${subkey}: `;
-    
+
     const valueWrapper = document.createElement("span");
-    value.toString().split(/\s*-\s*/).forEach(part => {
-      const partSpan = document.createElement("span");
-      partSpan.textContent = part;
-      partSpan.style.marginRight = "5px"; // Optional: for visual spacing
-      valueWrapper.appendChild(partSpan);
-    });
-    
+
+    if (subkey === "Shift") {
+      let parts;
+
+      if (value.includes(" - ")) {
+        // Properly formatted with delimiters
+        parts = value.split(" - ");
+      } else {
+        // Messy fallback: extract time at end if present
+        const timePattern = /\b\d{1,2}-\d{1,2}\b/;
+        const match = value.match(timePattern);
+
+        if (match) {
+          const time = match[0];
+          const prefix = value.replace(time, "").trim();
+          parts = [prefix, time];
+        } else {
+          parts = [value];
+        }
+      }
+
+      parts.forEach(part => {
+        const partSpan = document.createElement("span");
+        partSpan.textContent = `[${part}] `;
+        valueWrapper.appendChild(partSpan);
+      });
+    } else {
+      valueWrapper.textContent = value;
+    }
+
     div.appendChild(label);
     div.appendChild(valueWrapper);
-
     container.appendChild(div);
 
     if (isFirst) {
