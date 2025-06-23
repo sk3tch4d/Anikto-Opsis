@@ -40,7 +40,25 @@
     "STMS": "Kidd 9 - Room 22.9.047/22.9.059"
   },
   "D304": {
-    "Shift": "Supply Assistant - Weekday - 7-3"
+    "Shift": "Supply Assistant - Weekday - 7-3",
+    "ATUB": "Burr 1 Gym - Room 21.1.006",
+    "CLPS": "Dietary 1 - Room 7.13",
+    "ERDP": "Dietary 1 - Room 7-127/7-113",
+    "ERSJ": "Connell 1 - Room 2-123",
+    "ERSK": "Connell 1 - Room 2-118",
+    "HMPS": "Burr 3 - Room 21.3.026",
+    "MHA ": "Connell 3 - Room  21.4.018.3.2.",
+    "MHAS": "Connell 3 - Room 21.4.013.44.3",
+    "MHYS": "Connell 3 - Room 21.4.020.2",
+    "RNLS": "Burr 3 - Room 21.3.015",
+    "SCC1": "Burr 1 - Room 21.1.065",
+    "SCC2": "Burr 1 - Room 21.1.012",
+    "SCH1": "Burr 1 - Room 21.1.020",
+    "SCH2": "Burr 1 - Room 21.1.030",
+    "SCH3": "Burr 1 - Room 21.1.028",
+    "SCRA": "Burr 0 - Room 21.1.068",
+    "SCRS": "Burr 0 - Room 21.1.021",
+    "WOCS": "Dietary 1 - Room 7.130."
   },
   "D305": {
     "Shift": "Supply Assistant - Weekday - 7-3",
