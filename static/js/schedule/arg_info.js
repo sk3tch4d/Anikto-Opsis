@@ -56,14 +56,15 @@ function renderAssignmentInfo(data, key) {
   }
 
   const assignment = data[key];
-  const fragment = document.createDocumentFragment();
+
+  const spacer = document.createElement("div");
+  spacer.style.margin = "10px 0";
+  container.appendChild(spacer);
 
   Object.entries(assignment).forEach(([subkey, value]) => {
     const div = document.createElement("div");
     div.className = "delta-item";
-    div.innerHTML = `<strong>${subkey}:</strong> <span>${value}</span>`;
-    fragment.appendChild(div);
+    div.innerHTML = `${subkey}: <span>${value}</span>`;
+    container.appendChild(div);
   });
-
-  container.appendChild(fragment);
 }
