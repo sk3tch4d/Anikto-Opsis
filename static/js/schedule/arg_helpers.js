@@ -37,9 +37,14 @@ export function setupDeltaToLookup() {
     const delta = e.target.closest(".delta-item");
     if (!delta) return;
 
-    const clickedText = e.target.textContent?.trim() || "";
+    let clickedText = e.target.textContent?.trim() || "";
     const fullText = delta.textContent?.trim() || "";
     const nameText = delta.dataset.name || fullText;
+    
+    // Normalize clickedText
+    const parenMatch = clickedText.match(/\((D\d{3})\)/i);
+    if (parenMatch) clickedText = parenMatch[1]; // Extract "D306"
+
 
     const isCodeClick = /^D\d{3}$/i.test(clickedText);
     const isNameClick = clickedText.includes(",");
