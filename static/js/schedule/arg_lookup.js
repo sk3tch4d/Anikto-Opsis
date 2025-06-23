@@ -114,7 +114,7 @@ export function initLookupUI() {
         const icon = shiftIcons[type] || '';
         const div = document.createElement("div");
         div.className = "delta-item";
-        const friendly = formatDate(new Date(date), 'short-long', { relative: true });
+        const friendly = formatDate(new Date(date), 'long', { relative: true });
         div.innerHTML = `${icon} ${shift} <span>${friendly}</span>`;
         container.appendChild(div);
       });
