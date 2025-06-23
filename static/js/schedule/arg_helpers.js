@@ -37,13 +37,12 @@ export function setupDeltaToLookup() {
     const delta = e.target.closest(".delta-item");
     if (!delta) return;
 
-    // Always use .delta-item as the data source
-    const rawText = delta.textContent?.trim();
-    const nameText = delta.dataset.name || rawText;
+    const fullText = delta.textContent?.trim() || "";
+    const codeMatch = fullText.match(/\bD\d{3}\b/i);
+    const rawText = codeMatch ? codeMatch[0] : fullText;
+    const nameText = delta.dataset.name || fullText;
 
-    if (!nameText || nameText.length > 60) return;
-
-    const isCode = /^D\d{3}$/i.test(rawText); // Works reliably now
+    const isCode = !!codeMatch;
     const isName = nameText.includes(",");
 
     let valueToSearch = nameText;
@@ -51,9 +50,11 @@ export function setupDeltaToLookup() {
     let panelId = "arg-lookup-panel";
 
     if (isCode) {
-      valueToSearch = `Assignment ${rawText}`;
+      valueToSearch = rawText; // FIXED: no "Assignment " prefix
       selectId = "info-select";
       panelId = "arg-info-panel";
+    } else if (!isName) {
+      return;
     }
 
     const select = document.getElementById(selectId);
