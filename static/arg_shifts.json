@@ -1,85 +1,49 @@
 {
   "D103": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "Shift": "Receiving"
   },
   "D104": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "Shift": "Receiving"
   },
   "D105": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "Shift": "Inventory Controller"
   },
   "D107": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "Shift": "Receiving"
   },
   "D108": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "Shift": "Receiving"
   },
   "D207": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "DESK": "NAV",
+    "CPCC": "Kidd 0 - Room 1234"
   },
   "D301": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "Shift": "Supply Assistant - Weekday",
+    "D4IC": "Davis 4 - Room 1234",
+    "D4CR": "Davis 4 - Room 1234",
+    "D4RT": "Davis 4 - Room 1233",
+    "ICUA": "Kidd 2 - Room 1234",
+    "ICUB": "Kidd 2 - Room 1234",
+    "ICUE": "Kidd 2 - Room 1234",
+    "ICUW": "Kidd 2 - Room 1234"
   },
   "D303": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "Shift": "Supply Assistant - Weekday",
+    "FA4S": "Armstrong 4 - Room 1234",
+    "K4S": "Kidd 4 - Room 1234",
+    "K6S": "Kidd 6 - Roomm 1233",
+    "K7S": "Kidd 7 - Room 1234",
+    "STMS": "Kidd 9 - Room 1234"
   },
   "D304": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "Shift": "Supply Assistant - Weekday"
   },
   "D305": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "Shift": "Supply Assistant - Weekday"
   },
   "D306": {
+    "Shift": "Supply Assistant - Weekday",
     "C10A": "Connell 10 - Room 1234",
     "C10S": "Connell 10 - Room 1234",
     "C9SA": "Connell 9 - Roomm 1233",
@@ -88,41 +52,63 @@
     "PEDS": "Kidd 10 - Room 1234"
   },
   "D307": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "Shift": "Supply Assistant - Weekday"
   },
   "D308": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "Shift": "Supply Assistant - Weekday"
   },
   "D311": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+    "Shift": "Supply Assistant - Weekday"
   },
   "D313": {
-    "Dialysis": "Connell 10 - Room 1234"
+    "Shift": "Renal Dialysis - Weekday"
   },
-  "E310": {
-    "C10A": "Connell 10 - Room 1234"
+  "D406": {
+    "Shift": "Supply Assistant - Stat Day"
   },
-  "N203": {
-    "C10A": "Connell 10 - Room 1234",
-    "C10S": "Connell 10 - Room 1234",
-    "C9SA": "Connell 9 - Roomm 1233",
-    "C9S": "Connell 9 - Room 1234",
-    "MSSU": "Kidd 10 - Room 1234",
-    "PEDS": "Kidd 10 - Room 1234"
+  "D408": {
+    "Shift": "Supply Assistant - Stat Day"
   },
+  "E410": {
+    "Shift": "Supply Assistant - Evening"
+  },
+  "SA1": {
+    "Shift": "Supply Assistant - Stat Weekend"
+  },
+  "SA2": {
+    "Shift": "Supply Assistant - Stat Weekend"
+  },
+  "SA3": {
+    "Shift": "Supply Assistant - Stat Weekend"
+  },
+  "SA4": {
+    "Shift": "Supply Assistant - Stat Weekend"
+  },
+  "w401": {
+    "Shift": "Supply Assistant - Weekend"
+  },
+  "w501": {
+    "Shift": "Supply Assistant - Friday Night"
+  },
+  "w502": {
+    "Shift": "Supply Assistant - Weekend"
+  },
+  "w503": {
+    "Shift": "Supply Assistant - Weekend"
+  },
+  "w504": {
+    "Shift": "Supply Assistant - Weekend"
+  },
+  "w505": {
+    "Shift": "Supply Assistant - Weekend"
+  },
+  "w506": {
+    "Shift": "Supply Assistant - Saturday Night"
+  },
+  "w507": {
+    "Shift": "Supply Assistant - Weekend"
+  },
+  "w508": {
+    "Shift": "Supply Assistant - Weekend"
+  }
 }
