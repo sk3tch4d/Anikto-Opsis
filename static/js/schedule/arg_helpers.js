@@ -33,44 +33,64 @@ export function formatShortName(raw) {
 // SET DELTA TO LOOKUP
 // ==============================
 export function setupDeltaToLookup() {
+  console.log("🟢 setupDeltaToLookup initialized");
+
   document.addEventListener("click", (e) => {
     const delta = e.target.closest(".delta-item");
-    if (!delta) return;
+    if (!delta) {
+      console.log("❌ Clicked element is not inside a .delta-item");
+      return;
+    }
 
-    const rawClickedText = e.target.textContent?.trim();
-    if (!rawClickedText) return;
+    console.log("🟡 .delta-item clicked:", delta);
 
-    // Step 1: Decide if it's a code (e.g. D103) or a name
-    const isCode = /^[A-Z]\d{3,4}$/.test(rawClickedText); // Match something like D103, N204, etc.
-    const isInitialNameFormat = /^[A-Z][a-z]+, [A-Z]/.test(rawClickedText); // Last, First
+    const rawText = e.target.textContent?.trim();
+    const nameText = delta.dataset.name || delta.textContent?.trim();
 
-    let valueKey = "";
-    let selectId = "";
-    let panelId = "";
+    console.log("🔤 rawText:", rawText);
+    console.log("🔤 nameText (from delta):", nameText);
+
+    if (!nameText || nameText.length > 60) {
+      console.log("❌ nameText is invalid or too long");
+      return;
+    }
+
+    const isCode = /^D\d{3}$/i.test(rawText); // e.g., D306
+    const isName = nameText.includes(",");
+
+    let valueToSearch = nameText;
+    let selectId = "lookup-select";
+    let panelId = "arg-lookup-panel";
 
     if (isCode) {
-      valueKey = `Assignment ${rawClickedText}`;
+      valueToSearch = `Assignment ${rawText}`;
       selectId = "info-select";
       panelId = "arg-info-panel";
-    } else if (isInitialNameFormat) {
-      valueKey = rawClickedText;
+    } else if (isName) {
       selectId = "lookup-select";
       panelId = "arg-lookup-panel";
-    } else {
-      console.warn("Unrecognized click format:", rawClickedText);
-      return;
     }
+
+    console.log("🔍 valueToSearch:", valueToSearch);
+    console.log("🧭 Target select:", selectId);
+    console.log("📦 Target panel:", panelId);
 
     const select = document.getElementById(selectId);
-    if (!select) return;
-
-    const matchOption = Array.from(select.options).find(
-      (opt) => opt.value.toLowerCase() === valueKey.toLowerCase()
-    );
-    if (!matchOption) {
-      console.warn(`No match found in #${selectId} for:`, valueKey);
+    if (!select) {
+      console.log(`❌ Select element #${selectId} not found`);
       return;
     }
+
+    const matchOption = Array.from(select.options).find(
+      (opt) => opt.value.toLowerCase() === valueToSearch.toLowerCase()
+    );
+
+    if (!matchOption) {
+      console.log("❌ No matching option in select for:", valueToSearch);
+      return;
+    }
+
+    console.log("✅ Match found:", matchOption.value);
 
     select.value = matchOption.value;
     select.dispatchEvent(new Event("change"));
@@ -82,6 +102,7 @@ export function setupDeltaToLookup() {
       matchOption.textContent = matchOption.dataset.full;
     }
 
+    console.log("📂 Opening panel:", panelId);
     openPanel(panelId);
   });
 }
