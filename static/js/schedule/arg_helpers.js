@@ -47,15 +47,14 @@ export function setupDeltaToLookup() {
     let valueToSearch, selectId, panelId;
 
     if (isCodeClick) {
-      valueToSearch = clickedText;        // "D306"
+      valueToSearch = clickedText;
       selectId = "info-select";
       panelId = "arg-info-panel";
     } else if (isNameClick) {
-      valueToSearch = clickedText;        // "Lastname, First"
+      valueToSearch = clickedText;
       selectId = "lookup-select";
       panelId = "arg-lookup-panel";
     } else {
-      // fallback if user clicked whitespace or empty span
       if (nameText.includes(",")) {
         valueToSearch = nameText;
         selectId = "lookup-select";
@@ -68,6 +67,11 @@ export function setupDeltaToLookup() {
     const select = document.getElementById(selectId);
     if (!select) return;
 
+    // DEBUGGING
+    console.log("🟪 Clicked text:", JSON.stringify(clickedText));
+    console.log("🧬 valueToSearch:", JSON.stringify(valueToSearch));
+    console.log("🟦 Matched values:", Array.from(select.options).map(o => o.value));
+
     const matchOption = Array.from(select.options).find(
       (opt) => opt.value.toLowerCase() === valueToSearch.toLowerCase()
     );
@@ -75,8 +79,6 @@ export function setupDeltaToLookup() {
 
     select.value = matchOption.value;
     select.dispatchEvent(new Event("change"));
-
-    // DO NOT mutate matchOption.textContent — it will erase the option!
 
     openPanel(panelId);
   });
