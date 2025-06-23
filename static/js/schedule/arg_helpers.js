@@ -37,20 +37,36 @@ export function setupDeltaToLookup() {
     const delta = e.target.closest(".delta-item");
     if (!delta) return;
 
-    const nameText = delta.dataset.name || delta.textContent?.trim();
-    if (!nameText || (!nameText.startsWith("Assignment ") && !nameText.includes(",")) || nameText.length > 60) return;
+    const nameText = delta.dataset.name;
+    if (!nameText) return;
 
+    // Clear and readable logic
     const isAssignment = nameText.startsWith("Assignment ");
+    const isPersonName = nameText.includes(",");
+
+    // Reject anything that's neither
+    if (!isAssignment && !isPersonName) return;
+
+    // Optional: guard against malformed or garbage data
+    if (nameText.length > 60) return;
+
     const selectId = isAssignment ? "info-select" : "lookup-select";
     const panelId = isAssignment ? "arg-info-panel" : "arg-lookup-panel";
 
     const select = document.getElementById(selectId);
-    if (!select) return;
+    if (!select) {
+      console.warn(`❌ Missing <select id="${selectId}">`);
+      return;
+    }
 
     const matchOption = Array.from(select.options).find(
       (opt) => opt.value.toLowerCase() === nameText.toLowerCase()
     );
-    if (!matchOption) return;
+
+    if (!matchOption) {
+      console.warn(`❌ No match for "${nameText}" in #${selectId}`);
+      return;
+    }
 
     select.value = matchOption.value;
     select.dispatchEvent(new Event("change"));
