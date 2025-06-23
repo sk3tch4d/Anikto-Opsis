@@ -75,15 +75,12 @@ function renderAssignmentInfo(data, key) {
 
     if (subkey === "Shift") {
       let parts;
-
+    
       if (value.includes(" - ")) {
-        // Properly formatted with delimiters
         parts = value.split(" - ");
       } else {
-        // Messy fallback: extract time at end if present
         const timePattern = /\b\d{1,2}-\d{1,2}\b/;
         const match = value.match(timePattern);
-
         if (match) {
           const time = match[0];
           const prefix = value.replace(time, "").trim();
@@ -92,10 +89,15 @@ function renderAssignmentInfo(data, key) {
           parts = [value];
         }
       }
-
+    
       parts.forEach(part => {
         const partSpan = document.createElement("span");
-        partSpan.textContent = `[${part}] `;
+        partSpan.textContent = part;
+        partSpan.style.marginRight = "8px";
+        partSpan.style.padding = "4px 8px";
+        partSpan.style.background = "rgba(255,255,255,0.1)";
+        partSpan.style.borderRadius = "6px";
+        partSpan.style.display = "inline-block";
         valueWrapper.appendChild(partSpan);
       });
     } else {
