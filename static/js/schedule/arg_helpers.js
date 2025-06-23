@@ -38,7 +38,7 @@ export function setupDeltaToLookup() {
     if (!delta) return;
 
     const nameText = delta.dataset.name || delta.textContent?.trim();
-    if (!nameText || nameText.length > 60) return;
+    if (!nameText || (!nameText.startsWith("Assignment ") && !nameText.includes(",")) || nameText.length > 60) return;
 
     const isAssignment = nameText.startsWith("Assignment ");
     const selectId = isAssignment ? "info-select" : "lookup-select";
@@ -55,7 +55,6 @@ export function setupDeltaToLookup() {
     select.value = matchOption.value;
     select.dispatchEvent(new Event("change"));
 
-    // Mobile-friendliness
     const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (isMobile && matchOption.dataset.full?.length > 18) {
       matchOption.textContent = matchOption.dataset.short;
