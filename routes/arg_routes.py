@@ -88,14 +88,12 @@ def api_lookup_schedule():
         _, _, df, raw_codes = process_report(
             pdf_paths,
             return_df=True,
-            steps=set(),  # skip heavy processing
+            steps=set(),  # fast load
             filter_type="all"
         )
 
         if df.empty:
             return jsonify({"error": "No schedule data parsed"}), 404
-
-        from report import normalize_name, get_pay_period
 
         target_norm = normalize_name(name)
         person_df = df[df["Name"].apply(lambda n: normalize_name(n) == target_norm)]
@@ -113,7 +111,7 @@ def api_lookup_schedule():
             person_df = person_df[person_df["DateObj"].apply(lambda d: get_pay_period(d) == pp)]
 
         shifts = (
-            person_df[["DateObj", "Shift", "ShiftType"]]
+            person_df[["DateObj", "Shift"]]
             .drop_duplicates()
             .sort_values(by="DateObj")
             .apply(lambda r: {
