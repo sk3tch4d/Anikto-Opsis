@@ -72,7 +72,7 @@ export function formatDate(date, style = 'long', options = {}) {
       return `${shortDayNames[weekdayIndex]}, ${monthNames[month]} ${day}${getOrdinal(day)}`;
     case 'long':
     default:
-      return `${fullDayNames[weekdayIndex]} ${monthNames[month]} ${day}${getOrdinal(day)}`;
+      return `${fullDayNames[weekdayIndex]}, ${monthNames[month]} ${day}${getOrdinal(day)}`;
   }
 }
 
