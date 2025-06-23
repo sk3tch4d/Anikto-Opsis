@@ -32,77 +32,70 @@ export function formatShortName(raw) {
 // ==============================
 // SET DELTA TO LOOKUP
 // ==============================
-export function setupDeltaToLookup() {
-  console.log("🟢 setupDeltaToLookup initialized");
+logInfo("setupDeltaToLookup initialized");
 
-  document.addEventListener("click", (e) => {
-    const delta = e.target.closest(".delta-item");
-    if (!delta) {
-      console.log("❌ Clicked element is not inside a .delta-item");
-      return;
-    }
+document.addEventListener("click", (e) => {
+  const delta = e.target.closest(".delta-item");
+  if (!delta) {
+    logWarn("Clicked element is not inside a .delta-item");
+    return;
+  }
 
-    console.log("🟡 .delta-item clicked:", delta);
+  logDebug(".delta-item clicked", delta);
 
-    const rawText = e.target.textContent?.trim();
-    const nameText = delta.dataset.name || delta.textContent?.trim();
+  const rawText = e.target.textContent?.trim();
+  const nameText = delta.dataset.name || delta.textContent?.trim();
 
-    console.log("🔤 rawText:", rawText);
-    console.log("🔤 nameText (from delta):", nameText);
+  logDebug("rawText", rawText);
+  logDebug("nameText (from delta)", nameText);
 
-    if (!nameText || nameText.length > 60) {
-      console.log("❌ nameText is invalid or too long");
-      return;
-    }
+  if (!nameText || nameText.length > 60) {
+    logWarn("nameText is invalid or too long");
+    return;
+  }
 
-    const isCode = /^D\d{3}$/i.test(rawText); // e.g., D306
-    const isName = nameText.includes(",");
+  const isCode = /^D\d{3}$/i.test(rawText);
+  const isName = nameText.includes(",");
 
-    let valueToSearch = nameText;
-    let selectId = "lookup-select";
-    let panelId = "arg-lookup-panel";
+  let valueToSearch = nameText;
+  let selectId = "lookup-select";
+  let panelId = "arg-lookup-panel";
 
-    if (isCode) {
-      valueToSearch = `Assignment ${rawText}`;
-      selectId = "info-select";
-      panelId = "arg-info-panel";
-    } else if (isName) {
-      selectId = "lookup-select";
-      panelId = "arg-lookup-panel";
-    }
+  if (isCode) {
+    valueToSearch = `Assignment ${rawText}`;
+    selectId = "info-select";
+    panelId = "arg-info-panel";
+  }
 
-    console.log("🔍 valueToSearch:", valueToSearch);
-    console.log("🧭 Target select:", selectId);
-    console.log("📦 Target panel:", panelId);
+  logDebug("valueToSearch", valueToSearch);
+  logDebug("Target select", selectId);
+  logDebug("Target panel", panelId);
 
-    const select = document.getElementById(selectId);
-    if (!select) {
-      console.log(`❌ Select element #${selectId} not found`);
-      return;
-    }
+  const select = document.getElementById(selectId);
+  if (!select) {
+    logError(`Select element #${selectId} not found`);
+    return;
+  }
 
-    const matchOption = Array.from(select.options).find(
-      (opt) => opt.value.toLowerCase() === valueToSearch.toLowerCase()
-    );
+  const matchOption = Array.from(select.options).find(
+    (opt) => opt.value.toLowerCase() === valueToSearch.toLowerCase()
+  );
 
-    if (!matchOption) {
-      console.log("❌ No matching option in select for:", valueToSearch);
-      return;
-    }
+  if (!matchOption) {
+    logWarn("No matching option in select for", valueToSearch);
+    return;
+  }
 
-    console.log("✅ Match found:", matchOption.value);
+  logInfo("Match found", matchOption.value);
 
-    select.value = matchOption.value;
-    select.dispatchEvent(new Event("change"));
+  select.value = matchOption.value;
+  select.dispatchEvent(new Event("change"));
 
-    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if (isMobile && matchOption.dataset.full?.length > 18) {
-      matchOption.textContent = matchOption.dataset.short;
-    } else {
-      matchOption.textContent = matchOption.dataset.full;
-    }
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  matchOption.textContent = (isMobile && matchOption.dataset.full?.length > 18)
+    ? matchOption.dataset.short
+    : matchOption.dataset.full;
 
-    console.log("📂 Opening panel:", panelId);
-    openPanel(panelId);
-  });
-}
+  logInfo("Opening panel", panelId);
+  openPanel(panelId);
+});
