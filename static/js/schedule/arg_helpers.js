@@ -37,34 +37,38 @@ export function setupDeltaToLookup() {
     const delta = e.target.closest(".delta-item");
     if (!delta) return;
 
-    const nameText = delta.dataset.name;
-    if (!nameText) return;
+    const rawClickedText = e.target.textContent?.trim();
+    if (!rawClickedText) return;
 
-    // Clear and readable logic
-    const isAssignment = nameText.startsWith("Assignment");
-    const isPersonName = nameText.includes(",");
+    // Step 1: Decide if it's a code (e.g. D103) or a name
+    const isCode = /^[A-Z]\d{3,4}$/.test(rawClickedText); // Match something like D103, N204, etc.
+    const isInitialNameFormat = /^[A-Z][a-z]+, [A-Z]/.test(rawClickedText); // Last, First
 
-    // Reject anything that's neither
-    if (!isAssignment && !isPersonName) return;
+    let valueKey = "";
+    let selectId = "";
+    let panelId = "";
 
-    // Optional: guard against malformed or garbage data
-    if (nameText.length > 60) return;
-
-    const selectId = isAssignment ? "info-select" : "lookup-select";
-    const panelId = isAssignment ? "arg-info-panel" : "arg-lookup-panel";
-
-    const select = document.getElementById(selectId);
-    if (!select) {
-      console.warn(`❌ Missing <select id="${selectId}">`);
+    if (isCode) {
+      valueKey = `Assignment ${rawClickedText}`;
+      selectId = "info-select";
+      panelId = "arg-info-panel";
+    } else if (isInitialNameFormat) {
+      valueKey = rawClickedText;
+      selectId = "lookup-select";
+      panelId = "arg-lookup-panel";
+    } else {
+      console.warn("Unrecognized click format:", rawClickedText);
       return;
     }
 
-    const matchOption = Array.from(select.options).find(
-      (opt) => opt.value.toLowerCase() === nameText.toLowerCase()
-    );
+    const select = document.getElementById(selectId);
+    if (!select) return;
 
+    const matchOption = Array.from(select.options).find(
+      (opt) => opt.value.toLowerCase() === valueKey.toLowerCase()
+    );
     if (!matchOption) {
-      console.warn(`❌ No match for "${nameText}" in #${selectId}`);
+      console.warn(`No match found in #${selectId} for:`, valueKey);
       return;
     }
 
