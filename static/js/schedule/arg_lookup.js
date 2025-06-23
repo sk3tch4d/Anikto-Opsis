@@ -69,41 +69,40 @@ export function initLookupUI() {
   async function renderSchedule() {
     const name = select.value;
     const filter = filterSelect.value;
-  
+
     if (!name) return;
 
     // Only update display if on mobile AND name is long
     const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const selectedIndex = select.selectedIndex;
     const opt = select.options[selectedIndex];
-    
+
     if (isMobile && opt && opt.dataset.full && opt.dataset.full.length > 18) {
       opt.textContent = opt.dataset.short;
     } else if (opt && opt.dataset.full) {
       opt.textContent = opt.dataset.full;
     }
 
-  
     toggleLoadingState(true, { show: [bounceLoader], hide: [container] });
-  
+
     try {
       const res = await fetch(`/api/lookup_schedule?name=${encodeURIComponent(name)}&filter=${filter}`);
       const data = await res.json();
-  
+
       container.innerHTML = "";
-  
+
       if (!data.shifts || !data.shifts.length) {
         container.innerHTML = "<div class='delta-item'>No shifts found.</div>";
         return;
       }
-  
+
       data.shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
 
       const header = document.createElement("div");
       header.className = "delta-item";
       header.innerHTML = `📅 Total Shifts: <span>${data.shifts.length}</span>`;
       container.appendChild(header);
-      
+
       const spacer = document.createElement("div");
       spacer.style.margin = "10px 0";
       container.appendChild(spacer);
@@ -111,20 +110,27 @@ export function initLookupUI() {
       const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
 
       data.shifts.forEach(({ date, shift, type }) => {
-      const icon = shiftIcons[type] || '';
-      const div = document.createElement("div");
-      div.className = "delta-item";
-    
-      const friendly = formatDate(new Date(date), 'long', { relative: true });
-    
-      div.innerHTML = `
-        ${icon}
-        <span class="delta-code">${shift}</span>
-        <span class="delta-date">${friendly}</span>
-      `.trim();
-    
-      container.appendChild(div);
-    });
+        const icon = shiftIcons[type] || '';
+        const div = document.createElement("div");
+        div.className = "delta-item";
+
+        const friendly = formatDate(new Date(date), 'long', { relative: true });
+
+        const codeSpan = document.createElement("span");
+        codeSpan.className = "delta-code";
+        codeSpan.textContent = shift;
+
+        const dateSpan = document.createElement("span");
+        dateSpan.className = "delta-date";
+        dateSpan.textContent = friendly;
+
+        div.append(`${icon} `);
+        div.appendChild(codeSpan);
+        div.append(" ");
+        div.appendChild(dateSpan);
+
+        container.appendChild(div);
+      });
 
       scrollPanel();
     } catch (err) {
