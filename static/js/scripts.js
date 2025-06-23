@@ -85,6 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
     import('./schedule/arg_helpers.js').then(m => {
       m.setupDeltaToLookup();
     });
+    import('./schedule/arg_info.js').then(m => {
+      m.populateDropdownInfo();
+    });
   }
   // ----- INFO -----
   if (document.body.dataset.page === "info") {
