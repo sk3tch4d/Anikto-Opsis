@@ -33,29 +33,16 @@ export function formatShortName(raw) {
 // SET DELTA TO LOOKUP
 // ==============================
 export function setupDeltaToLookup() {
-  logInfo("🟢 setupDeltaToLookup initialized");
-
   document.addEventListener("click", (e) => {
     const delta = e.target.closest(".delta-item");
-    if (!delta) {
-      logWarn("❌ Clicked element is not inside a .delta-item");
-      return;
-    }
+    if (!delta) return;
 
-    logInfo("🟡 .delta-item clicked:", delta);
+    const rawText = delta.textContent?.trim(); // ✅ Use delta instead of e.target
+    const nameText = delta.dataset.name || rawText;
 
-    const rawText = e.target.textContent?.trim();
-    const nameText = delta.dataset.name || delta.textContent?.trim();
+    if (!nameText || nameText.length > 60) return;
 
-    logInfo("🔤 rawText:", rawText);
-    logInfo("🔤 nameText (from delta):", nameText);
-
-    if (!nameText || nameText.length > 60) {
-      logWarn("❌ nameText is invalid or too long");
-      return;
-    }
-
-    const isCode = /^D\d{3}$/i.test(rawText);
+    const isCode = /^D\d{3}$/i.test(rawText); // Now rawText is always correct
     const isName = nameText.includes(",");
 
     let valueToSearch = nameText;
@@ -68,26 +55,13 @@ export function setupDeltaToLookup() {
       panelId = "arg-info-panel";
     }
 
-    logInfo("🔍 valueToSearch:", valueToSearch);
-    logInfo("🧭 Target select:", selectId);
-    logInfo("📦 Target panel:", panelId);
-
     const select = document.getElementById(selectId);
-    if (!select) {
-      logWarn(`❌ Select element #${selectId} not found`);
-      return;
-    }
+    if (!select) return;
 
     const matchOption = Array.from(select.options).find(
       (opt) => opt.value.toLowerCase() === valueToSearch.toLowerCase()
     );
-
-    if (!matchOption) {
-      logWarn("❌ No matching option in select for:", valueToSearch);
-      return;
-    }
-
-    logInfo("✅ Match found:", matchOption.value);
+    if (!matchOption) return;
 
     select.value = matchOption.value;
     select.dispatchEvent(new Event("change"));
@@ -97,7 +71,6 @@ export function setupDeltaToLookup() {
       ? matchOption.dataset.short
       : matchOption.dataset.full;
 
-    logInfo("📂 Opening panel:", panelId);
     openPanel(panelId);
   });
 }
