@@ -64,13 +64,27 @@
     "PEDS": "Kidd 10 - Room 22.10.049"
   },
   "D307": {
-    "Shift": "Supply Assistant - Weekday"
+    "Shift": "Supply Assistant - Weekday",
   },
   "D308": {
     "Shift": "Supply Assistant - Weekday"
   },
   "D311": {
-    "Shift": "Supply Assistant - Weekday"
+    "Shift": "Supply Assistant - Weekday",
+    "ANES": "Connell 2 - Room 22.2.226",
+    "ORS": "Connell 2 - Room 22.2.226",
+    "ORSA": "Connell 2 - Room 02-238",
+    "ORSB": "Connell 2 - Room CORE",
+    "ORSC": "Connell 2 - Room 02.225",
+    "ORSD": "Connell 2 - Room 02.233",
+    "ORSE": "Connell 2 - Room 02-212",
+    "ORSI": "Connell 2 - Room 22-2-244",
+    "ORSK": "Connell 2 - Room 02.2.280",
+    "ORSP": "Connell 2 - Room 02-211",
+    "PACU": "Connell 2 - Room 2.2",
+    "PARS": "Connell 2 - Room 22.2.229",
+    "PERA": "Connell 2 - Room 22-2-248",
+    "SDAS": "Dietarty 2 - Room 7-220/7-214"
   },
   "D313": {
     "Shift": "Renal Dialysis - Weekday"
