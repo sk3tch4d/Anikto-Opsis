@@ -22,11 +22,17 @@
 export function formatDate(date, style = 'long', options = {}) {
   if (!(date instanceof Date) || isNaN(date)) throw new Error("Invalid Date object");
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const compareDate = new Date(date);
-  compareDate.setHours(0, 0, 0, 0);
+  const today = new Date(Date.UTC(
+    new Date().getUTCFullYear(),
+    new Date().getUTCMonth(),
+    new Date().getUTCDate()
+  ));
+  
+  const compareDate = new Date(Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate()
+  ));
 
   const diffDays = Math.floor((compareDate - today) / (1000 * 60 * 60 * 24));
 
