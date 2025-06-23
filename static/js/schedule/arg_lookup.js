@@ -111,24 +111,19 @@ export function initLookupUI() {
 
       data.shifts.forEach(({ date, shift, type }) => {
         const icon = shiftIcons[type] || '';
+        const friendly = formatDate(new Date(date), 'long', { relative: true });
+      
         const div = document.createElement("div");
         div.className = "delta-item";
-
-        const friendly = formatDate(new Date(date), 'long', { relative: true });
-
-        const codeSpan = document.createElement("span");
-        codeSpan.className = "delta-code";
-        codeSpan.textContent = shift;
-
-        const dateSpan = document.createElement("span");
-        dateSpan.className = "delta-date";
-        dateSpan.textContent = friendly;
-
-        div.append(`${icon} `);
-        div.appendChild(codeSpan);
-        div.append(" ");
-        div.appendChild(dateSpan);
-
+        div.setAttribute("data-shift", shift);
+      
+        div.innerHTML = `
+          <span class="delta-inline">
+            ${icon} <span class="delta-code">${shift}</span>
+          </span>
+          <span class="delta-date">${friendly}</span>
+        `.trim();
+      
         container.appendChild(div);
       });
 
