@@ -2,6 +2,7 @@
 // ARG_INFO.JS
 // ==============================
 
+import { scrollPanel } from '../panels/panels_core.js';
 
 // ==============================
 // POPULATE DROPDOWN INFO
@@ -76,4 +77,6 @@ function renderAssignmentInfo(data, key) {
       isFirst = false;
     }
   });
+
+  scrollPanel();
 }
