@@ -37,42 +37,44 @@ export function setupDeltaToLookup() {
     const delta = e.target.closest(".delta-item");
     if (!delta) return;
 
-    const clickedTextRaw = e.target.textContent || "";
-    const clickedText = clickedTextRaw.trim();
+    const clickedNode = e.target;
+    const clickedText = clickedNode.textContent?.trim() || "";
     const fullText = delta.textContent?.trim() || "";
     const nameText = delta.dataset.name || fullText;
 
-    // Extract D-code if present anywhere
-    const codeInClick = clickedText.match(/\bD\d{3}\b/i);
-    const nameInClick = clickedText.includes(",");
-
     let valueToSearch, selectId, panelId;
 
-    if (codeInClick) {
-      // Code Click
-      valueToSearch = codeInClick[0];
+    // 🔍 Prefer exact match if they clicked a span or specific child
+    if (clickedNode.classList.contains("delta-code")) {
+      valueToSearch = clickedText;
       selectId = "info-select";
       panelId = "arg-info-panel";
-    } else if (nameInClick) {
-      // Name Click
+    } else if (clickedNode.classList.contains("delta-name")) {
       valueToSearch = clickedText;
       selectId = "lookup-select";
       panelId = "arg-lookup-panel";
     } else {
-      // Fallback: use full delta
-      const fallbackCode = fullText.match(/\bD\d{3}\b/i);
-      const fallbackName = nameText.includes(",") ? nameText : null;
+      // 🤖 Try auto-detect from clicked content
+      const codeMatch = clickedText.match(/\bD\d{3}\b/i);
+      const isName = clickedText.includes(",");
 
-      if (fallbackName) {
-        valueToSearch = fallbackName;
+      if (isName) {
+        valueToSearch = clickedText;
         selectId = "lookup-select";
         panelId = "arg-lookup-panel";
-      } else if (fallbackCode) {
-        valueToSearch = fallbackCode[0];
+      } else if (codeMatch) {
+        valueToSearch = codeMatch[0];
         selectId = "info-select";
         panelId = "arg-info-panel";
       } else {
-        return;
+        // Fallback to name in dataset
+        if (nameText.includes(",")) {
+          valueToSearch = nameText;
+          selectId = "lookup-select";
+          panelId = "arg-lookup-panel";
+        } else {
+          return;
+        }
       }
     }
 
