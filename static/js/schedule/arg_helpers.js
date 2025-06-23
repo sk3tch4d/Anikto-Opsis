@@ -37,60 +37,59 @@ export function setupDeltaToLookup() {
     const delta = e.target.closest(".delta-item");
     if (!delta) return;
 
-    const clickedNode = e.target;
-    const clickedText = clickedNode.textContent?.trim() || "";
+    const clickedTextRaw = e.target.textContent || "";
+    const clickedText = clickedTextRaw.trim();
     const fullText = delta.textContent?.trim() || "";
     const nameText = delta.dataset.name || fullText;
 
+    const codeInClick = clickedText.match(/\bD\d{3}\b/i);
+    const nameInClick = clickedText.includes(",");
+
     let valueToSearch, selectId, panelId;
 
-    // 🔍 Prefer exact match if they clicked a span or specific child
-    if (clickedNode.classList.contains("delta-code")) {
-      valueToSearch = clickedText;
+    if (codeInClick) {
+      valueToSearch = codeInClick[0];
       selectId = "info-select";
       panelId = "arg-info-panel";
-    } else if (clickedNode.classList.contains("delta-name")) {
+    } else if (nameInClick) {
       valueToSearch = clickedText;
       selectId = "lookup-select";
       panelId = "arg-lookup-panel";
     } else {
-      // 🤖 Try auto-detect from clicked content
-      const codeMatch = clickedText.match(/\bD\d{3}\b/i);
-      const isName = clickedText.includes(",");
+      const fallbackCode = fullText.match(/\bD\d{3}\b/i);
+      const fallbackName = nameText.includes(",") ? nameText : null;
 
-      if (isName) {
-        valueToSearch = clickedText;
+      if (fallbackName) {
+        valueToSearch = fallbackName;
         selectId = "lookup-select";
         panelId = "arg-lookup-panel";
-      } else if (codeMatch) {
-        valueToSearch = codeMatch[0];
+      } else if (fallbackCode) {
+        valueToSearch = fallbackCode[0];
         selectId = "info-select";
         panelId = "arg-info-panel";
       } else {
-        // Fallback to name in dataset
-        if (nameText.includes(",")) {
-          valueToSearch = nameText;
-          selectId = "lookup-select";
-          panelId = "arg-lookup-panel";
-        } else {
-          return;
-        }
+        return;
       }
     }
 
     const select = document.getElementById(selectId);
     if (!select) return;
 
+    // Normalize to value
+    const matchedOption = Array.from(select.options).find((opt) => {
+      return (
+        opt.value.toLowerCase() === valueToSearch.toLowerCase() ||
+        opt.dataset.full?.toLowerCase() === valueToSearch.toLowerCase()
+      );
+    });
+
+    if (!matchedOption) return;
+
     console.log("🟪 Clicked text:", JSON.stringify(clickedText));
     console.log("🧬 valueToSearch:", JSON.stringify(valueToSearch));
     console.log("🟦 Matched values:", Array.from(select.options).map(o => o.value));
 
-    const matchOption = Array.from(select.options).find(
-      (opt) => opt.value.toLowerCase() === valueToSearch.toLowerCase()
-    );
-    if (!matchOption) return;
-
-    select.value = matchOption.value;
+    select.value = matchedOption.value;
     select.dispatchEvent(new Event("change"));
     openPanel(panelId);
   });
