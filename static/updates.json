@@ -1,4 +1,6 @@
 [
+  "🔧 APP Updates: Interactive ARG Results. Each result line now has interfaceable text. Clicking an assignment Code or Name will now show more info. Names are searched in Lookup for all shifts. Codes are searched in Assignments Codes for information.",
+  "✨ New Feature: ARG Shift Information!. ARG now has a new Info panel. Lookup shift Codes for assignment details.",
   "⚡ ARG Improvements: Major Speed Boost!. Post processing, all ARG Searching and lookups are now ~2000% faster!!",
   "✨ New Feature: ARG Shift Lookup!. Search Employee Shift Dates. Filters for Week, Pay Period and All.",
   "⚡ ARG Improvements: Date Search Navigation. Arrow keys are now embedded into the date search to easily cycle through dates.",
