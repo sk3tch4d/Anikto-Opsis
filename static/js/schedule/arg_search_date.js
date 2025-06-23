@@ -32,7 +32,6 @@ export async function fetchWorkingOnDate() {
 
   if (!dateInput || !dateInput.value || !resultsDiv || !panelBody) return;
 
-  // Abort previous request
   if (fetchController) fetchController.abort();
   fetchController = new AbortController();
 
@@ -63,15 +62,12 @@ export async function fetchWorkingOnDate() {
           ['Day', 'Evening', 'Night'].forEach(type => {
             if (data[type]?.length) {
               html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><div class="panel-delta">`;
+
               data[type].forEach(([name, shift]) => {
                 const formatted = formatName(name);
-                html += `
-                  <div class="delta-item" data-name="${name}" data-shift="${shift}">
-                    <span class="delta-name">${formatted}</span>
-                    <span class="delta-code">(${shift})</span>
-                  </div>
-                `.trim();
+                html += `<div class="delta-item" data-name="${name}" data-shift="${shift}"><span class="delta-name" data-full="${name}">${formatted}</span> <span class="delta-code">(${shift})</span></div>`;
               });
+
               html += `</div>`;
             }
             scrollPanel();
