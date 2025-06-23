@@ -37,33 +37,40 @@ export function setupDeltaToLookup() {
     const delta = e.target.closest(".delta-item");
     if (!delta) return;
 
-    let clickedText = e.target.textContent?.trim() || "";
+    const clickedTextRaw = e.target.textContent || "";
+    const clickedText = clickedTextRaw.trim();
     const fullText = delta.textContent?.trim() || "";
     const nameText = delta.dataset.name || fullText;
-    
-    // Normalize clickedText
-    const parenMatch = clickedText.match(/\((D\d{3})\)/i);
-    if (parenMatch) clickedText = parenMatch[1]; // Extract "D306"
 
-
-    const isCodeClick = /^D\d{3}$/i.test(clickedText);
-    const isNameClick = clickedText.includes(",");
+    // Extract D-code if present anywhere
+    const codeInClick = clickedText.match(/\bD\d{3}\b/i);
+    const nameInClick = clickedText.includes(",");
 
     let valueToSearch, selectId, panelId;
 
-    if (isCodeClick) {
-      valueToSearch = clickedText;
+    if (codeInClick) {
+      // Code Click
+      valueToSearch = codeInClick[0];
       selectId = "info-select";
       panelId = "arg-info-panel";
-    } else if (isNameClick) {
+    } else if (nameInClick) {
+      // Name Click
       valueToSearch = clickedText;
       selectId = "lookup-select";
       panelId = "arg-lookup-panel";
     } else {
-      if (nameText.includes(",")) {
-        valueToSearch = nameText;
+      // Fallback: use full delta
+      const fallbackCode = fullText.match(/\bD\d{3}\b/i);
+      const fallbackName = nameText.includes(",") ? nameText : null;
+
+      if (fallbackName) {
+        valueToSearch = fallbackName;
         selectId = "lookup-select";
         panelId = "arg-lookup-panel";
+      } else if (fallbackCode) {
+        valueToSearch = fallbackCode[0];
+        selectId = "info-select";
+        panelId = "arg-info-panel";
       } else {
         return;
       }
@@ -72,7 +79,6 @@ export function setupDeltaToLookup() {
     const select = document.getElementById(selectId);
     if (!select) return;
 
-    // DEBUGGING
     console.log("🟪 Clicked text:", JSON.stringify(clickedText));
     console.log("🧬 valueToSearch:", JSON.stringify(valueToSearch));
     console.log("🟦 Matched values:", Array.from(select.options).map(o => o.value));
@@ -84,7 +90,6 @@ export function setupDeltaToLookup() {
 
     select.value = matchOption.value;
     select.dispatchEvent(new Event("change"));
-
     openPanel(panelId);
   });
 }
