@@ -41,8 +41,10 @@ export function setupDeltaToLookup() {
     const clickedText = clickedTextRaw.trim();
     const fullText = delta.textContent?.trim() || "";
     const nameText = delta.dataset.name || fullText;
-
-    const codeInClick = clickedText.match(/\bD\d{3}\b/i);
+    
+    // Regex for D306, SA1, W501
+    const codeInClick = clickedText.match(/\b[A-Z]{1,3}\d{1,3}\b/i);
+    // Name Check ","
     const nameInClick = clickedText.includes(",");
 
     let valueToSearch, selectId, panelId;
@@ -56,7 +58,7 @@ export function setupDeltaToLookup() {
       selectId = "lookup-select";
       panelId = "arg-lookup-panel";
     } else {
-      const fallbackCode = fullText.match(/\bD\d{3}\b/i);
+      const fallbackCode = fullText.match(/\b[A-Z]{1,3}\d{1,3}\b/i);
       const fallbackName = nameText.includes(",") ? nameText : null;
 
       if (fallbackName) {
