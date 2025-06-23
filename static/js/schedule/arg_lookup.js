@@ -111,13 +111,20 @@ export function initLookupUI() {
       const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
 
       data.shifts.forEach(({ date, shift, type }) => {
-        const icon = shiftIcons[type] || '';
-        const div = document.createElement("div");
-        div.className = "delta-item";
-        const friendly = formatDate(new Date(date), 'long', { relative: true });
-        div.innerHTML = `${icon} ${shift} <span>${friendly}</span>`;
-        container.appendChild(div);
-      });
+      const icon = shiftIcons[type] || '';
+      const div = document.createElement("div");
+      div.className = "delta-item";
+    
+      const friendly = formatDate(new Date(date), 'long', { relative: true });
+    
+      div.innerHTML = `
+        ${icon}
+        <span class="delta-code">${shift}</span>
+        <span class="delta-date">${friendly}</span>
+      `.trim();
+    
+      container.appendChild(div);
+    });
 
       scrollPanel();
     } catch (err) {
