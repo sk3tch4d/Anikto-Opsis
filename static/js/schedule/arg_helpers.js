@@ -41,7 +41,7 @@ export function setupDeltaToLookup() {
     if (!nameText) return;
 
     // Clear and readable logic
-    const isAssignment = nameText.startsWith("Assignment ");
+    const isAssignment = nameText.startsWith("Assignment");
     const isPersonName = nameText.includes(",");
 
     // Reject anything that's neither
