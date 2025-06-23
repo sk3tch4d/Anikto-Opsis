@@ -38,9 +38,13 @@ export function setupDeltaToLookup() {
     if (!delta) return;
 
     const nameText = delta.dataset.name || delta.textContent?.trim();
-    if (!nameText.includes(",") || nameText.length > 60) return;
+    if (!nameText || nameText.length > 60) return;
 
-    const select = document.getElementById("lookup-select");
+    const isAssignment = nameText.startsWith("Assignment ");
+    const selectId = isAssignment ? "info-select" : "lookup-select";
+    const panelId = isAssignment ? "arg-info-panel" : "arg-lookup-panel";
+
+    const select = document.getElementById(selectId);
     if (!select) return;
 
     const matchOption = Array.from(select.options).find(
@@ -51,7 +55,7 @@ export function setupDeltaToLookup() {
     select.value = matchOption.value;
     select.dispatchEvent(new Event("change"));
 
-    // Force mobile-friendly name update
+    // Mobile-friendliness
     const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (isMobile && matchOption.dataset.full?.length > 18) {
       matchOption.textContent = matchOption.dataset.short;
@@ -59,6 +63,6 @@ export function setupDeltaToLookup() {
       matchOption.textContent = matchOption.dataset.full;
     }
 
-    openPanel("arg-lookup-panel");
+    openPanel(panelId);
   });
 }
