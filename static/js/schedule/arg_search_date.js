@@ -65,16 +65,10 @@ export async function fetchWorkingOnDate() {
               html += `<h4>${shiftIcons[type]} <span class="badge badge-${type.toLowerCase()}">${type}</span></h4><div class="panel-delta">`;
               data[type].forEach(([name, shift]) => {
                 const formatted = formatName(name);
-
-                // 🔁 1. Person name delta
-                html += `<div class="delta-item" data-name="${name}" data-shift="${shift}">
-                  ${formatted} <span class="delta-meta">(${shift})</span>
-                </div>`;
-
-                // 🔁 2. Assignment shift code delta
                 const assignmentKey = `Assignment ${shift}`;
+
                 html += `<div class="delta-item" data-name="${assignmentKey}" data-shift="${shift}">
-                  🔁 ${assignmentKey}
+                  ${formatted} <span class="delta-meta">(${shift})</span>
                 </div>`;
               });
               html += `</div>`;
