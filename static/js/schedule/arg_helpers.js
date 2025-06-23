@@ -37,12 +37,13 @@ export function setupDeltaToLookup() {
     const delta = e.target.closest(".delta-item");
     if (!delta) return;
 
-    const rawText = delta.textContent?.trim(); // ✅ Use delta instead of e.target
+    // Always use .delta-item as the data source
+    const rawText = delta.textContent?.trim();
     const nameText = delta.dataset.name || rawText;
 
     if (!nameText || nameText.length > 60) return;
 
-    const isCode = /^D\d{3}$/i.test(rawText); // Now rawText is always correct
+    const isCode = /^D\d{3}$/i.test(rawText); // Works reliably now
     const isName = nameText.includes(",");
 
     let valueToSearch = nameText;
