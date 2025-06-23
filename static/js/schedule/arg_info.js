@@ -61,7 +61,7 @@ function renderAssignmentInfo(data, key) {
   Object.entries(assignment).forEach(([subkey, value]) => {
     const div = document.createElement("div");
     div.className = "delta-item";
-    div.innerHTML = `<strong style="color: white;">${subkey}:</strong> <span>${value}</span>`;
+    div.innerHTML = `<strong>${subkey}:</strong> <span>${value}</span>`;
     fragment.appendChild(div);
   });
 
