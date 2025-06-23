@@ -37,24 +37,32 @@ export function setupDeltaToLookup() {
     const delta = e.target.closest(".delta-item");
     if (!delta) return;
 
+    const clickedText = e.target.textContent?.trim() || "";
     const fullText = delta.textContent?.trim() || "";
-    const codeMatch = fullText.match(/\bD\d{3}\b/i);
-    const rawText = codeMatch ? codeMatch[0] : fullText;
     const nameText = delta.dataset.name || fullText;
 
-    const isCode = !!codeMatch;
-    const isName = nameText.includes(",");
+    const isCodeClick = /^D\d{3}$/i.test(clickedText);
+    const isNameClick = clickedText.includes(",");
 
-    let valueToSearch = nameText;
-    let selectId = "lookup-select";
-    let panelId = "arg-lookup-panel";
+    let valueToSearch, selectId, panelId;
 
-    if (isCode) {
-      valueToSearch = rawText; // FIXED: no "Assignment " prefix
+    if (isCodeClick) {
+      valueToSearch = clickedText;        // "D306"
       selectId = "info-select";
       panelId = "arg-info-panel";
-    } else if (!isName) {
-      return;
+    } else if (isNameClick) {
+      valueToSearch = clickedText;        // "Lastname, First"
+      selectId = "lookup-select";
+      panelId = "arg-lookup-panel";
+    } else {
+      // fallback if user clicked whitespace or empty span
+      if (nameText.includes(",")) {
+        valueToSearch = nameText;
+        selectId = "lookup-select";
+        panelId = "arg-lookup-panel";
+      } else {
+        return;
+      }
     }
 
     const select = document.getElementById(selectId);
@@ -68,10 +76,7 @@ export function setupDeltaToLookup() {
     select.value = matchOption.value;
     select.dispatchEvent(new Event("change"));
 
-    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    matchOption.textContent = (isMobile && matchOption.dataset.full?.length > 18)
-      ? matchOption.dataset.short
-      : matchOption.dataset.full;
+    // DO NOT mutate matchOption.textContent — it will erase the option!
 
     openPanel(panelId);
   });
