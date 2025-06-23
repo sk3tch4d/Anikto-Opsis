@@ -1,25 +1,26 @@
 {
   "D103": {
-    "Shift": "Receiving"
+    "Shift": "Receiving - Weekday - 7-3"
   },
   "D104": {
-    "Shift": "Receiving"
+    "Shift": "Receiving - Weekday - 7-3"
   },
   "D105": {
-    "Shift": "Inventory Controller"
+    "Shift": "Inventory Controller - Weekday - 7-3"
   },
   "D107": {
-    "Shift": "Receiving"
+    "Shift": "Receiving - Weekday - 7-3"
   },
   "D108": {
-    "Shift": "Receiving"
+    "Shift": "Receiving - Weekday - 7-3"
   },
   "D207": {
-    "DESK": "NAV",
-    "CPCC": "Kidd 0 - Room 1234"
+    "Shift": "Stores Desk - Weekday - 7-3",
+    "CPCC": "Kidd 0 - Room 1234",
+    "OBCP": "Kidd 0 - Room 1234",
   },
   "D301": {
-    "Shift": "Supply Assistant - Weekday 7-3",
+    "Shift": "Supply Assistant - Weekday - 7-3",
     "D4IC": "Davis 4 - Room 22-4-099",
     "D4RT": "Davis 4 - Room 22-4-095",
     "D4CR": "Davis 4 - Room 22.4.109",
@@ -30,7 +31,7 @@
     "ICUW": "Kidd 2 - Room 22-2-321"
   },
   "D303": {
-    "Shift": "Supply Assistant - Weekday 7-3",
+    "Shift": "Supply Assistant - Weekday - 7-3",
     "FA4S": "Armstrong 4 - Room 16-4-033",
     "K4S": "Kidd 4 - Room 22.04.051",
     "K6S": "Kidd 6 - Roomm 22.6-043./047/22.6.041",
@@ -39,10 +40,10 @@
     "STMS": "Kidd 9 - Room 22.9.047/22.9.059"
   },
   "D304": {
-    "Shift": "Supply Assistant - Weekday"
+    "Shift": "Supply Assistant - Weekday - 7-3"
   },
   "D305": {
-    "Shift": "Supply Assistant - Weekday 7-3",
+    "Shift": "Supply Assistant - Weekday - 7-3",
     "C3S": "Connell 3 - Room 02.312",
     "CSRT": "Davis 3 - Room 22-3-119",
     "CSUS": "Davis 3 - Room 22-3-124/126/127/121",
@@ -53,7 +54,7 @@
     "FA3S": "Armstrong 3 - Room 16-3-025"
   },
   "D306": {
-    "Shift": "Supply Assistant - Weekday 7-3",
+    "Shift": "Supply Assistant - Weekday - 7-3",
     "C10A": "Connell 10 - Room 02.1003 or 02.1050",
     "C10B": "Connell 10 - Room 02.1024",
     "C10S": "Connell 10 - Room 2-1035",
@@ -64,13 +65,13 @@
     "PEDS": "Kidd 10 - Room 22.10.049"
   },
   "D307": {
-    "Shift": "Supply Assistant - Weekday"
+    "Shift": "Supply Assistant - Weekday - 7-3"
   },
   "D308": {
-    "Shift": "Supply Assistant - Weekday"
+    "Shift": "Supply Assistant - Weekday - 7-3"
   },
   "D311": {
-    "Shift": "Supply Assistant - Weekday",
+    "Shift": "Supply Assistant - Weekday - 7-3",
     "ANES": "Connell 2 - Room 22.2.226",
     "ORS": "Connell 2 - Room 22.2.226",
     "ORSA": "Connell 2 - Room 02-238",
@@ -87,46 +88,49 @@
     "SDAS": "Dietarty 2 - Room 7-220/7-214"
   },
   "D313": {
-    "Shift": "Renal Dialysis - Weekday",
+    "Shift": "Renal Dialysis - Weekday - 8-12",
     "Room A": "Burr Wing 3 - Room 21.3.054.0",
     "Room B": "Burr Wing 3 - Room 21.3.051.0",
     "Room C": "Burr Wing 3 - Room 21.3.050.0"
   },
   "D406": {
-    "Shift": "Supply Assistant - Stat Day"
+    "Shift": "Supply Assistant - Stat Day - 7-3"
   },
   "D408": {
-    "Shift": "Supply Assistant - Stat Day"
+    "Shift": "Supply Assistant - Stat Day - 7-3"
   },
   "E410": {
-    "Shift": "Supply Assistant - Evening"
+    "Shift": "Supply Assistant - Evening - 15-23"
   },
   "SA1": {
-    "Shift": "Supply Assistant - Stat Weekend"
+    "Shift": "Supply Assistant - Stat Weekend - 7-3"
   },
   "SA2": {
-    "Shift": "Supply Assistant - Stat Weekend"
+    "Shift": "Supply Assistant - Stat Weekend - 7-3"
   },
   "SA3": {
-    "Shift": "Supply Assistant - Stat Weekend"
+    "Shift": "Supply Assistant - Stat Weekend - 7-3"
   },
   "SA4": {
-    "Shift": "Supply Assistant - Stat Weekend"
+    "Shift": "Supply Assistant - Stat Weekend - 7-3"
   },
   "w401": {
-    "Shift": "Supply Assistant - Weekend"
+    "Shift": "Supply Assistant - Weekend - 8-12",
+    "Room A": "Burr Wing 3 - Room 21.3.054.0",
+    "Room B": "Burr Wing 3 - Room 21.3.051.0",
+    "Room C": "Burr Wing 3 - Room 21.3.050.0"
   },
   "w501": {
-    "Shift": "Supply Assistant - Friday Night"
+    "Shift": "Supply Assistant - Friday Night - 23-7"
   },
   "w502": {
-    "Shift": "Supply Assistant - Weekend"
+    "Shift": "Supply Assistant - Weekend - 7-3"
   },
   "w503": {
-    "Shift": "Supply Assistant - Weekend"
+    "Shift": "Supply Assistant - Weekend - 7-3"
   },
   "w504": {
-    "Shift": "Supply Assistant - Weekend"
+    "Shift": "Supply Assistant - Weekend - 7-3"
   },
   "w505": {
     "Shift": "Supply Assistant - Weekend"
@@ -135,7 +139,7 @@
     "Shift": "Supply Assistant - Saturday Night"
   },
   "w507": {
-    "Shift": "Supply Assistant - Weekend"
+    "Shift": "Supply Assistant - Weekend - 7-3"
   },
   "w508": {
     "Shift": "Supply Assistant - Weekend"
