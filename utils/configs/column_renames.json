@@ -41,6 +41,7 @@
   "Reorder point": "ROP",
   "Qty On Hand": "QTY",
   "QTY on Hand": "QTY",
+  "Qty in Un. of Entry": "Moved",
   "Old Mat": "Old",
   "Old Material Number": "Old",
   "Created": "Created",
@@ -63,5 +64,6 @@
   "eta preferred": "Preferred ETA",
   "soh": "Stock",
   "sub eta": "Sub ETA",
-  "sub stock": "Sub Stock"
+  "sub stock": "Sub Stock",
+  "Movement Type": "MVTT"
 }
