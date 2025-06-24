@@ -11,7 +11,7 @@ import sqlite3
 
 from flask import request, render_template
 from werkzeug.utils import secure_filename
-from config import CATALOG_REGEX, SENIORITY_REGEX, OPTIMIZE_REGEX, ZWDISEG_REGEX, CLEAN_REGEX, MERGE_REGEX
+from config import CATALOG_REGEX, SENIORITY_REGEX, OPTIMIZE_REGEX, MOVEMENT_REGEX, ZWDISEG_REGEX, CLEAN_REGEX, MERGE_REGEX
 
 # Modular handlers
 from handlers.optimize_handler import handle as handle_optimize
