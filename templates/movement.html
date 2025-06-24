@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movement Review</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/disc/disc.css') }}">
+</head>
+<body>
+  <h2>
+    <span id="site-title" class="typed-text gradient-title gradient-shift" data-title="Movement Review|Anikto Opsis"></span>
+  </h2>
+  <div id="toast" class="toast"></div>
+
+  <div id="panel-wrapper">
+    <div id="panel-container">
+
+      <!-- ============================= -->
+      <!-- PANEL: MOVEMENT REVIEW        -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="movement-review-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Movement Review</div>
+        <div class="panel-scroll-container">
+          <div class="panel-scroll-bar"></div>
+        </div>
+        <div class="panel-body scrollable-panel">
+
+          <!-- STICKY: Search and Filter -->
+          <div class="sticky-bar">
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+              <select id="mvt-filter" class="input full-width" style="flex: 0 0 100px;">
+                <option value="All">All</option>
+              </select>
+              <input id="movement-search" class="input full-width" placeholder="Search..." style="flex: 1;" />
+            </div>
+          </div>
+
+          <ul id="movement-results" style="list-style: none; padding-left: 0; line-height: 1.8; text-align: center;">
+            <!--JS-->
+          </ul>
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: RETURN                 -->
+      <!-- ============================= -->
+      <div class="panel panel-animate no-shadow">
+        <form action="{{ url_for('index') }}" method="get" class="button-form">
+          <button type="submit" class="button full-width">Main Menu</button>
+        </form>
+      </div>
+
+    </div> <!-- END panel-container -->
+  </div> <!-- END panel-wrapper -->
+
+  <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
+</body>
+</html>
