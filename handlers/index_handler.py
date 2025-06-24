@@ -15,6 +15,7 @@ from config import CATALOG_REGEX, SENIORITY_REGEX, OPTIMIZE_REGEX, MOVEMENT_REGE
 
 # Modular handlers
 from handlers.optimize_handler import handle as handle_optimize
+from handlers.movement_handler import handle as handle_movement
 from handlers.seniority_handler import handle as handle_seniority
 from handlers.inventory_handler import handle as handle_inventory
 from handlers.zwdiseg_handler import handle as handle_zwdiseg
@@ -53,6 +54,13 @@ def handle_excel_file(file, fname):
         steps = [clean_headers, clean_deleted_rows, clean_flags, clean_columns, clean_format]
         df = clean_xlsx(file, *steps, name=fname, multi_sheet=False)
         return handle_optimize(df, filename=fname)
+
+    # REGEX MOVEMENT
+    elif re.match(MOVEMENT_REGEX, fname, re.IGNORECASE):
+        logging.debug("[HANDLER] Matched MOVEMENT — using movement cleaning pipeline")
+        steps = [clean_headers, clean_columns, clean_deleted_rows, clean_flags, clean_format]
+        df = clean_xlsx(file, *steps, name=fname)
+        return handle_movement(df)
 
     # REGEX SENIORITY
     elif re.search(SENIORITY_REGEX, fname_lower, re.IGNORECASE):
