@@ -71,38 +71,7 @@ function renderAssignmentInfo(data, key) {
     const label = document.createElement("strong");
     label.textContent = `${subkey}: `;
 
-    const valueWrapper = document.createElement("span");
-
-    if (subkey === "Shift") {
-      let parts;
-    
-      if (value.includes(" - ")) {
-        parts = value.split(" - ");
-      } else {
-        const timePattern = /\b\d{1,2}-\d{1,2}\b/;
-        const match = value.match(timePattern);
-        if (match) {
-          const time = match[0];
-          const prefix = value.replace(time, "").trim();
-          parts = [prefix, time];
-        } else {
-          parts = [value];
-        }
-      }
-    
-      parts.forEach(part => {
-        const partSpan = document.createElement("span");
-        partSpan.textContent = part;
-        partSpan.style.marginRight = "8px";
-        partSpan.style.padding = "4px 8px";
-        partSpan.style.background = "rgba(255,255,255,0.1)";
-        partSpan.style.borderRadius = "6px";
-        partSpan.style.display = "inline-block";
-        valueWrapper.appendChild(partSpan);
-      });
-    } else {
-      valueWrapper.textContent = value;
-    }
+    const valueWrapper = createSpanWrapper(value);
 
     div.appendChild(label);
     div.appendChild(valueWrapper);
@@ -117,4 +86,25 @@ function renderAssignmentInfo(data, key) {
   });
 
   scrollPanel();
+}
+
+// ==============================
+// CREATE SPAN WRAPPER
+// ==============================
+function createSpanWrapper(value) {
+  const wrapper = document.createElement("span");
+
+  if (typeof value === "string" && value.includes(" - ")) {
+    const parts = value.split(" - ");
+    parts.forEach(part => {
+      const span = document.createElement("span");
+      span.textContent = part;
+      span.style.marginRight = "6px"; // clean spacing
+      wrapper.appendChild(span);
+    });
+  } else {
+    wrapper.textContent = value;
+  }
+
+  return wrapper;
 }
