@@ -71,12 +71,36 @@ function renderAssignmentInfo(data, key) {
     const label = document.createElement("strong");
     label.textContent = `${subkey}: `;
 
-    label.style.width = "80px";
-    label.style.display = "inline-block";
-    label.style.textAlign = "right";
-    label.style.marginRight = "16px";
+    const valueWrapper = document.createElement("span");
 
-    const valueWrapper = createSpanWrapper(value);
+    if (subkey === "Shift") {
+      let parts;
+    
+      if (value.includes(" - ")) {
+        parts = value.split(" - ");
+      } else {
+        const timePattern = /\b\d{1,2}-\d{1,2}\b/;
+        const match = value.match(timePattern);
+        if (match) {
+          const time = match[0];
+          const prefix = value.replace(time, "").trim();
+          parts = [prefix, time];
+        } else {
+          parts = [value];
+        }
+      }
+    
+      parts.forEach(part => {
+        const partSpan = document.createElement("span");
+        partSpan.textContent = part;
+        partSpan.style.marginRight = "8px";
+        partSpan.style.padding = "4px 8px";
+        partSpan.style.display = "inline-block";
+        valueWrapper.appendChild(partSpan);
+      });
+    } else {
+      valueWrapper.textContent = value;
+    }
 
     div.appendChild(label);
     div.appendChild(valueWrapper);
@@ -91,47 +115,4 @@ function renderAssignmentInfo(data, key) {
   });
 
   scrollPanel();
-}
-
-// ==============================
-// CREATE SPAN WRAPPER
-// ==============================
-function createSpanWrapper(value) {
-  const wrapper = document.createElement("span");
-
-  if (typeof value !== "string") {
-    wrapper.textContent = value;
-    return wrapper;
-  }
-
-  let parts;
-
-  if (value.includes(" - ")) {
-    // Primary case: split using hyphens with space
-    parts = value.split(" - ");
-  } else {
-    // Fallback: try splitting time at end like "7-3"
-    const timePattern = /\b\d{1,2}-\d{1,2}\b/;
-    const match = value.match(timePattern);
-
-    if (match) {
-      const time = match[0];
-      const prefix = value.replace(time, "").trim();
-      parts = [prefix, time];
-    } else {
-      // Treat as a single item
-      parts = [value];
-    }
-  }
-
-  parts.forEach(part => {
-    const span = document.createElement("span");
-    span.textContent = part;
-    span.style.display = "inline-block";
-    span.style.marginRight = "8px";
-    span.style.padding = "4px 8px";
-    wrapper.appendChild(span);
-  });
-
-  return wrapper;
 }
