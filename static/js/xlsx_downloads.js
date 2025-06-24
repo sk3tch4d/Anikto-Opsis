@@ -18,8 +18,8 @@ const COLUMN_LAYOUTS = {
   inventory_history: ["Timestamp", "Search Term", "Filter Used", "Matches" ],
   seniority_clean: ["Union", "Years", "First Name", "Last Name", "Status", "Position", "Department"],
   seniority_search: ["Union", "Years", "First Name", "Last Name", "Status", "Position", "Department"],
-  optimization_search: ["Cart", "Num", "Description", "Bin", "ROP", "ROQ", "RROP", "RROQ", "QTY", "MVT", "Group", "Cost", "UOM"],
-  optimization_saved: ["Cart", "Num", "Description", "Bin", "ROP", "ROQ", "RROP", "RROQ", "QTY", "MVT", "Group", "Cost", "UOM", "Note"], 
+  optimization_search: ["Num", "Description", "Bin", "ROP", "ROQ", "RROP", "RROQ", "QTY", "MVT", "Group", "Cost", "UOM", "Cart"],
+  optimization_saved: ["Num", "Description", "Bin", "ROP", "ROQ", "RROP", "RROQ", "QTY", "MVT", "Group", "Cost", "UOM", "Cart", "Note"], 
   optimization_history: ["Timestamp", "Search Term", "Filter Used", "Matches"]
 };
 
