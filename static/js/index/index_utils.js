@@ -91,6 +91,8 @@ function updateGenerateButtonText() {
     generateBtn.classList.remove("select");
   } else {
     generateBtn.classList.add("select");
+    
+    setTimeout(() => generateBtn.focus(), 0);
   }
 }
 
