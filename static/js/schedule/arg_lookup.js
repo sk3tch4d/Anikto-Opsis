@@ -114,7 +114,7 @@ export function initLookupUI() {
         const friendly = formatDate(new Date(date), 'long', { relative: true });
       
         const div = document.createElement("div");
-        div.className = "delta-item";
+        div.className = "delta-item clickable";
         div.setAttribute("data-shift", shift);
       
         div.innerHTML = `
