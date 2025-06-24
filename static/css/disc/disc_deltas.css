@@ -53,6 +53,13 @@
 }
 
 /* ============================= */
+/* CLICKABLE DELTA ITEM          */
+/* ============================= */
+.delta-item.clickable {
+  cursor: pointer;
+}
+
+/* ============================= */
 /* CLICKABLE DELTA               */
 /* ============================= */
 .clickable-delta .panel-delta .delta-item {
