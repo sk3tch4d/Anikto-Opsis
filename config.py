@@ -18,6 +18,7 @@ OPTIMIZATION_PATH = None
 ARG_REGEX = r"(arg|flowsheet).*?\.(pdf)$"
 CATALOG_REGEX = r"(catalog|inventory|cat[_-]?v[\d.]+).*?\.(xlsx|db)$"
 OPTIMIZE_REGEX = r"^KG01-[A-Z0-9]{1,4}-.*\.xlsx$"
+MOVEMENT_REGEX = r".*mm.*\.xlsx$"
 SENIORITY_REGEX = r"(?i)(cupe|opseu)?[^/\\]*?(seniority|sen)[\s_-]*(list|lists|lst)?[^/\\]*\.xlsx$"
 ZWDISEG_REGEX = r".*zwdiseg.*\.xlsx$"
 CLEAN_REGEX = r".*clean.*\.xlsx$"
