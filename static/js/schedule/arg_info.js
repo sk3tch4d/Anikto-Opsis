@@ -94,17 +94,39 @@ function renderAssignmentInfo(data, key) {
 function createSpanWrapper(value) {
   const wrapper = document.createElement("span");
 
-  if (typeof value === "string" && value.includes(" - ")) {
-    const parts = value.split(" - ");
-    parts.forEach(part => {
-      const span = document.createElement("span");
-      span.textContent = part;
-      span.style.marginRight = "6px"; // clean spacing
-      wrapper.appendChild(span);
-    });
-  } else {
+  if (typeof value !== "string") {
     wrapper.textContent = value;
+    return wrapper;
   }
+
+  let parts;
+
+  if (value.includes(" - ")) {
+    // Primary case: split using hyphens with space
+    parts = value.split(" - ");
+  } else {
+    // Fallback: try splitting time at end like "7-3"
+    const timePattern = /\b\d{1,2}-\d{1,2}\b/;
+    const match = value.match(timePattern);
+
+    if (match) {
+      const time = match[0];
+      const prefix = value.replace(time, "").trim();
+      parts = [prefix, time];
+    } else {
+      // Treat as a single item
+      parts = [value];
+    }
+  }
+
+  parts.forEach(part => {
+    const span = document.createElement("span");
+    span.textContent = part;
+    span.style.display = "inline-block";
+    span.style.marginRight = "8px";
+    span.style.padding = "4px 8px";
+    wrapper.appendChild(span);
+  });
 
   return wrapper;
 }
