@@ -65,7 +65,7 @@ export async function fetchWorkingOnDate() {
 
               data[type].forEach(([name, shift]) => {
                 const formatted = formatName(name);
-                html += `<div class="delta-item" data-name="${name}" data-shift="${shift}"><span class="delta-name" data-full="${name}">${formatted}</span> <span class="delta-code">(${shift})</span></div>`;
+                html += `<div class="delta-item clickable" data-name="${name}" data-shift="${shift}"><span class="delta-name" data-full="${name}">${formatted}</span> <span class="delta-code">(${shift})</span></div>`;
               });
 
               html += `</div>`;
