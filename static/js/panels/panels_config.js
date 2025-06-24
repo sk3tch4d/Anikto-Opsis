@@ -12,7 +12,7 @@ export const DEBUG_MODE = localStorage.getItem("DEBUG_MODE") === "true";
 // NON CLOSABLE PANELS (ID)
 // ==============================
 export const nonClosablePanels = [
-  "arg-date-search-panel"
+  "arg-date-search-panel",
 // ==============================
   "info-features-panel",
   "info-updates-panel",
@@ -34,7 +34,7 @@ export const nonClosablePanels = [
   "zwdiseg-history-panel",
   "zwdiseg-saved-panel",
 // ==============================
-  "downloads",
+  "downloads"
 ];
 
 // ==============================
