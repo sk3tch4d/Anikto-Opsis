@@ -42,10 +42,10 @@ export function formatDate(date, style = 'long', options = {}) {
     if (diffDays === -1) return "Yesterday";
   }
 
-  const day = date.getDate();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-  const weekdayIndex = date.getDay();
+  const day = date.getUTCDate();
+  const month = date.getUTCMonth();
+  const year = date.getUTCFullYear();
+  const weekdayIndex = date.getUTCDay();
 
   const fullDayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const shortDayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
