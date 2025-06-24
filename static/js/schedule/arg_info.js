@@ -71,6 +71,10 @@ function renderAssignmentInfo(data, key) {
     const label = document.createElement("strong");
     label.textContent = `${subkey}: `;
 
+    div.style.display = "flex";
+    label.style.flex = "0 0 auto";
+    label.style.marginRight = "12px";
+
     const valueWrapper = createSpanWrapper(value);
 
     div.appendChild(label);
