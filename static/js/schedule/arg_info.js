@@ -30,6 +30,25 @@ export async function populateDropdownInfo() {
     });
 
     select.addEventListener("change", () => renderAssignmentInfo(data, select.value));
+
+    document.getElementById("prev-info")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const current = select.selectedIndex;
+    if (current > 1) {
+      select.selectedIndex = current - 1;
+      select.dispatchEvent(new Event("change"));
+    }
+  });
+
+  document.getElementById("next-info")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const current = select.selectedIndex;
+    if (current < select.options.length - 1) {
+      select.selectedIndex = current + 1;
+      select.dispatchEvent(new Event("change"));
+    }
+  });
+
   } catch (err) {
     console.error("Failed to load assignment data:", err);
 
