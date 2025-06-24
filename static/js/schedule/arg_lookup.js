@@ -69,68 +69,71 @@ export function initLookupUI() {
   async function renderSchedule() {
     const name = select.value;
     const filter = filterSelect.value;
-
+  
     if (!name) return;
-
-    // Only update display if on mobile AND name is long
+  
     const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const selectedIndex = select.selectedIndex;
     const opt = select.options[selectedIndex];
-
+  
     if (isMobile && opt && opt.dataset.full && opt.dataset.full.length > 18) {
       opt.textContent = opt.dataset.short;
     } else if (opt && opt.dataset.full) {
       opt.textContent = opt.dataset.full;
     }
-
+  
     toggleLoadingState(true, { show: [bounceLoader], hide: [container] });
-
+  
     try {
       const res = await fetch(`/api/lookup_schedule?name=${encodeURIComponent(name)}&filter=${filter}`);
       const data = await res.json();
-
+  
       container.innerHTML = "";
-
+  
       if (!data.shifts || !data.shifts.length) {
-        container.innerHTML = "<div class='delta-item'>No shifts found.</div>";
+        container.innerHTML = "<div class='panel-delta'><div class='delta-item'>No shifts found.</div></div>";
         return;
       }
-
+  
       data.shifts.sort((a, b) => new Date(a.date) - new Date(b.date));
-
+  
+      const deltaWrapper = document.createElement("div");
+      deltaWrapper.className = "panel-delta";
+  
       const header = document.createElement("div");
       header.className = "delta-item";
       header.innerHTML = `📅 Total Shifts: <span>${data.shifts.length}</span>`;
-      container.appendChild(header);
-
+      deltaWrapper.appendChild(header);
+  
       const spacer = document.createElement("div");
       spacer.style.margin = "10px 0";
-      container.appendChild(spacer);
-
+      deltaWrapper.appendChild(spacer);
+  
       const shiftIcons = { Day: '☀️', Evening: '🌇', Night: '🌙' };
-
+  
       data.shifts.forEach(({ date, shift, type }) => {
         const icon = shiftIcons[type] || '';
         const friendly = formatDate(new Date(date), 'long', { relative: true });
-      
+  
         const div = document.createElement("div");
         div.className = "delta-item clickable";
         div.setAttribute("data-shift", shift);
-      
+  
         div.innerHTML = `
           <span class="delta-inline">
             ${icon} <span class="delta-code">${shift}</span>
           </span>
           <span class="delta-date">${friendly}</span>
         `.trim();
-      
-        container.appendChild(div);
+  
+        deltaWrapper.appendChild(div);
       });
-
+  
+      container.appendChild(deltaWrapper);
       scrollPanel();
     } catch (err) {
       console.error("Lookup fetch failed", err);
-      container.innerHTML = "<div class='delta-item'>Error loading shifts.</div>";
+      container.innerHTML = "<div class='panel-delta'><div class='delta-item'>Error loading shifts.</div></div>";
     } finally {
       toggleLoadingState(false, { show: [bounceLoader], hide: [container] });
     }
