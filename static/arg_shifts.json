@@ -105,7 +105,7 @@
   },
   "D308": {
     "SHIFT": "Supply Assistant - Weekday - 7-3",
-    "ADMS ": "Armstrong 1 - Rm 16-1-002-2",
+    "ADMS": "Armstrong 1 - Rm 16-1-002-2",
     "CATS": "Kidd 1 - Rm 22-1-118",
     "CPSA": "Kidd 0 - Rm 22-0.007.0",
     "CPSB": "Kidd 0 - Rm 22-0-001-1/2.5",
@@ -169,16 +169,32 @@
     "Picks": "Pick CPS Items for orders"
   },
   "SA1": {
-    "SHIFT": "Supply Assistant - Stat Weekend - 7-3"
+    "SHIFT": "Stat Weekend - 7-3",
+    "Saturday": "W401 + Supply Delivery",
+    "Delivery": "D308",
+    "Sunday": "W401 + Inventory Count",
+    "Barcode": "D308, ERDP, RNLS, MHA, MHAS, MHYS"
   },
   "SA2": {
-    "SHIFT": "Supply Assistant - Stat Weekend - 7-3"
+    "SHIFT": "Supply Assistant - Stat Weekend - 7-3",
+    "Saturday": "Supply Delivery",
+    "Delivery": "D311, D303",
+    "Sunday": "Inventory Count",
+    "Barcode": "D311, D303"
   },
   "SA3": {
-    "SHIFT": "Supply Assistant - Stat Weekend - 7-3"
+    "SHIFT": "Supply Assistant - Stat Weekend - 7-3",
+    "Saturday": "Supply Delivery",
+    "Delivery": "D305, D307",
+    "Sunday": "Inventory Count",
+    "Barcode": "D305, D307"
   },
   "SA4": {
-    "SHIFT": "Supply Assistant - Stat Weekend - 7-3"
+    "SHIFT": "Supply Assistant - Stat Weekend - 7-3",
+    "Saturday": "Supply Delivery",
+    "Delivery": "D301, D306",
+    "Sunday": "Inventory Count",
+    "Barcode": "D301, D306"
   },
   "W401": {
     "SHIFT": "Supply Assistant - Weekend - 8-12",
