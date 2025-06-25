@@ -67,7 +67,7 @@
   transition: color 0.3s ease;
 }
 .panel-delta .delta-item strong:hover {
-  color: var(--panel-delta-delta-item-stronghover-color;
+  color: var(--panel-delta-delta-item-stronghover-color);
 }
 
 /* ============================= */
