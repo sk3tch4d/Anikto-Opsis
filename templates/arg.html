@@ -9,12 +9,13 @@
 </head>
 <body data-page="arg">
   <h2>
-    <span id="site-title" class="typed-text gradient-title gradient-shift" data-title="ARG Summary|Anikto Opsis"></span>
+    <span id="site-title" class="typed-text gradient-title gradient-shift"
+          data-title="ARG Summary|Anikto Opsis"></span>
   </h2>
-  <div id="panel-wrapper"> 
+  <div id="panel-wrapper">
     {% set shift_icons = {
-      'Day':     '☀️', 
-      'Evening': '🌇', 
+      'Day':     '☀️',
+      'Evening': '🌇',
       'Night':   '🌙'
     } %}
     {% set reason_icons = {
@@ -28,12 +29,12 @@
       'Other'              : '❔'
     } %}
 
-    <!-- ======= PANEL CONTAINER ======= -->
     <div id="panel-container">
 
       <!-- SCHEDULED PANEL -->
       <div class="panel panel-animate" id="arg-date-search-panel">
         <div class="panel-header open" onclick="togglePanel(this)">Scheduled</div>
+        <div class="panel-scroll-container"><div class="panel-scroll-bar"></div></div>
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
@@ -43,14 +44,23 @@
                 <option value="pt">PT</option>
               </select>
 
-              <div id="custom-date-display" class="custom-date-display" style="flex: 1;" onclick="document.getElementById('working-date').showPicker()">
-                <button id="prev-day" class="date-nav-button inside-left"><span class="arrow-desktop">←</span><span class="arrow-mobile">&lt;</span></button>
+              <div id="custom-date-display" class="custom-date-display" style="flex: 1;"
+                   onclick="document.getElementById('working-date').showPicker()">
+                <button id="prev-day" class="date-nav-button inside-left">
+                  <span class="arrow-desktop">←</span>
+                  <span class="arrow-mobile">&lt;</span>
+                </button>
                 <span id="custom-date-text">Today</span>
-                <button id="next-day" class="date-nav-button inside-right"><span class="arrow-desktop">→</span><span class="arrow-mobile">&gt;</span></button>
+                <button id="next-day" class="date-nav-button inside-right">
+                  <span class="arrow-desktop">→</span>
+                  <span class="arrow-mobile">&gt;</span>
+                </button>
               </div>
+
               <input type="date" id="working-date" style="position: absolute; left: -9999px;" />
             </div>
           </div>
+
           <div id="working-date-loading" style="display: none; text-align: center;"></div>
           <div id="working-date-results" style="margin-top: 1em;"></div>
         </div>
@@ -59,6 +69,7 @@
       <!-- SHIFT LOOKUP PANEL -->
       <div class="panel panel-animate" id="arg-lookup-panel">
         <div class="panel-header" onclick="togglePanel(this)">Shift Lookup</div>
+        <div class="panel-scroll-container"><div class="panel-scroll-bar"></div></div>
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
@@ -79,8 +90,10 @@
       <!-- SWAPS & COVERAGE PANEL -->
       <div class="panel panel-animate" id="arg-coverage-panel">
         <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage (In Dev)</div>
+        <div class="panel-scroll-container"><div class="panel-scroll-bar"></div></div>
         <div class="panel-body scrollable-panel">
           {% if stats.swaps %}
+            <ul>
             {% for swap in stats.swaps %}
               <div class="panel-card">
                 <strong>{{ reason_icons.get(swap.reason, '❔') }} <em>{{ swap.reason }}</em> ({{ swap.shift|replace("d","") }})</strong><br>
@@ -89,6 +102,7 @@
                 {{ swap.date }}
               </div>
             {% endfor %}
+            </ul>
           {% else %}
             <p>No shift swaps or exceptions detected.</p>
           {% endif %}
@@ -98,6 +112,7 @@
       <!-- STATS & RANKINGS PANEL -->
       <div class="panel panel-animate" id="arg-stat-panel">
         <div class="panel-header open" onclick="togglePanel(this)">Stats & Rankings</div>
+        <div class="panel-scroll-container"><div class="panel-scroll-bar"></div></div>
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
@@ -118,17 +133,24 @@
         </div>
       </div>
 
-      <!-- SHIFT INFO PANEL (fixed) -->
+      <!-- SHIFT INFO PANEL (PATCHED) -->
       <div class="panel panel-animate" id="arg-info-panel">
         <div class="panel-header" onclick="togglePanel(this)">Shift Info (In Development)</div>
+        <div class="panel-scroll-container"><div class="panel-scroll-bar"></div></div>
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
-            <div id="info-select-wrapper" style="flex: 1; display: flex; align-items: center; position: relative;">
-              <button id="prev-info" class="date-nav-button inside-left"><span>▲</span></button>
-              <select id="info-select" class="input full-width" style="flex: 1; margin: 0 1.5rem;">
+            <div id="info-select-display" class="custom-date-display" style="flex: 1;">
+              <button id="prev-info" class="date-nav-button inside-left">
+                <span class="arrow-desktop">▲</span>
+                <span class="arrow-mobile">▼</span>
+              </button>
+              <select id="info-select" class="input full-width">
                 <option></option>
               </select>
-              <button id="next-info" class="date-nav-button inside-right"><span>▼</span></button>
+              <button id="next-info" class="date-nav-button inside-right">
+                <span class="arrow-desktop">▼</span>
+                <span class="arrow-mobile">▲</span>
+              </button>
             </div>
           </div>
           <div class="panel-delta" id="info-container"></div>
@@ -140,27 +162,32 @@
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
         <div class="panel-body">
           {% if outputs %}
+            <div class="panel-content">
             {% for file in outputs %}
-              <a class="button panel" href="{{ url_for('file.download', filename=file) }}" download>
-                {% if "ARGX" in file %}Spreadsheet{% elif "ARGM" in file %}Heatmap{% else %}{{ file }}{% endif %}
-              </a>
+              {% if "ARGX" in file %}
+                <a class="button panel" href="{{ url_for('file.download', filename=file) }}" download>Spreadsheet</a>
+              {% elif "ARGM" in file %}
+                <a class="button panel" href="{{ url_for('file.download', filename=file) }}" download>Heatmap</a>
+              {% else %}
+                <a class="button panel" href="{{ url_for('file.download', filename=file) }}" download>{{ file }}</a>
+              {% endif %}
             {% endfor %}
+            </div>
           {% else %}
             <p>No output files were generated.</p>
           {% endif %}
         </div>
       </div>
 
-      <!-- SUBMIT PANEL -->
+      <!-- MAIN MENU BUTTON -->
       <div class="panel panel-animate no-shadow">
         <form action="{{ url_for('index') }}" method="get" class="button-form">
           <button type="submit" class="button full-width">Main Menu</button>
         </form>
       </div>
 
-    </div> <!-- END #panel-container -->
-
-  </div> <!-- END #panel-wrapper -->
+    </div>
+  </div>
   <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
 </body>
 </html>
