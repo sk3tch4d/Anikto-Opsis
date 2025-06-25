@@ -77,7 +77,7 @@
   cursor: pointer;
   padding: 0;
   z-index: 2;
-  transition: font-size 0.4s ease;
+  transition: font-size 0.4s ease, opacity 0.2s ease, visibility 0.2s ease;
 }
 .nav-button:focus,
 .nav-button:active {
