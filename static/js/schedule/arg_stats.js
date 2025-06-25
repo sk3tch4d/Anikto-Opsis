@@ -6,6 +6,13 @@ import { createBounceLoader, toggleLoadingState } from "../loading.js";
 import { scrollPanel } from '../panels/panels_core.js'
 import { parseDate, parseAndFormat } from "../utils/format_date.js";
 import { formatName } from "./arg_helpers.js"
+import { updateNavButtons } from '../utils/nav_buttons.js'
+
+// ==============================
+// GLOBALS
+// ==============================
+
+const NAV_BUTTON_MODE = "fade";
 
 let bounceLoader;
 let rankingsData = {
@@ -47,6 +54,26 @@ export function initStatDropdown() {
 
   if (modeSelect) modeSelect.addEventListener("change", updateStatsDisplay);
   if (filterSelect) filterSelect.addEventListener("change", fetchStatsData);
+
+  const prevBtn = document.getElementById("prev-stats");
+  const nextBtn = document.getElementById("next-stats");
+  
+  prevBtn?.addEventListener("click", () => {
+    const current = modeSelect.selectedIndex;
+    if (current > 0) {
+      modeSelect.selectedIndex = current - 1;
+      modeSelect.dispatchEvent(new Event("change"));
+    }
+  });
+  
+  nextBtn?.addEventListener("click", () => {
+    const current = modeSelect.selectedIndex;
+    if (current < modeSelect.options.length - 1) {
+      modeSelect.selectedIndex = current + 1;
+      modeSelect.dispatchEvent(new Event("change"));
+    }
+  });
+
 
   fetchStatsData(); // initial load
 }
@@ -101,6 +128,9 @@ function updateStatsDisplay() {
         container.appendChild(div);
       });
   }
+  
+  const modeSelect = document.getElementById("stats-mode-select");
+  updateNavButtons(modeSelect, "prev-stats", "next-stats", NAV_BUTTON_MODE);
 
   scrollPanel();
 }
