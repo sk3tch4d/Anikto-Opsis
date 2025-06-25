@@ -3,7 +3,7 @@
 // ==============================
 
 import { scrollPanel } from '../panels/panels_core.js';
-import { updateNavButtons } from '../utils/nav_helpers.js';
+import { updateNavButtons } from '../utils/nav_buttons.js';
 
 // ==============================
 // GLOBAL CONSTANT
