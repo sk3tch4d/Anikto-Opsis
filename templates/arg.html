@@ -112,12 +112,12 @@
         </div>
       </div>
 
-      <!-- SHIFT INFO PANEL (FIXED) -->
+      <!-- SHIFT INFO PANEL (Finalized to Match Scheduled) -->
       <div class="panel panel-animate" id="arg-info-panel">
         <div class="panel-header" onclick="togglePanel(this)">Shift Info (In Development)</div>
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
-            <div id="info-select-wrapper" style="display: flex; gap: 0.5rem; align-items: center;">
+            <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
               <button id="prev-info" class="date-nav-button inside-left"><span>▲</span></button>
               <select id="info-select" class="input full-width" style="flex: 1;"></select>
               <button id="next-info" class="date-nav-button inside-right"><span>▼</span></button>
@@ -150,8 +150,8 @@
         </form>
       </div>
 
-    </div> <!-- END #panel-container -->
-  </div> <!-- END #panel-wrapper -->
+    </div>
+  </div>
   <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
 </body>
 </html>
