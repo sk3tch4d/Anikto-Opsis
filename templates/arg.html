@@ -11,95 +11,149 @@
   <h2>
     <span id="site-title" class="typed-text gradient-title gradient-shift" data-title="ARG Summary|Anikto Opsis"></span>
   </h2>
-  <div id="panel-wrapper">
-    {% set shift_icons = {'Day':'☀️','Evening':'🌇','Night':'🌙'} %}
+  <div id="panel-wrapper"> 
+    {% set shift_icons = {
+      'Day':     '☀️', 
+      'Evening': '🌇', 
+      'Night':   '🌙'
+    } %}
     {% set reason_icons = {
-      'Shift Swap':'🔄','Sick Leave':'🩼','Covering Vacant':'🪪',
-      'Schedule Adjustment':'🪛','Vacation':'🌴','Stat Holiday':'⭐',
-      'Leave of Absence':'🪁','Other':'❔'
+      'Shift Swap'         : '🔄',
+      'Sick Leave'         : '🩼',
+      'Covering Vacant'    : '🪪',
+      'Schedule Adjustment': '🪛',
+      'Vacation'           : '🌴',
+      'Stat Holiday'       : '⭐',
+      'Leave of Absence'   : '🪁',
+      'Other'              : '❔'
     } %}
 
+    <!-- ======== PANEL CONTAINER ======== -->
     <div id="panel-container">
 
-      <!-- SCHEDULED PANEL -->
+      <!-- ============================= -->
+      <!-- ===== SCHEDULED
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-date-search-panel">
         <div class="panel-header open" onclick="togglePanel(this)">Scheduled</div>
+        <div class="panel-scroll-container">
+          <div class="panel-scroll-bar"></div>
+        </div>
         <div class="panel-body scrollable-panel open">
+      
+          <!-- Sticky Controls Row -->
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
+      
+              <!-- Filter dropdown (left side) -->
               <select id="emp-filter" class="input full-width" style="flex: 0 0 90px;">
                 <option value="all">All</option>
                 <option value="ft">FT</option>
                 <option value="pt">PT</option>
               </select>
-              <div id="custom-date-display" class="custom-date-display" style="flex: 1;"
+      
+              <!-- CUSTOM NAVI DATE DISPLAY -->
+              <div id="custom-date-display" 
+                   class="custom-date-display" 
+                   style="flex: 1;"
                    onclick="document.getElementById('working-date').showPicker()">
                 <button id="prev-day" class="date-nav-button inside-left">
-                  <span class="arrow-desktop">←</span><span class="arrow-mobile">&lt;</span>
+                  <span class="arrow-desktop">←</span>
+                  <span class="arrow-mobile">&lt;</span>
                 </button>
                 <span id="custom-date-text">Today</span>
                 <button id="next-day" class="date-nav-button inside-right">
-                  <span class="arrow-desktop">→</span><span class="arrow-mobile">&gt;</span>
+                  <span class="arrow-desktop">→</span>
+                  <span class="arrow-mobile">&gt;</span>
                 </button>
               </div>
-              <input type="date" id="working-date" style="position: absolute; left: -9999px;">
+
+              <!-- Hidden native date input -->
+              <input type="date" id="working-date" style="position: absolute; left: -9999px;" />
             </div>
           </div>
+      
+          <!-- Spinner and Results -->
           <div id="working-date-loading" style="display: none; text-align: center;"></div>
           <div id="working-date-results" style="margin-top: 1em;"></div>
         </div>
       </div>
 
-      <!-- SHIFT LOOKUP PANEL -->
+      <!-- ============================= -->
+      <!-- ===== SINGLE LOOKUP
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-lookup-panel">
         <div class="panel-header" onclick="togglePanel(this)">Shift Lookup</div>
+        <div class="panel-scroll-container">
+          <div class="panel-scroll-bar"></div>
+        </div>
         <div class="panel-body scrollable-panel open">
+          
+          <!-- Sticky Controls Row -->
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
+      
+              <!-- Filter dropdown (left side) -->
               <select id="lookup-filter" class="input full-width" style="flex: 0 0 92px;">
                 <option value="all">All</option>
                 <option value="week">Week</option>
                 <option value="period">Period</option>
               </select>
+              
               <select id="lookup-select" class="input full-width" style="flex: 1;">
                 <option></option>
               </select>
             </div>
           </div>
-          <div class="panel-delta" id="lookup-container"></div>
+      
+          <div class="panel-delta" id="lookup-container"></div>   
         </div>
       </div>
-
-      <!-- SWAPS & COVERAGE PANEL -->
+      
+      <!-- ============================= -->
+      <!-- ===== SWAPS & COVERAGE
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-coverage-panel">
         <div class="panel-header" onclick="togglePanel(this)">Swaps & Coverage (In Dev)</div>
+        <div class="panel-scroll-container">
+          <div class="panel-scroll-bar"></div>
+        </div>
         <div class="panel-body scrollable-panel">
           {% if stats.swaps %}
-            {% for swap in stats.swaps %}
-              <div class="panel-card">
-                <strong>{{ reason_icons.get(swap.reason, '❔') }} <em>{{ swap.reason }}</em> ({{ swap.shift|replace("d","") }})</strong><br>
-                {{ swap.start }} – {{ swap.end }}<br>
-                {{ swap.org_employee }} → {{ swap.cov_employee }}<br>
-                {{ swap.date }}
-              </div>
-            {% endfor %}
+            <ul>
+              {% for swap in stats.swaps %}
+                <div class="panel-card">
+                  <strong>{{ reason_icons.get(swap.reason, '❔') }} <em>{{ swap.reason }}</em> ({{ swap.shift|replace("d","") }})</strong><br>
+                  {{ swap.start }} – {{ swap.end }} <!--{{ shift_icons.get(swap.type, '❔') }}--><br>
+                  {{ swap.org_employee }} → {{ swap.cov_employee }}<br>
+                  {{ swap.date }}
+                </div>
+              {% endfor %}
+            </ul>
           {% else %}
             <p>No shift swaps or exceptions detected.</p>
           {% endif %}
         </div>
       </div>
 
-      <!-- STATS & RANKINGS PANEL -->
+      <!-- ============================= -->
+      <!-- ===== STATS AND RANKINGS -->
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-stat-panel">
         <div class="panel-header open" onclick="togglePanel(this)">Stats & Rankings</div>
+        <div class="panel-scroll-container">
+          <div class="panel-scroll-bar"></div>
+        </div>
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
+              <!-- Filter Dropdown -->
               <select id="emp-stats-filter" class="input full-width" style="flex: 0 0 90px;">
                 <option value="all">All</option>
                 <option value="ft">FT</option>
                 <option value="pt">PT</option>
               </select>
+      
               <select id="stats-mode-select" class="input full-width">
                 <option value="weekly">Weekly Rankings</option>
                 <option value="period">Period Rankings</option>
@@ -108,42 +162,72 @@
               </select>
             </div>
           </div>
+      
+          <!-- Stats -->
           <div class="panel-delta" id="stats-container"></div>
         </div>
       </div>
 
-      <!-- SHIFT INFO PANEL (FIXED) -->
+      <!-- ============================= -->
+      <!-- ===== SHIFT INFO
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-info-panel">
         <div class="panel-header" onclick="togglePanel(this)">Shift Info (In Development)</div>
+        <div class="panel-scroll-container">
+          <div class="panel-scroll-bar"></div>
+        </div>
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
-            <div id="info-select-wrapper" style="display: flex; gap: 0.5rem; align-items: center;">
-              <button id="prev-info" class="date-nav-button inside-left"><span>▲</span></button>
-              <select id="info-select" class="input full-width" style="flex: 1;"></select>
-              <button id="next-info" class="date-nav-button inside-right"><span>▼</span></button>
-            </div>
+              <!-- Info Dropdown -->
+              <div id="info-select-display" class="info-select-display" style="flex: 1;">
+                <button id="prev-info" class="date-nav-button inside-left">
+                  <span class="arrow-desktop">▲</span>
+                  <span class="arrow-mobile">&uarr;</span>
+                </button>
+
+                <select id="info-select" class="input full-width">
+                  <option></option>
+                </select>
+
+                <button id="next-info" class="date-nav-button inside-right">
+                  <span class="arrow-desktop">▼</span>
+                  <span class="arrow-mobile">&darr;</span>
+                </button>
+              </div>
           </div>
+      
+          <!-- Stats -->
           <div class="panel-delta" id="info-container"></div>
         </div>
       </div>
-
-      <!-- DOWNLOADS PANEL -->
+    
+      <!-- ============================= -->
+      <!-- ===== DOWNLOADS
+      <!-- ============================= -->
       <div class="panel panel-animate" id="arg-downloads-panel">
         <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
         <div class="panel-body">
           {% if outputs %}
-            {% for file in outputs %}
-              <a class="button panel" href="{{ url_for('file.download', filename=file) }}" download>
-                {% if "ARGX" in file %}Spreadsheet{% elif "ARGM" in file %}Heatmap{% else %}{{ file }}{% endif %}
-              </a>
-            {% endfor %}
+            <div class="panel-content">
+              {% for file in outputs %}
+                {% if "ARGX" in file %}
+                  <a class="button panel" href="{{ url_for('file.download', filename=file) }}" download>Spreadsheet</a>
+                {% elif "ARGM" in file %}
+                  <a class="button panel" href="{{ url_for('file.download', filename=file) }}" download>Heatmap</a>
+                {% else %}
+                  <a class="button panel" href="{{ url_for('file.download', filename=file) }}" download>{{ file }}</a>
+                {% endif %}
+              {% endfor %}
+            </div>
           {% else %}
             <p>No output files were generated.</p>
           {% endif %}
         </div>
       </div>
 
-      <!-- SUBMIT PANEL -->
+      <!-- ============================= -->
+      <!-- ===== SUBMIT
+      <!-- ============================= -->
       <div class="panel panel-animate no-shadow">
         <form action="{{ url_for('index') }}" method="get" class="button-form">
           <button type="submit" class="button full-width">Main Menu</button>
@@ -151,6 +235,7 @@
       </div>
 
     </div> <!-- END #panel-container -->
+
   </div> <!-- END #panel-wrapper -->
   <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
 </body>
