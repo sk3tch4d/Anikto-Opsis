@@ -43,6 +43,35 @@
       </div>
 
       <!-- ============================= -->
+      <!-- PANEL: SAVED MOVEMENT         -->
+      <!-- ============================= -->
+      <div class="panel panel-animate" id="movement-saved-panel">
+        <div class="panel-header" onclick="togglePanel(this)">Saved Items</div>
+        <div class="panel-scroll-container">
+          <div class="panel-scroll-bar"></div>
+        </div>
+        <div class="panel-body scrollable-panel"></div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- PANEL: DOWNLOADS              -->
+      <!-- ============================= -->
+      <div class="panel panel-animate no-shadow" id="downloads">
+        <div class="panel-header" onclick="togglePanel(this)">Downloads</div>
+        <div class="panel-scroll-container">
+          <div class="panel-scroll-bar"></div>
+        </div>
+        <div class="panel-body">
+          <div class="panel-body scrollable-panel">
+            <button class="button panel" id="movement-search-download">Download Search</button>
+            <button class="button panel" id="movement-saved-download">Download Saved Items</button>
+            <button class="button panel" id="movement-history-download">Download Cleaned Movement</button>
+            <button class="button panel" id="movement-printable-download">Download Printable Report</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================= -->
       <!-- PANEL: RETURN                 -->
       <!-- ============================= -->
       <div class="panel panel-animate no-shadow">
