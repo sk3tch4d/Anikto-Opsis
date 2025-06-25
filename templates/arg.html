@@ -27,15 +27,20 @@
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
-              <select id="emp-filter" class="input" style="flex: 0 0 90px;">
+              <select id="emp-filter" class="input full-width" style="flex: 0 0 90px;">
                 <option value="all">All</option>
                 <option value="ft">FT</option>
                 <option value="pt">PT</option>
               </select>
-              <div id="custom-date-display" class="custom-date-display" style="flex: 1;" onclick="document.getElementById('working-date').showPicker()">
-                <button id="prev-day" class="date-nav-button inside-left"><span class="arrow-desktop">←</span></button>
+              <div id="custom-date-display" class="custom-date-display" style="flex: 1;"
+                   onclick="document.getElementById('working-date').showPicker()">
+                <button id="prev-day" class="date-nav-button inside-left">
+                  <span class="arrow-desktop">←</span><span class="arrow-mobile">&lt;</span>
+                </button>
                 <span id="custom-date-text">Today</span>
-                <button id="next-day" class="date-nav-button inside-right"><span class="arrow-desktop">→</span></button>
+                <button id="next-day" class="date-nav-button inside-right">
+                  <span class="arrow-desktop">→</span><span class="arrow-mobile">&gt;</span>
+                </button>
               </div>
               <input type="date" id="working-date" style="position: absolute; left: -9999px;">
             </div>
@@ -51,12 +56,12 @@
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
-              <select id="lookup-filter" class="input" style="flex: 0 0 92px;">
+              <select id="lookup-filter" class="input full-width" style="flex: 0 0 92px;">
                 <option value="all">All</option>
                 <option value="week">Week</option>
                 <option value="period">Period</option>
               </select>
-              <select id="lookup-select" class="input" style="flex: 1;">
+              <select id="lookup-select" class="input full-width" style="flex: 1;">
                 <option></option>
               </select>
             </div>
@@ -90,12 +95,12 @@
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
-              <select id="emp-stats-filter" class="input" style="flex: 0 0 90px;">
+              <select id="emp-stats-filter" class="input full-width" style="flex: 0 0 90px;">
                 <option value="all">All</option>
                 <option value="ft">FT</option>
                 <option value="pt">PT</option>
               </select>
-              <select id="stats-mode-select" class="input">
+              <select id="stats-mode-select" class="input full-width">
                 <option value="weekly">Weekly Rankings</option>
                 <option value="period">Period Rankings</option>
                 <option value="total">Total Rankings</option>
@@ -107,19 +112,15 @@
         </div>
       </div>
 
-      <!-- SHIFT INFO PANEL (Final + Working) -->
+      <!-- SHIFT INFO PANEL (FIXED) -->
       <div class="panel panel-animate" id="arg-info-panel">
         <div class="panel-header" onclick="togglePanel(this)">Shift Info (In Development)</div>
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
-            <div style="display: flex; gap: 0.25rem; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-              <button id="prev-info" class="date-nav-button inside-left">
-                <span>▲</span>
-              </button>
-              <select id="info-select" class="input" style="flex: 1;"></select>
-              <button id="next-info" class="date-nav-button inside-right">
-                <span>▼</span>
-              </button>
+            <div id="info-select-wrapper" style="display: flex; gap: 0.5rem; align-items: center;">
+              <button id="prev-info" class="date-nav-button inside-left"><span>▲</span></button>
+              <select id="info-select" class="input full-width" style="flex: 1;"></select>
+              <button id="next-info" class="date-nav-button inside-right"><span>▼</span></button>
             </div>
           </div>
           <div class="panel-delta" id="info-container"></div>
