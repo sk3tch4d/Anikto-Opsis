@@ -71,7 +71,8 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  font-size: 1.25rem;
+  font-size: 1.4rem;
+  font-weight: 500;
   color: inherit;
   cursor: pointer;
   padding: 0;
@@ -83,7 +84,6 @@
   outline: none;
   box-shadow: none;
   background: none;
-  font-size: 1.02rem;
 }
 /* ============================= */
 .inside-left {
