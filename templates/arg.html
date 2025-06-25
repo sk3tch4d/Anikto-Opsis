@@ -11,24 +11,14 @@
   <h2>
     <span id="site-title" class="typed-text gradient-title gradient-shift" data-title="ARG Summary|Anikto Opsis"></span>
   </h2>
-  <div id="panel-wrapper"> 
-    {% set shift_icons = {
-      'Day':     '☀️', 
-      'Evening': '🌇', 
-      'Night':   '🌙'
-    } %}
+  <div id="panel-wrapper">
+    {% set shift_icons = {'Day':'☀️','Evening':'🌇','Night':'🌙'} %}
     {% set reason_icons = {
-      'Shift Swap'         : '🔄',
-      'Sick Leave'         : '🩼',
-      'Covering Vacant'    : '🪪',
-      'Schedule Adjustment': '🪛',
-      'Vacation'           : '🌴',
-      'Stat Holiday'       : '⭐',
-      'Leave of Absence'   : '🪁',
-      'Other'              : '❔'
+      'Shift Swap':'🔄','Sick Leave':'🩼','Covering Vacant':'🪪',
+      'Schedule Adjustment':'🪛','Vacation':'🌴','Stat Holiday':'⭐',
+      'Leave of Absence':'🪁','Other':'❔'
     } %}
 
-    <!-- ======= PANEL CONTAINER ======= -->
     <div id="panel-container">
 
       <!-- SCHEDULED PANEL -->
@@ -42,13 +32,17 @@
                 <option value="ft">FT</option>
                 <option value="pt">PT</option>
               </select>
-
-              <div id="custom-date-display" class="custom-date-display" style="flex: 1;" onclick="document.getElementById('working-date').showPicker()">
-                <button id="prev-day" class="date-nav-button inside-left"><span class="arrow-desktop">←</span><span class="arrow-mobile">&lt;</span></button>
+              <div id="custom-date-display" class="custom-date-display" style="flex: 1;"
+                   onclick="document.getElementById('working-date').showPicker()">
+                <button id="prev-day" class="date-nav-button inside-left">
+                  <span class="arrow-desktop">←</span><span class="arrow-mobile">&lt;</span>
+                </button>
                 <span id="custom-date-text">Today</span>
-                <button id="next-day" class="date-nav-button inside-right"><span class="arrow-desktop">→</span><span class="arrow-mobile">&gt;</span></button>
+                <button id="next-day" class="date-nav-button inside-right">
+                  <span class="arrow-desktop">→</span><span class="arrow-mobile">&gt;</span>
+                </button>
               </div>
-              <input type="date" id="working-date" style="position: absolute; left: -9999px;" />
+              <input type="date" id="working-date" style="position: absolute; left: -9999px;">
             </div>
           </div>
           <div id="working-date-loading" style="display: none; text-align: center;"></div>
@@ -118,16 +112,14 @@
         </div>
       </div>
 
-      <!-- SHIFT INFO PANEL (fixed) -->
+      <!-- SHIFT INFO PANEL (FIXED) -->
       <div class="panel panel-animate" id="arg-info-panel">
         <div class="panel-header" onclick="togglePanel(this)">Shift Info (In Development)</div>
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
-            <div id="info-select-wrapper" style="flex: 1; display: flex; align-items: center; position: relative;">
+            <div id="info-select-wrapper" style="display: flex; gap: 0.5rem; align-items: center;">
               <button id="prev-info" class="date-nav-button inside-left"><span>▲</span></button>
-              <select id="info-select" class="input full-width" style="flex: 1; margin: 0 1.5rem;">
-                <option></option>
-              </select>
+              <select id="info-select" class="input full-width" style="flex: 1;"></select>
               <button id="next-info" class="date-nav-button inside-right"><span>▼</span></button>
             </div>
           </div>
@@ -159,7 +151,6 @@
       </div>
 
     </div> <!-- END #panel-container -->
-
   </div> <!-- END #panel-wrapper -->
   <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
 </body>
