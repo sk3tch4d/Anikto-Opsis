@@ -27,7 +27,7 @@
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
-              <select id="emp-filter" class="input full-width" style="flex: 0 0 90px;">
+              <select id="emp-filter" class="input" style="flex: 0 0 90px;">
                 <option value="all">All</option>
                 <option value="ft">FT</option>
                 <option value="pt">PT</option>
@@ -56,12 +56,12 @@
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
-              <select id="lookup-filter" class="input full-width" style="flex: 0 0 92px;">
+              <select id="lookup-filter" class="input" style="flex: 0 0 92px;">
                 <option value="all">All</option>
                 <option value="week">Week</option>
                 <option value="period">Period</option>
               </select>
-              <select id="lookup-select" class="input full-width" style="flex: 1;">
+              <select id="lookup-select" class="input" style="flex: 1;">
                 <option></option>
               </select>
             </div>
@@ -95,12 +95,12 @@
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
-              <select id="emp-stats-filter" class="input full-width" style="flex: 0 0 90px;">
+              <select id="emp-stats-filter" class="input" style="flex: 0 0 90px;">
                 <option value="all">All</option>
                 <option value="ft">FT</option>
                 <option value="pt">PT</option>
               </select>
-              <select id="stats-mode-select" class="input full-width">
+              <select id="stats-mode-select" class="input">
                 <option value="weekly">Weekly Rankings</option>
                 <option value="period">Period Rankings</option>
                 <option value="total">Total Rankings</option>
@@ -112,15 +112,15 @@
         </div>
       </div>
 
-      <!-- SHIFT INFO PANEL (Finalized to Match Scheduled) -->
+      <!-- SHIFT INFO PANEL (Corrected to Match Scheduled Layout) -->
       <div class="panel panel-animate" id="arg-info-panel">
         <div class="panel-header" onclick="togglePanel(this)">Shift Info (In Development)</div>
         <div class="panel-body scrollable-panel open">
           <div class="sticky-bar">
             <div style="display: flex; gap: 0.25rem; margin-bottom: 1rem;">
-              <button id="prev-info" class="date-nav-button inside-left"><span>▲</span></button>
-              <select id="info-select" class="input full-width" style="flex: 1;"></select>
-              <button id="next-info" class="date-nav-button inside-right"><span>▼</span></button>
+              <button id="prev-info" class="date-nav-button inside-left"><span class="arrow-desktop">▲</span></button>
+              <select id="info-select" class="input" style="flex: 1;"></select>
+              <button id="next-info" class="date-nav-button inside-right"><span class="arrow-desktop">▼</span></button>
             </div>
           </div>
           <div class="panel-delta" id="info-container"></div>
@@ -150,8 +150,8 @@
         </form>
       </div>
 
-    </div>
-  </div>
+    </div> <!-- END #panel-container -->
+  </div> <!-- END #panel-wrapper -->
   <script type="module" src="{{ url_for('static', filename='js/scripts.js', v=2) }}"></script>
 </body>
 </html>
