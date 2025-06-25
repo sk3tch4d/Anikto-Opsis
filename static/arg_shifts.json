@@ -18,8 +18,11 @@
     "SHIFT": "Stores Desk - Weekday - 7-3",
     "Vocera": "Handle Stores Vocera",
     "Desk": "Handle Stores Orders",
+    "Counts": "Assist with Cycle Counts",
+    "Reports": "Month End QA Reports",
     "CPCC": "Kidd 0 - Room 1234",
-    "OBCP": "Kidd 0 - Room 1234"
+    "OBCP": "Kidd 0 - Room 1234",
+    "Assist": "Other duties as assigned"
   },
   "D301": {
     "SHIFT": "Supply Assistant - Weekday - 7-3",
@@ -38,6 +41,7 @@
     "K4S": "Kidd 4 - Room 22.04.051",
     "K6S": "Kidd 6 - Roomm 22.6-043./047/22.6.041",
     "K7S": "Kidd 7 - Room 22-7-022",
+    "NUAS": "Watkins 2 - Room 3-2-225",
     "OPUS": "Armstrong 4 - Room 16-4-033",
     "STMS": "Kidd 9 - Room 22.9.047/22.9.059"
   },
@@ -49,9 +53,9 @@
     "ERSJ": "Connell 1 - Room 2-123",
     "ERSK": "Connell 1 - Room 2-118",
     "HMPS": "Burr 3 - Room 21.3.026",
-    "MHA ": "Connell 3 - Room  21.4.018.3.2.",
-    "MHAS": "Connell 3 - Room 21.4.013.44.3",
-    "MHYS": "Connell 3 - Room 21.4.020.2",
+    "MHA ": "Burr 4 - Room 21.4.018.3.2.",
+    "MHAS": "Burr 4 - Room 21.4.013.44.3",
+    "MHYS": "Burr 4 - Room 21.4.020.2",
     "RNLS": "Burr 3 - Room 21.3.015",
     "SCC1": "Burr 1 - Room 21.1.065",
     "SCC2": "Burr 1 - Room 21.1.012",
@@ -91,11 +95,11 @@
     "CHMS": "DOUG 1 - Rm 4-1-107/104/102",
     "CYT1": "DOUG 4 - Rm 8-423 [412]",
     "D5S": "Davies 5 - Rm 22-5-099",
-    "GEDS": "DOUG 4 - Rm ? (Key Room: 9-417[412])",
+    "GEDS": "DOUG 4 - Key Room: 9-417[412]",
     "FA5S": "Armstrong 5 - Rm 16-5-034",
     "FTLS": "Kidd 5 - Rm 22-5-006",
     "HEMA": "DOUG 1 - Rm 4-1-102",
-    "IMUS": "DOUG 4 - Rm ? (Key: 9-417[412])",
+    "IMUS": "DOUG 4 - Key: 9-417[412]",
     "K5S": "Kidd 5 - Rm 22-5-065",
     "MCRS": "DOUG 3 - Rm 8-317",
     "NICA": "Kidd 5 - Rm 22-5-047-4",
@@ -143,7 +147,19 @@
     "SHIFT": "Renal Dialysis - Weekday - 8-12",
     "Room A": "Burr Wing 3 - Room 21.3.054.0",
     "Room B": "Burr Wing 3 - Room 21.3.051.0",
-    "Room C": "Burr Wing 3 - Room 21.3.050.0"
+    "Room C": "Burr Wing 3 - Room 21.3.050.0",
+    "Materials": "-------------------",
+    "K1": "56664",
+    "K2": "151959",
+    "K3": "151958",
+    "BICARB": "124830",
+    "SALINE": "3148",
+    "PAILS": "81439",
+    "LIDS": "132925",
+    "PAK-001": "135835",
+    "SAK-302": "135801",
+    "SAK-304": "135803",
+    "CARTRDG": "135836"
   },
   "D406": {
     "SHIFT": "Supply Assistant - Stat Day - 7-3",
@@ -152,6 +168,11 @@
   "D408": {
     "SHIFT": "Supply Assistant - Stat Day - 7-3",
     "Sweep": "Fill Materials stock levels"
+  },
+  "E310": {
+    "SHIFT": "Supply Assistant - Evening - 15-23",
+    "Vocera": "Handle Stores Vocera",
+    "Picks": "Safe & Mains Picks"
   },
   "E410": {
     "SHIFT": "Supply Assistant - Evening - 15-23",
