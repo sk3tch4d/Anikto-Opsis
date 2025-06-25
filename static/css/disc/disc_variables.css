@@ -61,8 +61,8 @@
   --panel-delta-delta-item-box-shadow: inset 0 0 0 1.4px #1a1b1f;
   --panel-delta-delta-itemhover-color: #1d1f63;
   /* Panel Delta Strong */
-  --panel-delta-delta-item-strong-color: #999;
-  --panel-delta-delta-item-stronghover-color: #bbb;
+  --panel-delta-delta-item-strong-color: #14141f;
+  --panel-delta-delta-item-stronghover-color: #0d0d3f;
   /* Panel Delta Off */
   --panel-delta-delta-item-off-color: #363663;
   /* Clickable Delta */ 
