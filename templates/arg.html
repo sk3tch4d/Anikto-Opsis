@@ -153,13 +153,26 @@
                 <option value="ft">FT</option>
                 <option value="pt">PT</option>
               </select>
-      
-              <select id="stats-mode-select" class="input full-width">
-                <option value="weekly">Weekly Rankings</option>
-                <option value="period">Period Rankings</option>
-                <option value="total">Total Rankings</option>
-                <option value="stats">Statistics</option>
-              </select>
+              <!-- Info Dropdown -->
+              <div id="stats-select-display" class="custom-select-display" style="flex: 1;">
+                <!-- Left Nav -->
+                <button type="button" id="prev-stats" class="nav-button inside-left">
+                  <span class="arrow-desktop">▲</span>
+                  <span class="arrow-mobile">&lt;</span>
+                </button>
+                <!-- Select -->
+                <select id="stats-mode-select" class="input full-width">
+                  <option value="weekly">Weekly Rankings</option>
+                  <option value="period">Period Rankings</option>
+                  <option value="total">Total Rankings</option>
+                  <option value="stats">Statistics</option>
+                </select>
+                <!-- Right Nav -->
+                <button type="button" id="next-stats" class="nav-button inside-right">
+                  <span class="arrow-desktop">▼</span>
+                  <span class="arrow-mobile">&gt;</span>
+                </button>
+              </div>
             </div>
           </div>
       
@@ -180,7 +193,7 @@
           <div class="sticky-bar">
               <!-- Info Dropdown -->
               <div id="info-select-display" class="custom-select-display" style="flex: 1;">
-                <button id="prev-info" class="nav-button inside-left">
+                <button type="button" id="prev-info" class="nav-button inside-left">
                   <span class="arrow-desktop">▲</span>
                   <span class="arrow-mobile">&lt;</span>
                 </button>
@@ -189,7 +202,7 @@
                   <option></option>
                 </select>
 
-                <button id="next-info" class="nav-button inside-right">
+                <button type="button" id="next-info" class="nav-button inside-right">
                   <span class="arrow-desktop">▼</span>
                   <span class="arrow-mobile">&gt;</span>
                 </button>
