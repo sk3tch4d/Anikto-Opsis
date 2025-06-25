@@ -1,0 +1,106 @@
+/* ============================= */
+/* DISC_CUSTOM.CSS               */
+/* ============================= */
+
+
+/* ============================= */
+/* CUSTOM SELECT DISPLAY         */
+/* ============================= */
+.custom-select-display {
+  all: unset;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  /**/
+  width: 100%;
+  max-width: 100%;
+  height: 2.66rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 2.4rem;
+  color: var(--input-color);
+  border-radius: 23px;
+  outline: none;
+  text-align: center;
+  box-sizing: border-box;
+  transition: border 0.2s ease-in-out, font-size 0.4s ease;
+}
+.custom-select-display:hover {
+  font-size: 1.04rem;
+}
+
+/* ============================= */
+/* CUSTOM DATE DISPLAY           */
+/* ============================= */
+.custom-date-display {
+  all: unset;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  /**/
+  width: 100%;
+  max-width: 100%;
+  height: 2.66rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 2.4rem;
+  color: var(--input-color);
+  background: var(--input-background);
+  background-size: 600% 600%;
+  animation: gradientShift 20s ease infinite;
+  border: var(--input-border);
+  border-radius: 23px;
+  box-shadow: var(--input-box-shadow);
+  outline: none;
+  text-align: center;
+  box-sizing: border-box;
+  transition: border 0.2s ease-in-out, font-size 0.4s ease;
+}
+.custom-date-display:hover {
+  border-color: var(--input_hoverfocus-border);
+  background: var(--input_hoverfocus-background);
+  font-size: 1.04rem;
+}
+
+/* ============================= */
+/* NAVIGATION BUTTON             */
+/* ============================= */
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+  transition: font-size 0.4s ease;
+}
+.nav-button:focus,
+.nav-button:active {
+  outline: none;
+  box-shadow: none;
+  background: none;
+  font-size: 1.02rem;
+}
+/* ============================= */
+.inside-left {
+  left: 0.75rem;
+}
+.inside-right {
+  right: 0.75rem;
+}
+.arrow-mobile {
+  display: none;
+}
+/* ============================= */
+@media (max-width: 640px) {
+  .arrow-desktop {
+    display: none;
+  }
+  .arrow-mobile {
+    display: inline;
+  }
+}
