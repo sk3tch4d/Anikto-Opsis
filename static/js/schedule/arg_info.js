@@ -3,6 +3,13 @@
 // ==============================
 
 import { scrollPanel } from '../panels/panels_core.js';
+import { updateNavButtons } from '../utils/nav_helpers.js';
+
+// ==============================
+// GLOBAL CONSTANT
+// ==============================
+
+const NAV_BUTTON_MODE = "fade";
 
 // ==============================
 // POPULATE DROPDOWN INFO
@@ -29,7 +36,10 @@ export async function populateDropdownInfo() {
       select.appendChild(opt);
     });
 
-    select.addEventListener("change", () => renderAssignmentInfo(data, select.value));
+    select.addEventListener("change", () => {
+      renderAssignmentInfo(data, select.value);
+      updateNavButtons(select, "prev-info", "next-info", NAV_BUTTON_MODE);
+    });
 
     document.getElementById("prev-info")?.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -61,6 +71,8 @@ export async function populateDropdownInfo() {
       select.appendChild(failOpt);
     }
   }
+
+  updateNavButtons(select, "prev-info", "next-info", NAV_BUTTON_MODE);
 }
 
 // ==============================
