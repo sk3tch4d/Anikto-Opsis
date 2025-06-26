@@ -21,13 +21,7 @@ export async function populateLookupDropdown() {
     const data = await res.json();
 
     if (data.names && Array.isArray(data.names)) {
-      const placeholder = document.createElement("option");
-      placeholder.value = "";
-      placeholder.textContent = "Select Name ▼";
-      placeholder.disabled = true;
-      placeholder.selected = true;
-      select.appendChild(placeholder);
-
+    
       const sorted = data.names.sort((a, b) => {
         const [la, fa] = a.split(',').map(s => s.trim().toLowerCase());
         const [lb, fb] = b.split(',').map(s => s.trim().toLowerCase());
@@ -44,6 +38,11 @@ export async function populateLookupDropdown() {
         opt.dataset.short = formatShortName(name);
         select.appendChild(opt);
       });
+
+      if (select.options.length > 0) {
+        select.selectedIndex = 0;
+        select.dispatchEvent(new Event("change"));
+      }
 
       scrollPanel();
     }
