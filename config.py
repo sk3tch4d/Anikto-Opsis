@@ -2,6 +2,8 @@
 # CONFIG.PY — GLOBAL SETTINGS
 # ==============================
 
+from utils.dev_mode import generate_dev_code
+
 # ==============================
 # GLOBAL DATAFRAMES
 # ==============================
@@ -34,7 +36,7 @@ UPLOAD_FOLDER = "/tmp"
 MAX_PDFS = 30
 ALLOWED_UPLOAD_TYPES = ["pdf", "xlsx", "db"]
 DEBUG_MODE = True
-DEV_MODE = {"112737", "ryce", "rvp", "pineapple"}
+DEV_MODE = {"112737", "ryce", "rvp", "pineapple", generate_dev_code()}
 COLS_ORDER = [
     "Cost_Center", "USL", "Num", "QTY", "ROP", "ROQ", "Counted", "Consumed",
     "Difference", "Changed", "MVT", "Description", "Cost", "UOM",
