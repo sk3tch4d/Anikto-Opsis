@@ -29,6 +29,6 @@ def generate_dev_code(secret="dev_salt", cycle_days=30, syllables=3):
         seed //= len(VOWELS)
         word += c + v
 
-    print(f"[DEV] Current Rolling Dev Code: {word}")
+    print(f"[DEV] 🔑 Current Rolling Dev Code: {word}")
     
     return word
