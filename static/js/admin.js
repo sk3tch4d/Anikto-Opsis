@@ -47,6 +47,7 @@ export function initAdminLogin() {
     if (value === correct) {
       loginPanel.style.display = "none";
       adminPanels.style.display = "block";
+      loadPanels();
       if (DEBUG_MODE) console.log("[DEBUG] Login successful. Admin panel shown.");
     } else {
       errorMsg.style.display = "block";
@@ -56,19 +57,27 @@ export function initAdminLogin() {
 }
 
 // ==============================
+// LOAD PANELS
+// ==============================
+export function loadPanels() {
+  fetchDevCode();
+}
+
+// ==============================
 // ROLLING DEV CODE
 // ==============================
-document.addEventListener("DOMContentLoaded", () => {
+export function fetchDevCode() {
   fetch("/dev-code")
     .then(res => res.json())
     .then(data => {
-      const el = document.getElementById("dev-code-display");
+      const el = document.getElementById("rolling-code-display");
       if (el) el.textContent = data.dev_code;
-      if (!el && DEBUG_MODE) {
-        console.warn("[DEBUG] dev-code-display not found in DOM.");
-      }
+      else if (DEBUG_MODE) console.warn("[DEBUG] rolling-code-display not found.");
+    })
+    .catch(err => {
+      if (DEBUG_MODE) console.error("[DEBUG] Failed to fetch dev code:", err);
     });
-});
+}
 
 // ==============================
 // CUSTOM JSON UPLOAD FORM
