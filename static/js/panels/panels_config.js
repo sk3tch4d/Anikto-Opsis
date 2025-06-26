@@ -68,7 +68,8 @@ export const nonClosableSelectors = [
 export const nonClosableClasses = [
   "panel-delta",
   "compare-delta",
-  "compare-card"
+  "compare-card",
+  "custom-select-display"
 ];
 
 // ==============================
