@@ -29,15 +29,15 @@ export async function populateDropdownInfo() {
       select.appendChild(opt);
     });
 
-    if (select.options.length > 0) {
-      select.selectedIndex = 0;
-      select.dispatchEvent(new Event("change"));
-    }
-
     select.addEventListener("change", () => {
       renderAssignmentInfo(data, select.value);
       updateNavButtons(select, "prev-info", "next-info", NAV_BUTTON_MODE);
     });
+    
+    if (select.options.length > 0) {
+      select.selectedIndex = 0;
+      select.dispatchEvent(new Event("change"));
+    }
 
     document.getElementById("prev-info")?.addEventListener("click", (e) => {
     e.stopPropagation();
