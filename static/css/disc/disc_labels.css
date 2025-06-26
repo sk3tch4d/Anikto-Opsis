@@ -78,7 +78,7 @@
   color: var(--tag-toggle-color);
   border: var(--tag-toggle-border);
   border-radius: 0.6rem;
-  margin: 0; /* removed weird margin */
+  margin-top: 0.6rem;
   min-width: 100px;
   text-align: center;
   display: inline-block;
