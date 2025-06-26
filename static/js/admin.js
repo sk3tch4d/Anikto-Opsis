@@ -71,8 +71,19 @@ export function fetchDevCode() {
     .then(res => res.json())
     .then(data => {
       const el = document.getElementById("rolling-code-display");
-      if (el) el.value = data.dev_code;
-      else if (DEBUG_MODE) console.warn("[DEBUG] rolling-code-display not found.");
+      if (el) {
+        el.value = data.dev_code;
+        el.readOnly = true;
+        el.title = "Click to Copy";
+        el.addEventListener("click", () => {
+          el.select();
+          document.execCommand("copy");
+          el.title = "Copied!";
+          setTimeout(() => el.title = "Click to copy dev code", 1500);
+        });
+      } else if (DEBUG_MODE) {
+        console.warn("[DEBUG] rolling-code-display not found.");
+      }
     })
     .catch(err => {
       if (DEBUG_MODE) console.error("[DEBUG] Failed to fetch dev code:", err);
