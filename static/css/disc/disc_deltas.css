@@ -28,7 +28,7 @@
   font-size: 0.9rem;
   font-weight: 500;
   text-align: left;
-  transition: color 0.8s ease;
+  transition: color 0.3s ease;
 }
 /* ============================= */
 .panel-delta .delta-item:hover {
@@ -41,7 +41,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--panel-delta-delta-item-strong-color);
-  transition: color 0.4s ease;
+  transition: color 0.3s ease;
 }
 .panel-delta .delta-item strong:hover {
   color: var(--panel-delta-delta-item-stronghover-color);
@@ -119,7 +119,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: color 0.4s ease;
+  transition: color 0.3s ease;
 }
 /* ============================= */
 .compare-delta .delta-item:hover {
@@ -131,7 +131,7 @@
   color: var(--panel-delta-delta-item-color);
   font-weight: 600;
   margin-right: 0.5rem;
-  transition: color 0.4s ease;
+  transition: color 0.3s ease;
 }
 /* ============================= */
 .compare-delta .delta-item strong:hover {
