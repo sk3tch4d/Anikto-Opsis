@@ -34,7 +34,6 @@ export function addSearchHistoryCard({
 
   const timeLine = document.createElement("div");
   timeLine.className = "search-timestamp";
-  timeLine.style.cssText = "font-size: 0.75em; color: #888; margin-bottom: 4px;";
   timeLine.textContent = timestamp;
   card.appendChild(timeLine);
 
