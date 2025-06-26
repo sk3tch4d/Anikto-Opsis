@@ -76,11 +76,10 @@ export function fetchDevCode() {
         el.value = data.dev_code;
         el.readOnly = true;
         el.style.userSelect = "none";
-
         el.addEventListener("click", () => {
           navigator.clipboard.writeText(el.value)
             .then(() => {
-              showToast("Code Copied");
+              showToast("Code copied!");
               hapticFeedback();
             })
             .catch(err => {
@@ -92,6 +91,7 @@ export function fetchDevCode() {
         console.warn("[DEBUG] rolling-code-display not found.");
       }
     })
+
     .catch(err => {
       if (DEBUG_MODE) console.error("[DEBUG] Failed to fetch dev code:", err);
     });
@@ -256,3 +256,9 @@ export function initLogViewer() {
     if (DEBUG_MODE) console.log(`[DEBUG] Wrapping toggled: ${!isWrapped}`);
   });
 }
+
+// ==============================
+// GLOBAL HOOKS
+// ==============================
+window.admin = window.admin || {};
+window.admin.fetchDevCode = fetchDevCode;
