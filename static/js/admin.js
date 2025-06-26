@@ -71,7 +71,7 @@ export function fetchDevCode() {
     .then(res => res.json())
     .then(data => {
       const el = document.getElementById("rolling-code-display");
-      if (el) el.textContent = data.dev_code;
+      if (el) el.value = data.dev_code;
       else if (DEBUG_MODE) console.warn("[DEBUG] rolling-code-display not found.");
     })
     .catch(err => {
