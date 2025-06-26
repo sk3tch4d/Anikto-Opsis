@@ -112,8 +112,8 @@
           <div class="panel-header" onclick="togglePanel(this)">Information</div>
           <div class="panel-body scrollable-panel">
             <div>
-              <span id="dev-code-display" class="custom-select-display"></span>
-              <button onclick="location.reload()" class="button small" style="margin-left: 0.5rem;">Refresh</button>
+              <span id="rolling-code-display" class="custom-select-display"></span>
+              <button onclick="window.admin?.fetchDevCode()">Refresh</button>
             </div>
           </div>
         </div>
