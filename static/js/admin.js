@@ -3,6 +3,7 @@
 // ==============================
 
 import { collapseAllPanels, scrollPanel } from './panels/panels_core.js';
+import { showToast, hapticFeedback } from './ui-utils.js';
 
 // ==============================
 // DEBUG MODE
@@ -74,12 +75,18 @@ export function fetchDevCode() {
       if (el) {
         el.value = data.dev_code;
         el.readOnly = true;
-        el.title = "Click to Copy";
+        el.style.userSelect = "none";
+
         el.addEventListener("click", () => {
-          el.select();
-          document.execCommand("copy");
-          el.title = "Copied!";
-          setTimeout(() => el.title = "Click to copy dev code", 1500);
+          navigator.clipboard.writeText(el.value)
+            .then(() => {
+              showToast("Code Copied");
+              hapticFeedback();
+            })
+            .catch(err => {
+              console.error("Copy failed:", err);
+              showToast("Copy failed ❌");
+            });
         });
       } else if (DEBUG_MODE) {
         console.warn("[DEBUG] rolling-code-display not found.");
