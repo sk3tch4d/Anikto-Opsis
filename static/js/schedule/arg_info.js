@@ -22,19 +22,17 @@ export async function populateDropdownInfo() {
     const res = await fetch("/static/arg_shifts.json");
     const data = await res.json();
 
-    const placeholder = document.createElement("option");
-    placeholder.value = "";
-    placeholder.textContent = "Select Assignment ▼";
-    placeholder.disabled = true;
-    placeholder.selected = true;
-    select.appendChild(placeholder);
-
     Object.keys(data).sort().forEach(key => {
       const opt = document.createElement("option");
       opt.value = key;
       opt.textContent = `Assignment ${key}`;
       select.appendChild(opt);
     });
+
+    if (select.options.length > 0) {
+      select.selectedIndex = 0;
+      select.dispatchEvent(new Event("change"));
+    }
 
     select.addEventListener("change", () => {
       renderAssignmentInfo(data, select.value);
@@ -44,7 +42,7 @@ export async function populateDropdownInfo() {
     document.getElementById("prev-info")?.addEventListener("click", (e) => {
     e.stopPropagation();
     const current = select.selectedIndex;
-    if (current > 1) {
+    if (current > 0) {
       select.selectedIndex = current - 1;
       select.dispatchEvent(new Event("change"));
     }
