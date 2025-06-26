@@ -48,24 +48,29 @@ export function soundFeedback() {
 // SHOW TOAST
 // ==============================
 export function showToast(message, timer = 2000) {
-  const toast = document.getElementById("toast");
+  let toast = document.getElementById("toast");
+
+  // If missing, inject into the DOM
   if (!toast) {
-    console.warn("Toast element not found in the DOM.");
-    return;
+    toast = document.createElement("div");
+    toast.id = "toast";
+    toast.className = "toast";
+    document.body.appendChild(toast);
   }
 
   toast.textContent = message;
 
   if (toast.classList.contains("show")) {
     toast.classList.remove("show");
-    void toast.offsetWidth;
+    void toast.offsetWidth; // reflow trick to restart animation
   }
+
   toast.classList.add("show");
 
   const duration = Number.isFinite(timer) ? Number(timer) : 2000;
 
-  clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(() => {
+  clearTimeout(window.__toastTimeout);
+  window.__toastTimeout = setTimeout(() => {
     toast.classList.remove("show");
   }, duration);
 }
