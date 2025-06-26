@@ -56,6 +56,15 @@ export function initAdminLogin() {
 }
 
 // ==============================
+// ROLLING DEV CODE
+// ==============================
+fetch("/dev-code")
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("dev-code-display").textContent = data.dev_code;
+  });
+
+// ==============================
 // CUSTOM JSON UPLOAD FORM
 // ==============================
 export function initJsonUploadForm() {
