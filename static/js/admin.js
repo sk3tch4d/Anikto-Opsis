@@ -58,11 +58,17 @@ export function initAdminLogin() {
 // ==============================
 // ROLLING DEV CODE
 // ==============================
-fetch("/dev-code")
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("dev-code-display").textContent = data.dev_code;
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("/dev-code")
+    .then(res => res.json())
+    .then(data => {
+      const el = document.getElementById("dev-code-display");
+      if (el) el.textContent = data.dev_code;
+      if (!el && DEBUG_MODE) {
+        console.warn("[DEBUG] dev-code-display not found in DOM.");
+      }
+    });
+});
 
 // ==============================
 // CUSTOM JSON UPLOAD FORM
