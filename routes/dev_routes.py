@@ -3,6 +3,7 @@
 # ==============================
 
 from flask import Blueprint, request, jsonify, redirect, session, url_for, current_app
+from utils.dev_mode import generate_dev_code
 from config import DEV_MODE
 
 # ==============================
@@ -19,6 +20,13 @@ def check_dev():
     dev_status = session.get("dev", False)
     current_app.logger.debug(f" 🔍 Dev Check Route — Dev Mode: {dev_status}")
     return jsonify({"dev": dev_status})
+
+# ==============================
+# ROLLING DEV CODE
+# ==============================
+@dev_bp.route("/dev-code")
+def get_dev_code():
+    return jsonify({"dev_code": generate_dev_code()})
 
 # ==============================
 # DEV MODE
