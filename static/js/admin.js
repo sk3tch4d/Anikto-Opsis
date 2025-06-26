@@ -68,30 +68,44 @@ export function loadPanels() {
 // ROLLING DEV CODE
 // ==============================
 export function fetchDevCode() {
+  const el = document.getElementById("rolling-code-display");
+
+  if (el) {
+    // Avoid double-binding
+    if (!el.dataset.listenerAttached) {
+      el.addEventListener("click", () => {
+        if (!el.value) return;
+
+        navigator.clipboard.writeText(el.value)
+          .then(() => {
+            showToast("Code copied!");
+            hapticFeedback();
+          })
+          .catch(err => {
+            console.error("Copy failed:", err);
+            showToast("Copy failed ❌");
+          });
+      });
+
+      el.dataset.listenerAttached = "true";
+    }
+
+    el.readOnly = true;
+    el.tabIndex = -1;
+    el.setAttribute("readonly", "true");
+    el.addEventListener("focus", e => e.target.blur());
+
+    el.style.userSelect = "none";
+    el.style.caretColor = "transparent";
+  } else if (DEBUG_MODE) {
+    console.warn("[DEBUG] rolling-code-display not found.");
+  }
+
   fetch("/dev-code")
     .then(res => res.json())
     .then(data => {
-      const el = document.getElementById("rolling-code-display");
-      if (el) {
-        el.value = data.dev_code;
-        el.readOnly = true;
-        el.style.userSelect = "none";
-        el.addEventListener("click", () => {
-          navigator.clipboard.writeText(el.value)
-            .then(() => {
-              showToast("Code copied!");
-              hapticFeedback();
-            })
-            .catch(err => {
-              console.error("Copy failed:", err);
-              showToast("Copy failed ❌");
-            });
-        });
-      } else if (DEBUG_MODE) {
-        console.warn("[DEBUG] rolling-code-display not found.");
-      }
+      if (el) el.value = data.dev_code;
     })
-
     .catch(err => {
       if (DEBUG_MODE) console.error("[DEBUG] Failed to fetch dev code:", err);
     });
