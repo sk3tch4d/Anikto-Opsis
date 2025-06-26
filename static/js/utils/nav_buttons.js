@@ -12,13 +12,15 @@
  * @param {string} prevBtnId - ID of the previous nav button
  * @param {string} nextBtnId - ID of the next nav button
  * @param {"hide"|"fade"} mode - Visual style when disabled
+ * @param {boolean} skipFirstOption - Treat index 0 as non-selectable (default: false)
  */
-export function updateNavButtons(select, prevBtnId, nextBtnId, mode = "hide") {
+export function updateNavButtons(select, prevBtnId, nextBtnId, mode = "hide", skipFirstOption = false) {
   const prevBtn = document.getElementById(prevBtnId);
   const nextBtn = document.getElementById(nextBtnId);
   if (!select || !prevBtn || !nextBtn) return;
 
-  const isFirst = select.selectedIndex <= 1;
+  const minIndex = skipFirstOption ? 1 : 0;
+  const isFirst = select.selectedIndex <= minIndex;
   const isLast = select.selectedIndex >= select.options.length - 1;
 
   if (mode === "fade") {
@@ -31,3 +33,4 @@ export function updateNavButtons(select, prevBtnId, nextBtnId, mode = "hide") {
     nextBtn.style.visibility = isLast ? "hidden" : "visible";
   }
 }
+
