@@ -74,15 +74,17 @@ export function setupOptimizationDownloadHistory() {
 // ==============================
 // SETUP: DOWNLOAD FOR PRINTABLE
 // ==============================
-export function setupOptimizationDownloadPrint() {
+export function setupOptimizationDownloadPrintable() {
   const button = document.getElementById("optimization-printable-download");
   if (!button) return;
 
   button.addEventListener("click", () => {
-    downloadTable({
-      data: window.optimizationPrintableFull,
-      layout: "optimization_printable"
-    });
+    const link = document.createElement("a");
+    link.href = "/download/printable";
+    link.download = "";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   });
 }
 
