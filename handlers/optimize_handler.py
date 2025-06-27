@@ -5,10 +5,24 @@
 import re
 import config
 from flask import render_template, current_app as app
-from inv_optimizer import suggest_rop_roq
+from optimization import suggest_rop_roq
 from utils.data_format import format_cart_ops
 from utils.data_cleaner import save_cleaned_df, schedule_file_deletion
 
+# ==============================
+# CREATE HEURISTIC COPY
+# ==============================
+def create_heuristic(df, filename=None):
+    if filename:
+        populate_df = suggest_rop_roq(df.copy(deep=True))
+        heuristic_df = populate_df.copy(deep=True)
+        heuristic_path = save_cleaned_df(heuristic_df, filename=f"Heuristic_{filename}")
+        config.HEURISTIC_FILE_PATH = heuristic_path
+        schedule_file_deletion(heuristic_path)
+        app.logger.info(f"📄 Heuristic Version Created: {heuristic_path}")
+    else:
+        app.logger.info("📄 Heuristic Version Skipped: No filename!")
+    
 # ==============================
 # CREATE PRINTABLE COPY
 # ==============================
@@ -16,10 +30,10 @@ def create_printable(df, filename=None):
     if filename:
         format_df = format_cart_ops(df.copy(deep=True))
         printable_df = format_df.copy(deep=True)
-        printable_path = save_cleaned_df(printable_df, filename=f"printable_{filename}")
+        printable_path = save_cleaned_df(printable_df, filename=f"Printable_{filename}")
         config.PRINTABLE_FILE_PATH = printable_path
         schedule_file_deletion(printable_path)
-        app.logger.info(f"📄 Created Printable Version: {printable_path}")
+        app.logger.info(f"📄 Printable Version Created: {printable_path}")
     else:
         app.logger.info("📄 Printable Version Skipped: No filename!")
             
@@ -55,6 +69,9 @@ def handle(df, filename=None):
 
         # === CREATE PRINTABLE VERSION ===
         create_printable(df, filename)
+
+        # === CREATE HEURISTIC VERSION ===
+        create_heuristic(df, filename)
 
         app.logger.debug(f"[DEBUG] POST-PRINTABLE: Columns = {df.columns.tolist()}")
 
