@@ -75,10 +75,19 @@ export function setupOptimizationDownloadHistory() {
 // SETUP: DOWNLOAD FOR PRINTABLE
 // ==============================
 export function setupOptimizationDownloadPrintable() {
+  console.log("🧪 setupOptimizationDownloadPrintable called");
+
   const button = document.getElementById("optimization-printable-download");
-  if (!button) return;
+  if (!button) {
+    console.warn("❌ Printable download button not found");
+    return;
+  }
+
+  console.log("✅ Found printable download button");
 
   button.addEventListener("click", () => {
+    console.log("📥 Printable button clicked");
+
     const link = document.createElement("a");
     link.href = "/download/printable";
     link.download = "";
