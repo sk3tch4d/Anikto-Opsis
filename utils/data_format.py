@@ -23,15 +23,17 @@ def format_fillrate(df):
 
     log_format("Cleaning Fill Rate File", df)
 
+    df.columns = df.columns.str.strip().str.lower()
+
     if "Description" not in df.columns:
         log_format("Fill Rate Skipped — 'Description' column not found", df)
         return df
 
-    # If/Remove Cost
+    # If/Remove Cost- NOT WORKING
     if "Cost" in df.columns:
         df = df.drop(columns=["Cost"])
 
-    # If/Rename UOM
+    # If/Rename UOM - NOT WORKING
     if "UOM" in df.columns:
         df = df.rename(columns={"UOM": "UM"})
 
