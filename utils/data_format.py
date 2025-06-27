@@ -30,12 +30,12 @@ def format_fillrate(df):
         return df
 
     # If/Remove Cost- NOT WORKING
-    if "Cost" in df.columns:
-        df = df.drop(columns=["Cost"])
+    if "cost" in df.columns:
+        df = df.drop(columns=["cost"])
 
     # If/Rename UOM - NOT WORKING
-    if "UOM" in df.columns:
-        df = df.rename(columns={"UOM": "UM"})
+    if "uom" in df.columns:
+        df = df.rename(columns={"uom": "UM"})
 
     # Strip "13-" prefix
     df["Preferred"] = df["Preferred"].astype(str).str.replace(r"^13-", "", regex=True)
