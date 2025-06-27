@@ -69,6 +69,7 @@ def handle(df, filename=None):
 
         # === CREATE CARTS COLUMN ===
         df = create_carts(df)
+        app.logger.debug(f"🧪 Optimization Handle: df shape = {df.shape}")
         config.OPTIMIZATION_DF = df
 
         # === LOAD OPTIMIZATION ===
