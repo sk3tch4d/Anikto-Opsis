@@ -34,6 +34,15 @@ def handle(df, filename=None):
         if df is None or df.empty:
             raise ValueError("No inventory data provided")
 
+        # === SAVE PRINTABLE COPY BEFORE ENHANCEMENTS ===
+        if filename:
+            from utils.data_cleaner import save_cleaned_df, schedule_file_deletion
+            printable_df = df.copy(deep=True)  # snapshot before mutation
+            printable_path = save_cleaned_df(printable_df, filename=f"printable_{filename}")
+            config.PRINTABLE_FILE_PATH = printable_path
+            schedule_file_deletion(printable_path)  # optional cleanup
+
+        # === CONTINUE WITH NORMAL OPTIMIZATION LOGIC ===
         first_usl = df["USL"].dropna().astype(str).str.upper().iloc[0]
         match = re.match(r"([A-Z0-9]{1,4})", first_usl)
         if not match:
@@ -46,7 +55,6 @@ def handle(df, filename=None):
                 return render_template("index.html", error="Filename does not match USL code in contents.")
 
         df = create_carts(df)
-        
         config.OPTIMIZATION_DF = df
 
         app.logger.info(f"Loaded Optimization: {df.shape[0]} rows × {df.shape[1]} columns")
