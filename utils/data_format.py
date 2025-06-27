@@ -27,8 +27,13 @@ def format_fillrate(df):
         log_format("Fill Rate Skipped — 'Description' column not found", df)
         return df
 
-    if "Cost" in df.columns: # If/Remove Cost
+    # If/Remove Cost
+    if "Cost" in df.columns:
         df = df.drop(columns=["Cost"])
+
+    # If/Rename UOM
+    if "UOM" in df.columns:
+        df = df.rename(columns={"UOM": "UM"})
 
     # Strip "13-" prefix
     df["Preferred"] = df["Preferred"].astype(str).str.replace(r"^13-", "", regex=True)
