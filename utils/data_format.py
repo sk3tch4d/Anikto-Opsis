@@ -27,6 +27,9 @@ def format_fillrate(df):
         log_format("Fill Rate Skipped — 'Description' column not found", df)
         return df
 
+    if "Cost" in df.columns: # If/Remove Cost
+        df = df.drop(columns=["Cost"])
+
     # Strip "13-" prefix
     df["Preferred"] = df["Preferred"].astype(str).str.replace(r"^13-", "", regex=True)
     if "Sub 1" in df.columns:
