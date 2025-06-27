@@ -53,6 +53,10 @@ def handle(df, filename=None):
 
         # === CREATE PRINTABLE VERSION ===
         create_printable(df, filename)
+
+        # === CHECK FOR USL ===
+        if "USL" not in df.columns or df["USL"].dropna().empty:
+            return render_template("index.html", error="Missing or empty 'USL' column.")
         
         # === EXTRACT USL ===
         first_usl = df["USL"].dropna().astype(str).str.upper().iloc[0]
