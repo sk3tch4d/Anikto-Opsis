@@ -183,7 +183,7 @@ export function populateOptimizationStats(results) {
   } else {
     const matchesToggle = document.createElement("span");
     matchesToggle.className = "tag-label tag-toggle clickable-toggle";
-    matchesToggle.innerHTML = `Matches (${uniqueNums.length}) <span class="chevron">▼</span>`;
+    matchesToggle.innerHTML = `Items (${uniqueNums.length}) <span class="chevron">▼</span>`;
 
     const matchesWrapper = document.createElement("div");
     matchesWrapper.className = "toggle-wrapper";
