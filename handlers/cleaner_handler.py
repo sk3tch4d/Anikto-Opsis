@@ -14,7 +14,8 @@ def handle(df, original_filename):
     try:
 
         base_name = os.path.splitext(original_filename)[0]
-        safe_base = "".join(c for c in base_name if c.isalnum() or c in ('_', '-'))
+        safe_base_org = "".join(c for c in base_name if c.isalnum() or c in ('_', '-'))
+        safe_base = safe_base_org.removeprefix("clean_")
         friendly_name = f"AO_Cleaned_{safe_base}.xlsx"
 
         cleaned_path = save_cleaned_df(df, filename=friendly_name)
