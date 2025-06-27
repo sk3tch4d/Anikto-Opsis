@@ -14,7 +14,7 @@ from utils.data_cleaner import save_cleaned_df, schedule_file_deletion
 # ==============================
 def create_printable(df, filename=None):
     if filename:
-        format_df = format_cart_ops(df)
+        format_df = format_cart_ops(df.copy(deep=True))
         printable_df = format_df.copy(deep=True)
         printable_path = save_cleaned_df(printable_df, filename=f"printable_{filename}")
         config.PRINTABLE_FILE_PATH = printable_path
