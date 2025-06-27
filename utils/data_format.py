@@ -29,14 +29,6 @@ def format_fillrate(df):
         log_format("Fill Rate Skipped — 'Description' column not found", df)
         return df
 
-    # If/Remove Cost- NOT WORKING
-    if "cost" in df.columns:
-        df = df.drop(columns=["cost"])
-
-    # If/Rename UOM - NOT WORKING
-    if "uom" in df.columns:
-        df = df.rename(columns={"uom": "UM"})
-
     # Strip "13-" prefix
     df["Preferred"] = df["Preferred"].astype(str).str.replace(r"^13-", "", regex=True)
     if "Sub 1" in df.columns:
@@ -90,9 +82,20 @@ def format_cart_ops(df):
             if 'Bin' in df.columns:
                 df.rename(columns={'Bin': bin_col_name}, inplace=True)
             df.drop(['USL', 'Group'], axis=1, errors='ignore', inplace=True)
-            log_format("Cart Ops Normalized", df, extra=f"Bin renamed to '{bin_col_name}'")
+            log_format("Format Cart Ops: ", df, extra=f"Bin renamed to '{bin_col_name}'")
+
+    # RENAME NUM
+    if "Num" in df.columns:
+        df = df.rename(columns={"Num": "Number"})
+        log_format("Format Cart Ops: ", df, extra=f"Num renamed to Number")
+
+    # REMOVE COST
+    if "Cost" in df.columns:
+        df = df.drop(columns=["Cost"])
+        log_format("Fromat Cart Ops: ", df, extra=f"Cost Column Removed")
 
     # PRECEDING BLANK ROW FOR PRINT SPACER
     df.insert(0, ' ', np.nan)
 
+    log_format("Cart Ops Formatting Complete", df)
     return df
