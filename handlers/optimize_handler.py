@@ -51,13 +51,22 @@ def handle(df, filename=None):
         if df is None or df.empty:
             raise ValueError("No inventory data provided")
 
+        if 'USL' in df.columns:
+            app.logger.info(f"[DEBUG] OPT_HANDER: USL VALID {df.shape[0]} rows × {df.shape[1]} columns")
+            
         # === CREATE PRINTABLE VERSION ===
         create_printable(df, filename)
 
+        if 'USL' in df.columns:
+            app.logger.info(f"[DEBUG] OPT_HANDER: USL VALID {df.shape[0]} rows × {df.shape[1]} columns")
+            
         # === CHECK FOR USL ===
         if "USL" not in df.columns or df["USL"].dropna().empty:
             return render_template("index.html", error="Missing or empty 'USL' column.")
-        
+
+        if 'USL' in df.columns:
+            app.logger.info(f"[DEBUG] OPT_HANDER: USL VALID {df.shape[0]} rows × {df.shape[1]} columns")
+            
         # === EXTRACT USL ===
         first_usl = df["USL"].dropna().astype(str).str.upper().iloc[0]
         match = re.match(r"([A-Z0-9]{1,4})", first_usl)
@@ -65,20 +74,32 @@ def handle(df, filename=None):
             return render_template("index.html", error="Invalid USL format in file.")            
         usl_code = match.group(1)
 
+        if 'USL' in df.columns:
+            app.logger.info(f"[DEBUG] OPT_HANDER: USL VALID {df.shape[0]} rows × {df.shape[1]} columns")
+            
         # === OPTIMIZE FILE CHECK WITH USL IN FILENAME ===
         if filename:
             pattern = rf"KG01[-_]?{usl_code}"
             if not re.search(pattern, filename, re.IGNORECASE):
                 return render_template("index.html", error="Filename does not match USL code in contents.")
 
+        if 'USL' in df.columns:
+            app.logger.info(f"[DEBUG] OPT_HANDER: USL VALID {df.shape[0]} rows × {df.shape[1]} columns")
+            
         # === CREATE CARTS COLUMN ===
         df = create_carts(df)
         app.logger.debug(f"🧪 Optimization Handle: df shape = {df.shape}")
         config.OPTIMIZATION_DF = df
 
+        if 'USL' in df.columns:
+            app.logger.info(f"[DEBUG] OPT_HANDER: USL VALID {df.shape[0]} rows × {df.shape[1]} columns")
+            
         # === LOAD OPTIMIZATION ===
         app.logger.info(f"Loaded Optimization: {df.shape[0]} rows × {df.shape[1]} columns")
         return render_template("optimization.html", table=[])
+
+    if 'USL' in df.columns:
+            app.logger.info(f"[DEBUG] OPT_HANDER: USL VALID {df.shape[0]} rows × {df.shape[1]} columns")
 
     except Exception as e:
         app.logger.error(f"Optimization handler failed: {e}")
