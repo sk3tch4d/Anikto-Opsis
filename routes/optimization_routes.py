@@ -37,6 +37,20 @@ def optimization_carts():
         return jsonify({"error": "Failed to retrieve cart list"}), 500
 
 # ==============================
+# DOWNLOAD PRINTABLE FILE
+# ==============================
+@optimization_bp.route("/download/printable")
+def download_printable():
+    try:
+        path = config.PRINTABLE_FILE_PATH
+        if not path or not os.path.exists(path):
+            return "No printable file available", 404
+        return send_file(path, as_attachment=True, download_name=os.path.basename(path))
+    except Exception as e:
+        logging.error(f"[DOWNLOAD] Printable download failed: {e}")
+        return "Error downloading printable", 500
+
+# ==============================
 # DOWNLOAD OPTIMIZED FILE
 # ==============================
 @optimization_bp.route("/download/optimized")
