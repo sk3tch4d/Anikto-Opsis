@@ -6,6 +6,8 @@ import re
 import config
 from flask import render_template, current_app as app
 from inv_optimizer import suggest_rop_roq
+from utils.data_format import format_cart_ops
+from utils.data_cleaner import save_cleaned_df, schedule_file_deletion
 
 # ==============================
 # CREATE CARTS COLUMN
@@ -36,8 +38,8 @@ def handle(df, filename=None):
 
         # === SAVE PRINTABLE COPY BEFORE ENHANCEMENTS ===
         if filename:
-            from utils.data_cleaner import save_cleaned_df, schedule_file_deletion
-            printable_df = df.copy(deep=True)  # snapshot before mutation
+            format_df = format_cart_ops(df)
+            printable_df = format_df.copy(deep=True)  # snapshot before mutation
             printable_path = save_cleaned_df(printable_df, filename=f"printable_{filename}")
             config.PRINTABLE_FILE_PATH = printable_path
             schedule_file_deletion(printable_path)  # optional cleanup
