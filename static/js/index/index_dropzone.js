@@ -119,6 +119,22 @@ export function renderDropzoneUI() {
   const form = document.querySelector("form");
   if (!form) return;
 
+  // ===== Dev Icon =====
+  if (!document.getElementById("dev-icon")) {
+    const devIcon = document.createElement("div");
+    devIcon.id = "dev-icon";
+    devIcon.title = "Developer Access";
+    devIcon.style.cssText = `
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      cursor: pointer;
+      z-index: 1000;
+    `;
+    devIcon.textContent = "⚙️";
+    document.body.appendChild(devIcon);
+  }
+
   // ===== Dropzone =====
   if (!document.getElementById("drop-zone")) {
     const dropLabel = document.createElement("label");
