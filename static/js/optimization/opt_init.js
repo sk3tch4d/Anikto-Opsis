@@ -8,7 +8,8 @@ import {
   setupOptimizationDownloadSearch,
   setupOptimizationDownloadSaved,
   setupOptimizationDownloadHistory,
-  setupOptimizationDownloadPrintable
+  setupOptimizationDownloadPrintable,
+  setupOptimizationDownloadHeuristic
 } from "./opt_downloads.js";
 import { highlightMatch } from '../search-utils.js';
 import { withLoadingToggle, createBounceLoader } from "../loading.js";
@@ -123,5 +124,8 @@ export function initializeOptimizationApp() {
   }
   if (document.getElementById("optimization-printable-download")) {
     setupOptimizationDownloadPrintable();
+  }
+  if (document.getElementById("optimization-heuristic-download")) {
+    setupOptimizationDownloadHeuristic();
   }
 }
