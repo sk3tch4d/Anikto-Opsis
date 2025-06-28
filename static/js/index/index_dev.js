@@ -174,8 +174,8 @@ export function renderDevPanel() {
 // ==============================
 export function enableDevModeTrigger() {
   const dropZone = document.getElementById("drop-zone");
-  const devGear = document.getElementById("dev-icon");
-  if (!dropZone && !devGear) return;
+  const devIcon = document.getElementById("dev-icon");
+  if (!dropZone && !devIcon) return;
 
   let pressTimer;
 
@@ -265,8 +265,8 @@ export function enableDevModeTrigger() {
     dropZone.addEventListener("touchcancel", cancelPress);
   }
 
-  if (devGear) {
-    devGear.addEventListener("click", injectDevForm);
+  if (devIcon) {
+    devIcon.addEventListener("click", injectDevForm);
   }
 }
 
