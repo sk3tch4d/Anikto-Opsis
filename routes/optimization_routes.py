@@ -39,7 +39,7 @@ def optimization_carts():
 # ==============================
 # DOWNLOAD HEURISTIC FILE
 # ==============================
-@optimization_bp.route("/download/printable")
+@optimization_bp.route("/download/heuristic")
 def download_heuristic():
     try:
         path = config.HEURISTIC_FILE_PATH
