@@ -1,0 +1,23 @@
+/* ============================== */
+/* DISC_SVG.CSS.                  */
+/* ============================== */
+
+
+/* ============================== */
+/* DEV ICON                       */
+/* ============================== */
+#dev-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: var(--drop-text-color);
+  transition: transform 0.3s ease, stroke 0.3s ease;
+}
+/* ============================== */
+#dev-icon:hover svg {
+  animation: spin 1.5s linear infinite;
+}
+/* ============================== */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
