@@ -119,19 +119,33 @@ export function renderDropzoneUI() {
   const form = document.querySelector("form");
   if (!form) return;
 
-  // ===== Dev Icon =====
+  // ===== Dev Icon (SVG Gear) =====
   if (!document.getElementById("dev-icon")) {
     const devIcon = document.createElement("div");
     devIcon.id = "dev-icon";
     devIcon.title = "Developer Access";
     devIcon.style.cssText = `
       position: absolute;
-      bottom: 1rem;
+      top: 1rem;
       right: 1rem;
       cursor: pointer;
       z-index: 1000;
+      width: 24px;
+      height: 24px;
     `;
-    devIcon.textContent = "⚙️";
+
+    fetch("/static/svg/gear.svg")
+      .then(res => res.text())
+      .then(svg => {
+        devIcon.innerHTML = svg;
+        // Bind dev mode trigger after icon is ready
+        enableDevModeTrigger(); 
+      })
+      .catch(() => {
+        devIcon.textContent = "⚙️";
+        enableDevModeTrigger(); // fallback still binds
+      });
+
     document.body.appendChild(devIcon);
   }
 
