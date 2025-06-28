@@ -37,6 +37,20 @@ def optimization_carts():
         return jsonify({"error": "Failed to retrieve cart list"}), 500
 
 # ==============================
+# DOWNLOAD HEURISTIC FILE
+# ==============================
+@optimization_bp.route("/download/printable")
+def download_heuristic():
+    try:
+        path = config.HEURISTIC_FILE_PATH
+        if not path or not os.path.exists(path):
+            return "No heuristic file available", 404
+        return send_file(path, as_attachment=True, download_name=os.path.basename(path))
+    except Exception as e:
+        logging.error(f"[DOWNLOAD] Heuristc Download Failed: {e}")
+        return "Error downloading heuristic file", 500
+
+# ==============================
 # DOWNLOAD PRINTABLE FILE
 # ==============================
 @optimization_bp.route("/download/printable")
