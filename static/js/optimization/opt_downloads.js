@@ -98,6 +98,32 @@ export function setupOptimizationDownloadPrintable() {
 }
 
 // ==============================
+// SETUP: DOWNLOAD FOR HEURISTIC
+// ==============================
+export function setupOptimizationDownloadHeuristic() {
+  console.log("🧪 setupOptimizationDownloadHeuristic called");
+
+  const button = document.getElementById("optimization-heuristic-download");
+  if (!button) {
+    console.warn("❌ Heuristic Download Button - Not found");
+    return;
+  }
+
+  console.log("✅ Found Heuristic Download Button");
+
+  button.addEventListener("click", () => {
+    console.log("📥 Heuristic Button Clicked");
+
+    const link = document.createElement("a");
+    link.href = "/download/heuristic";
+    link.download = "";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+}
+
+// ==============================
 // SETUP: DOWNLOAD FOR COMPLETE
 // ==============================
 export function setupOptimizationDownloadComplete() {
