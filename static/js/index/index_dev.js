@@ -20,7 +20,7 @@ export function renderDevPanel() {
       if (!form || document.getElementById("dev-panel")) return;
 
       // REMOVE Existing UI      
-      ["drop-zone", "generate", "file-list"].forEach(id => {
+      ["drop-zone", "generate", "file-list", "dev-icon"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.remove();
       });
