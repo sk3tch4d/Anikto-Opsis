@@ -174,7 +174,8 @@ export function renderDevPanel() {
 // ==============================
 export function enableDevModeTrigger() {
   const dropZone = document.getElementById("drop-zone");
-  if (!dropZone) return;
+  const devGear = document.getElementById("dev-gear-icon");
+  if (!dropZone && !devGear) return;
 
   let pressTimer;
 
@@ -209,27 +210,26 @@ export function enableDevModeTrigger() {
     submit.classList.add("button", "full-width-on", "panel-animate");
     submit.disabled = true;
 
-    // Enable button if input is not empty
     input.addEventListener("input", () => {
       submit.disabled = input.value.trim().length === 0;
     });
 
-  form.appendChild(label);
-  form.appendChild(document.createElement("br"));
-  form.appendChild(document.createElement("br"));
-  form.appendChild(input);
-  form.appendChild(submit);
-  form.appendChild(closeBtn);
+    form.appendChild(label);
+    form.appendChild(document.createElement("br"));
+    form.appendChild(document.createElement("br"));
+    form.appendChild(input);
+    form.appendChild(submit);
+    form.appendChild(closeBtn);
 
-  document.body.appendChild(form);
-  requestAnimationFrame(() => input.focus());
+    document.body.appendChild(form);
+    requestAnimationFrame(() => input.focus());
 
-  form.addEventListener("submit", (e) => {
-      e.preventDefault(); // prevent reload
-    
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
       const token = input.value.trim();
       if (!token) return;
-    
+
       fetch("/dev-mode", {
         method: "POST",
         headers: {
@@ -248,7 +248,6 @@ export function enableDevModeTrigger() {
         })
         .catch(() => alert("Something went wrong. Please try again."));
     });
-  
   };
 
   const startPress = () => {
@@ -257,12 +256,18 @@ export function enableDevModeTrigger() {
 
   const cancelPress = () => clearTimeout(pressTimer);
 
-  dropZone.addEventListener("mousedown", startPress);
-  dropZone.addEventListener("mouseup", cancelPress);
-  dropZone.addEventListener("mouseleave", cancelPress);
-  dropZone.addEventListener("touchstart", startPress);
-  dropZone.addEventListener("touchend", cancelPress);
-  dropZone.addEventListener("touchcancel", cancelPress);
+  if (dropZone) {
+    dropZone.addEventListener("mousedown", startPress);
+    dropZone.addEventListener("mouseup", cancelPress);
+    dropZone.addEventListener("mouseleave", cancelPress);
+    dropZone.addEventListener("touchstart", startPress);
+    dropZone.addEventListener("touchend", cancelPress);
+    dropZone.addEventListener("touchcancel", cancelPress);
+  }
+
+  if (devGear) {
+    devGear.addEventListener("click", injectDevForm);
+  }
 }
 
 // ==============================
