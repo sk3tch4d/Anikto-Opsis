@@ -126,7 +126,7 @@ export function renderDropzoneUI() {
     devIcon.title = "Developer Access";
     devIcon.style.cssText = `
       position: absolute;
-      top: 1rem;
+      bottom: 1rem;
       right: 1rem;
       cursor: pointer;
       z-index: 1000;
@@ -138,12 +138,9 @@ export function renderDropzoneUI() {
       .then(res => res.text())
       .then(svg => {
         devIcon.innerHTML = svg;
-        // Bind dev mode trigger after icon is ready
-        enableDevModeTrigger(); 
       })
       .catch(() => {
         devIcon.textContent = "⚙️";
-        enableDevModeTrigger(); // fallback still binds
       });
 
     document.body.appendChild(devIcon);
