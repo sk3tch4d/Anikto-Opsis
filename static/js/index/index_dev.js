@@ -174,7 +174,7 @@ export function renderDevPanel() {
 // ==============================
 export function enableDevModeTrigger() {
   const dropZone = document.getElementById("drop-zone");
-  const devGear = document.getElementById("dev-gear-icon");
+  const devGear = document.getElementById("dev-icon");
   if (!dropZone && !devGear) return;
 
   let pressTimer;
