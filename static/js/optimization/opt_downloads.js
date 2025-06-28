@@ -126,14 +126,14 @@ export function setupOptimizationDownloadHeuristic() {
 // ==============================
 // SETUP: DOWNLOAD FOR COMPLETE
 // ==============================
-export function setupOptimizationDownloadComplete() {
-  const button = document.getElementById("optimization-complete-download");
+export function setupOptimizationDownloadCompleted() {
+  const button = document.getElementById("optimization-completed-download");
   if (!button) return;
 
   button.addEventListener("click", () => {
     downloadTable({
-      data: window.optimizationCompleteFull,
-      layout: "optimization_complete"
+      data: window.optimizationCompletedFull,
+      layout: "optimization_completde"
     });
   });
 }
