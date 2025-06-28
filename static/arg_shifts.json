@@ -1,18 +1,22 @@
 {
   "D103": {
-    "SHIFT": "MA - Weekday - 7-3"
+    "SHIFT": "MA - Weekday - 7-3",
+    "Recieving": "Desk"
   },
   "D104": {
-    "SHIFT": "MA - Weekday - 7-3"
+    "SHIFT": "MA - Weekday - 7-3",
+    "Recieving": "Desk"
   },
   "D105": {
     "SHIFT": "IC - Weekday - 7-3"
   },
   "D107": {
-    "SHIFT": "MA - Weekday - 7-3"
+    "SHIFT": "MA - Weekday - 7-3",
+    "Recieving": "Deliveries"
   },
   "D108": {
-    "SHIFT": "MA - Weekday - 7-3"
+    "SHIFT": "MA - Weekday - 7-3",
+    "Recieving": "Deliveries"
   },
   "D207": {
     "SHIFT": "SA - Weekday - 7-3",
@@ -167,7 +171,7 @@
   },
   "D408": {
     "SHIFT": "SA - Stat Day - 7-3",
-    "Sweep": "Fill Materials stock levels"
+    "Sweep": "Fill Material Stock Levels"
   },
   "E310": {
     "SHIFT": "SA - Evening - 15-23",
