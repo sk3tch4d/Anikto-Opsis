@@ -1,21 +1,21 @@
 {
   "D103": {
-    "SHIFT": "Receiving - Weekday - 7-3"
+    "SHIFT": "MA - Weekday - 7-3"
   },
   "D104": {
-    "SHIFT": "Receiving - Weekday - 7-3"
+    "SHIFT": "MA - Weekday - 7-3"
   },
   "D105": {
-    "SHIFT": "Inventory Controller - Weekday - 7-3"
+    "SHIFT": "IC - Weekday - 7-3"
   },
   "D107": {
-    "SHIFT": "Receiving - Weekday - 7-3"
+    "SHIFT": "MA - Weekday - 7-3"
   },
   "D108": {
-    "SHIFT": "Receiving - Weekday - 7-3"
+    "SHIFT": "MA - Weekday - 7-3"
   },
   "D207": {
-    "SHIFT": "Stores Desk - Weekday - 7-3",
+    "SHIFT": "SA - Weekday - 7-3",
     "Vocera": "Handle Stores Vocera",
     "Desk": "Handle Stores Orders",
     "Counts": "Assist with Cycle Counts",
@@ -25,7 +25,7 @@
     "Assist": "Other duties as assigned"
   },
   "D301": {
-    "SHIFT": "Supply Assistant - Weekday - 7-3",
+    "SHIFT": "SA - Weekday - 7-3",
     "D4CR": "Davis 4 - Room 22.4.109",
     "D4IC": "Davis 4 - Room 22-4-099",
     "D4RT": "Davis 4 - Room 22-4-095",
@@ -36,7 +36,7 @@
     "ICUW": "Kidd 2 - Room 22-2-321"
   },
   "D303": {
-    "SHIFT": "Supply Assistant - Weekday - 7-3",
+    "SHIFT": "SA - Weekday - 7-3",
     "FA4S": "Armstrong 4 - Room 16-4-033",
     "K4S": "Kidd 4 - Room 22.04.051",
     "K6S": "Kidd 6 - Roomm 22.6-043./047/22.6.041",
@@ -46,7 +46,7 @@
     "STMS": "Kidd 9 - Room 22.9.047/22.9.059"
   },
   "D304": {
-    "SHIFT": "Supply Assistant - Weekday - 7-3",
+    "SHIFT": "SA - Weekday - 7-3",
     "ATUB": "Burr 1 Gym - Room 21.1.006",
     "CLPS": "Dietary 1 - Room 7.13",
     "ERDP": "Dietary 1 - Room 7-127/7-113",
@@ -67,7 +67,7 @@
     "WOCS": "Dietary 1 - Room 7.130."
   },
   "D305": {
-    "SHIFT": "Supply Assistant - Weekday - 7-3",
+    "SHIFT": "SA - Weekday - 7-3",
     "C3S": "Connell 3 - Room 02.312",
     "CSRT": "Davis 3 - Room 22-3-119",
     "CSUS": "Davis 3 - Room 22-3-124/126/127/121",
@@ -78,7 +78,7 @@
     "FA3S": "Armstrong 3 - Room 16-3-025"
   },
   "D306": {
-    "SHIFT": "Supply Assistant - Weekday - 7-3",
+    "SHIFT": "SA - Weekday - 7-3",
     "C10A": "Connell 10 - Room 02.1003 or 02.1050",
     "C10B": "Connell 10 - Room 02.1024",
     "C10S": "Connell 10 - Room 2-1035",
@@ -89,7 +89,7 @@
     "PEDS": "Kidd 10 - Room 22.10.049"
   },
   "D307": {
-    "SHIFT": "Supply Assistant - Weekday - 7-3",
+    "SHIFT": "SA - Weekday - 7-3",
     "AUTO": "DOUG 1 - Rm 08-118",
     "C5SA": "Connell 5 - Rm 2-519/2-522",
     "CHMS": "DOUG 1 - Rm 4-1-107/104/102",
@@ -108,7 +108,7 @@
     "PTHS": "DOUG 2 - Rm 8-2261"
   },
   "D308": {
-    "SHIFT": "Supply Assistant - Weekday - 7-3",
+    "SHIFT": "SA - Weekday - 7-3",
     "ADMS": "Armstrong 1 - Rm 16-1-002-2",
     "CATS": "Kidd 1 - Rm 22-1-118",
     "CPSA": "Kidd 0 - Rm 22-0.007.0",
@@ -127,7 +127,7 @@
     "XRYS": "Kidd 1 - Rm 22-1-118"
   },
   "D311": {
-    "SHIFT": "Supply Assistant - Weekday - 7-3",
+    "SHIFT": "SA - Weekday - 7-3",
     "ANES": "Connell 2 - Room 22.2.226",
     "ORS": "Connell 2 - Room 22.2.226",
     "ORSA": "Connell 2 - Room 02-238",
@@ -162,26 +162,26 @@
     "CARTRDG": "135836"
   },
   "D406": {
-    "SHIFT": "Supply Assistant - Stat Day - 7-3",
+    "SHIFT": "SA - Stat Day - 7-3",
     "Vocera": "Handle Stores Vocera"
   },
   "D408": {
-    "SHIFT": "Supply Assistant - Stat Day - 7-3",
+    "SHIFT": "SA - Stat Day - 7-3",
     "Sweep": "Fill Materials stock levels"
   },
   "E310": {
-    "SHIFT": "Supply Assistant - Evening - 15-23",
+    "SHIFT": "SA - Evening - 15-23",
     "Vocera": "Handle Stores Vocera",
     "Picks": "Safe & Mains Picks"
   },
   "E410": {
-    "SHIFT": "Supply Assistant - Evening - 15-23",
+    "SHIFT": "SA - Evening - 15-23",
     "Vocera": "Handle Stores Vocera",
     "Sweep": "Sweep all ICU/D4 locations",
     "Picks": "Safe/Mains Picks (Stat Wknd)"
   },
   "N203": {
-    "SHIFT": "Supply Assistant - Weekday - 23-7",
+    "SHIFT": "SA - Weekday - 23-7",
     "Vocera": "Handle Stores Vocera",
     "CVLA": "Content In Development",
     "CVLS": "Content In Development",
@@ -197,34 +197,34 @@
     "Barcode": "D308, ERDP, RNLS, MHA, MHAS, MHYS"
   },
   "SA2": {
-    "SHIFT": "Supply Assistant - Stat Weekend - 7-3",
+    "SHIFT": "SA - Stat Weekend - 7-3",
     "Saturday": "Supply Delivery",
     "Delivery": "D311, D303",
     "Sunday": "Inventory Count",
     "Barcode": "D311, D303"
   },
   "SA3": {
-    "SHIFT": "Supply Assistant - Stat Weekend - 7-3",
+    "SHIFT": "SA - Stat Weekend - 7-3",
     "Saturday": "Supply Delivery",
     "Delivery": "D305, D307",
     "Sunday": "Inventory Count",
     "Barcode": "D305, D307"
   },
   "SA4": {
-    "SHIFT": "Supply Assistant - Stat Weekend - 7-3",
+    "SHIFT": "SA - Stat Weekend - 7-3",
     "Saturday": "Supply Delivery",
     "Delivery": "D301, D306",
     "Sunday": "Inventory Count",
     "Barcode": "D301, D306"
   },
   "W401": {
-    "SHIFT": "Supply Assistant - Weekend - 8-12",
+    "SHIFT": "SA - Weekend - 8-12",
     "Room A": "Burr Wing 3 - Room 21.3.054.0",
     "Room B": "Burr Wing 3 - Room 21.3.051.0",
     "Room C": "Burr Wing 3 - Room 21.3.050.0"
   },
   "W501": {
-    "SHIFT": "Supply Assistant - Friday Night - 23-7",
+    "SHIFT": "SA - Friday Night - 23-7",
     "Vocera": "Handle Stores Vocera",
     "CVLA": "Content In Development",
     "CVLS": "Content In Development",
@@ -233,7 +233,7 @@
     "Picks": "Pick CPS Items for orders"
   },
   "W502": {
-    "SHIFT": "Supply Assistant - Weekend - 7-3",
+    "SHIFT": "SA - Weekend - 7-3",
     "Vocera": "Handle Stores Vocera",
     "SATURDAY": "ICUE, ICUW",
     "ICUE": "Kidd 2 - Room 22-2-295",
@@ -242,7 +242,7 @@
     "D4IC": "Davis 4 - Room 22-4-099"
   },
   "W503": {
-    "SHIFT": "Supply Assistant - Weekend - 7-3",
+    "SHIFT": "SA - Weekend - 7-3",
     "CATS": "Kidd 1 - Rm 22-1-118",
     "CPSA": "Kidd 0 - Rm 22-0.007.0",
     "CPSB": "Kidd 0 - Rm 22-0-001-1/2.5",
@@ -264,7 +264,7 @@
     "XRYS": "Kidd 1 - Rm 22-1-118"
   },
   "W504": {
-    "SHIFT": "Supply Assistant - Weekend - 7-3",
+    "SHIFT": "SA - Weekend - 7-3",
     "ANES": "Connell 2 - Room 22.2.226",
     "FA4S": "Armstrong 4 - Room 16-4-033",
     "K4S": "Kidd 4 - Room 22.04.051",
@@ -287,7 +287,7 @@
     "STMS": "Kidd 9 - Room 22.9.047/22.9.059"
   },
   "W505": {
-    "SHIFT": "Supply Assistant - Weekend - 23-7",
+    "SHIFT": "SA - Weekend - 23-7",
     "Vocera": "Handle Stores Vocera",
     "C3S": "Connell 3 - Room 02.312",
     "CSRT": "Davis 3 - Room 22-3-119",
@@ -297,11 +297,11 @@
     "FA3S": "Armstrong 3 - Room 16-3-025"
   },
   "W506": {
-    "SHIFT": "Supply Assistant - Saturday Night",
+    "SHIFT": "SA - Saturday Night",
     "Vocera": "Handle Stores Vocera"
   },
   "W507": {
-    "SHIFT": "Supply Assistant - Weekend - 7-3",
+    "SHIFT": "SA - Weekend - 7-3",
     "C10A": "Connell 10 - Room 02.1003 or 02.1050",
     "C10B": "Connell 10 - Room 02.1024",
     "C10S": "Connell 10 - Room 2-1035",
@@ -314,7 +314,7 @@
     "PEDS": "Kidd 10 - Room 22.10.049"
   },
   "W508": {
-    "SHIFT": "Supply Assistant - Weekend - 15-23",
+    "SHIFT": "SA - Weekend - 15-23",
     "Vocera": "Handle Stores Vocera",
     "K5S": "Kidd 5 - Rm 22-5-065",
     "NICA": "Kidd 5 - Rm 22-5-047-4",
@@ -322,7 +322,7 @@
     "NICB": "Connell 5 - Rm 2-554 [2+4,3]"
   },
   "W509": {
-    "SHIFT": "Supply Assistant - Weekend - 23-7",
+    "SHIFT": "SA - Weekend - 23-7",
     "Vocera": "Handle Stores Vocera"
   }
 }
