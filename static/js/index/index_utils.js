@@ -155,25 +155,40 @@ export function startFormLoadingUI() {
   const loading = document.getElementById("loading");
   const form = document.getElementById("upload-form");
 
-  toggleLoadingState(true, {
-    show: [loading],
-    hide: [form]
-  });
-
   const typeKey = detectFileTypeKey();
   updateGenText(typeKey);
   displayRandomQuote();
 
-  // Load custom calendar SVG loader for ARG files
-  if (typeKey === "arg" && loading) {
-    fetch("/static/svg/calendar.svg")
-      .then(res => res.text())
-      .then(svg => {
-        loading.innerHTML = svg;
-        loading.firstElementChild?.classList.add("svg-calendar", "animate-loader");
+  // Clear loading placeholder text first
+  if (loading) loading.innerHTML = '';
+
+  // If ARG file: fetch + inject SVG
+  if (typeKey === 'arg' && loading) {
+    fetch('/static/svg/calendar.svg')
+      .then(res => {
+        if (!res.ok) throw new Error(`SVG load failed (${res.status})`);
+        return res.text();
       })
-      .catch(() => {
-        loading.innerHTML = "<div>Loading ARG Report...</div>";
+      .then(svgText => {
+        console.log('SVG fetched:', svgText.slice(0,50));
+        loading.innerHTML = svgText;
+        const svgEl = loading.querySelector('svg');
+        if (svgEl) {
+          svgEl.classList.add('svg-calendar', 'animate-loader');
+          console.log('SVG classes added:', svgEl.className);
+        } else {
+          console.error('❌ SVG tag missing after injection');
+        }
+      })
+      .catch(err => {
+        console.error('SVG fetch error:', err);
+        loading.innerHTML = '<div style="color:white">Loading ARG Report…</div>';
       });
   }
+
+  // AFTER injection logic, toggle loading/form visibility
+  toggleLoadingState(true, {
+    show: [loading],
+    hide: [form]
+  });
 }
