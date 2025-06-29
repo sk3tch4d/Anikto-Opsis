@@ -9,7 +9,7 @@
 #dev-icon svg {
   width: 100%;
   height: 100%;
-  stroke: var(--drop-text-color);
+  stroke: var(--drop-svg-color);
   transition: transform 0.3s ease, stroke 0.3s ease;
 }
 /* ============================== */
