@@ -152,12 +152,28 @@ function detectFileTypeKey() {
 // START FORM LOADING UI
 // ==============================
 export function startFormLoadingUI() {
+  const loading = document.getElementById("loading");
+  const form = document.getElementById("upload-form");
+
   toggleLoadingState(true, {
-    show: [document.getElementById("loading")],
-    hide: [document.getElementById("upload-form")]
+    show: [loading],
+    hide: [form]
   });
 
   const typeKey = detectFileTypeKey();
   updateGenText(typeKey);
   displayRandomQuote();
+
+  // Load custom calendar SVG loader for ARG files
+  if (typeKey === "arg" && loading) {
+    fetch("/static/svg/calendar.svg")
+      .then(res => res.text())
+      .then(svg => {
+        loading.innerHTML = svg;
+        loading.firstElementChild?.classList.add("svg-calendar", "animate-loader");
+      })
+      .catch(() => {
+        loading.innerHTML = "<div>Loading ARG Report...</div>";
+      });
+  }
 }
