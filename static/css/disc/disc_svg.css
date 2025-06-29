@@ -1,5 +1,5 @@
 /* ============================== */
-/* DISC_SVG.CSS.                  */
+/* DISC_SVG.CSS                   */
 /* ============================== */
 
 
@@ -12,12 +12,58 @@
   stroke: var(--drop-svg-color);
   transition: transform 0.3s ease, stroke 0.3s ease;
 }
-/* ============================== */
+
 #dev-icon:hover svg {
   animation: spin 1.5s linear infinite;
 }
-/* ============================== */
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
+}
+
+
+/* ============================== */
+/* CALENDAR LOADER + ANIMATION   */
+/* ============================== */
+
+/* BASE STYLING */
+.svg-calendar {
+  width: 24px;
+  height: 24px;
+  stroke: #333;
+  stroke-width: 2;
+  fill: none;
+  transition: stroke 0.3s ease;
+}
+
+/* LOADING ANIMATION TRIGGER */
+.svg-calendar.animate-loader {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Animated drawing effect */
+.svg-calendar.animate-loader rect,
+.svg-calendar.animate-loader line {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: drawLoop 1.5s ease-in-out infinite alternate;
+}
+
+/* Keyframes */
+@keyframes drawLoop {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
 }
